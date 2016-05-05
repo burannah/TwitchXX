@@ -13,6 +13,6 @@ public:
 	MongoDB();
 	virtual ~MongoDB();
 
-	void Log(std::string msg, LogLevel level = LogLevel::Message);
+	void Log(std::string msg, LogLevel level);
 };
 
