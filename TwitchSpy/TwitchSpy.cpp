@@ -7,7 +7,7 @@
 
 int main()
 {
-	TwitchXX api;
+	TwitchXX::Api api;
     return 0;
 }
 

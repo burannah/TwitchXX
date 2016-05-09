@@ -113,7 +113,7 @@
       <AdditionalDependencies>libbsoncxx.lib;libmongocxx.lib;bsoncxx.lib;mongocxx.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy $(ProjectDir)..\ThirdParty\MongoDriver\mongo-driver-build\bin\*.dll $(TargetDir)</Command>
+      <Command>xcopy $(ProjectDir)..\ThirdParty\MongoDriver\mongo-driver-build\bin\*.dll $(TargetDir) /s /d</Command>
     </PreBuildEvent>
     <PreBuildEvent>
       <Message>Copy mongo dlls</Message>
@@ -159,7 +159,7 @@
       <AdditionalDependencies>libbsoncxx.lib;libmongocxx.lib;bsoncxx.lib;mongocxx.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy $(ProjectDir)..\ThirdParty\MongoDriver\mongo-driver-build\bin\*.dll $(TargetDir)</Command>
+      <Command>xcopy $(ProjectDir)..\ThirdParty\MongoDriver\mongo-driver-build\bin\*.dll $(TargetDir) /s /d</Command>
     </PreBuildEvent>
     <PreBuildEvent>
       <Message>Copy mongo dlls</Message>
