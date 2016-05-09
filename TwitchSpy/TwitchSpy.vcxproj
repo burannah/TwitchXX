@@ -109,9 +109,15 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(MONGO_LIB)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\ThirdParty\MongoDriver\mongo-driver-build\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>libbsoncxx.lib;libmongocxx.lib;bsoncxx.lib;mongocxx.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>xcopy $(ProjectDir)..\ThirdParty\MongoDriver\mongo-driver-build\bin\*.dll $(TargetDir)</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Copy mongo dlls</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -149,9 +155,15 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(MONGO_LIB)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\ThirdParty\MongoDriver\mongo-driver-build\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>libbsoncxx.lib;libmongocxx.lib;bsoncxx.lib;mongocxx.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>xcopy $(ProjectDir)..\ThirdParty\MongoDriver\mongo-driver-build\bin\*.dll $(TargetDir)</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Copy mongo dlls</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

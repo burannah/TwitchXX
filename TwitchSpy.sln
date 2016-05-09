@@ -7,30 +7,44 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TwitchSpy", "TwitchSpy\Twit
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TwitchXX", "TwitchXX\TwitchXX.vcxproj", "{456591EB-04E1-4E5E-A2BB-A7249CFDE8BF}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "BuildMongoDriver", "ThirdParty\MongoDriver\BuildMongoDriver\BuildMongoDriver.pyproj", "{5F26E0C8-E8BA-477A-A354-C27E844AE11C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6ED1ED0C-EC1D-4811-A715-3CFA2D71C279}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{6ED1ED0C-EC1D-4811-A715-3CFA2D71C279}.Debug|x64.ActiveCfg = Debug|x64
 		{6ED1ED0C-EC1D-4811-A715-3CFA2D71C279}.Debug|x64.Build.0 = Debug|x64
 		{6ED1ED0C-EC1D-4811-A715-3CFA2D71C279}.Debug|x86.ActiveCfg = Debug|Win32
 		{6ED1ED0C-EC1D-4811-A715-3CFA2D71C279}.Debug|x86.Build.0 = Debug|Win32
+		{6ED1ED0C-EC1D-4811-A715-3CFA2D71C279}.Release|Any CPU.ActiveCfg = Release|Win32
 		{6ED1ED0C-EC1D-4811-A715-3CFA2D71C279}.Release|x64.ActiveCfg = Release|x64
 		{6ED1ED0C-EC1D-4811-A715-3CFA2D71C279}.Release|x64.Build.0 = Release|x64
 		{6ED1ED0C-EC1D-4811-A715-3CFA2D71C279}.Release|x86.ActiveCfg = Release|Win32
 		{6ED1ED0C-EC1D-4811-A715-3CFA2D71C279}.Release|x86.Build.0 = Release|Win32
+		{456591EB-04E1-4E5E-A2BB-A7249CFDE8BF}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{456591EB-04E1-4E5E-A2BB-A7249CFDE8BF}.Debug|x64.ActiveCfg = Debug|x64
 		{456591EB-04E1-4E5E-A2BB-A7249CFDE8BF}.Debug|x64.Build.0 = Debug|x64
 		{456591EB-04E1-4E5E-A2BB-A7249CFDE8BF}.Debug|x86.ActiveCfg = Debug|Win32
 		{456591EB-04E1-4E5E-A2BB-A7249CFDE8BF}.Debug|x86.Build.0 = Debug|Win32
+		{456591EB-04E1-4E5E-A2BB-A7249CFDE8BF}.Release|Any CPU.ActiveCfg = Release|Win32
 		{456591EB-04E1-4E5E-A2BB-A7249CFDE8BF}.Release|x64.ActiveCfg = Release|x64
 		{456591EB-04E1-4E5E-A2BB-A7249CFDE8BF}.Release|x64.Build.0 = Release|x64
 		{456591EB-04E1-4E5E-A2BB-A7249CFDE8BF}.Release|x86.ActiveCfg = Release|Win32
 		{456591EB-04E1-4E5E-A2BB-A7249CFDE8BF}.Release|x86.Build.0 = Release|Win32
+		{5F26E0C8-E8BA-477A-A354-C27E844AE11C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F26E0C8-E8BA-477A-A354-C27E844AE11C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5F26E0C8-E8BA-477A-A354-C27E844AE11C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5F26E0C8-E8BA-477A-A354-C27E844AE11C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F26E0C8-E8BA-477A-A354-C27E844AE11C}.Release|x64.ActiveCfg = Release|Any CPU
+		{5F26E0C8-E8BA-477A-A354-C27E844AE11C}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

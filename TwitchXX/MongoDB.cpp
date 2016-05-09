@@ -19,7 +19,9 @@ void MongoDB::Log(std::string msg, LogLevel level)
 	bsoncxx::builder::stream::document log_msg{};
 
 	auto now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-	log_msg << "Datetime" << std::ctime(&now);
+	char buff[256];
+	ctime_s(buff, 256, &now);
+	log_msg << "Datetime" << buff;
 	log_msg << "Message" << msg;
 	log_msg << "Severety" << static_cast<int>(level);
 	log_collection.insert_one(log_msg.view());

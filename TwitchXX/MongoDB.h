@@ -3,6 +3,7 @@
 
 #include <mongocxx\client.hpp>
 #include <mongocxx\instance.hpp>
+#include <memory>
 
 class MongoDB :
 	public DBAdapter

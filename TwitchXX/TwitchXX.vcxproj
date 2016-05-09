@@ -96,7 +96,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(BOOST_ROOT);$(MONGO_LIB)\include\bsoncxx\v_noabi;$(MONGO_LIB)\include\mongocxx\v_noabi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(BOOST_ROOT);$(ProjectDir)..\ThirdParty\MongoDriver\mongo-driver-build\include\bsoncxx\v_noabi;$(ProjectDir)..\ThirdParty\MongoDriver\mongo-driver-build\include\mongocxx\v_noabi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -134,7 +134,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(BOOST_ROOT);$(MONGO_LIB)\include\bsoncxx\v_noabi;$(MONGO_LIB)\include\mongocxx\v_noabi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(BOOST_ROOT);$(ProjectDir)..\ThirdParty\MongoDriver\mongo-driver-build\include\bsoncxx\v_noabi;$(ProjectDir)..\ThirdParty\MongoDriver\mongo-driver-build\include\mongocxx\v_noabi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
