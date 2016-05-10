@@ -1,13 +1,20 @@
 #pragma once
 
 #include <memory>
+#include "Logger.h"
 #include "DBAdapter.h"
+#include "TwitchGame.h"
 
-class TwitchXX
+namespace TwitchXX
 {
-	std::unique_ptr<DBAdapter> _db;
-public:
-	TwitchXX();
-	~TwitchXX();
-};
+	class Api
+	{
+	std::shared_ptr<DBAdapter> _db;
+	public:
+	Api();
+	~Api();
 
+	TwitchGamesContainer Games();
+	};
+
+}

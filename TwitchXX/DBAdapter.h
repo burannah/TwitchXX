@@ -1,17 +1,18 @@
 #pragma once
 
-#include <string>
 
-class DBAdapter
+namespace TwitchXX
 {
-public:
-	enum class LogLevel
+	class DBAdapter
 	{
-		Message,
-		Warning,
-		Error
-	};
-	virtual void Log(std::string msg, LogLevel = LogLevel::Message) = 0;
-	
-};
+	public:
+	DBAdapter() {};
+	DBAdapter(const DBAdapter& db) = delete;
+	DBAdapter(DBAdapter&& db) {};
 
+	virtual ~DBAdapter() {};
+
+
+	};
+	
+}

@@ -7,7 +7,9 @@
 
 int main()
 {
-	TwitchXX api;
+	TwitchXX::Api api;
+
+	auto games = api.Games();
     return 0;
 }
 

@@ -3,16 +3,20 @@
 
 #include <mongocxx\client.hpp>
 #include <mongocxx\instance.hpp>
+#include <memory>
 
-class MongoDB :
-	public DBAdapter
+namespace TwitchXX
 {
+	class MongoDB :
+	public DBAdapter
+	{
 	std::unique_ptr<mongocxx::instance> _instance;
 	std::unique_ptr<mongocxx::client> _client;
-public:
+	public:
 	MongoDB();
+	MongoDB(MongoDB&& db);
 	virtual ~MongoDB();
 
-	void Log(std::string msg, LogLevel level);
-};
-
+	mongocxx::database GetDb(const std::string& db_name) const;
+	};
+}
