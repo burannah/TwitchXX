@@ -9,19 +9,20 @@ namespace TwitchXX
 	class Logger
 	{
 	public:
-	Logger() {};
+		Logger() {};
 
-	virtual ~Logger()
-	{
-	}
+		virtual ~Logger()
+		{
+		}
 
-	enum class LogLevel
-	{
-	Message,
-	Warning,
-	Error
-	};
-	virtual void Log(std::wstring msg, LogLevel = LogLevel::Message) = 0;
+		enum class LogLevel
+		{
+			Message,
+			Warning,
+			Error
+		};
+
+		virtual void Log(std::wstring msg, LogLevel = LogLevel::Message) = 0;
 	};
 
 }

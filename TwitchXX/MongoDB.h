@@ -10,13 +10,13 @@ namespace TwitchXX
 	class MongoDB :
 	public DBAdapter
 	{
-	std::unique_ptr<mongocxx::instance> _instance;
-	std::unique_ptr<mongocxx::client> _client;
+		std::unique_ptr<mongocxx::instance> _instance;
+		std::unique_ptr<mongocxx::client> _client;
 	public:
-	MongoDB();
-	MongoDB(MongoDB&& db);
-	virtual ~MongoDB();
+		MongoDB();
+		MongoDB(MongoDB&& db);
+		virtual ~MongoDB();
 
-	mongocxx::database GetDb(const std::string& db_name) const;
+		mongocxx::database GetDb(const std::string& db_name) const;
 	};
 }

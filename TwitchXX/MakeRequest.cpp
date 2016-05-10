@@ -21,28 +21,28 @@ web::json::value TwitchXX::MakeRequest::operator()(const web::uri& uri) const
 	pplx::task<web::json::value> task = http_client.request(request)
 	.then([](web::http::http_response response) -> pplx::task<web::json::value>
 	{
-	std::wostringstream stream;
-	stream.str(std::wstring());
-	stream << L"Content type: " << response.headers().content_type() << std::endl;
-	stream << L"Content length: " << response.headers().content_length() << L"bytes" << std::endl;
-	std::wcout << stream.str();
-	if (response.status_code() == web::http::status_codes::OK)
-	{
-	return response.extract_json();
-	}
-	else
-	{
-	return pplx::task_from_result(web::json::value());
-	}
+		std::wostringstream stream;
+		stream.str(std::wstring());
+		stream << L"Content type: " << response.headers().content_type() << std::endl;
+		stream << L"Content length: " << response.headers().content_length() << L"bytes" << std::endl;
+		std::wcout << stream.str();
+		if (response.status_code() == web::http::status_codes::OK)
+		{
+			return response.extract_json();
+		}
+		else
+		{
+			return pplx::task_from_result(web::json::value());
+		}
 	});
 
 	try
 	{
-	return task.get();
+		return task.get();
 	}
 	catch (const std::exception &e)
 	{
-	printf("Error exception:%s\n", e.what());
+		printf("Error exception:%s\n", e.what());
 	}
 
 	return web::json::value();

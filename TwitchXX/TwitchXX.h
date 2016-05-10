@@ -9,12 +9,12 @@ namespace TwitchXX
 {
 	class Api
 	{
-	std::shared_ptr<DBAdapter> _db;
+		std::shared_ptr<DBAdapter> _db;
 	public:
-	Api();
-	~Api();
+		Api();
+		~Api();
 
-	TwitchGamesContainer Games();
+		TwitchGamesContainer Games();
 	};
 
 }
