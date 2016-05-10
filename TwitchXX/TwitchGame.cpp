@@ -1,41 +1,75 @@
 #include "TwitchGame.h"
+#include <utility>
 
 
-TwitchXX::TwitchGame::TwitchGame(): _channels(0), _viewers(0), _id(0), _giantbomb_id(0)
+TwitchXX::TwitchGame::TwitchGame(): _channels(0), _viewers(0), _id(0), _giantbomb_id(0),
+	_box({ { L"small", L"" },{ L"medium", L"" },{ L"large", L"" },{ L"template",L"" } }),
+	_logo({ { L"small", L"" },{ L"medium", L"" },{ L"large", L"" },{ L"template",L"" } })
 {
 }
 
-TwitchXX::TwitchGame::TwitchGame(web::json::value json)
-	:_box({ {L"small", L""},{L"medium", L""}, {L"large", L""},{L"template",L""}}),
-	_logo({ { L"small", L"" },{ L"medium", L"" },{ L"large", L"" },{ L"template",L"" }})
+TwitchXX::TwitchGame::TwitchGame(const TwitchGame& other) : TwitchGame()
 {
-	_channels = json.at(L"channels").as_integer();
-	_viewers = json.at(L"viewers").as_integer();
-	auto game = json.at(L"game");
-	if(game.is_null())
-	{
-		throw std::runtime_error("Not a valid game description json");
-	}
-	_name = game.at(L"name").as_string();
-	_id = game.at(L"id").as_integer();
-	_giantbomb_id = game.at(L"giantbomb_id").as_integer();
-	
-	FillCollection(_box, game.at(L"box"));
-	FillCollection(_logo, game.at(L"logo"));
+	this->swap(other);
+}
+
+TwitchXX::TwitchGame::TwitchGame(TwitchGame&& other) : TwitchGame()
+{
+	*this = other;
+#if 0
+  	_name = std::move(other._name);
+	_box = std::move(other._box);
+	_logo = std::move(other._logo);
+	_channels = other._channels;
+	_viewers = other._channels;
+	_id = other._channels;
+	_giantbomb_id = other._giantbomb_id;
+
+#endif
 }
 
 TwitchXX::TwitchGame::~TwitchGame()
 {
 }
 
-void TwitchXX::TwitchGame::FillCollection(ImageCollection& col, const web::json::value& json)
+TwitchXX::TwitchGame& TwitchXX::TwitchGame::operator=(const TwitchGame& other)
 {
-	if(!json.is_null())
-	{
-		for (auto& entry : col)
-		{
-			entry.second = json.at(entry.first).as_string();
-		}
-	}
+	if (this == &other) return *this;
+	this->swap(other);
+	return *this;
+}
 
+TwitchXX::TwitchGame& TwitchXX::TwitchGame::operator=(TwitchGame&& other)
+{
+	_name = std::move(other._name);
+	_box = std::move(other._box);
+	_logo = std::move(other._logo);
+	_channels = other._channels;
+	_viewers = other._channels;
+	_id = other._channels;
+	_giantbomb_id = other._giantbomb_id;
+
+	return *this;
+}
+
+void TwitchXX::TwitchGame::swap(TwitchGame& other) noexcept
+{
+	std::swap(_name, other._name);
+	std::swap(_channels, other._channels);
+	std::swap(_viewers, other._viewers);
+	std::swap(_id, other._id);
+	std::swap(_giantbomb_id, other._giantbomb_id);
+	std::swap(_box, other._box);
+	std::swap(_logo, other._logo);
+}
+
+void TwitchXX::TwitchGame::swap(const TwitchGame& other)
+{
+	_name = other._name;
+	_box = other._box;
+	_logo = other._logo;
+	_channels = other._channels;
+	_viewers = other._channels;
+	_id = other._channels;
+	_giantbomb_id = other._giantbomb_id;
 }

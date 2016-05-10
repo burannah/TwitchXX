@@ -1,6 +1,7 @@
 import os, sys,subprocess
 
-compiler_type = "Visual Studio 14 Win64"
+#compiler_type = "Visual Studio 14 Win64"
+compiler_type = "Visual Studio 14 2015"
 compiler_name = "C:/Program Files (x86)/MSBuild/14.0/Bin/MSBuild.exe"
 
 if sys.platform.startswith('win'):

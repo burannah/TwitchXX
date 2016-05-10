@@ -8,6 +8,8 @@
 int main()
 {
 	TwitchXX::Api api;
+
+	auto games = api.Games();
     return 0;
 }
 
