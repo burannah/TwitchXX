@@ -48,7 +48,11 @@ if __name__ == "__main__":
         print("{0} has been created".format(build_dir))
     else:
         print("{0} already exsist".format(build_dir))
+<<<<<<< HEAD
    
+=======
+
+>>>>>>> 398463940a4d707b5686ffe94475e93be7a41d99
     #Build Mongo C Driver
     #Build libbson
     mongo_c_driver_dir = os.path.join(mongo_dir,'mongo-c-driver')
@@ -77,6 +81,11 @@ if __name__ == "__main__":
     ret_code = subprocess.check_call(command_line,stderr=subprocess.STDOUT, shell=shell)
     command_line = [build_exe,'INSTALL.vcxproj']
     ret_code = subprocess.check_call(command_line,stderr=subprocess.STDOUT, shell=shell)
+<<<<<<< HEAD
     
 
     
+=======
+
+
+>>>>>>> 398463940a4d707b5686ffe94475e93be7a41d99

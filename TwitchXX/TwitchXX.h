@@ -1,7 +1,6 @@
 #pragma once
 
 #include <memory>
-#include "Logger.h"
 #include "DBAdapter.h"
 #include "TwitchGame.h"
 
@@ -16,5 +15,4 @@ namespace TwitchXX
 
 		TwitchGamesContainer Games();
 	};
-	
 }

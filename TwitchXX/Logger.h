@@ -23,5 +23,4 @@ namespace TwitchXX
 		};
 		virtual void Log(std::wstring msg, LogLevel = LogLevel::Message) = 0;
 	};
-	
 }

@@ -11,8 +11,6 @@ namespace TwitchXX
 		DBAdapter(DBAdapter&& db) {};
 
 		virtual ~DBAdapter() {};
-
-
 	};
 	
 }

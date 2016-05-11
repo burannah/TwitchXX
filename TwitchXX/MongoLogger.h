@@ -1,7 +1,6 @@
 #pragma once
 #include "Logger.h"
 #include <memory>
-#include <condition_variable>
 #include <mongocxx/options/aggregate.hpp>
 
 namespace TwitchXX
@@ -24,7 +23,5 @@ namespace TwitchXX
 		virtual ~MongoLogger();
 
 		void Log(std::wstring msg, LogLevel = LogLevel::Message) override;
-
 	};
-	
 }
