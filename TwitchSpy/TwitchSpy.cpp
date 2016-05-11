@@ -9,7 +9,7 @@ int main()
 {
 	TwitchXX::Api api;
 
-	auto games = api.Games();
+	auto games = api.TopGames();
     return 0;
 }
 

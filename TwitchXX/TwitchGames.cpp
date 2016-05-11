@@ -14,22 +14,31 @@ TwitchXX::TwitchGames::~TwitchGames()
 {
 }
 
+// Try to fetch all games from Twitch
 void TwitchXX::TwitchGames::FetchAllGames()
 {
 	if(_size > _games.size())
 	{
+		auto number_of_tries = 0;
 		while(_size > _games.size())
 		{
-			FetchGames();
+			auto current_count_of_games = _games.size();
+			FetchGames(_limit);
+			if (current_count_of_games == _games.size()) ++number_of_tries;
+			if(number_of_tries > 2) break;
 		}
+
 	}
 }
 
 // Fetches a new chunk of games from web
 // Each request is limited by _limit number of games
-void TwitchXX::TwitchGames::FetchGames()
+void TwitchXX::TwitchGames::FetchGamesTop(size_t count)
 {
-	FetchGames(_limit);
+	while(_games.size() < count)
+	{
+		FetchGames(_limit);
+	}
 }
 
 // Fetches 'limit' games from web.
@@ -38,8 +47,12 @@ void TwitchXX::TwitchGames::FetchGames()
 void TwitchXX::TwitchGames::FetchGames(size_t limit)
 {
 	auto request_limit = limit + _games.size() > _size ? _size - _games.size() : limit;
-	FetchChunk(limit, _games.size());
+	FetchChunk(request_limit, _games.size());
+}
 
+void TwitchXX::TwitchGames::UpdateGame(TwitchGamesContainer::mapped_type & twitch_game, web::json::value game_descriptor)
+{
+	twitch_game = CreateGame(game_descriptor);
 }
 
 void TwitchXX::TwitchGames::FetchChunk(size_t limit, size_t offset)
@@ -48,25 +61,31 @@ void TwitchXX::TwitchGames::FetchChunk(size_t limit, size_t offset)
 	builder.append_query(U("limit"), limit);
 	builder.append_query(U("offset"), offset);
 	auto value = (*Request)(builder.to_uri());
+	if(value.is_null())
+	{
+		throw std::runtime_error("No games were returned");
+	}
 	if(_size == 0)
 	{
 		auto total = value.at(L"_total");
 		_size = total.as_integer();
 	}
 	auto top = value.at(L"top");
-	if (top == web::json::value() || top.is_null() || _size == 0)
-	{
-		throw std::runtime_error("No games were returned");
-	}
 	if (top.is_array())
 	{
 		for each (auto& game_descriptor in top.as_array())
 		{
 			auto name = game_descriptor.at(L"game").at(L"name").as_string();
-			if (_games.find(name) != _games.end()) continue; 
-			_games[name] = CreateGame(game_descriptor);
+			if (_games.find(name) != _games.end())
+			{
+				UpdateGame(_games[name],game_descriptor);
+			}
+			else
+			{
+				_games.insert(std::make_pair(name, CreateGame(game_descriptor)));
+			}
 			std::wstringstream stream(L"");
-			stream << "Added game: " << game_descriptor.at(L"game").at(L"name") << " Current viewers: " << game_descriptor.at(L"viewers") << std::endl;
+			stream << "Added game: " << name << " Current viewers: " << _games[name].Viewers() << std::endl;
 			Log->Log(stream.str());
 		}
 	}

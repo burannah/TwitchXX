@@ -18,17 +18,19 @@ namespace TwitchXX
 		virtual ~TwitchGames();
 
 		const TwitchGamesContainer& Games() const { return _games; };
-		const TwitchGamesContainer& Games(bool fetch_all = false)
+		const TwitchGamesContainer& GamesAll()
 		{
-			if(fetch_all)
-			{
-				FetchAllGames();
-			}
+			FetchAllGames();
+			return _games;
+		}
+		const TwitchGamesContainer& Games(size_t top_count = 500)
+		{
+			FetchGamesTop(top_count);
 			return _games;
 		}
 
 		void FetchAllGames();
-		void FetchGames();
+		void FetchGamesTop(size_t count);
 		void FetchGames(size_t limit);
 
 	private:
@@ -37,6 +39,7 @@ namespace TwitchXX
 		size_t _offset;
 		size_t _limit;
 
+		static void UpdateGame(TwitchGamesContainer::mapped_type & twitch_game, web::json::value game_descriptor);
 		void FetchChunk(size_t limit, size_t offset);
 		static void FillCollection(TwitchGame::ImageCollection& col, const web::json::value& json);
 		static TwitchGame CreateGame(const web::json::value& value);

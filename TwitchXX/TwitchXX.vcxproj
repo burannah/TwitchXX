@@ -187,6 +187,7 @@
     <ClCompile Include="TwitchGame.cpp" />
     <ClCompile Include="TwitchGames.cpp" />
     <ClCompile Include="TwitchXX.cpp" />
+    <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

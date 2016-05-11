@@ -3,6 +3,7 @@
 #include <string>
 #include <cpprest/uri.h>
 #include <cpprest/json.h>
+#include <cpprest/http_client.h>
 
 namespace TwitchXX
 {
@@ -10,8 +11,9 @@ namespace TwitchXX
 	{
 		std::wstring _client_id;
 		std::wstring _api_version;
+		web::http::client::http_client_config _config;
 	public:
-		explicit MakeRequest(std::wstring apiString = L"", std::wstring clientId = L"" ) : _client_id(clientId),_api_version(apiString) {};
+		explicit MakeRequest(std::wstring apiString = L"", std::wstring clientId = L"");;
 		virtual ~MakeRequest();
 		web::json::value operator()(const web::uri& request) const;
 	};
