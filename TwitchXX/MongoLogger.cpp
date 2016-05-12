@@ -41,6 +41,10 @@ TwitchXX::MongoLogger::~MongoLogger()
 
 void TwitchXX::MongoLogger::Log(std::wstring msg, LogLevel level)
 {
+#ifndef _DEBUG
+	//Omit debug loggin in non-debug build
+	if (level == LogLevel::Debug) return;
+#endif
 	auto log_collection = (*_db)["Log"];
 	bsoncxx::builder::stream::document log_msg{};
 

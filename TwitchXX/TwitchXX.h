@@ -13,6 +13,6 @@ namespace TwitchXX
 		Api();
 		~Api();
 
-		TwitchGamesContainer TopGames(size_t top_count = 500);
+		TwitchGamesContainer TopGames(size_t top_count = 0);
 	};
 }

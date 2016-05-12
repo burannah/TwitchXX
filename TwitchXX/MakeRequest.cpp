@@ -20,9 +20,9 @@ TwitchXX::MakeRequest::MakeRequest(std::wstring apiString, std::wstring clientId
 		{
 			web::credentials creds((*Options)[U("proxy_user")], (*Options)[U("proxy_password")]);
 			proxy.set_credentials(creds);
-			_config.set_credentials(creds);
+			//_config.set_credentials(creds);
 		}
-		_config.set_proxy(proxy);
+		//_config.set_proxy(proxy);
 	}
 }
 

@@ -1,4 +1,5 @@
 #pragma once
+#include <set>
 #include <map>
 
 namespace TwitchXX
@@ -14,8 +15,25 @@ namespace TwitchXX
 		TwitchGame(TwitchGame&& other);
 		virtual ~TwitchGame();
 
-		TwitchGame& operator=(const TwitchGame& other);
-		TwitchGame& operator=(TwitchGame&& other);
+		TwitchGame& operator=(TwitchGame const& other);
+//		TwitchGame& operator=(TwitchGame&& other);
+//		TwitchGame& operator=(TwitchGame other);
+
+		bool operator<(const TwitchGame& other) const
+		{
+			return _name < other._name;
+		}
+
+		bool operator==(const TwitchGame& other) const
+		{
+			return _name == other._name && _channels == other._channels && _viewers == other._viewers && _id == other._id
+					&& _giantbomb_id == other._giantbomb_id && _box == other._box && _logo == other._logo;
+		}
+
+		bool operator!=(const TwitchGame& other) const
+		{
+			return !(*this == other);
+		}
 
 		std::wstring Name() const { return _name; }
 		unsigned int Channels() const { return _channels; }
@@ -49,6 +67,6 @@ namespace TwitchXX
 
 	};
 
-	using TwitchGamesContainer = std::map<std::wstring, TwitchGame>;
+	using TwitchGamesContainer = std::set<TwitchGame>;
 }
 

@@ -7,89 +7,84 @@ namespace TwitchXX
 {
 	extern std::shared_ptr<Logger> Log;
 	extern std::shared_ptr<MakeRequest> Request;
+	size_t TwitchGames::_total_size = 0;
 }
+
 
 
 TwitchXX::TwitchGames::~TwitchGames()
 {
 }
 
-// Try to fetch all games from Twitch
-void TwitchXX::TwitchGames::FetchAllGames()
+TwitchXX::TwitchGamesContainer TwitchXX::TwitchGames::GetTopGames(size_t n)
 {
-	if(_size > _games.size())
+	_requested_size = n;
+	auto offset = 0;
+	auto max_games = n == 0 ? _total_size : n;
+	const auto max_retries = 3;
+	auto retries = 0;
+	while (_games.size() < max_games)
 	{
-		auto number_of_tries = 0;
-		while(_size > _games.size())
+		int games_count = _games.size();
+		auto chunk = FetchChunk(_limit,_games.size());
+		_games.insert(chunk.begin(), chunk.end());
+		if (chunk.size() == 0 || _games.size() == games_count)
 		{
-			auto current_count_of_games = _games.size();
-			FetchGames(_limit);
-			if (current_count_of_games == _games.size()) ++number_of_tries;
-			if(number_of_tries > 2) break;
+			++retries;
 		}
+		else
+		{
+			_offset = games_count + chunk.size() * 0.6;
+			_offset = std::min(_games.size(), _offset);
+		}
+		if (retries >= max_retries)
+		{
+			break;
+		}
+		// "Trembling" protection
 
+		std::wcout << "Before=" << games_count << " After=" << _games.size() << " Chunk=" << chunk.size() << " Offset=" << _offset << " Total=" << _total_size << " Retries = " << retries << std::endl;
 	}
+
+	// Games are sorted by names. We need to return mast watched of the == sorted by the number of viewers.
+	// So here comes some trick
+	std::vector<TwitchGamesContainer::value_type> v(_games.begin(),_games.end());
+	std::sort(v.begin(), v.end(), [](const TwitchGamesContainer::value_type& a, const TwitchGamesContainer::value_type& b) { return a.Viewers() > b.Viewers(); });
+	return TwitchGamesContainer{ v.begin(), std::next(v.begin(), std::min(v.size(),max_games)) };
 }
 
-// Fetches a new chunk of games from web
-// Each request is limited by _limit number of games
-void TwitchXX::TwitchGames::FetchGamesTop(size_t count)
+TwitchXX::TwitchGamesContainer TwitchXX::TwitchGames::FetchChunk(size_t limit, size_t offset)
 {
-	while(_games.size() < count)
-	{
-		FetchGames(_limit);
-	}
-}
-
-// Fetches 'limit' games from web.
-// Check if limit plus current number of games fetched is more 
-// Then total number of games on Twitch
-void TwitchXX::TwitchGames::FetchGames(size_t limit)
-{
-	auto request_limit = limit + _games.size() > _size ? _size - _games.size() : limit;
-	FetchChunk(request_limit, _games.size());
-}
-
-void TwitchXX::TwitchGames::UpdateGame(TwitchGamesContainer::mapped_type & twitch_game, web::json::value game_descriptor)
-{
-	twitch_game = CreateGame(game_descriptor);
-}
-
-void TwitchXX::TwitchGames::FetchChunk(size_t limit, size_t offset)
-{
-	web::uri_builder builder(U("/games/top"));
-	builder.append_query(U("limit"), limit);
-	builder.append_query(U("offset"), offset);
-	auto value = (*Request)(builder.to_uri());
+	auto value = (*Request)(GetBuilder(limit, offset).to_uri());
 	if(value.is_null())
 	{
 		throw std::runtime_error("No games were returned");
 	}
-	if(_size == 0)
-	{
-		auto total = value.at(L"_total");
-		_size = total.as_integer();
-	}
+
+	UpdateTotalGamesNumber(value);
+
 	auto top = value.at(L"top");
+	TwitchGamesContainer chunk;
 	if (top.is_array())
 	{
 		for each (auto& game_descriptor in top.as_array())
 		{
-			auto name = game_descriptor.at(L"game").at(L"name").as_string();
-			if (_games.find(name) != _games.end())
+			auto game = CreateGame(game_descriptor);
+			auto existing_game = std::find_if(_games.begin(), _games.end(), [&](const TwitchGame& item) { return game.Name() == item.Name(); });
+			if (existing_game != _games.end() && *existing_game != game)
 			{
-				UpdateGame(_games[name],game_descriptor);
+				std::wcout << "Cache hit for game: " << existing_game->Name() << " , updating..." << std::endl;
+				_games.erase(existing_game);
 			}
-			else
-			{
-				_games.insert(std::make_pair(name, CreateGame(game_descriptor)));
-			}
+			chunk.insert(game);
 			std::wstringstream stream(L"");
-			stream << "Added game: " << name << " Current viewers: " << _games[name].Viewers() << std::endl;
+			stream << "Added game: " << game.Name() << " Current viewers: " << game.Viewers() << std::endl;
 			Log->Log(stream.str());
 		}
 	}
-	std::wcout << "Games fetched: " << _games.size();
+
+	std::wcout << "Games fetched: " << chunk.size() << std::endl;
+	return chunk;
 }
 
 void TwitchXX::TwitchGames::FillCollection(TwitchGame::ImageCollection& col, const web::json::value& json)
@@ -101,6 +96,14 @@ void TwitchXX::TwitchGames::FillCollection(TwitchGame::ImageCollection& col, con
 			entry.second = json.at(entry.first).as_string();
 		}
 	}
+}
+
+web::uri_builder TwitchXX::TwitchGames::GetBuilder(size_t limit, size_t offset)
+{
+	web::uri_builder builder(U("/games/top"));
+	builder.append_query(U("limit"), limit);
+	builder.append_query(U("offset"), offset);
+	return builder;
 }
 
 TwitchXX::TwitchGame TwitchXX::TwitchGames::CreateGame(const web::json::value& json)
@@ -124,10 +127,9 @@ TwitchXX::TwitchGame TwitchXX::TwitchGames::CreateGame(const web::json::value& j
 }
 
 TwitchXX::TwitchGames::TwitchGames(int limit) :
-	_size(0),
 	_offset(0),
 	_limit(limit)
 {
-	//Making a first request on creation
-	FetchChunk(_limit, _offset);
+	//Just to get the totoal number
+	FetchChunk(0, 1);
 }

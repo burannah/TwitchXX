@@ -44,6 +44,6 @@ TwitchXX::Api::~Api()
 
 TwitchXX::TwitchGamesContainer TwitchXX::Api::TopGames(size_t top_count)
 {
-	TwitchGames games;
-	return games.Games();
+	TwitchGames games(100);
+	return games.GetTopGames(top_count);
 }

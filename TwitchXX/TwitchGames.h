@@ -3,10 +3,13 @@
 #include <memory>
 #include "MakeRequest.h"
 #include "TwitchGame.h"
+#include "Logger.h"
 
 //Twitch games collection
 namespace TwitchXX
 {
+	extern std::shared_ptr<Logger> Log;
+
 	class TwitchGames
 	{
 	public:
@@ -17,32 +20,34 @@ namespace TwitchXX
 		explicit TwitchGames(int limit);
 		virtual ~TwitchGames();
 
-		const TwitchGamesContainer& Games() const { return _games; };
-		const TwitchGamesContainer& GamesAll()
-		{
-			FetchAllGames();
-			return _games;
-		}
-		const TwitchGamesContainer& Games(size_t top_count = 500)
-		{
-			FetchGamesTop(top_count);
-			return _games;
-		}
-
-		void FetchAllGames();
-		void FetchGamesTop(size_t count);
-		void FetchGames(size_t limit);
+		TwitchGamesContainer GetTopGames(size_t n = 0);
 
 	private:
+		static size_t _total_size;
 		TwitchGamesContainer _games;
-		size_t _size;
+		size_t _requested_size;
 		size_t _offset;
 		size_t _limit;
 
-		static void UpdateGame(TwitchGamesContainer::mapped_type & twitch_game, web::json::value game_descriptor);
-		void FetchChunk(size_t limit, size_t offset);
-		static void FillCollection(TwitchGame::ImageCollection& col, const web::json::value& json);
 		static TwitchGame CreateGame(const web::json::value& value);
+		TwitchGamesContainer FetchChunk(size_t limit, size_t offset);
+		static void FillCollection(TwitchGame::ImageCollection& col, const web::json::value& json);
+		static web::uri_builder GetBuilder(size_t limit, size_t offset);
+		static void UpdateTotalGamesNumber(const web::json::value& response)
+		{
+			auto total = response.at(U("_total"));
+			if (total.is_null() || !total.is_number()) return;
+#ifdef _DEBUG
+			auto new_total = total.as_integer();
+			if (new_total != _total_size)
+			{
+				std::wstringstream s;
+				s << "Total amount of games changed from " << _total_size << " to " << new_total << std::endl;
+				Log->Log(s.str(), Logger::LogLevel::Debug);
+			}
+#endif //_DEBUG
+			_total_size = new_total;
+		};
 	};
 
 

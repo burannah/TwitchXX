@@ -19,7 +19,8 @@ namespace TwitchXX
 		{
 			Message,
 			Warning,
-			Error
+			Error,
+			Debug
 		};
 		virtual void Log(std::wstring msg, LogLevel = LogLevel::Message) = 0;
 	};
