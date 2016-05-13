@@ -24,20 +24,18 @@ TwitchXX::TwitchGame::~TwitchGame() noexcept
 
 TwitchXX::TwitchGame& TwitchXX::TwitchGame::operator=(const TwitchGame& other)
 {
-	if (this == &other)
-	{
-		this->copy(other);
-	}
+	auto temp(other);
+	*this = std::move(temp);
 	return *this;
 }
 
-TwitchXX::TwitchGame& TwitchXX::TwitchGame::operator=(TwitchGame&& other)
+TwitchXX::TwitchGame& TwitchXX::TwitchGame::operator=(TwitchGame&& other) noexcept
 {
 	this->swap(other);
 	return *this;
 }
 
-void TwitchXX::TwitchGame::swap(TwitchGame& other) noexcept
+void TwitchXX::TwitchGame::swap(TwitchGame& other)
 {
 	std::swap(_name, other._name);
 	std::swap(_channels, other._channels);

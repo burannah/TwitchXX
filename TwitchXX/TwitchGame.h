@@ -16,7 +16,7 @@ namespace TwitchXX
 		virtual ~TwitchGame() noexcept;
 
 		TwitchGame& operator=(const TwitchGame& other);
-		TwitchGame& operator=(TwitchGame&& other);
+		TwitchGame& operator=(TwitchGame&& other) noexcept;
 
 		bool operator<(const TwitchGame& other) const
 		{
@@ -61,7 +61,7 @@ namespace TwitchXX
 		ImageCollection& Box() { return _box; }
 		ImageCollection& Logo() { return _logo; }
 
-		void swap(TwitchGame& other) noexcept;
+		void swap(TwitchGame& other);
 		void copy(const TwitchGame& other);
 
 	};
