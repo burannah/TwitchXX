@@ -12,12 +12,11 @@ namespace TwitchXX
 
 		TwitchGame();
 		TwitchGame(const TwitchGame& other);
-		TwitchGame(TwitchGame&& other);
-		virtual ~TwitchGame();
+		TwitchGame(TwitchGame&& other) noexcept;
+		virtual ~TwitchGame() noexcept;
 
-		TwitchGame& operator=(TwitchGame const& other);
-//		TwitchGame& operator=(TwitchGame&& other);
-//		TwitchGame& operator=(TwitchGame other);
+		TwitchGame& operator=(const TwitchGame& other);
+		TwitchGame& operator=(TwitchGame&& other);
 
 		bool operator<(const TwitchGame& other) const
 		{
@@ -63,7 +62,7 @@ namespace TwitchXX
 		ImageCollection& Logo() { return _logo; }
 
 		void swap(TwitchGame& other) noexcept;
-		void swap(const TwitchGame& other);
+		void copy(const TwitchGame& other);
 
 	};
 

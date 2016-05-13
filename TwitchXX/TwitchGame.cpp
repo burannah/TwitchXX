@@ -10,65 +10,32 @@ TwitchXX::TwitchGame::TwitchGame(): _channels(0), _viewers(0), _id(0), _giantbom
 
 TwitchXX::TwitchGame::TwitchGame(const TwitchGame& other) : TwitchGame()
 {
-	this->swap(other);
+	this->copy(other);
 }
 
-TwitchXX::TwitchGame::TwitchGame(TwitchGame&& other) : TwitchGame()
+TwitchXX::TwitchGame::TwitchGame(TwitchGame&& other) noexcept : TwitchGame()
 {
 	this->swap(other);
-#if 0
-  	_name = std::move(other._name);
-	_box = std::move(other._box);
-	_logo = std::move(other._logo);
-	_channels = other._channels;
-	_viewers = other._viewers;
-	_id = other._id;
-	_giantbomb_id = other._giantbomb_id;
-
-#endif
 }
 
-TwitchXX::TwitchGame::~TwitchGame()
+TwitchXX::TwitchGame::~TwitchGame() noexcept
 {
 }
 
-TwitchXX::TwitchGame& TwitchXX::TwitchGame::operator=(TwitchGame const& other)
+TwitchXX::TwitchGame& TwitchXX::TwitchGame::operator=(const TwitchGame& other)
 {
-	if (this == &other) return *this;
-	_name = other._name;
-	_box = other._box;
-	_logo = other._logo;
-	_channels = other._channels;
-	_viewers = other._viewers;
-	_id = other._id;
-	_giantbomb_id = other._giantbomb_id;
+	if (this == &other)
+	{
+		this->copy(other);
+	}
 	return *this;
 }
-/*
+
 TwitchXX::TwitchGame& TwitchXX::TwitchGame::operator=(TwitchGame&& other)
 {
-	_name = std::move(other._name);
-	_box = std::move(other._box);
-	_logo = std::move(other._logo);
-	_channels = other._channels;
-	_viewers = other._viewers;
-	_id = other._id;
-	_giantbomb_id = other._giantbomb_id;
-
+	this->swap(other);
 	return *this;
 }
-
-TwitchXX::TwitchGame & TwitchXX::TwitchGame::operator=(TwitchGame other)
-{
-	if (this != &other)
-	{
-		this->swap(other);
-	}
-
-	return *this;
-}
-
-*/
 
 void TwitchXX::TwitchGame::swap(TwitchGame& other) noexcept
 {
@@ -81,7 +48,7 @@ void TwitchXX::TwitchGame::swap(TwitchGame& other) noexcept
 	std::swap(_logo, other._logo);
 }
 
-void TwitchXX::TwitchGame::swap(const TwitchGame& other)
+void TwitchXX::TwitchGame::copy(const TwitchGame& other)
 {
 	_name = other._name;
 	_box = other._box;
