@@ -26,7 +26,7 @@ TwitchXX::TwitchGamesContainer TwitchXX::TwitchGames::GetTopGames(size_t n)
 	while (_games.size() < max_games)
 	{
 		int games_count = _games.size();
-		auto chunk = FetchChunk(_limit,_games.size());
+		auto chunk = FetchChunk(_limit,_offset);
 		_games.insert(chunk.begin(), chunk.end());
 		if (chunk.size() == 0 || _games.size() == games_count)
 		{
@@ -34,15 +34,19 @@ TwitchXX::TwitchGamesContainer TwitchXX::TwitchGames::GetTopGames(size_t n)
 		}
 		else
 		{
-			_offset = games_count + chunk.size() * 0.6;
-			_offset = std::min(_games.size(), _offset);
+			retries = 0;
+		}
+		// "Trembling" protection
+		_offset = games_count + static_cast<size_t>(chunk.size() * 0.6);
+		_offset = std::min(_games.size(), _offset);
+		if(_offset + _limit > _total_size)
+		{
+			_offset = _total_size - _limit;
 		}
 		if (retries >= max_retries)
 		{
 			break;
 		}
-		// "Trembling" protection
-
 		std::wcout << "Before=" << games_count << " After=" << _games.size() << " Chunk=" << chunk.size() << " Offset=" << _offset << " Total=" << _total_size << " Retries = " << retries << std::endl;
 	}
 

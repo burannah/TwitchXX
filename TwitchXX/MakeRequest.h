@@ -13,6 +13,7 @@ namespace TwitchXX
 		std::wstring _api_version;
 		web::http::client::http_client_config _config;
 	public:
+		void SetupProxy();
 		explicit MakeRequest(std::wstring apiString = L"", std::wstring clientId = L"");;
 		virtual ~MakeRequest();
 		web::json::value operator()(const web::uri& request) const;
