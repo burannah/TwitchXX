@@ -8,7 +8,7 @@
 
 int main()
 {
-	TwitchXX::Api api;
+	TwitchXX::Api api(L"8a1txctbv1nykj76c98vn7t4d66pmhe");
 
 	auto games = api.TopGames();
 	getch();

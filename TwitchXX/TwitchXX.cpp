@@ -10,11 +10,10 @@ namespace TwitchXX
 	std::string DatabaseName = "TwitchSpy";
 	std::shared_ptr<Logger> Log;
 	std::shared_ptr<MakeRequest> Request;
-
 	extern void trim(std::wstring& s);
 }
 
-TwitchXX::Api::Api():
+TwitchXX::Api::Api(const std::wstring& client_id, Version version) :
 	_db(std::make_shared<MongoDB>())
 {
 	//reading options
@@ -31,7 +30,7 @@ TwitchXX::Api::Api():
 
 		Options->insert(std::make_pair(name, value));
 	}
-	Request = std::make_shared<MakeRequest>(L"application/vnd.twitchtv.v2+json", L"8a1txctbv1nykj76c98vn7t4d66pmhe");
+	Request = std::make_shared<MakeRequest>(_version[version], client_id);
 	Log = std::make_shared<MongoLogger>(std::static_pointer_cast<MongoDB>(_db)->GetDb(DatabaseName));
 	Log->Log(U("Api created"));
 }
