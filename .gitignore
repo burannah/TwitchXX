@@ -249,3 +249,4 @@ ModelManifest.xml
 .fake/
 *.diff
 /ThirdParty/cpprestsdk/
+TwitchSpy/twitchxx.cfg
