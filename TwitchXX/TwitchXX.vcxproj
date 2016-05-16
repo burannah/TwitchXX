@@ -178,6 +178,8 @@
     <ClInclude Include="MongoLogger.h" />
     <ClInclude Include="TwitchGame.h" />
     <ClInclude Include="TwitchGames.h" />
+    <ClInclude Include="TwitchStream.h" />
+    <ClInclude Include="TwitchStreams.h" />
     <ClInclude Include="TwitchXX.h" />
   </ItemGroup>
   <ItemGroup>
@@ -186,6 +188,8 @@
     <ClCompile Include="MongoLogger.cpp" />
     <ClCompile Include="TwitchGame.cpp" />
     <ClCompile Include="TwitchGames.cpp" />
+    <ClCompile Include="TwitchStream.cpp" />
+    <ClCompile Include="TwitchStreams.cpp" />
     <ClCompile Include="TwitchXX.cpp" />
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>

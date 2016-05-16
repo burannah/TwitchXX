@@ -42,6 +42,12 @@
     <ClInclude Include="TwitchGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TwitchStreams.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TwitchStream.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TwitchXX.cpp">
@@ -63,6 +69,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Utility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TwitchStreams.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TwitchStream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
