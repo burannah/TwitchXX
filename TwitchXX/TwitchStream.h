@@ -7,6 +7,12 @@ namespace TwitchXX
 	class TwitchStream
 	{
 	public:
+		enum class Type
+		{
+			all,
+			playlist,
+			live
+		};
 		TwitchStream();
 		virtual ~TwitchStream();
 	};
