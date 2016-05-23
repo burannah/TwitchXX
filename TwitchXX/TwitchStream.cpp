@@ -2,11 +2,11 @@
 
 
 
-TwitchStream::TwitchStream()
+TwitchXX::TwitchStream::TwitchStream()
 {
 }
 
 
-TwitchStream::~TwitchStream()
+TwitchXX::TwitchStream::~TwitchStream()
 {
 }

@@ -6,12 +6,17 @@
 
 namespace TwitchXX
 {
-	auto Options = std::make_shared<std::map<std::wstring, std::wstring>>();
+	std::shared_ptr<std::map<std::wstring,std::wstring>> Options = std::make_shared<std::map<std::wstring, std::wstring>>();
 	std::string DatabaseName = "TwitchSpy";
 	std::shared_ptr<Logger> Log;
-	std::shared_ptr<MakeRequest> Request;
 	extern void trim(std::wstring& s);
 }
+
+std::map<TwitchXX::Api::Version,std::wstring> TwitchXX::Api::_version =
+{
+	{ TwitchXX::Api::Version::v2, L"application/vnd.twitchtv.v2+json" },
+	{ TwitchXX::Api::Version::v3, L"application/vnd.twitchtv.v3+json" }
+};
 
 TwitchXX::Api::Api(const std::wstring& client_id, Version version) :
 	_db(std::make_shared<MongoDB>())
@@ -30,7 +35,9 @@ TwitchXX::Api::Api(const std::wstring& client_id, Version version) :
 
 		Options->insert(std::make_pair(name, value));
 	}
-	Request = std::make_shared<MakeRequest>(_version[version], client_id);
+	Options->insert(std::make_pair(U("api_key"), client_id));
+	Options->insert(std::make_pair(U("version"), _version[version]));
+
 	Log = std::make_shared<MongoLogger>(std::static_pointer_cast<MongoDB>(_db)->GetDb(DatabaseName));
 	Log->Log(U("Api created"));
 }

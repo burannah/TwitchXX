@@ -1,13 +1,13 @@
 #pragma once
 #include <set>
 #include <map>
+#include "TwitchDef.h"
 
 namespace TwitchXX
 {
 	class TwitchGame
 	{
 	public:
-		friend class TwitchGames;
 		using ImageCollection = std::map<std::wstring, std::wstring>;
 
 		TwitchGame();
@@ -42,15 +42,6 @@ namespace TwitchXX
 		const ImageCollection& Box() const { return _box; }
 		const ImageCollection& Logo() const { return _logo; }
 
-	private:
-		std::wstring _name;
-		unsigned int _channels;
-		unsigned int _viewers;
-		unsigned int _id;
-		unsigned int _giantbomb_id;
-		ImageCollection _box;
-		ImageCollection _logo;
-
 		void Name(const std::wstring& name) { _name = name; }
 		void Channels(int count) { _channels = count; }
 		void Viewers(int count) { _viewers = count; }
@@ -61,11 +52,20 @@ namespace TwitchXX
 		ImageCollection& Box() { return _box; }
 		ImageCollection& Logo() { return _logo; }
 
+	private:
+		std::wstring _name;
+		unsigned int _channels;
+		unsigned int _viewers;
+		unsigned int _id;
+		unsigned int _giantbomb_id;
+		ImageCollection _box;
+		ImageCollection _logo;
+
+
+
 		void swap(TwitchGame& other);
 		void copy(const TwitchGame& other);
 
 	};
-
-	using TwitchGamesContainer = std::set<TwitchGame>;
 }
 

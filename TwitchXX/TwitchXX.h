@@ -19,11 +19,7 @@ namespace TwitchXX
 
 		TwitchGamesContainer TopGames(size_t top_count = 0);
 	private:
-		std::map<Version, std::wstring> _version =
-		{
-			{ TwitchXX::Api::Version::v2, L"application/vnd.twitchtv.v2+json" },
-			{ TwitchXX::Api::Version::v3, L"application/vnd.twitchtv.v3+json" }
-		};
+		static std::map<Version, std::wstring> _version;
 		std::shared_ptr<DBAdapter> _db;
 	};
 }

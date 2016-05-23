@@ -48,6 +48,12 @@
     <ClInclude Include="TwitchStream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TwitchRequest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TwitchDef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TwitchXX.cpp">
@@ -60,9 +66,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TwitchGames.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MakeRequest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TwitchGame.cpp">
