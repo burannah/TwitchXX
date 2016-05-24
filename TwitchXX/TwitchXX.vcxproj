@@ -176,6 +176,7 @@
     <ClInclude Include="MakeRequest.h" />
     <ClInclude Include="MongoDB.h" />
     <ClInclude Include="MongoLogger.h" />
+    <ClInclude Include="TwitchChannel.h" />
     <ClInclude Include="TwitchDef.h" />
     <ClInclude Include="TwitchGame.h" />
     <ClInclude Include="TwitchGames.h" />
@@ -183,15 +184,18 @@
     <ClInclude Include="TwitchStream.h" />
     <ClInclude Include="TwitchStreams.h" />
     <ClInclude Include="TwitchXX.h" />
+    <ClInclude Include="TwitchChannels.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MongoDB.cpp" />
     <ClCompile Include="MongoLogger.cpp" />
+    <ClCompile Include="TwitchChannel.cpp" />
     <ClCompile Include="TwitchGame.cpp" />
     <ClCompile Include="TwitchGames.cpp" />
     <ClCompile Include="TwitchStream.cpp" />
     <ClCompile Include="TwitchStreams.cpp" />
     <ClCompile Include="TwitchXX.cpp" />
+    <ClCompile Include="TwitchChannels.cpp" />
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>

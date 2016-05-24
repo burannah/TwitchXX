@@ -3,9 +3,12 @@
 #include <memory>
 #include "DBAdapter.h"
 #include "TwitchGame.h"
+#include "TwitchStream.h"
 
 namespace TwitchXX
 {
+	class TwitchStream;
+
 	class Api
 	{
 	public:
@@ -18,6 +21,8 @@ namespace TwitchXX
 		virtual ~Api();
 
 		TwitchGamesContainer TopGames(size_t top_count = 0);
+		TwitchStream GetStream(const std::wstring& name);
+		TwitchStreamsContainer TopStreams(size_t top_count = 0, const options& op = options());
 	private:
 		static std::map<Version, std::wstring> _version;
 		std::shared_ptr<DBAdapter> _db;

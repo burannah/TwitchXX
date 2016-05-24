@@ -3,9 +3,11 @@
 #include "MongoLogger.h"
 #include "MongoDB.h"
 #include "TwitchGames.h"
+#include "TwitchStreams.h"
 
 namespace TwitchXX
 {
+	class TwitchStreams;
 	std::shared_ptr<std::map<std::wstring,std::wstring>> Options = std::make_shared<std::map<std::wstring, std::wstring>>();
 	std::string DatabaseName = "TwitchSpy";
 	std::shared_ptr<Logger> Log;
@@ -52,4 +54,16 @@ TwitchXX::TwitchGamesContainer TwitchXX::Api::TopGames(size_t top_count)
 {
 	TwitchGames games(100);
 	return games.GetTopGames(top_count);
+}
+
+TwitchXX::TwitchStream TwitchXX::Api::GetStream(const std::wstring& name)
+{
+	TwitchStreams streams;
+	return  streams.GetStream(name);
+}
+
+TwitchXX::TwitchStreamsContainer TwitchXX::Api::TopStreams(size_t top_count, const options& op)
+{
+	TwitchStreams streams;
+	return streams.GetStreams(top_count, op);
 }

@@ -75,6 +75,7 @@ namespace TwitchXX
 			}
 		}
 		virtual ~MakeRequest() {};
+
 		web::json::value operator()(const web::uri& uri) const
 		{
 			web::http::client::http_client http_client(U("https://api.twitch.tv/kraken"), _config);

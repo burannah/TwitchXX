@@ -3,8 +3,7 @@
 
 
 TwitchXX::TwitchGame::TwitchGame(): _channels(0), _viewers(0), _id(0), _giantbomb_id(0),
-	_box({ { L"small", L"" },{ L"medium", L"" },{ L"large", L"" },{ L"template",L"" } }),
-	_logo({ { L"small", L"" },{ L"medium", L"" },{ L"large", L"" },{ L"template",L"" } })
+	_box(),	_logo()
 {
 }
 

@@ -8,8 +8,6 @@ namespace TwitchXX
 	class TwitchGame
 	{
 	public:
-		using ImageCollection = std::map<std::wstring, std::wstring>;
-
 		TwitchGame();
 		TwitchGame(const TwitchGame& other);
 		TwitchGame(TwitchGame&& other) noexcept;
@@ -37,7 +35,7 @@ namespace TwitchXX
 		std::wstring Name() const { return _name; }
 		unsigned int Channels() const { return _channels; }
 		unsigned int Viewers() const { return _viewers; }
-		unsigned intId() const { return _id; }
+		unsigned int Id() const { return _id; }
 		unsigned int Giantbomb_Id() const { return _giantbomb_id; }
 		const ImageCollection& Box() const { return _box; }
 		const ImageCollection& Logo() const { return _logo; }
@@ -48,7 +46,9 @@ namespace TwitchXX
 		void Id(int id) { _id = id; }
 		void Giantbomb_Id(int id) { _giantbomb_id = id; }
 		void Box(const ImageCollection& col) { _box = col; }
+		void Box(ImageCollection&& col) { _box = std::move(col); }
 		void Logo(const ImageCollection& col) { _logo = col; }
+		void Logo(ImageCollection&& col) { _logo = std::move(col); }
 		ImageCollection& Box() { return _box; }
 		ImageCollection& Logo() { return _logo; }
 
