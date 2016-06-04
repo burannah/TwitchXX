@@ -21,14 +21,15 @@ namespace TwitchXX
 
 		bool operator<(const TwitchStream& other) const
 		{
-			return _viewers < other._viewers;
+			return _id < other._id;
 		}
 
 		bool operator==(const TwitchStream& other) const
 		{
-			return _offline == other._offline &&_created == other._created && _viewers == other._viewers && _avg_fps == other._avg_fps && 
+			/*return _offline == other._offline &&_created == other._created && _viewers == other._viewers && _avg_fps == other._avg_fps && 
 				_channel == other._channel && _game == other._game && _delay == other._delay && _video_height == other._video_height && 
-				_is_playlist == other._is_playlist && _preview == other._preview;
+				_is_playlist == other._is_playlist && _preview == other._preview;*/
+			return _id == other._id;
 		}
 
 		bool operator!=(const TwitchStream& other) const
@@ -71,6 +72,9 @@ namespace TwitchXX
 		void Preview(const ImageCollection& prvw) { _preview = prvw; }
 		void Preview(ImageCollection&& prvw) { _preview = std::move(prvw); } //TODO: not sure
 		const auto& Preview() const { return _preview; }
+
+		//Custom:
+		const std::wstring& Name() const { return _channel.Name(); }
 	private:
 		bool _offline;
 		std::wstring _game;
@@ -79,7 +83,7 @@ namespace TwitchXX
 		size_t _delay;
 		size_t _video_height;
 		bool _is_playlist;
-		std::chrono::time_point<std::chrono::system_clock> _created;
+		Date _created;
 		size_t _id;
 		TwitchChannel _channel;
 		ImageCollection _preview;

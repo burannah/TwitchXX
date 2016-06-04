@@ -18,13 +18,14 @@ namespace TwitchXX
 
 		bool operator<(const TwitchGame& other) const
 		{
-			return _name < other._name;
+			return _id < other._id;
 		}
 
 		bool operator==(const TwitchGame& other) const
 		{
-			return _name == other._name && _channels == other._channels && _viewers == other._viewers && _id == other._id
-					&& _giantbomb_id == other._giantbomb_id && _box == other._box && _logo == other._logo;
+			/*return _name == other._name && _channels == other._channels && _viewers == other._viewers && _id == other._id
+					&& _giantbomb_id == other._giantbomb_id && _box == other._box && _logo == other._logo;*/
+			return _id == other._id;
 		}
 
 		bool operator!=(const TwitchGame& other) const

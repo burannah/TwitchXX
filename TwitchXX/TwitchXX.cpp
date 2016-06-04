@@ -50,7 +50,7 @@ TwitchXX::Api::~Api()
 	Log->Log(U("Api destroyed"));
 }
 
-TwitchXX::TwitchGamesContainer TwitchXX::Api::TopGames(size_t top_count)
+TwitchXX::TwitchGamesVector TwitchXX::Api::TopGames(size_t top_count)
 {
 	TwitchGames games(100);
 	return games.GetTopGames(top_count);
@@ -62,8 +62,18 @@ TwitchXX::TwitchStream TwitchXX::Api::GetStream(const std::wstring& name)
 	return  streams.GetStream(name);
 }
 
-TwitchXX::TwitchStreamsContainer TwitchXX::Api::TopStreams(size_t top_count, const options& op)
+TwitchXX::TwitchStreamsVector TwitchXX::Api::TopStreams(size_t top_count, const options& op)
 {
 	TwitchStreams streams;
-	return streams.GetStreams(top_count, op);
+	try
+	{
+		return streams.GetStreams(top_count, op);
+	}
+	catch(std::runtime_error& e)
+	{
+		std::wcout << e.what() << "\n";
+	}
+
+	return TwitchStreamsVector();
+
 }

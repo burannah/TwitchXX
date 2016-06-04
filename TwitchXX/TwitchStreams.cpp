@@ -1,6 +1,7 @@
 #include "TwitchStreams.h"
 #include "TwitchChannels.h"
 #include <cpprest/uri_builder.h>
+#include "JsonWrapper.h"
 
 namespace TwitchXX
 {
@@ -9,6 +10,7 @@ namespace TwitchXX
 
 TwitchXX::TwitchStreams::TwitchStreams()
 {
+	_root_node = U("streams");
 }
 
 
@@ -33,10 +35,11 @@ size_t TwitchXX::TwitchStreams::GetTotalNumber()
 	FetchChunk(GetBuilder(U("/streams"),op).to_uri()); return _total_size;
 };
 
-TwitchXX::TwitchStreamsContainer TwitchXX::TwitchStreams::GetStreams(size_t n, const options & op)
+TwitchXX::TwitchStreamsVector TwitchXX::TwitchStreams::GetStreams(size_t n, const options & op)
 {
-	_requested_size = n;
 	auto offset = 0;
+	//Updating limit
+	_limit = n < max_limit ? n : max_limit;
 	auto max_objects = n == 0 ? _total_size : n;
 	const auto max_retries = 3;
 	auto retries = 0;
@@ -58,7 +61,7 @@ TwitchXX::TwitchStreamsContainer TwitchXX::TwitchStreams::GetStreams(size_t n, c
 		_offset = std::min(_objects.size(), _offset);
 		if (_offset + _limit > _total_size)
 		{
-			_offset = _total_size - _limit;
+			_offset = _total_size < _limit ? 0 : _total_size - _limit;
 		}
 		if (retries >= max_retries)
 		{
@@ -71,7 +74,7 @@ TwitchXX::TwitchStreamsContainer TwitchXX::TwitchStreams::GetStreams(size_t n, c
 	// So here comes some trick
 	std::vector<TwitchStream> v(_objects.begin(), _objects.end());
 	std::sort(v.begin(), v.end(), [](const TwitchStream& a, const TwitchStream& b) { return a.Viewers() > b.Viewers(); });
-	return TwitchStreamsContainer{ v.begin(), std::next(v.begin(), std::min(v.size(), max_objects)) };
+	return v;
 
 }
 
@@ -109,14 +112,16 @@ TwitchXX::TwitchStream TwitchXX::Create(const web::json::value& obj)
 		return stream;
 	}
 
-	stream.Game(obj.at(U("game")).as_string());
-	stream.Viewers(obj.at(U("viewers")).as_integer());
-	stream.AvgFps(obj.at(U("average_fps")).as_double());
-	stream.Delay(obj.at(U("delay")).as_integer());
-	stream.VideoHeight(obj.at(U("video_height")).as_integer());
-	stream.IsPlaylist(obj.at(U("is_playlist")).as_bool());
-	stream.Created(obj.at(U("created_at")).as_string());
-	stream.Id(obj.at(U("_id")).as_number().to_uint32());
+	JsonWrapper wrapper (obj);
+
+	stream.Game(wrapper[U("game")]->as_string());
+	stream.Viewers(wrapper[U("viewers")]->as_integer());
+	stream.AvgFps(wrapper[U("average_fps")]->as_double());
+	stream.Delay(wrapper[U("delay")]->as_integer());
+	stream.VideoHeight(wrapper[U("video_height")]->as_integer());
+	stream.IsPlaylist(wrapper[U("is_playlist")]->as_bool());
+	stream.Created(wrapper[U("created_at")]->as_string());
+	stream.Id(wrapper[U("_id")]->as_number().to_uint32());
 	stream.Channel(Create<TwitchChannel>(obj.at(U("channel"))));
 	stream.Preview(CreateCollection(obj.at(U("preview"))));
 

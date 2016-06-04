@@ -1,8 +1,5 @@
 #include "TwitchStream.h"
 #include <string>
-#include <sstream>
-#include <iomanip>
-#include <cpprest/details/basic_types.h>
 
 
 TwitchXX::TwitchStream::TwitchStream()
@@ -15,24 +12,12 @@ TwitchXX::TwitchStream::~TwitchStream()
 {
 }
 
-void TwitchXX::TwitchStream::Created(const std::wstring& cs)
+void TwitchXX::TwitchStream::Created(const std::wstring& ccs)
 {
-	std::tm t = {};
-	std::wistringstream ss(cs);
-	ss >> std::get_time(&t, U("%Y-%m-%dT%H:%M:%SZ")); //TODO: Add time zone handling here
-	if(ss.fail())
-	{
-		throw std::runtime_error("Can't parse channel creation time!");
-	}
-	_created = std::chrono::system_clock::from_time_t(std::mktime(&t));
+	_created = DateFromString(ccs);
 }
 
 std::wstring TwitchXX::TwitchStream::CreatedAsString() const
 {
-	auto t = std::chrono::system_clock::to_time_t(_created);
-	std::wstringstream ss;
-	tm tt;
-	localtime_s(&tt, &t);
-	ss << std::put_time(&tt, U("%c %Z"));
-	return ss.str();
+	return DateToString(_created);
 }

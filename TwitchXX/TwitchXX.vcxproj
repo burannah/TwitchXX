@@ -172,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DBAdapter.h" />
+    <ClInclude Include="JsonWrapper.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="MakeRequest.h" />
     <ClInclude Include="MongoDB.h" />
