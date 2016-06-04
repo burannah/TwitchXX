@@ -10,9 +10,10 @@ int main()
 {
 	TwitchXX::Api api(L"8a1txctbv1nykj76c98vn7t4d66pmhe");
 
-	//auto games = api.TopGames();
-	//auto stream = api.GetStream(L"starladder1");
-	auto streams = api.TopStreams(100);
+	auto games = api.TopGames(100);
+	auto stream = api.GetStream(L"cheatbanned");
+	TwitchXX::options opt { {L"stream_type", L"playlist"}};
+	auto streams = api.TopStreams(100, opt);
 	getch();
     return 0;
 }

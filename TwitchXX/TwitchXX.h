@@ -20,9 +20,13 @@ namespace TwitchXX
 		explicit Api(const std::wstring& clinet_id,Version version = Version::v3);
 		virtual ~Api();
 
-		TwitchGamesContainer TopGames(size_t top_count = 0);
+		//Games
+		TwitchGamesVector TopGames(size_t top_count = 0);
+
+		//Streams
 		TwitchStream GetStream(const std::wstring& name);
-		TwitchStreamsContainer TopStreams(size_t top_count = 0, const options& op = options());
+		TwitchStreamsVector TopStreams(size_t top_count = 0, const options& op = options());
+
 	private:
 		static std::map<Version, std::wstring> _version;
 		std::shared_ptr<DBAdapter> _db;

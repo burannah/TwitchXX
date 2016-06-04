@@ -85,14 +85,11 @@ namespace TwitchXX
 			if (_client_id.length())request.headers().add(L"Client-ID", _client_id);
 			request.set_request_uri(uri);
 
+			std::wcout << "Request: " << request.to_string() << "\n";
+
 			pplx::task<web::json::value> task = http_client.request(request)
 				.then([](web::http::http_response response) -> pplx::task<web::json::value>
 			{
-				std::wostringstream stream;
-				stream.str(std::wstring());
-				stream << L"Content type: " << response.headers().content_type() << std::endl;
-				stream << L"Content length: " << response.headers().content_length() << L"bytes" << std::endl;
-				std::wcout << stream.str();
 				if (response.status_code() == web::http::status_codes::OK)
 				{
 					return response.extract_json();

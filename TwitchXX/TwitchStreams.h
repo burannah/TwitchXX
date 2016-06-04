@@ -18,7 +18,7 @@ namespace TwitchXX
 
 		TwitchStream GetStream(const std::wstring& chanel) const;
 		size_t GetTotalNumber();
-		TwitchStreamsContainer GetStreams(size_t n, const options& opt);
+		TwitchStreamsVector GetStreams(size_t n, const options& opt);
 
 	private:
 		static web::uri_builder GetBuilder(const std::wstring & url = U("/streams"), const options & op = options());

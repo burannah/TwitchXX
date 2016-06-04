@@ -4,6 +4,7 @@
 
 namespace TwitchXX
 {
+	const int max_limit = 100;
 	class TwithcGame;
 	class TwitchStream;
 
@@ -12,10 +13,11 @@ namespace TwitchXX
 	class TwitchRequest
 	{
 	public:
-		TwitchRequest(int limit = 25) :
+		explicit TwitchRequest(int limit = 25) :
 			_offset(0),
 			_limit(limit),
-			_request(std::make_shared<MakeRequest<T>>((*Options)[U("api_key")],(*Options)[U("version")]))
+			_request(std::make_shared<MakeRequest<T>>((*Options)[U("version")],(*Options)[U("api_key")])),
+			_root_node(U("NOT_IMPLEMETED!"))
 		{
 
 		}
@@ -27,9 +29,9 @@ namespace TwitchXX
 	protected:
 		TwitchContainer<T> _objects;
 		static size_t _total_size;
-		size_t _requested_size;
 		size_t _offset;
 		size_t _limit;
+		std::wstring _root_node;
 
 		std::shared_ptr<MakeRequest<T>> _request;
 
@@ -44,23 +46,16 @@ namespace TwitchXX
 
 			UpdateTotalObjectsNumber(value);
 
-			auto top = value.at(U("streams"));
+			auto top = value.at(_root_node);
 			TwitchContainer<T> chunk;
 			if (top.is_array())
 			{
+
 				for each (auto& object_descriptor in top.as_array())
 				{
-					T obj = Create<T>(object_descriptor);
-					auto exisiting_object = std::find_if(_objects.begin(), _objects.end(), [&](const T& item) { return obj.Id() == item.Id(); });
-					if (exisiting_object != _objects.end() && *exisiting_object != obj)
-					{
-						_objects.erase(exisiting_object);
-					}
-					chunk.insert(obj);
+					chunk.insert(Create<T>(object_descriptor));
 				}
 			}
-
-			std::wcout << "Objects fetched: " << chunk.size() << std::endl;
 			return chunk;
 		}
 

@@ -19,11 +19,11 @@ namespace TwitchXX
 		// Default number of objects in chunk is 10
 		explicit TwitchGames(int limit = 10) : TwitchRequest<TwitchGame>(limit) 
 		{ 
-
+			_root_node = U("top");
 		};
 		virtual ~TwitchGames();
 
-		TwitchGamesContainer GetTopGames(size_t n = 0);
+		TwitchGamesVector GetTopGames(size_t n = 0);
 
 
 		size_t GetTotalNumber()

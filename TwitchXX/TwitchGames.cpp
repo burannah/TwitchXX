@@ -3,6 +3,7 @@
 #include "Logger.h"
 #include "TwitchGames.h"
 #include "TwitchDef.h"
+#include "JsonWrapper.h"
 
 namespace TwitchXX
 {
@@ -34,16 +35,19 @@ template <>
 TwitchXX::TwitchGame TwitchXX::Create<TwitchXX::TwitchGame>(const web::json::value& json)
 {
 	TwitchGame game;
-	game.Channels(json.at(L"channels").as_integer());
-	game.Viewers(json.at(L"viewers").as_integer());
+	JsonWrapper wrapper(json);
+	game.Channels(wrapper[U("channels")]->as_integer());
+	game.Viewers(wrapper[U("viewers")]->as_integer());
 	auto game_descriptor = json.at(L"game");
 	if (game_descriptor.is_null())
 	{
 		throw std::runtime_error("Not a valid game description json");
 	}
-	game.Name(game_descriptor.at(L"name").as_string());
-	game.Id(game_descriptor.at(L"_id").as_integer());
-	game.Giantbomb_Id(game_descriptor.at(L"giantbomb_id").as_integer());
+
+	JsonWrapper game_wrapper(game_descriptor);
+	game.Name(game_wrapper[U("name")]->as_string());
+	game.Id(game_wrapper[U("_id")]->as_integer());
+	game.Giantbomb_Id(game_wrapper[U("giantbomb_id")]->as_integer());
 
 	game.Box(CreateCollection(game_descriptor.at(L"box")));
 	game.Logo(CreateCollection(game_descriptor.at(L"logo")));
@@ -51,10 +55,11 @@ TwitchXX::TwitchGame TwitchXX::Create<TwitchXX::TwitchGame>(const web::json::val
 	return game;
 }
 
-TwitchXX::TwitchGamesContainer TwitchXX::TwitchGames::GetTopGames(size_t n)
+TwitchXX::TwitchGamesVector TwitchXX::TwitchGames::GetTopGames(size_t n)
 {
-	_requested_size = n;
 	auto offset = 0;
+	//Updating limit
+	_limit = n < max_limit ? n : max_limit;
 	auto max_objects = n == 0 ? _total_size : n;
 	const auto max_retries = 3;
 	auto retries = 0;
@@ -76,7 +81,7 @@ TwitchXX::TwitchGamesContainer TwitchXX::TwitchGames::GetTopGames(size_t n)
 		_offset = std::min(_objects.size(), _offset);
 		if (_offset + _limit > _total_size)
 		{
-			_offset = _total_size - _limit;
+			_offset = _total_size < _limit ? 0 : _total_size - _limit;
 		}
 		if (retries >= max_retries)
 		{
@@ -89,7 +94,7 @@ TwitchXX::TwitchGamesContainer TwitchXX::TwitchGames::GetTopGames(size_t n)
 	// So here comes some trick
 	std::vector<TwitchGame> v(_objects.begin(), _objects.end());
 	std::sort(v.begin(), v.end(), [](const TwitchGame& a, const TwitchGame& b) { return a.Viewers() > b.Viewers(); });
-	return TwitchGamesContainer{ v.begin(), std::next(v.begin(), std::min(v.size(), max_objects)) };
+	return v;
 }
 
 web::uri_builder TwitchXX::TwitchGames::GetBuilder(size_t limit, size_t offset)
