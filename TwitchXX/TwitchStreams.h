@@ -20,6 +20,7 @@ namespace TwitchXX
 		size_t GetTotalNumber();
 		TwitchStreamsVector GetStreams(size_t n, const options& opt);
 		TwitchFeaturedStreamsContainer GetFeaturedStreams();
+		std::tuple<size_t, size_t> GetSummary(const std::wstring& game = std::wstring());
 
 	private:
 		static web::uri_builder GetBuilder(const std::wstring & url = U("/streams"), const options & op = options());

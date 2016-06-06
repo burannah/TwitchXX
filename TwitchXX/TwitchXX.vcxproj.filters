@@ -21,16 +21,7 @@
     <ClInclude Include="TwitchXX.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DBAdapter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MongoDB.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Logger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MongoLogger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TwitchGames.h">
@@ -69,12 +60,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TwitchXX.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MongoDB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MongoLogger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TwitchGames.cpp">

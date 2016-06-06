@@ -15,6 +15,8 @@ int main()
 	TwitchXX::options opt { {L"stream_type", L"playlist"}};
 	auto streams = api.TopStreams(100, opt);
 	auto featured = api.GetFeaturedStreams();
+	auto summary_all = api.GetSummary();
+	auto summary_dota = api.GetSummary(L"Dota 2");
 	getch();
     return 0;
 }

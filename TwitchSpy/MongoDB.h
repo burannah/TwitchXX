@@ -4,6 +4,8 @@
 #include <mongocxx\client.hpp>
 #include <mongocxx\instance.hpp>
 #include <memory>
+#include <string>
+#include "../TwitchSpy/DBAdapter.h"
 
 namespace TwitchXX
 {

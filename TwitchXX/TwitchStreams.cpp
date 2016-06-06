@@ -117,6 +117,25 @@ TwitchXX::TwitchFeaturedStreamsContainer TwitchXX::TwitchStreams::GetFeaturedStr
 	return chunk;
 }
 
+std::tuple<size_t, size_t> TwitchXX::TwitchStreams::GetSummary(const std::wstring& game)
+{
+	web::uri_builder builder(U("/streams/summary"));
+	if (game.length() > 0)
+	{
+		builder.append_query(U("game"), game);
+	}
+	auto value = (*_request)(builder.to_uri());
+	if (value.is_null())
+	{
+		throw std::runtime_error("Can not get streams summary!");
+	}
+
+	auto viewers = value.at(U("viewers")).as_number().to_uint32();
+	auto channels = value.at(U("channels")).as_number().to_uint32();
+
+	return std::make_tuple(viewers, channels);
+}
+
 web::uri_builder TwitchXX::TwitchStreams::GetBuilder(const std::wstring& url, const options& op)
 {
 	web::uri_builder builder(url);
