@@ -22,6 +22,6 @@ namespace TwitchXX
 
 		virtual ~MongoLogger();
 
-		void Log(std::wstring msg, LogLevel = LogLevel::Message) override;
+		void Log(std::wstring msg, LogLevel = LogLevel::Message) const override;
 	};
 }

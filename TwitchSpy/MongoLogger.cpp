@@ -39,7 +39,7 @@ TwitchXX::MongoLogger::~MongoLogger()
 {
 }
 
-void TwitchXX::MongoLogger::Log(std::wstring msg, LogLevel level)
+void TwitchXX::MongoLogger::Log(std::wstring msg, LogLevel level) const
 {
 #ifndef _DEBUG
 	//Omit debug loggin in non-debug build
