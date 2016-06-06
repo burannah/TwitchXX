@@ -4,7 +4,7 @@
 
 TwitchXX::TwitchChannels::TwitchChannels()
 {
-	_root_node = U("channels");
+
 }
 
 TwitchXX::TwitchChannels::~TwitchChannels()

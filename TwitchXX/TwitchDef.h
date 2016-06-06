@@ -11,11 +11,13 @@ namespace TwitchXX
 	class TwitchGame;
 	class TwitchStream;
 	class TwitchChannel;
+	class TwitchFeaturedStream;
 	template <typename T>
 		using TwitchContainer = std::set<T>;
 	using TwitchGamesContainer = TwitchContainer<TwitchGame>;
 	using TwitchGamesVector = std::vector<TwitchGame>;
 	using TwitchStreamsContainer = TwitchContainer<TwitchStream>;
+	using TwitchFeaturedStreamsContainer = TwitchContainer<TwitchFeaturedStream>;
 	using TwitchStreamsVector = std::vector<TwitchStream>;
 	using TwitchChannelsContainer = TwitchContainer<TwitchChannel>;
 	using ImageCollection = std::map<std::wstring, std::wstring>;

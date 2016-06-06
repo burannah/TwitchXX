@@ -16,8 +16,7 @@ namespace TwitchXX
 		explicit TwitchRequest(int limit = 25) :
 			_offset(0),
 			_limit(limit),
-			_request(std::make_shared<MakeRequest<T>>((*Options)[U("version")],(*Options)[U("api_key")])),
-			_root_node(U("NOT_IMPLEMETED!"))
+			_request(std::make_shared<MakeRequest>((*Options)[U("version")],(*Options)[U("api_key")]))
 		{
 
 		}
@@ -31,12 +30,11 @@ namespace TwitchXX
 		static size_t _total_size;
 		size_t _offset;
 		size_t _limit;
-		std::wstring _root_node;
 
-		std::shared_ptr<MakeRequest<T>> _request;
+		std::shared_ptr<MakeRequest> _request;
 
 
-		TwitchContainer<T> FetchChunk(const web::uri& uri)
+		TwitchContainer<T> FetchChunk(const web::uri& uri, const std::wstring& root_node, bool update_total = true)
 		{
 			auto value = (*_request)(uri);
 			if (value.is_null())
@@ -44,9 +42,13 @@ namespace TwitchXX
 				throw std::runtime_error("No objects were returned");
 			}
 
-			UpdateTotalObjectsNumber(value);
+			if(update_total)
+			{
+				UpdateTotalObjectsNumber(value);
+			}
+			
 
-			auto top = value.at(_root_node);
+			auto top = value.at(root_node);
 			TwitchContainer<T> chunk;
 			if (top.is_array())
 			{

@@ -4,6 +4,7 @@
 #include "DBAdapter.h"
 #include "TwitchGame.h"
 #include "TwitchStream.h"
+#include "TwitchFeaturedStream.h"
 
 namespace TwitchXX
 {
@@ -26,6 +27,7 @@ namespace TwitchXX
 		//Streams
 		TwitchStream GetStream(const std::wstring& name);
 		TwitchStreamsVector TopStreams(size_t top_count = 0, const options& op = options());
+		TwitchFeaturedStreamsContainer GetFeaturedStreams();
 
 	private:
 		static std::map<Version, std::wstring> _version;
