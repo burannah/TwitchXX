@@ -5,7 +5,7 @@
 #include "TwitchStream.h"
 #include "TwitchRequest.h"
 #include "TwitchDef.h"
-
+#include "TwitchFeaturedStream.h"
 
 
 namespace TwitchXX
@@ -19,6 +19,7 @@ namespace TwitchXX
 		TwitchStream GetStream(const std::wstring& chanel) const;
 		size_t GetTotalNumber();
 		TwitchStreamsVector GetStreams(size_t n, const options& opt);
+		TwitchFeaturedStreamsContainer GetFeaturedStreams();
 
 	private:
 		static web::uri_builder GetBuilder(const std::wstring & url = U("/streams"), const options & op = options());
@@ -27,5 +28,7 @@ namespace TwitchXX
 
 	template<> TwitchStream Create(const web::json::value& obj);
 	ImageCollection CreateCollection(const web::json::value& json);
+
+	template<> TwitchFeaturedStream Create(const web::json::value& obj);
 }
 

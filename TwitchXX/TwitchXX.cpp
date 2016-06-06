@@ -12,6 +12,8 @@ namespace TwitchXX
 	std::string DatabaseName = "TwitchSpy";
 	std::shared_ptr<Logger> Log;
 	extern void trim(std::wstring& s);
+
+	TwitchStreams streams;
 }
 
 std::map<TwitchXX::Api::Version,std::wstring> TwitchXX::Api::_version =
@@ -58,13 +60,11 @@ TwitchXX::TwitchGamesVector TwitchXX::Api::TopGames(size_t top_count)
 
 TwitchXX::TwitchStream TwitchXX::Api::GetStream(const std::wstring& name)
 {
-	TwitchStreams streams;
 	return  streams.GetStream(name);
 }
 
 TwitchXX::TwitchStreamsVector TwitchXX::Api::TopStreams(size_t top_count, const options& op)
 {
-	TwitchStreams streams;
 	try
 	{
 		return streams.GetStreams(top_count, op);
@@ -76,4 +76,9 @@ TwitchXX::TwitchStreamsVector TwitchXX::Api::TopStreams(size_t top_count, const 
 
 	return TwitchStreamsVector();
 
+}
+
+TwitchXX::TwitchFeaturedStreamsContainer TwitchXX::Api::GetFeaturedStreams()
+{
+	return streams.GetFeaturedStreams();
 }

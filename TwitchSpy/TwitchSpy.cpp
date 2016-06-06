@@ -14,6 +14,7 @@ int main()
 	auto stream = api.GetStream(L"cheatbanned");
 	TwitchXX::options opt { {L"stream_type", L"playlist"}};
 	auto streams = api.TopStreams(100, opt);
+	auto featured = api.GetFeaturedStreams();
 	getch();
     return 0;
 }

@@ -63,6 +63,9 @@
     <ClInclude Include="JsonWrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TwitchFeaturedStream.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TwitchXX.cpp">
@@ -93,6 +96,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TwitchChannels.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TwitchFeaturedStream.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MakeRequest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

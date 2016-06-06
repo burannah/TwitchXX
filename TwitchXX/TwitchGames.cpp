@@ -66,7 +66,7 @@ TwitchXX::TwitchGamesVector TwitchXX::TwitchGames::GetTopGames(size_t n)
 	while (_objects.size() < max_objects)
 	{
 		int count = _objects.size();
-		auto chunk = FetchChunk(GetBuilder(_limit,_offset).to_uri());
+		auto chunk = FetchChunk(GetBuilder(_limit,_offset).to_uri(),U("top"));
 		_objects.insert(chunk.begin(), chunk.end());
 		if (chunk.size() == 0 || _objects.size() == count)
 		{

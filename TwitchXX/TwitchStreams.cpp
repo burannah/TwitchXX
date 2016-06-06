@@ -10,7 +10,7 @@ namespace TwitchXX
 
 TwitchXX::TwitchStreams::TwitchStreams()
 {
-	_root_node = U("streams");
+
 }
 
 
@@ -32,7 +32,7 @@ TwitchXX::TwitchStream TwitchXX::TwitchStreams::GetStream(const std::wstring & c
 size_t TwitchXX::TwitchStreams::GetTotalNumber()
 {
 	options op = { {U("limit"), U("1")}, {U("offset"), U("0")} };
-	FetchChunk(GetBuilder(U("/streams"),op).to_uri()); return _total_size;
+	FetchChunk(GetBuilder(U("/streams"),op).to_uri(), U("streams")); return _total_size;
 };
 
 TwitchXX::TwitchStreamsVector TwitchXX::TwitchStreams::GetStreams(size_t n, const options & op)
@@ -46,7 +46,7 @@ TwitchXX::TwitchStreamsVector TwitchXX::TwitchStreams::GetStreams(size_t n, cons
 	while (_objects.size() < max_objects)
 	{
 		int count = _objects.size();
-		auto chunk = FetchChunk(GetBuilder(U("/streams"), op, _offset, _limit).to_uri());
+		auto chunk = FetchChunk(GetBuilder(U("/streams"), op, _offset, _limit).to_uri(), U("streams"));
 		_objects.insert(chunk.begin(), chunk.end());
 		if (chunk.size() == 0 || _objects.size() == count)
 		{
@@ -76,6 +76,45 @@ TwitchXX::TwitchStreamsVector TwitchXX::TwitchStreams::GetStreams(size_t n, cons
 	std::sort(v.begin(), v.end(), [](const TwitchStream& a, const TwitchStream& b) { return a.Viewers() > b.Viewers(); });
 	return v;
 
+}
+
+TwitchXX::TwitchFeaturedStreamsContainer TwitchXX::TwitchStreams::GetFeaturedStreams()
+{
+	web::uri_builder builder(U("/streams/featured"));
+	builder.append_query(U("limit"), 100);
+	TwitchContainer<TwitchFeaturedStream> chunk;
+	while(true)
+	{
+		auto value = (*_request)(builder.to_uri());
+		if (value.is_null())
+		{
+			break;
+		}
+
+		auto top = value.at(U("featured"));
+		if (top.is_array())
+		{
+
+			for each (auto& object_descriptor in top.as_array())
+			{
+				chunk.insert(Create<TwitchFeaturedStream>(object_descriptor));
+			}
+		}
+		else
+		{
+			break;
+		}
+		auto next = value.at(U("_links")).at(U("next"));
+		if(!next.is_null() && next.is_string())
+		{
+			builder = web::uri_builder(next.as_string());
+		}
+		else
+		{
+			break;
+		}
+	}
+	return chunk;
 }
 
 web::uri_builder TwitchXX::TwitchStreams::GetBuilder(const std::wstring& url, const options& op)
@@ -124,6 +163,22 @@ TwitchXX::TwitchStream TwitchXX::Create(const web::json::value& obj)
 	stream.Id(wrapper[U("_id")]->as_number().to_uint32());
 	stream.Channel(Create<TwitchChannel>(obj.at(U("channel"))));
 	stream.Preview(CreateCollection(obj.at(U("preview"))));
+
+	return stream;
+}
+
+template <>
+TwitchXX::TwitchFeaturedStream TwitchXX::Create<TwitchXX::TwitchFeaturedStream>(const web::json::value& obj)
+{
+	TwitchFeaturedStream stream;
+	JsonWrapper wrapper(obj);
+
+	stream.Image(wrapper[U("image")]->as_string());
+	stream.Text(wrapper[U("text")]->as_string());
+	stream.Title(wrapper[U("title")]->as_string());
+	stream.Sponsored(wrapper[U("sponsored")]->as_bool());
+	stream.Scheduled(wrapper[U("scheduled")]->as_bool());
+	stream.Stream(Create<TwitchStream>(obj.at(U("stream"))));
 
 	return stream;
 }

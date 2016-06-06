@@ -19,7 +19,6 @@ namespace TwitchXX
 		// Default number of objects in chunk is 10
 		explicit TwitchGames(int limit = 10) : TwitchRequest<TwitchGame>(limit) 
 		{ 
-			_root_node = U("top");
 		};
 		virtual ~TwitchGames();
 
@@ -28,7 +27,7 @@ namespace TwitchXX
 
 		size_t GetTotalNumber()
 		{
-			FetchChunk(GetBuilder(1, 0).to_uri()); return _total_size;
+			FetchChunk(GetBuilder(1, 0).to_uri(),U("top")); return _total_size;
 		};
 		TwitchGamesContainer GetChunk(size_t offset, size_t limit)
 		{
@@ -42,7 +41,7 @@ namespace TwitchXX
 				std::invalid_argument("Limit must be in [1:100]");
 			}
 
-			return FetchChunk(GetBuilder(limit,offset).to_uri());
+			return FetchChunk(GetBuilder(limit,offset).to_uri(), U("top"));
 		};
 
 	private:
