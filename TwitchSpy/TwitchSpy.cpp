@@ -17,6 +17,7 @@ int main()
 	auto featured = api.GetFeaturedStreams();
 	auto summary_all = api.GetSummary();
 	auto summary_dota = api.GetSummary(L"Dota 2");
+	auto channel = api.GetChannel(L"dotamajorru");
 	getch();
     return 0;
 }

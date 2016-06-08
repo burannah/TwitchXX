@@ -83,7 +83,7 @@ TwitchXX::TwitchFeaturedStreamsContainer TwitchXX::TwitchStreams::GetFeaturedStr
 	web::uri_builder builder(U("/streams/featured"));
 	builder.append_query(U("limit"), 100);
 	TwitchContainer<TwitchFeaturedStream> chunk;
-	while(true)
+	for(;;)
 	{
 		auto value = (*_request)(builder.to_uri());
 		if (value.is_null())
@@ -134,6 +134,62 @@ std::tuple<size_t, size_t> TwitchXX::TwitchStreams::GetSummary(const std::wstrin
 	auto channels = value.at(U("channels")).as_number().to_uint32();
 
 	return std::make_tuple(viewers, channels);
+}
+
+TwitchXX::TwitchStreamsContainer TwitchXX::TwitchStreams::GetFollowedStreams(TwitchStream::Type type)
+{
+	//TODO: Implement auth!!!
+	//TODO: Current version of api doesnt support authorization.
+	//TODO: So this will not work
+	throw std::runtime_error("Not implemented!");
+
+
+	_limit = max_limit;
+	_offset = 0;
+	TwitchStreamsContainer result;
+	web::uri_builder builder(U("/streams/followed"));
+	builder.append_query(U("limit"), max_limit); //TODO: Check perfomance if limit is equal to actual number of channel followd (if < 100)
+	if(type != TwitchStream::Type::none)
+	{
+		builder.append_query(U("stream_type"), type_to_string(type));
+	}
+	for(;;)
+	{
+		TwitchStreamsContainer chunk;
+		auto value = (*_request)(builder.to_uri());
+		if (value.is_null())
+		{
+			break;
+		}
+
+		auto top = value.at(U("streams"));
+		if (top.is_array())
+		{
+			for each (auto& object_descriptor in top.as_array())
+			{
+				chunk.insert(Create<TwitchStream>(object_descriptor));
+			}
+			result.insert(chunk.begin(),chunk.end());
+		}
+		else
+		{
+			break;
+		}
+		auto next = value.at(U("_links")).at(U("next"));
+		if (!next.is_null() && next.is_string())
+		{
+			builder = web::uri_builder(next.as_string());
+		}
+		else
+		{
+			break;
+		}
+
+#ifdef DEBUG
+		std::wcout << "Total number of streams followed: " << value.at(U("_total")).as_integer()<<"\n";
+#endif // DEBUG
+	}
+	
 }
 
 web::uri_builder TwitchXX::TwitchStreams::GetBuilder(const std::wstring& url, const options& op)

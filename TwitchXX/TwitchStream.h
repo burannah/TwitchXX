@@ -12,10 +12,12 @@ namespace TwitchXX
 	public:
 		enum class Type
 		{
+			none,
 			all,
 			playlist,
 			live
 		};
+
 		TwitchStream();
 		virtual ~TwitchStream();
 
@@ -90,4 +92,6 @@ namespace TwitchXX
 	};
 
 	using TwitchStreamsContainer = std::set<TwitchStream>;
+
+	std::wstring type_to_string(TwitchStream::Type);
 }

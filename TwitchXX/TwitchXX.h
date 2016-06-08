@@ -32,6 +32,10 @@ namespace TwitchXX
 		TwitchStreamsVector TopStreams(size_t top_count = 0, const options& op = options());
 		TwitchFeaturedStreamsContainer GetFeaturedStreams();
 		std::tuple<size_t, size_t> GetSummary(const std::wstring& game = std::wstring());
+		TwitchStreamsContainer FollowedStreams();
+
+		//Channels
+		TwitchChannel GetChannel(const std::wstring& name);
 
 	private:
 		static std::map<Version, std::wstring> _version;

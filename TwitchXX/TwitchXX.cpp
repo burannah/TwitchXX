@@ -2,6 +2,7 @@
 #include "TwitchXX.h"
 #include "TwitchGames.h"
 #include "TwitchStreams.h"
+#include "TwitchChannels.h"
 
 namespace TwitchXX
 {
@@ -12,6 +13,7 @@ namespace TwitchXX
 	extern void trim(std::wstring& s);
 
 	TwitchStreams streams;
+	TwitchChannels channels;
 }
 
 std::map<TwitchXX::Api::Version,std::wstring> TwitchXX::Api::_version =
@@ -94,4 +96,14 @@ TwitchXX::TwitchFeaturedStreamsContainer TwitchXX::Api::GetFeaturedStreams()
 std::tuple<size_t, size_t> TwitchXX::Api::GetSummary(const std::wstring& game)
 {
 	return streams.GetSummary(game);
+}
+
+TwitchXX::TwitchStreamsContainer TwitchXX::Api::FollowedStreams()
+{
+	return streams.GetFollowedStreams();
+}
+
+TwitchXX::TwitchChannel TwitchXX::Api::GetChannel(const std::wstring & name)
+{
+	return channels.GetChannel(name);
 }
