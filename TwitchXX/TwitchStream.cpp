@@ -1,5 +1,6 @@
 #include "TwitchStream.h"
 #include <string>
+#include <cpprest\details\basic_types.h>
 
 
 TwitchXX::TwitchStream::TwitchStream()
@@ -20,4 +21,19 @@ void TwitchXX::TwitchStream::Created(const std::wstring& ccs)
 std::wstring TwitchXX::TwitchStream::CreatedAsString() const
 {
 	return DateToString(_created);
+}
+
+std::wstring TwitchXX::type_to_string(TwitchStream::Type t)
+{
+	switch (t)
+	{
+	case TwitchStream::Type::all:
+		return U("all");
+	case TwitchStream::Type::live:
+		return U("live");
+	case TwitchStream::Type::playlist:
+		return U("playlist");
+	default:
+		throw std::range_error("Stream type is not supported");
+	}
 }

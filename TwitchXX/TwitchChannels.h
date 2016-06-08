@@ -12,6 +12,8 @@ namespace TwitchXX
 	public:
 		TwitchChannels();
 		virtual ~TwitchChannels();
+
+		TwitchChannel GetChannel(const std::wstring& name);
 	};
 
 	template<> TwitchChannel Create(const web::json::value& value);

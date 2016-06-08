@@ -10,6 +10,18 @@ TwitchXX::TwitchChannels::TwitchChannels()
 TwitchXX::TwitchChannels::~TwitchChannels()
 {
 }
+TwitchXX::TwitchChannel TwitchXX::TwitchChannels::GetChannel(const std::wstring & name)
+{
+	web::uri_builder builder (U("/cannels/") + name + U("/"));
+	auto value = (*_request)(builder.to_uri());
+	if (value.is_null())
+	{
+		throw std::runtime_error("No objects were returned");
+	}
+
+	return Create<TwitchChannel>(value);
+
+}
 template<>
 TwitchXX::TwitchChannel TwitchXX::Create(const web::json::value & value)
 {
