@@ -16,6 +16,7 @@ namespace TwitchXX
 		std::wstring _client_id;
 		std::wstring _api_version;
 		web::http::client::http_client_config _config;
+		web::http::status_code _last_status;
 	public:
 		void SetupProxy();
 
@@ -23,7 +24,8 @@ namespace TwitchXX
 
 		virtual ~MakeRequest() {};
 
-		web::json::value operator()(const web::uri& uri) const;
+		web::json::value operator()(const web::uri& uri,const web::http::method& method = web::http::methods::GET);
+		web::http::status_code status_code() const { return _last_status; }
 	};
 }
 

@@ -59,10 +59,10 @@ namespace TwitchXX
 		}
 	}
 
-	web::json::value MakeRequest::operator()(const web::uri& uri) const
+	web::json::value MakeRequest::operator()(const web::uri& uri, const web::http::method& method)
 	{
 		web::http::client::http_client http_client(U("https://api.twitch.tv/kraken"), _config);
-		web::http::http_request request(web::http::methods::GET);
+		web::http::http_request request(method);
 
 		if (_api_version.length()) request.headers().add(L"Accept", _api_version);
 		if (_client_id.length())request.headers().add(L"Client-ID", _client_id);
@@ -71,8 +71,9 @@ namespace TwitchXX
 		std::wcout << "Request: " << request.to_string() << "\n";
 
 		pplx::task<web::json::value> task = http_client.request(request)
-		                                               .then([](web::http::http_response response) -> pplx::task<web::json::value>
+		                                               .then([this](web::http::http_response response) -> pplx::task<web::json::value>
 			                                               {
+															   this->_last_status = response.status_code();
 				                                               if (response.status_code() == web::http::status_codes::OK)
 				                                               {
 					                                               return response.extract_json();

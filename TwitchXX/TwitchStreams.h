@@ -19,8 +19,8 @@ namespace TwitchXX
 		TwitchStream GetStream(const std::wstring& chanel) const;
 		size_t GetTotalNumber();
 		TwitchStreamsVector GetStreams(size_t n, const options& opt);
-		TwitchFeaturedStreamsContainer GetFeaturedStreams();
-		std::tuple<size_t, size_t> GetSummary(const std::wstring& game = std::wstring());
+		TwitchFeaturedStreamsContainer GetFeaturedStreams() const;
+		std::tuple<size_t, size_t> GetSummary(const std::wstring& game = std::wstring()) const;
 		TwitchStreamsContainer GetFollowedStreams(TwitchStream::Type type = TwitchStream::Type::none);
 	private:
 		static web::uri_builder GetBuilder(const std::wstring & url = U("/streams"), const options & op = options());
