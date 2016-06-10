@@ -10,8 +10,13 @@ TwitchXX::TwitchChannels::TwitchChannels()
 TwitchXX::TwitchChannels::~TwitchChannels()
 {
 }
-TwitchXX::TwitchChannel TwitchXX::TwitchChannels::GetChannel(const std::wstring & name)
+TwitchXX::TwitchChannel TwitchXX::TwitchChannels::GetChannel(const std::wstring & name) const
 {
+	if (name.length() == 0)
+	{
+		//TODO: Come back when auth feature is implemented
+		throw std::runtime_error("Trying to get channel object of authenticated user. Auth feature is not implemented yet!");
+	}
 	web::uri_builder builder (U("/cannels/") + name + U("/"));
 	auto value = (*_request)(builder.to_uri());
 	if (value.is_null())
@@ -22,34 +27,177 @@ TwitchXX::TwitchChannel TwitchXX::TwitchChannels::GetChannel(const std::wstring 
 	return Create<TwitchChannel>(value);
 
 }
+TwitchXX::TwitchUsersContainer TwitchXX::TwitchChannels::GetChannelEditors(const std::wstring & name) const
+{
+	web::uri_builder builder(U("/cannels/") + name + U("/editors"));
+	auto value = (*_request)(builder.to_uri());
+	if (value.is_null())
+	{
+		throw std::runtime_error("No objects were returned");
+	}
+
+
+	auto users = value.at(U("users"));
+	TwitchUsersContainer result;
+
+	if (!users.is_null() && users.is_array())
+	{
+		for each (const auto& user_desciptor in users.as_array())
+		{
+			result.insert(Create<TwitchUser>(user_desciptor));
+		}
+
+	}
+	return result;
+}
+
+TwitchXX::TwitchChannel TwitchXX::TwitchChannels::UpdateChannel(const std::wstring& name, const options& op) const
+{
+	auto channel = GetChannel(name);
+	auto o(op);
+	if(o.find(U("status")) == o.end())
+	{
+		o[U("status")] = channel.Status();
+	}
+	if(o.find(U("game")) == o.end())
+	{
+		o[U("game")] = channel.Game();
+	}
+	if(o.find(U("delay"))== o.end())
+	{
+		std::wstringstream ss;
+		ss << channel.Delay();
+		o[U("delay")] = ss.str();
+	}
+
+	web::uri_builder builder(U("/channels/") + name + U("/"));
+	for (const auto& option : o)
+	{
+		builder.append_query(option.first, option.second);
+	}
+	auto value = (*_request)(builder.to_uri(), web::http::methods::PUT);
+	if (value.is_null() && _request->status_code() == 422)
+	{
+		throw std::runtime_error("The channel is not partnered!");
+	}
+
+	//TODO: value & channel sanity check?
+
+	return GetChannel(name);
+}
+
+std::wstring TwitchXX::TwitchChannels::ResetStreamKey(const std::wstring& channel_name) const
+{
+	web::uri_builder builder(U("/cannels/") + channel_name + U("/stream_key"));
+	auto value = (*_request)(builder.to_uri(),web::http::methods::DEL);
+
+	if(value.is_null())
+	{
+		throw std::runtime_error("Unable to reset stream key.");
+	}
+
+	return value.at(U("stream_key")).as_string();
+}
+
+bool TwitchXX::TwitchChannels::StartCommercial(const std::wstring& channel_name, size_t length) const
+{
+	web::uri_builder builder(U("/cannels/") + channel_name + U("/stream_key"));
+	static std::set<size_t> valid_lengths{ 30, 60, 90 , 120, 150, 180 };
+	if (valid_lengths.find(length) == valid_lengths.end())
+	{
+		length = 30;
+	}
+	builder.append_query(U("length"), length);
+	auto value = (*_request)(builder.to_uri(), web::http::methods::POST);
+	if(_request->status_code() == 422)
+	{
+		throw std::runtime_error("A commercial was ran less than 8 minutes ago, or the channel is not partnered.");
+	}
+
+	return _request->status_code() == 204;
+}
+
+TwitchXX::TwitchTeamsContainer TwitchXX::TwitchChannels::GetTeams(const std::wstring& channel_name) const
+{
+	web::uri_builder builder(U("/channels/") + channel_name + U("/teams"));
+	TwitchTeamsContainer chunk;
+	auto value = (*_request)(builder.to_uri());
+	auto teams = value.at(U("teams"));
+	if(!teams.is_null() && teams.is_array())
+	{
+		for (const auto& team : teams.as_array())
+		{
+			chunk.insert(Create<TwitchTeam>(team));
+		}
+	}
+	return chunk;
+}
+
 template<>
 TwitchXX::TwitchChannel TwitchXX::Create(const web::json::value & value)
 {
 	TwitchChannel channel;
 	JsonWrapper wrapper(value);
 
-	channel.Mature(wrapper[U("mature")]->as_bool());
-	channel.Status(wrapper[U("status")]->as_string());
-	channel.BroadcasterLanguage(wrapper[U("broadcaster_language")]->as_string());
-	channel.DisplayName(wrapper[U("display_name")]->as_string());
-	channel.Game(wrapper[U("game")]->as_string());
-	channel.Delay(wrapper[U("delay")]->as_integer());
-	channel.Language(wrapper[U("language")]->as_string());
-	channel.Id(wrapper[U("_id")]->as_integer());
-	channel.Name(wrapper[U("name")]->as_string());
-	channel.Created(wrapper[U("created_at")]->as_string());
-	channel.Updated(wrapper[U("updated_at")]->as_string());
-	channel.Logo(wrapper[U("logo")]->as_string());
-	channel.Banner(wrapper[U("banner")]->as_string());
-	channel.VideoBanner(wrapper[U("video_banner")]->as_string());
-	channel.Background(wrapper[U("background")]->as_string());
-	channel.ProfileBanner(wrapper[U("profile_banner")]->as_string());
-	channel.ProfileBannerBkColor(wrapper[U("profile_banner_background_color")]->as_string());
-	channel.Partner(wrapper[U("partner")]->as_bool());
-	channel.Url(wrapper[U("url")]->as_string());
-	channel.Views(wrapper[U("views")]->as_integer());
-	channel.Followers(wrapper[U("followers")]->as_integer());
-
+	channel.Mature(*wrapper[U("mature")]);
+	channel.Status(*wrapper[U("status")]);
+	channel.BroadcasterLanguage(*wrapper[U("broadcaster_language")]);
+	channel.DisplayName(*wrapper[U("display_name")]);
+	channel.Game(*wrapper[U("game")]);
+	channel.Delay(*wrapper[U("delay")]);
+	channel.Language(*wrapper[U("language")]);
+	channel.Id(*wrapper[U("_id")]);
+	channel.Name(*wrapper[U("name")]);
+	channel.Created(*wrapper[U("created_at")]);
+	channel.Updated(*wrapper[U("updated_at")]);
+	channel.Logo(*wrapper[U("logo")]);
+	channel.Banner(*wrapper[U("banner")]);
+	channel.VideoBanner(*wrapper[U("video_banner")]);
+	channel.Background(*wrapper[U("background")]);
+	channel.ProfileBanner(*wrapper[U("profile_banner")]);
+	channel.ProfileBannerBkColor(*wrapper[U("profile_banner_background_color")]);
+	channel.Partner(*wrapper[U("partner")]);
+	channel.Url(*wrapper[U("url")]);
+	channel.Views(*wrapper[U("views")]);
+	channel.Followers(*wrapper[U("followers")]);
+	channel.StreamKey(*wrapper[U("stream_key")]);
 
 	return channel;
+}
+
+template<>
+TwitchXX::TwitchUser TwitchXX::Create(const web::json::value & value)
+{
+	TwitchUser user;
+	JsonWrapper wrapper(value);
+
+	user.Created(*wrapper[U("created_at")]);
+	user.Name(*wrapper[U("name")]);
+	user.Updated(*wrapper[U("updated_at")]);
+	user.Id(*wrapper[U("_id")]);
+	user.DisplayName(*wrapper[U("display_name")]);
+	user.Logo(*wrapper[U("logo")]);
+	user.Type(*wrapper[U("type")]);
+	user.Bio(*wrapper[U("bio")]);
+
+	return user;
+}
+
+template <>
+TwitchXX::TwitchTeam TwitchXX::Create<TwitchXX::TwitchTeam>(const web::json::value& value)
+{
+	TwitchTeam team;
+	JsonWrapper wrapper(value);
+
+	team.Created(*wrapper[U("created_at")]);
+	team.Updated(*wrapper[U("updated_at")]);
+	team.Id(*wrapper[U("_id")]);
+	team.Background(*wrapper[U("background")]);
+	team.Name(*wrapper[U("name")]);
+	team.Info(*wrapper[U("info")]);
+	team.DisplayName(*wrapper[U("display_name")]);
+	team.Logo(*wrapper[U("logo")]);
+	team.Banner(*wrapper[U("banner")]);
+
+	return team;
 }

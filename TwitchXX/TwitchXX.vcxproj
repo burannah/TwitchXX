@@ -182,6 +182,8 @@
     <ClInclude Include="TwitchRequest.h" />
     <ClInclude Include="TwitchStream.h" />
     <ClInclude Include="TwitchStreams.h" />
+    <ClInclude Include="TwitchTeam.h" />
+    <ClInclude Include="TwitchUser.h" />
     <ClInclude Include="TwitchXX.h" />
     <ClInclude Include="TwitchChannels.h" />
   </ItemGroup>
@@ -193,6 +195,8 @@
     <ClCompile Include="TwitchGames.cpp" />
     <ClCompile Include="TwitchStream.cpp" />
     <ClCompile Include="TwitchStreams.cpp" />
+    <ClCompile Include="TwitchTeam.cpp" />
+    <ClCompile Include="TwitchUser.cpp" />
     <ClCompile Include="TwitchXX.cpp" />
     <ClCompile Include="TwitchChannels.cpp" />
     <ClCompile Include="Utility.cpp" />

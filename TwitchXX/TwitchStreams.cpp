@@ -78,7 +78,7 @@ TwitchXX::TwitchStreamsVector TwitchXX::TwitchStreams::GetStreams(size_t n, cons
 
 }
 
-TwitchXX::TwitchFeaturedStreamsContainer TwitchXX::TwitchStreams::GetFeaturedStreams()
+TwitchXX::TwitchFeaturedStreamsContainer TwitchXX::TwitchStreams::GetFeaturedStreams() const
 {
 	web::uri_builder builder(U("/streams/featured"));
 	builder.append_query(U("limit"), 100);
@@ -117,7 +117,7 @@ TwitchXX::TwitchFeaturedStreamsContainer TwitchXX::TwitchStreams::GetFeaturedStr
 	return chunk;
 }
 
-std::tuple<size_t, size_t> TwitchXX::TwitchStreams::GetSummary(const std::wstring& game)
+std::tuple<size_t, size_t> TwitchXX::TwitchStreams::GetSummary(const std::wstring& game) const
 {
 	web::uri_builder builder(U("/streams/summary"));
 	if (game.length() > 0)
@@ -228,14 +228,14 @@ TwitchXX::TwitchStream TwitchXX::Create(const web::json::value& obj)
 
 	JsonWrapper wrapper (obj);
 
-	stream.Game(wrapper[U("game")]->as_string());
-	stream.Viewers(wrapper[U("viewers")]->as_integer());
-	stream.AvgFps(wrapper[U("average_fps")]->as_double());
-	stream.Delay(wrapper[U("delay")]->as_integer());
-	stream.VideoHeight(wrapper[U("video_height")]->as_integer());
-	stream.IsPlaylist(wrapper[U("is_playlist")]->as_bool());
-	stream.Created(wrapper[U("created_at")]->as_string());
-	stream.Id(wrapper[U("_id")]->as_number().to_uint32());
+	stream.Game(*wrapper[U("game")]);
+	stream.Viewers(*wrapper[U("viewers")]);
+	stream.AvgFps(*wrapper[U("average_fps")]);
+	stream.Delay(*wrapper[U("delay")]);
+	stream.VideoHeight(*wrapper[U("video_height")]);
+	stream.IsPlaylist(*wrapper[U("is_playlist")]);
+	stream.Created(*wrapper[U("created_at")]);
+	stream.Id(*wrapper[U("_id")]);
 	stream.Channel(Create<TwitchChannel>(obj.at(U("channel"))));
 	stream.Preview(CreateCollection(obj.at(U("preview"))));
 
@@ -248,11 +248,11 @@ TwitchXX::TwitchFeaturedStream TwitchXX::Create<TwitchXX::TwitchFeaturedStream>(
 	TwitchFeaturedStream stream;
 	JsonWrapper wrapper(obj);
 
-	stream.Image(wrapper[U("image")]->as_string());
-	stream.Text(wrapper[U("text")]->as_string());
-	stream.Title(wrapper[U("title")]->as_string());
-	stream.Sponsored(wrapper[U("sponsored")]->as_bool());
-	stream.Scheduled(wrapper[U("scheduled")]->as_bool());
+	stream.Image(*wrapper[U("image")]);
+	stream.Text(*wrapper[U("text")]);
+	stream.Title(*wrapper[U("title")]);
+	stream.Sponsored(*wrapper[U("sponsored")]);
+	stream.Scheduled(*wrapper[U("scheduled")]);
 	stream.Stream(Create<TwitchStream>(obj.at(U("stream"))));
 
 	return stream;

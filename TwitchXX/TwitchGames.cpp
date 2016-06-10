@@ -36,8 +36,8 @@ TwitchXX::TwitchGame TwitchXX::Create<TwitchXX::TwitchGame>(const web::json::val
 {
 	TwitchGame game;
 	JsonWrapper wrapper(json);
-	game.Channels(wrapper[U("channels")]->as_integer());
-	game.Viewers(wrapper[U("viewers")]->as_integer());
+	game.Channels(*wrapper[U("channels")]);
+	game.Viewers(*wrapper[U("viewers")]);
 	auto game_descriptor = json.at(L"game");
 	if (game_descriptor.is_null())
 	{
@@ -45,9 +45,9 @@ TwitchXX::TwitchGame TwitchXX::Create<TwitchXX::TwitchGame>(const web::json::val
 	}
 
 	JsonWrapper game_wrapper(game_descriptor);
-	game.Name(game_wrapper[U("name")]->as_string());
-	game.Id(game_wrapper[U("_id")]->as_integer());
-	game.Giantbomb_Id(game_wrapper[U("giantbomb_id")]->as_integer());
+	game.Name(*game_wrapper[U("name")]);
+	game.Id(*game_wrapper[U("_id")]);
+	game.Giantbomb_Id(*game_wrapper[U("giantbomb_id")]);
 
 	game.Box(CreateCollection(game_descriptor.at(L"box")));
 	game.Logo(CreateCollection(game_descriptor.at(L"logo")));

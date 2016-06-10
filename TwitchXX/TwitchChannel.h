@@ -88,6 +88,9 @@ namespace TwitchXX
 		size_t Followers() const { return _followers; }
 		void Followers(size_t n) { _followers = n; }
 
+		void StreamKey(const std::wstring& s) { _stream_key = s; }
+		const std::wstring& StreamKey() const { return _stream_key; }
+
 	private:
 		bool _mature;
 		std::wstring _status;
@@ -110,6 +113,7 @@ namespace TwitchXX
 		bool _partner;
 		unsigned long _views;
 		unsigned long _followers;
+		std::wstring _stream_key;  //Only for authorized channels
 
 	};
 
