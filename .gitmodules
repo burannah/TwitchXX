@@ -4,3 +4,6 @@
 [submodule "ThirdParty/MongoDriver/mongo-cxx-driver"]
 	path = ThirdParty/MongoDriver/mongo-cxx-driver
 	url = https://github.com/mongodb/mongo-cxx-driver.git
+[submodule "ThirdParty/googletest"]
+	path = ThirdParty/googletest
+	url = https://github.com/google/googletest.git

@@ -11,15 +11,12 @@ namespace TwitchXX
 	std::string DatabaseName = "TwitchSpy";
 	std::shared_ptr<Logger> Log = std::make_shared<Logger>();
 	extern void trim(std::wstring& s);
-
-	TwitchStreams streams;
-	TwitchChannels channels;
 }
 
 std::map<TwitchXX::Api::Version,std::wstring> TwitchXX::Api::_version =
 {
-	{ TwitchXX::Api::Version::v2, L"application/vnd.twitchtv.v2+json" },
-	{ TwitchXX::Api::Version::v3, L"application/vnd.twitchtv.v3+json" }
+	{ Version::v2, L"application/vnd.twitchtv.v2+json" },
+	{ Version::v3, L"application/vnd.twitchtv.v3+json" }
 };
 
 TwitchXX::Api::Api(const std::wstring& client_id, Version version, std::shared_ptr<Logger> log)
@@ -38,8 +35,16 @@ TwitchXX::Api::Api(const std::wstring& client_id, Version version, std::shared_p
 
 		Options->insert(std::make_pair(name, value));
 	}
-	Options->insert(std::make_pair(U("api_key"), client_id));
+	if (client_id.size() && Options->find(U("api_key")) != Options->end())
+	{
+		//Do not override config file's api_key parameter event if explicitly provided by parameter
+		Options->insert(std::make_pair(U("api_key"), client_id));
+	}
 	Options->insert(std::make_pair(U("version"), _version[version]));
+
+	_streams = std::make_unique<TwitchStreams>();
+	_channels = std::make_unique<TwitchChannels>();
+
 
 	if(log != nullptr)
 	{
@@ -70,14 +75,14 @@ TwitchXX::TwitchGamesVector TwitchXX::Api::TopGames(size_t top_count)
 
 TwitchXX::TwitchStream TwitchXX::Api::GetStream(const std::wstring& name)
 {
-	return  streams.GetStream(name);
+	return  _streams->GetStream(name);
 }
 
 TwitchXX::TwitchStreamsVector TwitchXX::Api::TopStreams(size_t top_count, const options& op)
 {
 	try
 	{
-		return streams.GetStreams(top_count, op);
+		return _streams->GetStreams(top_count, op);
 	}
 	catch(std::runtime_error& e)
 	{
@@ -90,20 +95,20 @@ TwitchXX::TwitchStreamsVector TwitchXX::Api::TopStreams(size_t top_count, const 
 
 TwitchXX::TwitchFeaturedStreamsContainer TwitchXX::Api::GetFeaturedStreams()
 {
-	return streams.GetFeaturedStreams();
+	return _streams->GetFeaturedStreams();
 }
 
 std::tuple<size_t, size_t> TwitchXX::Api::GetSummary(const std::wstring& game)
 {
-	return streams.GetSummary(game);
+	return _streams->GetSummary(game);
 }
 
 TwitchXX::TwitchStreamsContainer TwitchXX::Api::FollowedStreams()
 {
-	return streams.GetFollowedStreams();
+	return _streams->GetFollowedStreams();
 }
 
 TwitchXX::TwitchChannel TwitchXX::Api::GetChannel(const std::wstring & name)
 {
-	return channels.GetChannel(name);
+	return _channels->GetChannel(name);
 }

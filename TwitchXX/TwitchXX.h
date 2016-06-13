@@ -7,8 +7,10 @@
 
 namespace TwitchXX
 {
+
 	class Logger;
-	class TwitchStream;
+	class TwitchStreams;
+	class TwitchChannels;
 
 	class Api
 	{
@@ -18,7 +20,7 @@ namespace TwitchXX
 			v2,
 			v3
 		};
-		explicit Api(const std::wstring& clinet_id, Version version = Version::v3, std::shared_ptr<Logger> = nullptr);
+		explicit Api(const std::wstring& clinet_id = std::wstring(), Version version = Version::v3, std::shared_ptr<Logger> = nullptr);
 		virtual ~Api();
 
 		//Log
@@ -39,5 +41,9 @@ namespace TwitchXX
 
 	private:
 		static std::map<Version, std::wstring> _version;
+		std::unique_ptr<TwitchStreams> _streams;
+		std::unique_ptr<TwitchChannels> _channels;
+
+
 	};
 }
