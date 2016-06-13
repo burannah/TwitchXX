@@ -1,4 +1,7 @@
 #pragma once
+#include <string>
+#include <set>
+#include "TwitchDef.h"
 #include "TwitchUser.h"
 
 namespace TwitchXX

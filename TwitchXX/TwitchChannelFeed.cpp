@@ -1,4 +1,5 @@
 #include "TwitchChannelFeed.h"
+#include "TwitchChannels.h"
 #include "JsonWrapper.h"
 
 TwitchXX::TwitchChannelFeed::~TwitchChannelFeed()

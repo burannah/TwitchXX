@@ -35,9 +35,9 @@ template <>
 TwitchXX::TwitchGame TwitchXX::Create<TwitchXX::TwitchGame>(const web::json::value& json)
 {
 	TwitchGame game;
-	JsonWrapper wrapper(json);
-	game.Channels(*wrapper[U("channels")]);
-	game.Viewers(*wrapper[U("viewers")]);
+	JsonWrapper j(json);
+	game.Channels(*j[U("channels")]);
+	game.Viewers(*j[U("viewers")]);
 	auto game_descriptor = json.at(L"game");
 	if (game_descriptor.is_null())
 	{

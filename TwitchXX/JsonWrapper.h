@@ -6,8 +6,6 @@ namespace TwitchXX
 	class JsonValueWrapper
 	{
 	public:
-		//explicit JsonValueWrapper(const web::json::value& value) {};
-
 		virtual ~JsonValueWrapper()
 		{
 		}
@@ -54,7 +52,7 @@ namespace TwitchXX
 		{ return  _json.as_number(); }
 
 		unsigned int as_uint() const override
-		{ return _json.as_number().is_uint32();	}
+		{ return _json.as_number().to_uint32();	}
 
 	private:
 		web::json::value _json;
@@ -67,7 +65,7 @@ namespace TwitchXX
 		int as_integer() const override { return 0; };
 		bool as_bool() const override { return false; }
 		double as_double() const override { return 0; };
-		web::json::number as_number() const override { return web::json::value("0").as_number(); };
+		web::json::number as_number() const override { return web::json::value(0).as_number(); };
 		unsigned int as_uint() const override { return 0; }
 	};
 
@@ -78,11 +76,11 @@ namespace TwitchXX
 		explicit JsonWrapper(const web::json::value& value) : _json(value) {}
 		JsonWrapper() = delete;
 
-		bool param_exist(const std::wstring & param) { return _json.has_field(param) && !_json.at(param).is_null(); };
+		bool param_exist(const std::wstring & param) { return _json.has_field(param) && !_json[param].is_null(); };
 		std::unique_ptr<JsonValueWrapper> operator[] (const std::wstring& param)
 		{
 			if (param_exist(param)) 
-				return std::make_unique<JsonNotNullValueWrapper>(_json.at(param)); 
+				return std::make_unique<JsonNotNullValueWrapper>(_json[param]); 
 			return std::make_unique<JsonNullValueWrapper>();
 		}
 

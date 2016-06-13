@@ -41,7 +41,7 @@ namespace TwitchXX
 
 
 		bool Offline() const { return _offline;	}
-		void Offline(bool offline = true) { _offline = offline; }
+		void Offline(bool offline) { _offline = offline; }
 
 		void Viewers(size_t n) { _viewers = { n }; }
 		auto Viewers() const { return _viewers; }

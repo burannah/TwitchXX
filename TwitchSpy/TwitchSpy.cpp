@@ -2,13 +2,12 @@
 //
 
 #include "stdafx.h"
-#include <conio.h>
 #include <TwitchXX.h>
 
 
 int main()
 {
-	TwitchXX::Api api(L"8a1txctbv1nykj76c98vn7t4d66pmhe");
+	TwitchXX::Api api;
 
 	auto games = api.TopGames(100);
 	auto stream = api.GetStream(L"cheatbanned");
@@ -18,7 +17,6 @@ int main()
 	auto summary_all = api.GetSummary();
 	auto summary_dota = api.GetSummary(L"Dota 2");
 	auto channel = api.GetChannel(L"dotamajorru");
-	getch();
     return 0;
 }
 
