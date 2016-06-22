@@ -22,8 +22,8 @@ namespace TwitchXX
 			return _created > other._created;
 		}
 
-		void Id(size_t id) { _id = id; }
-		size_t Id() const { return _id; }
+		void Id(unsigned long long id) { _id = id; }
+		unsigned long long Id() const { return _id; }
 
 		void Created(const std::wstring& cs) { _created = DateFromString(cs); };
 		const auto& Created() const { return _created; }
@@ -47,11 +47,11 @@ namespace TwitchXX
 		void Tweet(const std::wstring& t) { _tweet = t; }
 		const std::wstring& Tweet() const { return _tweet; }
 	private:
-		size_t _id;
+		unsigned long long _id = 0;
 		Date _created;
-		bool _deleted;
+		bool _deleted = false;
 		//vector<TwitchEmotes> _emotes; //TODO: not sure
-		size_t _endorsed_count;
+		size_t _endorsed_count = 0;
 		std::set<std::wstring> _endorsed_users;
 		std::wstring _body;
 		TwitchUser _user;

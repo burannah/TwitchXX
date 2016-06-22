@@ -35,4 +35,23 @@ namespace TwitchXX
 	Date DateFromString(const std::wstring& cs);
 	std::wstring DateToString(const Date& tp);
 
+	struct EmoticonImage
+	{
+		size_t Id;
+		std::wstring Code;
+		size_t EmoticoneSet;
+
+		bool operator<(const EmoticonImage& image) const { return Id < image.Id; }
+
+	};
+	struct ChannelBadge
+	{
+		std::wstring Type;
+		std::wstring Alpha;
+		std::wstring Image;
+		std::wstring Svg;
+
+		bool operator<(const ChannelBadge& badge) const { return Type < badge.Type; }
+	};
+
 }

@@ -1,6 +1,7 @@
 #include "TwitchChannelFeed.h"
 #include "TwitchChannels.h"
 #include "JsonWrapper.h"
+#include "TwitchException.h"
 
 TwitchXX::TwitchChannelFeed::~TwitchChannelFeed()
 {
@@ -10,7 +11,7 @@ TwitchXX::TwitchPostsContainer TwitchXX::TwitchChannelFeed::GetPosts(const std::
 {
 	web::uri_builder first_builder(U("/feed/") + channel_name + U("/posts"));
 	first_builder.append_query(U("limit"), 100); //TODO: Check perfomance!
-	web::uri_builder builder(first_builder);
+	auto builder(first_builder);
 	size_t count = 0;
 	std::wstring cursor;
 	TwitchPostsContainer result;
@@ -46,7 +47,7 @@ TwitchXX::TwitchPostsContainer TwitchXX::TwitchChannelFeed::GetPosts(const std::
 	return TwitchPostsContainer{ result.begin(),std::next(result.begin(),std::min(result.size(),limit)) };
 }
 
-TwitchXX::TwitchPost TwitchXX::TwitchChannelFeed::GetPost(const std::wstring & channel_name, size_t id) const
+TwitchXX::TwitchPost TwitchXX::TwitchChannelFeed::GetPost(const std::wstring & channel_name, unsigned long long id) const
 {
 	std::wstringstream  ss;
 	ss << id;
@@ -63,11 +64,15 @@ TwitchXX::TwitchPost TwitchXX::TwitchChannelFeed::Post(const std::wstring& chann
 	builder.append_query(U("share"), share);
 
 	auto response = (*_request)(builder.to_uri(), web::http::methods::POST);
+	if(_request->status_code()!= web::http::status_codes::OK)
+	{
+		throw TwitchException("Unable to create post!", _request->status_code());
+	}
 
 	return Create<TwitchPost>(response);
 }
 
-bool TwitchXX::TwitchChannelFeed::DeletePost(const std::wstring & channel_name, size_t id) const
+bool TwitchXX::TwitchChannelFeed::DeletePost(const std::wstring & channel_name, unsigned long long id) const
 {
 	std::wstringstream ss;
 	ss << id;
@@ -77,7 +82,7 @@ bool TwitchXX::TwitchChannelFeed::DeletePost(const std::wstring & channel_name, 
 	return _request->status_code() == web::http::status_codes::OK;
 }
 
-bool TwitchXX::TwitchChannelFeed::AddReaction(const std::wstring& channel_name, size_t id, size_t emote_id) const
+bool TwitchXX::TwitchChannelFeed::AddReaction(const std::wstring& channel_name, unsigned long long id, size_t emote_id) const
 {
 	std::wstringstream ss_id;
 	ss_id << id;
@@ -96,7 +101,7 @@ bool TwitchXX::TwitchChannelFeed::AddReaction(const std::wstring& channel_name, 
 	return _request->status_code() == web::http::status_codes::OK;
 }
 
-bool TwitchXX::TwitchChannelFeed::RemoveReaction(const std::wstring& channel_name, size_t id, size_t emote_id) const
+bool TwitchXX::TwitchChannelFeed::RemoveReaction(const std::wstring& channel_name, unsigned long long id, size_t emote_id) const
 {
 	std::wstringstream ss_id;
 	ss_id << id;
@@ -121,20 +126,23 @@ TwitchXX::TwitchPost TwitchXX::Create<TwitchXX::TwitchPost>(const web::json::val
 	TwitchPost post;
 	JsonWrapper wrapper(value);
 
-	post.Id(*wrapper[U("_id")]);
+	post.Id(*wrapper[U("id")]);
 	post.Created(*wrapper[U("created_at")]);
 	post.Deleted(*wrapper[U("deleted")]);
 	//post.Emotes(*wrapper[U("emotes")]);
-	auto endorse_json = value.at(U("reqctions")).at(U("endorse"));
-	post.EndorsedCount(endorse_json.at(U("count")).as_number().to_uint32());
-	auto users_ids_json = endorse_json.at(U("user_ids"));
-	if (!users_ids_json.is_null() && users_ids_json.is_array())
+	if(value.has_field(U("reactions")) && !value.at(U("reactions")).is_null() && value.at(U("reactions")).size())
 	{
-		auto user_ids = users_ids_json.as_array();
-		std::set<std::wstring> ids;
-		//std::copy(user_ids.begin(), user_ids.end(), std::inserter(ids, ids.begin()));
-		std::for_each(user_ids.begin(), user_ids.end(), [&ids](const web::json::value& id) { ids.insert(id.as_string()); });
-		post.EndorsedUsers(ids);
+		auto endorse_json = value.at(U("reactions")).at(U("endorse"));
+		post.EndorsedCount(endorse_json.at(U("count")).as_number().to_uint32());
+		auto users_ids_json = endorse_json.at(U("user_ids"));
+		if (!users_ids_json.is_null() && users_ids_json.is_array())
+		{
+			auto user_ids = users_ids_json.as_array();
+			std::set<std::wstring> ids;
+			//std::copy(user_ids.begin(), user_ids.end(), std::inserter(ids, ids.begin()));
+			std::for_each(user_ids.begin(), user_ids.end(), [&ids](const web::json::value& id) { ids.insert(id.as_string()); });
+			post.EndorsedUsers(ids);
+		}
 	}
 	post.Body(*wrapper[U("body")]);
 	post.Author(Create<TwitchUser>(value.at(U("user"))));

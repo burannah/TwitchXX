@@ -29,7 +29,7 @@ namespace TwitchXX
 	{
 		std::tm t = {};
 		std::wistringstream ss(cs);
-		ss >> std::get_time(&t, U("%Y-%m-%dT%H:%M:%SZ")); //TODO: Add time zone handling here
+		ss >> std::get_time(&t, U("%Y-%m-%dT%H:%M:%S"));
 		if (ss.fail())
 		{
 			throw std::runtime_error("Can't parse channel creation time!");
@@ -43,7 +43,12 @@ namespace TwitchXX
 		std::wstringstream ss;
 		tm tt;
 		localtime_s(&tt, &t);
-		ss << std::put_time(&tt, U("%c %Z"));
+		if (tt.tm_isdst) //WTF?!
+		{
+			t = std::chrono::system_clock::to_time_t(tp - std::chrono::hours(1));
+			localtime_s(&tt, &t);
+		}
+		ss << std::put_time(&tt, U("%Y-%m-%dT%H:%M:%SZ"));
 		return ss.str();
 	}
 }

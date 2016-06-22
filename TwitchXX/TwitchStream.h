@@ -65,7 +65,7 @@ namespace TwitchXX
 		const auto& Created() const { return _created; }
 		std::wstring CreatedAsString() const;
 
-		void Id(size_t id) { _id = id; }
+		void Id(unsigned long long id) { _id = id; }
 		auto Id() const { return _id; }
 
 		void Channel(const TwitchChannel& create) { _channel = create;  }
@@ -86,7 +86,7 @@ namespace TwitchXX
 		size_t _video_height;
 		bool _is_playlist;
 		Date _created;
-		size_t _id;
+		unsigned long long _id;
 		TwitchChannel _channel;
 		ImageCollection _preview;
 	};

@@ -17,7 +17,7 @@ TwitchXX::TwitchChannel TwitchXX::TwitchChannels::GetChannel(const std::wstring 
 		//TODO: Come back when auth feature is implemented
 		throw std::runtime_error("Trying to get channel object of authenticated user. Auth feature is not implemented yet!");
 	}
-	web::uri_builder builder (U("/cannels/") + name + U("/"));
+	web::uri_builder builder (U("/channels/") + name + U("/"));
 	auto value = (*_request)(builder.to_uri());
 	if (value.is_null())
 	{
@@ -29,7 +29,7 @@ TwitchXX::TwitchChannel TwitchXX::TwitchChannels::GetChannel(const std::wstring 
 }
 TwitchXX::TwitchUsersContainer TwitchXX::TwitchChannels::GetChannelEditors(const std::wstring & name) const
 {
-	web::uri_builder builder(U("/cannels/") + name + U("/editors"));
+	web::uri_builder builder(U("/channels/") + name + U("/editors"));
 	auto value = (*_request)(builder.to_uri());
 	if (value.is_null())
 	{
@@ -65,9 +65,7 @@ TwitchXX::TwitchChannel TwitchXX::TwitchChannels::UpdateChannel(const std::wstri
 	}
 	if(o.find(U("delay"))== o.end())
 	{
-		std::wstringstream ss;
-		ss << channel.Delay();
-		o[U("delay")] = ss.str();
+		o[U("delay")] = std::to_wstring(channel.Delay());
 	}
 
 	web::uri_builder builder(U("/channels/") + name + U("/"));
@@ -76,19 +74,18 @@ TwitchXX::TwitchChannel TwitchXX::TwitchChannels::UpdateChannel(const std::wstri
 		builder.append_query(option.first, option.second);
 	}
 	auto value = (*_request)(builder.to_uri(), web::http::methods::PUT);
-	if (value.is_null() && _request->status_code() == 422)
+	if (value.is_null() || _request->status_code() == 422)
 	{
 		throw std::runtime_error("The channel is not partnered!");
 	}
 
 	//TODO: value & channel sanity check?
-
 	return GetChannel(name);
 }
 
 std::wstring TwitchXX::TwitchChannels::ResetStreamKey(const std::wstring& channel_name) const
 {
-	web::uri_builder builder(U("/cannels/") + channel_name + U("/stream_key"));
+	web::uri_builder builder(U("/channels/") + channel_name + U("/stream_key"));
 	auto value = (*_request)(builder.to_uri(),web::http::methods::DEL);
 
 	if(value.is_null())
@@ -101,7 +98,7 @@ std::wstring TwitchXX::TwitchChannels::ResetStreamKey(const std::wstring& channe
 
 bool TwitchXX::TwitchChannels::StartCommercial(const std::wstring& channel_name, size_t length) const
 {
-	web::uri_builder builder(U("/cannels/") + channel_name + U("/stream_key"));
+	web::uri_builder builder(U("/channels/") + channel_name + U("/commercial"));
 	static std::set<size_t> valid_lengths{ 30, 60, 90 , 120, 150, 180 };
 	if (valid_lengths.find(length) == valid_lengths.end())
 	{

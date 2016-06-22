@@ -23,7 +23,7 @@ TwitchXX::TwitchEmoticonsContainer TwitchXX::TwitchChat::GetEmoticons() const
 	return result;
 }
 
-std::set<TwitchXX::TwitchChat::EmoticonImage> TwitchXX::TwitchChat::GetEmoticoneImages(std::set<size_t> sets) const
+std::set<TwitchXX::EmoticonImage> TwitchXX::TwitchChat::GetEmoticoneImages(std::set<size_t> sets) const
 {
 	if(sets.size() == 0)
 	{
@@ -35,7 +35,7 @@ std::set<TwitchXX::TwitchChat::EmoticonImage> TwitchXX::TwitchChat::GetEmoticone
 	}
 }
 
-std::set<TwitchXX::TwitchChat::ChannelBadge> TwitchXX::TwitchChat::GetChannelBadges(std::wstring& channel_name) const
+std::set<TwitchXX::ChannelBadge> TwitchXX::TwitchChat::GetChannelBadges(std::wstring& channel_name) const
 {
 	web::uri_builder builder(U("/chat/") + channel_name + U("/badges"));
 	auto response = (*_request)(builder.to_uri());
@@ -54,7 +54,7 @@ std::set<TwitchXX::TwitchChat::ChannelBadge> TwitchXX::TwitchChat::GetChannelBad
 	return result;
 }
 
-std::set<TwitchXX::TwitchChat::EmoticonImage> TwitchXX::TwitchChat::GetEmoticonsImagesAll() const
+std::set<TwitchXX::EmoticonImage> TwitchXX::TwitchChat::GetEmoticonsImagesAll() const
 {
 	web::uri_builder builder(U("/chat/emoticon_images"));
 	auto resposne = (*_request)(builder.to_uri());
@@ -74,7 +74,7 @@ std::set<TwitchXX::TwitchChat::EmoticonImage> TwitchXX::TwitchChat::GetEmoticons
 	return result;
 }
 
-std::set<TwitchXX::TwitchChat::EmoticonImage> TwitchXX::TwitchChat::GetEmoticonsImagesBySets(const std::set<unsigned>& sets) const
+std::set<TwitchXX::EmoticonImage> TwitchXX::TwitchChat::GetEmoticonsImagesBySets(const std::set<unsigned>& sets) const
 {
 	web::uri_builder builder(U("/chat/emoticon_images"));
 	std::wstringstream ss;
