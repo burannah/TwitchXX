@@ -9,6 +9,7 @@ namespace TwitchXX
 	public:
 		TwitchTeam();
 		virtual ~TwitchTeam();
+
 		bool operator==(const TwitchTeam& other) const
 		{
 			return _id == other._id;

@@ -75,6 +75,9 @@
     <ClInclude Include="TwitchEmoticon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TwitchException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TwitchXX.cpp">

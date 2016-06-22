@@ -16,6 +16,7 @@ namespace TwitchXX
 		virtual double as_double() const = 0;
 		virtual web::json::number as_number() const = 0;
 		virtual unsigned int as_uint() const = 0;
+		virtual unsigned long long as_ulong() const { return 0; }
 
 
 		virtual operator std::wstring() const { return as_string(); };
@@ -24,6 +25,9 @@ namespace TwitchXX
 		virtual operator double() const { return as_double(); }
 		virtual operator web::json::number() const { return as_number();}
 		virtual operator unsigned int() const { return as_uint(); }
+		virtual operator unsigned long long() const { return as_ulong(); }
+
+
 	};
 
 	class JsonNotNullValueWrapper : public JsonValueWrapper
@@ -52,7 +56,10 @@ namespace TwitchXX
 		{ return  _json.as_number(); }
 
 		unsigned int as_uint() const override
-		{ return _json.as_number().to_uint32();	}
+		{ return _json.is_string() ? std::stoul(_json.as_string()) : _json.as_number().to_uint32();	} //TODO: Not sure about the conversion from unsigned long to unsigned int
+
+		unsigned long long as_ulong() const override
+		{ return _json.is_string()? std::stoll(_json.as_string()) : _json.as_number().to_uint64(); }
 
 	private:
 		web::json::value _json;
@@ -67,6 +74,7 @@ namespace TwitchXX
 		double as_double() const override { return 0; };
 		web::json::number as_number() const override { return web::json::value(0).as_number(); };
 		unsigned int as_uint() const override { return 0; }
+		unsigned long long as_ulong() const override { return 0; }
 	};
 
 

@@ -2,6 +2,7 @@
 #include "TwitchChannels.h"
 #include <cpprest/uri_builder.h>
 #include "JsonWrapper.h"
+#include "TwitchException.h"
 
 namespace TwitchXX
 {
@@ -138,12 +139,6 @@ std::tuple<size_t, size_t> TwitchXX::TwitchStreams::GetSummary(const std::wstrin
 
 TwitchXX::TwitchStreamsContainer TwitchXX::TwitchStreams::GetFollowedStreams(TwitchStream::Type type)
 {
-	//TODO: Implement auth!!!
-	//TODO: Current version of api doesnt support authorization.
-	//TODO: So this will not work
-	throw std::runtime_error("Not implemented!");
-
-
 	_limit = max_limit;
 	_offset = 0;
 	TwitchStreamsContainer result;
@@ -159,7 +154,14 @@ TwitchXX::TwitchStreamsContainer TwitchXX::TwitchStreams::GetFollowedStreams(Twi
 		auto value = (*_request)(builder.to_uri());
 		if (value.is_null())
 		{
-			break;
+			if(_request->status_code() == web::http::status_codes::Unauthorized)
+			{
+				throw TwitchException("Unable to get followed streams", _request->status_code());
+			}
+			else
+			{
+				break;
+			}
 		}
 
 		auto top = value.at(U("streams"));
@@ -189,7 +191,7 @@ TwitchXX::TwitchStreamsContainer TwitchXX::TwitchStreams::GetFollowedStreams(Twi
 		std::wcout << "Total number of streams followed: " << value.at(U("_total")).as_integer()<<"\n";
 #endif // DEBUG
 	}
-	
+	return result;
 }
 
 web::uri_builder TwitchXX::TwitchStreams::GetBuilder(const std::wstring& url, const options& op)

@@ -50,3 +50,52 @@ TEST_F(TwitchXXTest,TopStreams)
 		EXPECT_EQ(stream.Game(), L"Dota 2");
 	}
 }
+
+TEST_F(TwitchXXTest,FeaturedStreams)
+{
+	TwitchXX::TwitchFeaturedStreamsContainer result;
+	EXPECT_NO_THROW(
+	{
+		result = _api->GetFeaturedStreams();
+	});
+	EXPECT_GT(result.size(), unsigned{ 0 }); //Expecting some featured streams
+	EXPECT_NE(result.begin()->Title(), L""); //Expecting some title;
+}
+
+TEST_F(TwitchXXTest,GetSummary)
+{
+	std::tuple<size_t, size_t> result;
+	EXPECT_NO_THROW(
+	{
+		result = _api->GetSummary();
+	});
+
+	//Someone is out there... watching
+	EXPECT_GT(std::get<0>(result), unsigned{ 1 }); //viewers
+	EXPECT_GT(std::get<1>(result), unsigned{ 1 }); //channels
+
+	EXPECT_NO_THROW(
+	{
+		result = _api->GetSummary(L"Dota 2");
+	});
+
+	//Long live Dota!
+	EXPECT_GT(std::get<0>(result), unsigned{ 1 });
+	EXPECT_GT(std::get<1>(result), unsigned{ 1 });
+}
+
+TEST_F(TwitchXXTest,GetFollowedStreams)
+{
+	EXPECT_NO_THROW(
+	{
+		auto result = _api->FollowedStreams();
+	});
+}
+
+TEST_F(TwitchXXTest,GetChannel)
+{
+	EXPECT_NO_THROW(
+	{
+		auto result = _api->GetChannel(L"starladder1");
+	});
+}

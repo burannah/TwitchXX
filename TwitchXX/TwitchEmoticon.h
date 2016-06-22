@@ -16,7 +16,10 @@ namespace TwitchXX
 			std::wstring Url;
 
 			bool operator<(const EmoticoneImageDescriptor& desc) const { return SetId < desc.SetId; }
+			bool operator==(const EmoticoneImageDescriptor& desc) const { return Url == desc.Url; }
 		};
+
+		bool operator==(const TwitchEmoticon& other) const { return _regex == other._regex && _images == other._images; }
 
 		bool operator<(const TwitchEmoticon& emoticon) const { return _regex < emoticon._regex; }
 
