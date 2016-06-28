@@ -8,11 +8,6 @@ TwitchXX::TwitchStream::TwitchStream()
 {
 }
 
-
-TwitchXX::TwitchStream::~TwitchStream()
-{
-}
-
 void TwitchXX::TwitchStream::Created(const std::wstring& ccs)
 {
 	_created = DateFromString(ccs);

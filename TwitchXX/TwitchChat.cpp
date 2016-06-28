@@ -1,10 +1,6 @@
 ﻿#include "TwitchChat.h"
 #include "JsonWrapper.h"
 
-namespace TwitchXX {
-	class JsonWrapper;
-}
-
 TwitchXX::TwitchEmoticonsContainer TwitchXX::TwitchChat::GetEmoticons() const
 {
 	web::uri_builder builder(U("/chat/emoticons"));
@@ -47,6 +43,7 @@ std::set<TwitchXX::ChannelBadge> TwitchXX::TwitchChat::GetChannelBadges(std::wst
 
 	for (const auto& it : response.as_object())
 	{
+		if (it.second.is_null() || it.first == U("_links")) continue;;
 		JsonWrapper wrapper(it.second);
 		result.insert({it.first, *wrapper[U("alpha")],*wrapper[U("image")],*wrapper[U("svg")]});
 	}

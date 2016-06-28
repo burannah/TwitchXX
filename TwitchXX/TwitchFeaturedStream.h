@@ -4,40 +4,59 @@
 
 namespace TwitchXX
 {
+	///Twitch featured stream object
+	/** This class represents twitch featured stream object. Almost like normal stream object, but with some additional fields*/
 	class TwitchFeaturedStream
 	{
 	public:
-		TwitchFeaturedStream();
-		virtual ~TwitchFeaturedStream();
-
+		///Less than opeartor
 		bool operator<(const TwitchFeaturedStream& other) const { return _stream < other._stream; }
+		///Equals operator
 		bool operator==(const TwitchFeaturedStream& other) const { return _stream == other._stream; }
 
-		void Image(const std::wstring& s) { _image = s; }
+		///@{
+		/// Image.
 		const std::wstring& Image() const { return _image; }
+		void Image(const std::wstring& s) { _image = s; }
+		///@}
 
-		void Text(const std::wstring& s) { _text = s; }
+		///@{
+		/// Text.
 		const std::wstring& Text() const { return _text; }
+		void Text(const std::wstring& s) { _text = s; }
+		///@}
 
-		void Title(const std::wstring& s) { _title = s; }
+		///@{
+		/// Title.
 		const std::wstring& Title() const { return  _title; }
+		void Title(const std::wstring& s) { _title = s; }
+		///@}
 
-		void Sponsored(bool s) { _sponsored = s; }
+		///@{
+		/// Is sponsored?
 		bool Sponsored() const { return _sponsored; }
+		void Sponsored(bool s) { _sponsored = s; }
+		///@}
 
-		void Scheduled(bool s) { _scheduled = s; }
+		///@{
+		/// Is scheduled?
 		bool Scheduled() const { return _scheduled; }
+		void Scheduled(bool s) { _scheduled = s; }
+		///@}
 
-		void Stream(const TwitchStream& s) { _stream = s; }
+		///@{
+		/// Underlying stream object (real stream)
 		const TwitchStream& Stream() const { return _stream; }
+		void Stream(const TwitchStream& s) { _stream = s; }
+		///@}
 
 
 	private:
 		std::wstring _image;
 		std::wstring _text;
 		std::wstring _title;
-		bool _sponsored;
-		bool _scheduled;
+		bool _sponsored = false;
+		bool _scheduled = false;
 		TwitchXX::TwitchStream _stream;
 	};
 	

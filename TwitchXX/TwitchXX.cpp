@@ -44,10 +44,13 @@ TwitchXX::Api::Api(const std::wstring& client_id, Version version, std::shared_p
 	}
 	Options->insert(std::make_pair(U("version"), _version[version]));
 
-	_streams = std::make_unique<TwitchStreams>();
-	_channels = std::make_unique<TwitchChannels>();
-	_channel_feed = std::make_unique<TwitchChannelFeed>();
-	_chat = std::make_unique<TwitchChat>();
+	auto request = std::make_shared<MakeRequest>((*Options)[U("version")], (*Options)[U("api_key")], (*Options)[U("token")]);
+
+	_streams = std::make_unique<TwitchStreams>(request);
+	_channels = std::make_unique<TwitchChannels>(request);
+	_channel_feed = std::make_unique<TwitchChannelFeed>(request);
+	_chat = std::make_unique<TwitchChat>(request);
+	_games = std::make_unique<TwitchGames>(request);
 
 	if(log != nullptr)
 	{
@@ -70,10 +73,9 @@ void TwitchXX::Api::AddLogger(std::shared_ptr<Logger>log)
 	}
 }
 
-TwitchXX::TwitchGamesVector TwitchXX::Api::TopGames(size_t top_count)
+TwitchXX::TwitchGamesVector TwitchXX::Api::TopGames(size_t top_count) const
 {
-	TwitchGames games(100);
-	return games.GetTopGames(top_count);
+	return _games->GetTopGames(top_count);
 }
 
 TwitchXX::TwitchStream TwitchXX::Api::GetStream(const std::wstring& name) const

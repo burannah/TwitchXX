@@ -98,28 +98,13 @@
     <ClCompile Include="TwitchStream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TwitchChannel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TwitchChannels.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TwitchFeaturedStream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MakeRequest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TwitchUser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TwitchTeam.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TwitchChannelFeed.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TwitchPost.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TwitchChat.cpp">

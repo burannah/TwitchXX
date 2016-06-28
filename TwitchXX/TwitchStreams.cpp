@@ -4,21 +4,6 @@
 #include "JsonWrapper.h"
 #include "TwitchException.h"
 
-namespace TwitchXX
-{
-	size_t TwitchStreams::_total_size = 0;
-}
-
-TwitchXX::TwitchStreams::TwitchStreams()
-{
-
-}
-
-
-TwitchXX::TwitchStreams::~TwitchStreams()
-{
-}
-
 TwitchXX::TwitchStream TwitchXX::TwitchStreams::GetStream(const std::wstring & chanel) const
 {
 	auto builder = GetBuilder(U("/streams/") + chanel + U("/"));

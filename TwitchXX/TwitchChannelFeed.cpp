@@ -3,10 +3,6 @@
 #include "JsonWrapper.h"
 #include "TwitchException.h"
 
-TwitchXX::TwitchChannelFeed::~TwitchChannelFeed()
-{
-}
-
 TwitchXX::TwitchPostsContainer TwitchXX::TwitchChannelFeed::GetPosts(const std::wstring & channel_name, size_t limit) const
 {
 	web::uri_builder first_builder(U("/feed/") + channel_name + U("/posts"));
@@ -60,16 +56,24 @@ TwitchXX::TwitchPost TwitchXX::TwitchChannelFeed::GetPost(const std::wstring & c
 TwitchXX::TwitchPost TwitchXX::TwitchChannelFeed::Post(const std::wstring& channel_name, const std::wstring & body, bool share) const
 {
 	web::uri_builder builder(U("/feed/") + channel_name + U("/posts"));
-	builder.append_query(U("content"), body);
-	builder.append_query(U("share"), share);
 
-	auto response = (*_request)(builder.to_uri(), web::http::methods::POST);
+	web::json::value request_body;
+	request_body[U("content")] = web::json::value::string(body);
+	request_body[U("share")] = web::json::value::boolean(share);
+
+	auto response = (*_request)(builder.to_uri(), web::http::methods::POST,request_body);
 	if(_request->status_code()!= web::http::status_codes::OK)
 	{
 		throw TwitchException("Unable to create post!", _request->status_code());
 	}
+	auto post = Create<TwitchPost>(response[U("post")]);
+	auto tweet = response[U("tweet")];
+	if(!tweet.is_null())
+	{
+		post.Tweet(response[U("tweet")].as_string());
+	}
 
-	return Create<TwitchPost>(response);
+	return post;
 }
 
 bool TwitchXX::TwitchChannelFeed::DeletePost(const std::wstring & channel_name, unsigned long long id) const
@@ -138,15 +142,14 @@ TwitchXX::TwitchPost TwitchXX::Create<TwitchXX::TwitchPost>(const web::json::val
 		if (!users_ids_json.is_null() && users_ids_json.is_array())
 		{
 			auto user_ids = users_ids_json.as_array();
-			std::set<std::wstring> ids;
+			std::set<unsigned long long> ids;
 			//std::copy(user_ids.begin(), user_ids.end(), std::inserter(ids, ids.begin()));
-			std::for_each(user_ids.begin(), user_ids.end(), [&ids](const web::json::value& id) { ids.insert(id.as_string()); });
+			std::for_each(user_ids.begin(), user_ids.end(), [&ids](const web::json::value& id) { ids.insert(id.as_number().to_uint64()); });
 			post.EndorsedUsers(ids);
 		}
 	}
 	post.Body(*wrapper[U("body")]);
 	post.Author(Create<TwitchUser>(value.at(U("user"))));
-	post.Tweet(*wrapper[U("tweet")]);
 
 	return post;
 }

@@ -1,22 +1,23 @@
 #include "TwitchChannels.h"
 #include "JsonWrapper.h"
+#include "TwitchException.h"
 
 
-TwitchXX::TwitchChannels::TwitchChannels()
+TwitchXX::TwitchChannels::TwitchChannels(std::shared_ptr<MakeRequest> request)
+	: TwitchRequest<TwitchXX::TwitchChannel>(request) 
 {
 
 }
 
-TwitchXX::TwitchChannels::~TwitchChannels()
-{
-}
 TwitchXX::TwitchChannel TwitchXX::TwitchChannels::GetChannel(const std::wstring & name) const
 {
-	if (name.length() == 0)
+	//TODO: add test for getting channel of authenticated user
+	std::wstring request_string = U("/channel");
+	if (name.length() > 0)
 	{
-		//TODO: Come back when auth feature is implemented
-		throw std::runtime_error("Trying to get channel object of authenticated user. Auth feature is not implemented yet!");
+		request_string += U("s/") + name + U("/");
 	}
+
 	web::uri_builder builder (U("/channels/") + name + U("/"));
 	auto value = (*_request)(builder.to_uri());
 	if (value.is_null())
@@ -68,19 +69,22 @@ TwitchXX::TwitchChannel TwitchXX::TwitchChannels::UpdateChannel(const std::wstri
 		o[U("delay")] = std::to_wstring(channel.Delay());
 	}
 
+	web::json::value channelJSON,requestJSON;
+
 	web::uri_builder builder(U("/channels/") + name + U("/"));
 	for (const auto& option : o)
 	{
-		builder.append_query(option.first, option.second);
+		channelJSON[option.first] = web::json::value::string(option.second);
 	}
-	auto value = (*_request)(builder.to_uri(), web::http::methods::PUT);
+	requestJSON[U("channel")] = channelJSON;
+
+	auto value = (*_request)(builder.to_uri(), web::http::methods::PUT,requestJSON);
 	if (value.is_null() || _request->status_code() == 422)
 	{
 		throw std::runtime_error("The channel is not partnered!");
 	}
 
-	//TODO: value & channel sanity check?
-	return GetChannel(name);
+	return Create<TwitchChannel>(value);
 }
 
 std::wstring TwitchXX::TwitchChannels::ResetStreamKey(const std::wstring& channel_name) const
@@ -106,12 +110,14 @@ bool TwitchXX::TwitchChannels::StartCommercial(const std::wstring& channel_name,
 	}
 	builder.append_query(U("length"), length);
 	auto value = (*_request)(builder.to_uri(), web::http::methods::POST);
-	if(_request->status_code() == 422)
-	{
-		throw std::runtime_error("A commercial was ran less than 8 minutes ago, or the channel is not partnered.");
-	}
 
-	return _request->status_code() == 204;
+	switch(_request->status_code())
+	{
+		case 204: return true;
+		case 422: return false; //A commercial was ran less than 8 minutes ago, or the channel is not partnered.
+		default: TwitchException("Unable to start commercial for this channel!",_request->status_code());
+	}
+	return false;
 }
 
 TwitchXX::TwitchTeamsContainer TwitchXX::TwitchChannels::GetTeams(const std::wstring& channel_name) const

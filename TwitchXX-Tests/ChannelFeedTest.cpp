@@ -29,8 +29,8 @@ TEST_F(ChannelFeedTest,GetPosts1)
 	EXPECT_EQ(user.Bio(), U("i like turtles and cats"));
 	EXPECT_EQ(user.Created(), TwitchXX::DateFromString(U("2015-10-15T19:52:17Z")));
 	EXPECT_EQ(user.CreatedAsString(), U("2015-10-15T19:52:17Z"));
-	EXPECT_EQ(user.Updated(), TwitchXX::DateFromString(U("2016-06-07T20:47:38Z")));
-	EXPECT_EQ(user.UpdatedAsString(), U("2016-06-07T20:47:38Z"));
+	EXPECT_EQ(user.Updated(), TwitchXX::DateFromString(U("2016-06-21T06:01:05Z")));
+	EXPECT_EQ(user.UpdatedAsString(), U("2016-06-21T06:01:05Z"));
 	EXPECT_EQ(user.Logo(), U(""));
 }
 
@@ -60,8 +60,8 @@ TEST_F(ChannelFeedTest, GetPosts100)
 	EXPECT_EQ(user.Bio(), U("i like turtles and cats"));
 	EXPECT_EQ(user.Created(), TwitchXX::DateFromString(U("2015-10-15T19:52:17Z")));
 	EXPECT_EQ(user.CreatedAsString(), U("2015-10-15T19:52:17Z"));
-	EXPECT_EQ(user.Updated(), TwitchXX::DateFromString(U("2016-06-07T20:47:38Z")));
-	EXPECT_EQ(user.UpdatedAsString(), U("2016-06-07T20:47:38Z"));
+	EXPECT_EQ(user.Updated(), TwitchXX::DateFromString(U("2016-06-21T06:01:05Z")));
+	EXPECT_EQ(user.UpdatedAsString(), U("2016-06-21T06:01:05Z"));
 	EXPECT_EQ(user.Logo(), U(""));
 }
 
@@ -89,8 +89,8 @@ TEST_F(ChannelFeedTest,GetPostById)
 	EXPECT_EQ(user.Bio(), U("i like turtles and cats"));
 	EXPECT_EQ(user.Created(), TwitchXX::DateFromString(U("2015-10-15T19:52:17Z")));
 	EXPECT_EQ(user.CreatedAsString(), U("2015-10-15T19:52:17Z"));
-	EXPECT_EQ(user.Updated(), TwitchXX::DateFromString(U("2016-06-07T20:47:38Z")));
-	EXPECT_EQ(user.UpdatedAsString(), U("2016-06-07T20:47:38Z"));
+	EXPECT_EQ(user.Updated(), TwitchXX::DateFromString(U("2016-06-21T06:01:05Z")));
+	EXPECT_EQ(user.UpdatedAsString(), U("2016-06-21T06:01:05Z"));
 	EXPECT_EQ(user.Logo(), U(""));
 }
 
@@ -111,7 +111,7 @@ TEST_F(ChannelFeedTest, CreateDeletePost)
 	EXPECT_EQ(post.EndorsedUsers().size(), 0);
 	EXPECT_EQ(post.Body(), post_body);
 
-	bool result = false;
+	auto result = false;
 	ASSERT_NO_THROW(
 	{
 		result = _api->DeletePost(_channel_name,post.Id());

@@ -4,52 +4,86 @@
 
 namespace TwitchXX
 {
+	///Twitch team class
+	/** This class represents twitch team object.*/
 	class TwitchTeam
 	{
 	public:
-		TwitchTeam();
-		virtual ~TwitchTeam();
-
+		///Operator equals
+		/// Distinc objects by Id
 		bool operator==(const TwitchTeam& other) const
 		{
 			return _id == other._id;
 		}
 
+
+		///Operator less than
+		/// Order teams by creation date and last updated date
 		bool operator<(const TwitchTeam& other) const
 		{
 			return _created == other._created ? _updated < other._updated : _created < other._created;;
 		}
 
-		void Created(const std::wstring& cs) { _created = DateFromString(cs); };
+		///@{
+		/// Creation date
 		const auto& Created() const { return _created; }
+		void Created(const std::wstring& cs) { _created = DateFromString(cs); };
+		/// Creation date as string ISO 8601
 		std::wstring CreatedAsString() const { return DateToString(_created); };
+		///@}
 
-		void Updated(const std::wstring& cs) { _updated = DateFromString(cs); };
+		///@{
+		/// Update date
 		const auto& Updated() const { return _updated; }
+		void Updated(const std::wstring& cs) { _updated = DateFromString(cs); };
+		/// Update date as string ISO 8601
 		std::wstring UpdatedAsString() const { return DateToString(_updated); };
+		///@}
 
-		void Name(const std::wstring s) { _name = s; }
+		///@{
+		/// Name
 		const std::wstring& Name() const { return _name; }
+		void Name(const std::wstring s) { _name = s; }
+		///@}
 
-		void Id(size_t id) { _id = id; }
+		///@{
+		/// Id
 		size_t Id() const { return _id; }
+		void Id(size_t id) { _id = id; }
+		///@}
 
-		void DisplayName(const std::wstring& s) { _display_name = s; }
+		///@{
+		/// Display name
 		const std::wstring& DisplayName() const { return _display_name; }
+		void DisplayName(const std::wstring& s) { _display_name = s; }
+		///@}
 
-		void Logo(const std::wstring s) { _logo = s; }
+		///@{
+		/// Logo
 		const std::wstring& Logo() const { return _logo; }
+		void Logo(const std::wstring s) { _logo = s; }
+		///@}
 
-		void Info(const std::wstring s) { _info = s; }
+		///@{
+		/// Info
 		const std::wstring& Info() const { return _info; }
+		void Info(const std::wstring s) { _info = s; }
+		///@}
 
-		void Banner(const std::wstring s) { _banner = s; }
+		///@{
+		/// Banner
 		const std::wstring& Banner() const { return _banner; }
+		void Banner(const std::wstring s) { _banner = s; }
+		///@}
 
-		void Background(const std::wstring s) { _background = s; }
+		///@{
+		/// Background
 		const std::wstring& Background() const { return _background; }
+		void Background(const std::wstring s) { _background = s; }
+		///@}
+
 	private:
-		size_t _id;
+		size_t _id = 0;
 		std::wstring _name;
 		std::wstring _info;
 		std::wstring _display_name;

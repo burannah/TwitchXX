@@ -3,6 +3,8 @@
 
 namespace TwitchXX
 {
+	///A virtual base for JsonNotNullValueWrapper and JsonNullValueWrapper
+	/** An abstract interface class*/
 	class JsonValueWrapper
 	{
 	public:
@@ -29,17 +31,23 @@ namespace TwitchXX
 
 
 	};
-
+	//A web::json::value objects
+	/**
+	* A class representin an actual web::json::value object.
+	*/
 	class JsonNotNullValueWrapper : public JsonValueWrapper
 	{
 	public:
+		///Wrapping up web::json::value object
 		explicit JsonNotNullValueWrapper(const web::json::value& value) : _json(value) {};
+		///Must always wrap some existing object
 		JsonNotNullValueWrapper() = delete;
 
-		virtual ~JsonNotNullValueWrapper()
-		{
-		}
 
+		///@{
+		/** Basic type getters for stub-object.
+		* These methods dosen't get the actual value type of underlying, so it's still can throw. (It's intentional. To prevent implicit type conversions e.t.c).
+		*/
 		utility::string_t as_string() const override
 		{ return _json.as_string(); }
 
@@ -56,15 +64,20 @@ namespace TwitchXX
 		{ return  _json.as_number(); }
 
 		unsigned int as_uint() const override
-		{ return _json.is_string() ? std::stoul(_json.as_string()) : _json.as_number().to_uint32();	} //TODO: Not sure about the conversion from unsigned long to unsigned int
+		{ return _json.is_string() ? std::stoul(_json.as_string()) : _json.as_number().to_uint32();	}
 
 		unsigned long long as_ulong() const override
 		{ return _json.is_string()? std::stoll(_json.as_string()) : _json.as_number().to_uint64(); }
+		///@}
 
 	private:
 		web::json::value _json;
 	};
 
+	/// web::json::value wrapper for non-existing elements.
+	/**
+	* Used as a stub, to get a default value of any requested type, if such element is not present in some object wrapped by JsonWrapper class object.
+	*/
 	class JsonNullValueWrapper: public JsonValueWrapper
 	{
 	public:
@@ -77,14 +90,21 @@ namespace TwitchXX
 		unsigned long long as_ulong() const override { return 0; }
 	};
 
-
+	/// web::json::value::object wrapper class
+	/** 
+	* Can be used to wrap up web::json::value::object objects to access thier elemets without a chance to get an exception, 
+	* if there is no such request element present. If key is present it returns its value, or default value otherwise.
+	*/
 	class JsonWrapper
 	{
 	public:
+		///Constructor.
 		explicit JsonWrapper(const web::json::value& value) : _json(value) {}
-		JsonWrapper() = delete;
+		///Cannot be empty, must wrap some json object.
+		JsonWrapper() = delete; 
 
-		bool param_exist(const std::wstring & param) { return _json.has_field(param) && !_json[param].is_null(); };
+		/// Accessing the values of keys
+		/** If key exist for current json object returns JsonNotNullValueWrapper object, and if it does not - JsonNullVAlueWrapper one.*/
 		std::unique_ptr<JsonValueWrapper> operator[] (const std::wstring& param)
 		{
 			if (param_exist(param)) 
@@ -94,6 +114,8 @@ namespace TwitchXX
 
 	private:
 		web::json::value _json;
+
+		bool param_exist(const std::wstring & param) { return _json.has_field(param) && !_json[param].is_null(); };
 	};
 	
 }

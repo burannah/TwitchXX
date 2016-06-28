@@ -2,52 +2,84 @@
 #include "TwitchDef.h"
 namespace TwitchXX
 {
+	///Twitch Users class
+	/** This class represents twitch user object.*/
 	class TwitchUser
 	{
 	public:
-		TwitchUser();
-		virtual ~TwitchUser();
-
+		///Equals operator
+		/// Distinct users by id
 		bool operator==(const TwitchUser& other) const
 		{
 			return _id == other._id;
 		}
 
+
+		///Less than operator
+		/// Order users by creation date and last updated date
 		bool operator<(const TwitchUser& other) const
 		{
 			return _created == other._created ? _updated < other._updated : _created < other._created;;
 		}
 
-		void Created(const std::wstring& cs) { _created = DateFromString(cs); };
+		///@{
+		/// Creation date
 		const auto& Created() const { return _created; }
+		/// Creation date as string ISO 8601
 		std::wstring CreatedAsString() const { return DateToString(_created); };
+		void Created(const std::wstring& cs) { _created = DateFromString(cs); };
+		///@}
 
-		void Updated(const std::wstring& cs) { _updated = DateFromString(cs); };
+
+		///@{
+		/// Updated date
 		const auto& Updated() const { return _updated; }
+		void Updated(const std::wstring& cs) { _updated = DateFromString(cs); };
+		/// Updated date as string ISO 8601
 		std::wstring UpdatedAsString() const { return DateToString(_updated); };
+		///@}
 
-		void Name(const std::wstring s) { _name = s; }
+		///@{
+		/// Name
 		const std::wstring& Name() const { return _name; }
+		void Name(const std::wstring s) { _name = s; }
+		///@}
 
-		void Id(size_t id) { _id = id; }
+		///@{
+		/// Id
 		size_t Id() const { return _id; }
+		void Id(size_t id) { _id = id; }
+		///@}
 
+		///@{
+		/// Display name
 		void DisplayName(const std::wstring& s) { _display_name = s; }
 		const std::wstring& DisplayName() const { return _display_name; }
+		///@}
 
-		void Logo(const std::wstring s) { _logo = s; }
+		///@{
+		/// Logo
 		const std::wstring& Logo() const { return _logo; }
+		void Logo(const std::wstring s) { _logo = s; }
+		///@}
 
-		void Type(const std::wstring s) { _type = s; }
+		///@{
+		/// Type
 		const std::wstring& Type() const { return _type; }
+		void Type(const std::wstring s) { _type = s; }
+		///@}
 
-		void Bio(const std::wstring s) { _bio = s; }
+		///@{
+		/// User's bio
 		const std::wstring& Bio() const { return _bio; }
+		void Bio(const std::wstring s) { _bio = s; }
+		///@}
+
 	private:
 		Date _created;
 		std::wstring _name;
 		Date _updated;
-		size_t _id;
+		size_t _id = 0;
 		std::wstring _display_name;
 		std::wstring _logo;
 		std::wstring _type; //TODO: to type?
