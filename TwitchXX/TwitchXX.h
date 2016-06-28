@@ -1,5 +1,11 @@
 #pragma once
 
+/** @defgroup TwitchXX
+*
+* This is a main module for accessing Twitch API
+*
+*/
+
 #include <memory>
 #include "TwitchGame.h"
 #include "TwitchStream.h"
@@ -14,6 +20,7 @@ namespace TwitchXX
 	class TwitchChannels;
 	class TwitchChannelFeed;
 	class TwitchChat;
+	class TwitchGames;
 
 	class Api
 	{
@@ -29,7 +36,7 @@ namespace TwitchXX
 		static void AddLogger(std::shared_ptr<Logger>log);
 
 		//Games
-		static TwitchGamesVector TopGames(size_t top_count = 0);
+		TwitchGamesVector TopGames(size_t top_count = 0) const;
 
 		//Streams
 		TwitchStream GetStream(const std::wstring& name) const;
@@ -66,6 +73,7 @@ namespace TwitchXX
 		std::unique_ptr<TwitchChannels> _channels;
 		std::unique_ptr<TwitchChannelFeed> _channel_feed;
 		std::unique_ptr<TwitchChat> _chat;
+		std::unique_ptr<TwitchGames> _games;
 
 
 	};

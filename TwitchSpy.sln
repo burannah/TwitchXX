@@ -5,8 +5,6 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TwitchXX", "TwitchXX\TwitchXX.vcxproj", "{456591EB-04E1-4E5E-A2BB-A7249CFDE8BF}"
 EndProject
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "BuildMongoDriver", "ThirdParty\MongoDriver\BuildMongoDriver\BuildMongoDriver.pyproj", "{5F26E0C8-E8BA-477A-A354-C27E844AE11C}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gtest", "ThirdParty\googletest\googletest\msvc\gtest.vcxproj", "{C8F6C172-56F2-4E76-B5FA-C3B423B31BE7}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TwitchXX-Tests", "TwitchXX-Tests\TwitchXX-Tests.vcxproj", "{82A93C5E-3A07-402A-9973-AC4A81BA42A3}"
@@ -31,12 +29,6 @@ Global
 		{456591EB-04E1-4E5E-A2BB-A7249CFDE8BF}.Release|x64.Build.0 = Release|x64
 		{456591EB-04E1-4E5E-A2BB-A7249CFDE8BF}.Release|x86.ActiveCfg = Release|Win32
 		{456591EB-04E1-4E5E-A2BB-A7249CFDE8BF}.Release|x86.Build.0 = Release|Win32
-		{5F26E0C8-E8BA-477A-A354-C27E844AE11C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5F26E0C8-E8BA-477A-A354-C27E844AE11C}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{5F26E0C8-E8BA-477A-A354-C27E844AE11C}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{5F26E0C8-E8BA-477A-A354-C27E844AE11C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5F26E0C8-E8BA-477A-A354-C27E844AE11C}.Release|x64.ActiveCfg = Release|Any CPU
-		{5F26E0C8-E8BA-477A-A354-C27E844AE11C}.Release|x86.ActiveCfg = Release|Any CPU
 		{C8F6C172-56F2-4E76-B5FA-C3B423B31BE7}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{C8F6C172-56F2-4E76-B5FA-C3B423B31BE7}.Debug|x64.ActiveCfg = Debug|Win32
 		{C8F6C172-56F2-4E76-B5FA-C3B423B31BE7}.Debug|x86.ActiveCfg = Debug|Win32

@@ -8,14 +8,9 @@
 namespace TwitchXX
 {
 	extern std::shared_ptr<Logger> Log;
-	size_t TwitchGames::_total_size = 0;
 }
 
 
-
-TwitchXX::TwitchGames::~TwitchGames()
-{
-}
 
 TwitchXX::ImageCollection TwitchXX::CreateCollection(const web::json::value& json)
 {
@@ -90,14 +85,14 @@ TwitchXX::TwitchGamesVector TwitchXX::TwitchGames::GetTopGames(size_t n)
 		std::wcout << "Before=" << count << " After=" << _objects.size() << " Chunk=" << chunk.size() << " Offset=" << _offset << " Total=" << _total_size << " Retries = " << retries << std::endl;
 	}
 
-	// Objects are sorted by names. We need to return mast watched of them == sorted by the number of viewers.
-	// So here comes some trick
+	/// Objects are sorted by names. We need to return mast watched of them == sorted by the number of viewers.
+	/// So here comes some trick
 	std::vector<TwitchGame> v(_objects.begin(), _objects.end());
 	std::sort(v.begin(), v.end(), [](const TwitchGame& a, const TwitchGame& b) { return a.Viewers() > b.Viewers(); });
 	return v;
 }
 
-web::uri_builder TwitchXX::TwitchGames::GetBuilder(size_t limit, size_t offset)
+web::uri_builder TwitchXX::TwitchGames::GetBuilder(size_t limit, size_t offset) const
 {
 	web::uri_builder builder(U("/games/top"));
 	builder.append_query(U("limit"), limit);

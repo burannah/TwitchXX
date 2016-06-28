@@ -7,35 +7,53 @@
 
 namespace TwitchXX
 {
-	class MongoLogger;
-
+	///Class and interface for this library's loggers.
+	/**
+	* You can derive from this class, implement your own logger and add it to the api object (TwitchXX::Api::AddLogger()).
+	* These loggers will be "chained" - so you can get twitch api logs in multiple plces simultaniously.
+	*/
 	class Logger
 	{
 	public:
-		Logger() {} ;
-
+		///Destructor
 		virtual ~Logger()
 		{
 		}
 
+		///Default copy assigment
+		Logger& operator=(const Logger&) = default;
+		///Default move assigment
+		Logger& operator=(Logger&&) = default;
+
+		///Log level enum.
+		/**
+		* In future Debug messages will only be showed if library compiled with DEBUG flag (to be decided).
+		*/
 		enum class LogLevel
 		{
-			Message,
-			Warning,
-			Error,
-			Debug
+			Message, ///< Message
+			Warning, ///< Warning
+			Error, ///< Error
+			Debug ///< Debug
 		};
-		virtual void Log(std::wstring msg, LogLevel level = LogLevel::Message) const
+
+		///Send messages to all subscribed loggers
+		/**
+		* Doesn't do any actual logging. Just check that all objects are alive and broadcast incoming message to them.
+		*/
+		virtual void Log(std::wstring msg, LogLevel level = LogLevel::Message)
 		{
-			//This log doesnt do any actual logging
-			std::for_each(_subscribers.begin(), _subscribers.end(), [&](const auto& log) {log->Log(msg, level); });
+			_subscribers.remove_if([](const auto& log) { return log.expired(); });
+			std::for_each(_subscribers.begin(), _subscribers.end(), [&](const auto& log) {if (auto sp = log.lock()) { sp->Log(msg, level); } });
 		}
-		virtual void Subscribe(std::shared_ptr<Logger> log)
+
+		///Subscribe a logger.
+		void Subscribe(std::weak_ptr<Logger> log)
 		{
 			_subscribers.push_back(log);
 		};
 
 	private:
-		std::list<std::shared_ptr<Logger>> _subscribers;
+		std::list<std::weak_ptr<Logger>> _subscribers;
 	};
 }
