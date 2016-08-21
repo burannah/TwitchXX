@@ -78,6 +78,9 @@
     <ClInclude Include="TwitchException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TwitchUsers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TwitchXX.cpp">
@@ -108,6 +111,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TwitchChat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TwitchUsers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

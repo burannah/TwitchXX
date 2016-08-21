@@ -62,7 +62,6 @@ namespace TwitchXX
 	};
 
 	template<> TwitchChannel Create(const web::json::value& value); ///< Constructs TwitchChannel object from json
-	template<> TwitchUser Create(const web::json::value& value); ///< Constructs TwitchUser object from json
 	template<> TwitchTeam Create(const web::json::value& value); ///< Constructs TwitchTeam object from json
 }
 

@@ -1,6 +1,7 @@
 #include "TwitchChannels.h"
 #include "JsonWrapper.h"
 #include "TwitchException.h"
+#include "TwitchUsers.h"
 
 
 TwitchXX::TwitchChannels::TwitchChannels(std::shared_ptr<MakeRequest> request)
@@ -166,24 +167,6 @@ TwitchXX::TwitchChannel TwitchXX::Create(const web::json::value & value)
 	channel.StreamKey(*wrapper[U("stream_key")]);
 
 	return channel;
-}
-
-template<>
-TwitchXX::TwitchUser TwitchXX::Create(const web::json::value & value)
-{
-	TwitchUser user;
-	JsonWrapper wrapper(value);
-
-	user.Created(*wrapper[U("created_at")]);
-	user.Name(*wrapper[U("name")]);
-	user.Updated(*wrapper[U("updated_at")]);
-	user.Id(*wrapper[U("_id")]);
-	user.DisplayName(*wrapper[U("display_name")]);
-	user.Logo(*wrapper[U("logo")]);
-	user.Type(*wrapper[U("type")]);
-	user.Bio(*wrapper[U("bio")]);
-
-	return user;
 }
 
 template <>

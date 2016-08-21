@@ -11,6 +11,7 @@
 #include "TwitchStream.h"
 #include "TwitchFeaturedStream.h"
 #include "TwitchPost.h"
+#include "TwitchUsers.h"
 
 namespace TwitchXX
 {
@@ -66,6 +67,11 @@ namespace TwitchXX
 		std::set<EmoticonImage> GetEmoticoneImages(std::set<size_t> sets = std::set<size_t>()) const;
 		std::set<ChannelBadge> GetChannelBadges(std::wstring& channel_name) const;
 
+		//Users
+		TwitchBlockedUsersContainer GetBlockedUsers(const std::wstring& user_name) const;
+		TwitchBlockedUser BlockUser(const std::wstring& user_name, const std::wstring& target_name) const;
+		bool UnblockUser(const std::wstring& user_name, const std::wstring& target_name) const;
+
 
 	private:
 		static std::map<Version, std::wstring> _version;
@@ -74,6 +80,7 @@ namespace TwitchXX
 		std::unique_ptr<TwitchChannelFeed> _channel_feed;
 		std::unique_ptr<TwitchChat> _chat;
 		std::unique_ptr<TwitchGames> _games;
+		std::unique_ptr<TwitchUsers> _users;
 
 
 	};

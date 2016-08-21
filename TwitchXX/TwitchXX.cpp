@@ -51,6 +51,7 @@ TwitchXX::Api::Api(const std::wstring& client_id, Version version, std::shared_p
 	_channel_feed = std::make_unique<TwitchChannelFeed>(request);
 	_chat = std::make_unique<TwitchChat>(request);
 	_games = std::make_unique<TwitchGames>(request);
+	_users = std::make_unique<TwitchUsers>(request);
 
 	if(log != nullptr)
 	{
@@ -186,4 +187,19 @@ std::set<TwitchXX::EmoticonImage> TwitchXX::Api::GetEmoticoneImages(std::set<siz
 std::set<TwitchXX::ChannelBadge> TwitchXX::Api::GetChannelBadges(std::wstring& channel_name) const
 {
 	return _chat->GetChannelBadges(channel_name);
+}
+
+TwitchXX::TwitchBlockedUsersContainer TwitchXX::Api::GetBlockedUsers(const std::wstring& user_name) const
+{
+	return _users->GetBlocked(user_name);
+}
+
+TwitchXX::TwitchBlockedUser TwitchXX::Api::BlockUser(const std::wstring& user_name, const std::wstring& target_name) const
+{
+	return _users->BlockUser(user_name, target_name);
+}
+
+bool TwitchXX::Api::UnblockUser(const std::wstring& user_name, const std::wstring& target_name) const
+{
+	return _users->UblockUser(user_name, target_name);
 }

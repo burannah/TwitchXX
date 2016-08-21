@@ -178,6 +178,7 @@
     <ClInclude Include="JsonWrapper.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="MakeRequest.h" />
+    <ClInclude Include="TwitchUsers.h" />
     <ClInclude Include="TwitchChannel.h" />
     <ClInclude Include="TwitchChannelFeed.h" />
     <ClInclude Include="TwitchChat.h" />
@@ -198,6 +199,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MakeRequest.cpp" />
+    <ClCompile Include="TwitchUsers.cpp" />
     <ClCompile Include="TwitchChannelFeed.cpp" />
     <ClCompile Include="TwitchChat.cpp" />
     <ClCompile Include="TwitchGame.cpp" />

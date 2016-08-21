@@ -13,11 +13,6 @@ protected:
 		_channel_name = U("burannah");
 	}
 
-	void TearDown() override
-	{
-		std::wcout << "TwitchXXTest: TearDown" << "\n";
-	}
-
 	std::unique_ptr<TwitchXX::Api> _api;
 	std::wstring _channel_name;
 

@@ -85,4 +85,50 @@ namespace TwitchXX
 		std::wstring _type; //TODO: to type?
 		std::wstring _bio;
 	};
+
+	///Twitch blocked user class
+	/** The same as TwithcUser but has some additional properties like date of block and block id*/
+	class TwitchBlockedUser
+	{
+	public:
+
+		///Equals operator
+		/// Distinct block records by id
+		bool operator==(const TwitchBlockedUser& other) const
+		{
+			return _block_id == other._block_id;
+		}
+
+		///Less than operator
+		/// Order users by updated date
+		bool operator<(const TwitchBlockedUser& other) const
+		{
+			return _block_updated == other._block_updated ? _user < other._user : _block_updated < other._block_updated;
+		}
+
+		///@{
+		/// Timestamp of block
+		const auto& BlockUpdated() const { return _block_updated; }
+		void BlockUpdated(const std::wstring& cs) { _block_updated = DateFromString(cs); };
+		/// Updated date as string ISO 8601
+		std::wstring BlockUpdatedAsString() const { return DateToString(_block_updated); };
+		///@}
+
+		///@{
+		/// Id
+		size_t BlockedId() const { return _block_id; }
+		void BlockedId(size_t id) { _block_id = id; }
+		///@}
+
+		///@{
+		const TwitchUser& User() const { return _user; }
+		TwitchUser& User() { return _user; }
+		void User(const TwitchUser& user) { _user = user; }
+		///@}
+
+	private:
+		size_t _block_id = 0;
+		Date _block_updated;
+		TwitchUser _user;
+	};
 }

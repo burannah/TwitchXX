@@ -17,6 +17,7 @@ namespace TwitchXX
 	class TwitchTeam;
 	class TwitchPost;
 	class TwitchEmoticon;
+	class TwitchBlockedUser;
 	///@}
 
 	template <typename T>
@@ -26,6 +27,7 @@ namespace TwitchXX
 	using TwitchStreamsContainer = TwitchContainer<TwitchStream>; ///< TwitchStream collection
 	using TwitchFeaturedStreamsContainer = TwitchContainer<TwitchFeaturedStream>; ///< TwitchFeaturedStreams collection
 	using TwitchUsersContainer = TwitchContainer<TwitchUser>; ///< TwitchUser collection
+	using TwitchBlockedUsersContainer = TwitchContainer<TwitchBlockedUser>; ///< Collection of blocked users
 	using TwitchStreamsVector = std::vector<TwitchStream>; ///< TwitchStream vector (explicit)
 	using TwitchChannelsContainer = TwitchContainer<TwitchChannel>; ///< TwitchChannel collection
 	using TwitchTeamsContainer = TwitchContainer<TwitchTeam>; ///< TwitchTeam collection

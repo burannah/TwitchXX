@@ -2,6 +2,7 @@
 #include "TwitchChannels.h"
 #include "JsonWrapper.h"
 #include "TwitchException.h"
+#include "TwitchUsers.h"
 
 TwitchXX::TwitchPostsContainer TwitchXX::TwitchChannelFeed::GetPosts(const std::wstring & channel_name, size_t limit) const
 {

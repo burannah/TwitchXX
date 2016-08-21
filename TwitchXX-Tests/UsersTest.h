@@ -1,9 +1,7 @@
 ﻿#pragma once
-#include <gtest/gtest.h>
-#include <TwitchXX.h>
-#include <cpprest/details/basic_types.h>
+#include "ChannelFeedTest.h"
 
-class ChannelTest : public ::testing::Test
+class UsersTest : public ::testing::Test
 {
 protected:
 	void SetUp() override

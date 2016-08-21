@@ -91,8 +91,8 @@ namespace TwitchXX
 	///Template function for creating Twitch objects from JSON
 	/** Default template is a stub, that throws std::runtime_error */
 	template<typename T>
-	T Create(const web::json::value& json)
-	{
+	T Create(const web::json::value& json) = delete;
+/*	{
 		throw std::runtime_error("Unknonw requet type!");
-	}
+	}*/
 }
