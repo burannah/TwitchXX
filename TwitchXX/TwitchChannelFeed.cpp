@@ -71,7 +71,7 @@ TwitchXX::TwitchPost TwitchXX::TwitchChannelFeed::Post(const std::wstring& chann
 	auto tweet = response[U("tweet")];
 	if(!tweet.is_null())
 	{
-		post.Tweet(response[U("tweet")].as_string());
+		post.Tweet.Set(response[U("tweet")].as_string());
 	}
 
 	return post;
@@ -131,14 +131,14 @@ TwitchXX::TwitchPost TwitchXX::Create<TwitchXX::TwitchPost>(const web::json::val
 	TwitchPost post;
 	JsonWrapper wrapper(value);
 
-	post.Id(*wrapper[U("id")]);
-	post.Created(*wrapper[U("created_at")]);
-	post.Deleted(*wrapper[U("deleted")]);
+	post.Id.Set(*wrapper[U("id")]);
+	post.Created.from_string(*wrapper[U("created_at")]);
+	post.Deleted.Set(*wrapper[U("deleted")]);
 	//post.Emotes(*wrapper[U("emotes")]);
 	if(value.has_field(U("reactions")) && !value.at(U("reactions")).is_null() && value.at(U("reactions")).size())
 	{
 		auto endorse_json = value.at(U("reactions")).at(U("endorse"));
-		post.EndorsedCount(endorse_json.at(U("count")).as_number().to_uint32());
+		post.Endorsed_Count.Set(endorse_json.at(U("count")).as_number().to_uint32());
 		auto users_ids_json = endorse_json.at(U("user_ids"));
 		if (!users_ids_json.is_null() && users_ids_json.is_array())
 		{
@@ -146,11 +146,11 @@ TwitchXX::TwitchPost TwitchXX::Create<TwitchXX::TwitchPost>(const web::json::val
 			std::set<unsigned long long> ids;
 			//std::copy(user_ids.begin(), user_ids.end(), std::inserter(ids, ids.begin()));
 			std::for_each(user_ids.begin(), user_ids.end(), [&ids](const web::json::value& id) { ids.insert(id.as_number().to_uint64()); });
-			post.EndorsedUsers(ids);
+			post.Endorsed_Users = ids;
 		}
 	}
-	post.Body(*wrapper[U("body")]);
-	post.Author(Create<TwitchUser>(value.at(U("user"))));
+	post.Body.Set(*wrapper[U("body")]);
+	post.Author = Create<TwitchUser>(value.at(U("user")));
 
 	return post;
 }

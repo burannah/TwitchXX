@@ -77,9 +77,9 @@ TwitchXX::TwitchBlockedUser TwitchXX::Create<TwitchXX::TwitchBlockedUser>(const 
 {
 	JsonWrapper wrapper(value);
 	TwitchBlockedUser result;
-	result.BlockedId(*wrapper[U("_id")]);
-	result.BlockUpdated(*wrapper[U("updated_at")]);
-	result.User(Create<TwitchUser>(value.at(U("user"))));
+	result.Block_Id.Set(*wrapper[U("_id")]);
+	result.Block_Updated.from_string(*wrapper[U("updated_at")]);
+	result.User = Create<TwitchUser>(value.at(U("user")));
 	return result;
 }
 
@@ -90,14 +90,14 @@ TwitchXX::TwitchUser TwitchXX::Create(const web::json::value & value)
 	TwitchUser user;
 	JsonWrapper wrapper(value);
 
-	user.Created(*wrapper[U("created_at")]);
-	user.Name(*wrapper[U("name")]);
-	user.Updated(*wrapper[U("updated_at")]);
-	user.Id(*wrapper[U("_id")]);
-	user.DisplayName(*wrapper[U("display_name")]);
-	user.Logo(*wrapper[U("logo")]);
-	user.Type(*wrapper[U("type")]);
-	user.Bio(*wrapper[U("bio")]);
+	user.Created.from_string(*wrapper[U("created_at")]);
+	user.Name.Set(*wrapper[U("name")]);
+	user.Updated.from_string(*wrapper[U("updated_at")]);
+	user.Id.Set(*wrapper[U("_id")]);
+	user.Display_Name.Set(*wrapper[U("display_name")]);
+	user.Logo.Set(*wrapper[U("logo")]);
+	user.Type.Set(*wrapper[U("type")]);
+	user.Bio.Set(*wrapper[U("bio")]);
 
 	return user;
 }

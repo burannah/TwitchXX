@@ -175,15 +175,15 @@ TwitchXX::TwitchTeam TwitchXX::Create<TwitchXX::TwitchTeam>(const web::json::val
 	TwitchTeam team;
 	JsonWrapper wrapper(value);
 
-	team.Created(*wrapper[U("created_at")]);
-	team.Updated(*wrapper[U("updated_at")]);
-	team.Id(*wrapper[U("_id")]);
-	team.Background(*wrapper[U("background")]);
-	team.Name(*wrapper[U("name")]);
-	team.Info(*wrapper[U("info")]);
-	team.DisplayName(*wrapper[U("display_name")]);
-	team.Logo(*wrapper[U("logo")]);
-	team.Banner(*wrapper[U("banner")]);
+	team.Created.from_string(*wrapper[U("created_at")]);
+	team.Updated.from_string(*wrapper[U("updated_at")]);
+	team.Id.Set(*wrapper[U("_id")]);
+	team.Background.Set(*wrapper[U("background")]);
+	team.Name.Set(*wrapper[U("name")]);
+	team.Info.Set(*wrapper[U("info")]);
+	team.Display_Name.Set(*wrapper[U("display_name")]);
+	team.Logo.Set(*wrapper[U("logo")]);
+	team.Banner.Set(*wrapper[U("banner")]);
 
 	return team;
 }
