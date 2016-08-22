@@ -101,8 +101,8 @@ TwitchXX::TwitchEmoticon TwitchXX::Create<TwitchXX::TwitchEmoticon>(const web::j
 	TwitchEmoticon emoticon;
 	JsonWrapper wrapper(value);
 
-	emoticon.RegEx(*wrapper[U("regex")]);
-	emoticon.Images(GetImages(value.at(U("images"))));
+	emoticon.Regex.Set(*wrapper[U("regex")]);
+	emoticon.Images = GetImages(value.at(U("images")));
 
 	return emoticon;
 	

@@ -2,6 +2,8 @@
 #include <string>
 #include <set>
 
+#include "Property.h"
+
 namespace TwitchXX
 {
 	///Twitch emoticon object
@@ -12,36 +14,35 @@ namespace TwitchXX
 		///Emoticon image descriptor
 		struct EmoticoneImageDescriptor
 		{
-			size_t SetId;
-			size_t Height;
-			size_t Width;
-			std::wstring Url;
+			///Emoticon set Id
+			Property<size_t> Set_Id;
+			///Height
+			Property<size_t> Height;
+			///Url
+			Property<size_t> Width;
+			///Url
+			Property<std::wstring> Url;
 
 			///Less than operator
-			bool operator<(const EmoticoneImageDescriptor& desc) const { return SetId < desc.SetId; }
+			bool operator<(const EmoticoneImageDescriptor& desc) const { return Set_Id < desc.Set_Id; }
 			///Equals opeartor
-			bool operator==(const EmoticoneImageDescriptor& desc) const { return Url == desc.Url; }
+			bool operator==(const EmoticoneImageDescriptor& desc) const { return Url.Get() == desc.Url.Get(); }
 		};
 
 		///Equals operator
-		bool operator==(const TwitchEmoticon& other) const { return _regex == other._regex && _images == other._images; }
+		bool operator==(const TwitchEmoticon& other) const { return Regex.Get() == other.Regex.Get() && Images == other.Images; }
 		///Less than
-		bool operator<(const TwitchEmoticon& emoticon) const { return _regex < emoticon._regex; }
+		bool operator<(const TwitchEmoticon& emoticon) const { return Regex.Get() < emoticon.Regex.Get(); }
 
 		///@{
 		///Regular expression
-		void RegEx(const std::wstring& regex) { _regex = regex; }
-		const std::wstring& RegEx() const { return _regex; }
+		Property<std::wstring> Regex;
 		///@}
 
 		///@{
 		///Images
-		void Images(const std::set<EmoticoneImageDescriptor>& images) { _images = images; }
-		const std::set<EmoticoneImageDescriptor>& Images() const { return _images; }
+		std::set<EmoticoneImageDescriptor> Images;
 		///@}
-	private:
-		std::wstring _regex;
-		std::set<EmoticoneImageDescriptor> _images;
 	};
 
 }

@@ -217,6 +217,13 @@ namespace TwitchXX
 	{
 		T _value;
 	public:
+		Property() = default;
+		Property(const T& val) : _value{ val } {}
+		Property(const Property<T,string_type>& p) = default;
+		Property(Property<T, string_type>&& val) = default;
+
+		Property<T, string_type>& operator=(const Property<T, string_type>& p) = default;
+		Property<T, string_type>& operator=(Property<T, string_type>&& p) = default;
 		const T& Get() const { return _value; }
 
 		operator T() const { return _value; }
