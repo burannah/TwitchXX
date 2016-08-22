@@ -109,7 +109,7 @@ namespace TwitchXX
 		///@}
 
 		///Channel's name
-		const std::wstring& Name() const { return _channel.Name(); }
+		const std::wstring& Name() const { return _channel.Name.Get(); }
 	private:
 		bool _offline;
 		std::wstring _game;

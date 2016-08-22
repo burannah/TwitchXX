@@ -59,15 +59,15 @@ TwitchXX::TwitchChannel TwitchXX::TwitchChannels::UpdateChannel(const std::wstri
 	auto o(op);
 	if(o.find(U("status")) == o.end())
 	{
-		o[U("status")] = channel.Status();
+		o[U("status")] = channel.Status.Get();
 	}
 	if(o.find(U("game")) == o.end())
 	{
-		o[U("game")] = channel.Game();
+		o[U("game")] = channel.Game.Get();
 	}
 	if(o.find(U("delay"))== o.end())
 	{
-		o[U("delay")] = std::to_wstring(channel.Delay());
+		o[U("delay")] = std::to_wstring(channel.Delay.Get());
 	}
 
 	web::json::value channelJSON,requestJSON;
@@ -143,28 +143,28 @@ TwitchXX::TwitchChannel TwitchXX::Create(const web::json::value & value)
 	TwitchChannel channel;
 	JsonWrapper wrapper(value);
 
-	channel.Mature(*wrapper[U("mature")]);
-	channel.Status(*wrapper[U("status")]);
-	channel.BroadcasterLanguage(*wrapper[U("broadcaster_language")]);
-	channel.DisplayName(*wrapper[U("display_name")]);
-	channel.Game(*wrapper[U("game")]);
-	channel.Delay(*wrapper[U("delay")]);
-	channel.Language(*wrapper[U("language")]);
-	channel.Id(*wrapper[U("_id")]);
-	channel.Name(*wrapper[U("name")]);
-	channel.Created(*wrapper[U("created_at")]);
-	channel.Updated(*wrapper[U("updated_at")]);
-	channel.Logo(*wrapper[U("logo")]);
-	channel.Banner(*wrapper[U("banner")]);
-	channel.VideoBanner(*wrapper[U("video_banner")]);
-	channel.Background(*wrapper[U("background")]);
-	channel.ProfileBanner(*wrapper[U("profile_banner")]);
-	channel.ProfileBannerBkColor(*wrapper[U("profile_banner_background_color")]);
-	channel.Partner(*wrapper[U("partner")]);
-	channel.Url(*wrapper[U("url")]);
-	channel.Views(*wrapper[U("views")]);
-	channel.Followers(*wrapper[U("followers")]);
-	channel.StreamKey(*wrapper[U("stream_key")]);
+	channel.Mature.Set(*wrapper[U("mature")]);
+	channel.Status.Set(*wrapper[U("status")]);
+	channel.Broadcaster_Language.Set(*wrapper[U("broadcaster_language")]);
+	channel.Display_Name.Set(*wrapper[U("display_name")]);
+	channel.Game.Set(*wrapper[U("game")]);
+	channel.Delay.Set(*wrapper[U("delay")]);
+	channel.Language.Set(*wrapper[U("language")]);
+	channel.Id.Set(*wrapper[U("_id")]);
+	channel.Name.Set(*wrapper[U("name")]);
+	channel.Created.from_string(*wrapper[U("created_at")]);
+	channel.Updated.from_string(*wrapper[U("updated_at")]);
+	channel.Logo.Set(*wrapper[U("logo")]);
+	channel.Banner.Set(*wrapper[U("banner")]);
+	channel.Video_Banner.Set(*wrapper[U("video_banner")]);
+	channel.Background.Set(*wrapper[U("background")]);
+	channel.Profile_Banner.Set(*wrapper[U("profile_banner")]);
+	channel.Profile_Banner_Background_Color.Set(*wrapper[U("profile_banner_background_color")]);
+	channel.Partner.Set(*wrapper[U("partner")]);
+	channel.Url.Set(*wrapper[U("url")]);
+	channel.Views.Set(*wrapper[U("views")]);
+	channel.Followers.Set(*wrapper[U("followers")]);
+	channel.Stream_Key.Set(*wrapper[U("stream_key")]);
 
 	return channel;
 }

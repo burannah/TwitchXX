@@ -6,6 +6,7 @@
 #include <sstream>
 #include <iomanip>
 #include <codecvt>
+#include <stdexcept>
 
 #include "TwitchDef.h"
 
@@ -16,14 +17,14 @@ namespace TwitchXX
 	{
 		///Helper template to get value from string
 		template<typename Val, typename string_type>
-		class HelperFrom
+		struct HelperFrom
 		{
 			static Val FromString(const string_type& str) { return std::stoi(str); }
 		};
 
 		///Get size_t (any string type)
 		template<typename string_type>
-		class HelperFrom<size_t, string_type>
+		struct HelperFrom<size_t, string_type>
 		{
 			static size_t FromString(const string_type& str) 
 			{
@@ -35,14 +36,14 @@ namespace TwitchXX
 
 		///Get unsigned long long (any string type)
 		template<typename string_type>
-		class HelperFrom<unsigned long long, string_type>
+		struct HelperFrom<unsigned long long, string_type>
 		{
 			static unsigned long long FromString(const string_type& str) { return std::stoull(str); }
 		};
 
 		///Get bool from std::string
 		template<>
-		class HelperFrom<bool, std::string>
+		struct HelperFrom<bool, std::string>
 		{
 			static bool FromString(const std::string& str) 
 			{
@@ -54,7 +55,7 @@ namespace TwitchXX
 
 		///Get bool from std::wstring
 		template<>
-		class HelperFrom<bool, std::wstring>
+		struct HelperFrom<bool, std::wstring>
 		{
 			static bool FromString(const std::wstring& str)
 			{
@@ -67,7 +68,7 @@ namespace TwitchXX
 
 		///Get Date from any string type
 		template<typename string_type>
-		class HelperFrom<TwitchXX::Date, string_type>
+		struct HelperFrom<TwitchXX::Date, string_type>
 		{
 			static TwitchXX::Date FromString(const string_type& str)
 			{
@@ -77,21 +78,21 @@ namespace TwitchXX
 
 		///std::wstring to std::wstring sub
 		template<>
-		class HelperFrom < std::wstring, std::wstring>
+		struct HelperFrom<std::wstring, std::wstring>
 		{
 			static std::wstring FromString(const std::wstring& str) { return str; }
 		};
 
 		///std::string to std::string stub
 		template<>
-		class HelperFrom <std::string, std::string>
+		struct HelperFrom<std::string, std::string>
 		{
 			static std::string FromString(const std::string& str) { return str; }
 		};
 
 		///std::string to std::wstring converter
 		template<>
-		class HelperFrom<std::wstring, std::string>
+		struct HelperFrom<std::wstring, std::string>
 		{
 			static std::wstring FromString(const std::string& str) 
 			{
@@ -102,7 +103,7 @@ namespace TwitchXX
 
 		///std::wstring to std::string converter
 		template<>
-		class HelperFrom<std::string, std::wstring>
+		struct HelperFrom<std::string, std::wstring>
 		{
 			static std::string FromString(const std::wstring& str)
 			{
@@ -113,14 +114,14 @@ namespace TwitchXX
 
 		///Helper template to serialize value to string
 		template<typename Val, typename string_type>
-		class HelperTo
+		struct HelperTo
 		{
 			static string_type ToString(const Val& v) { throw std::runtime_error("Undefined!")}
 		};
 
 		///Serialize value to std::string
 		template<typename Val>
-		class HelperTo<Val,std::string>
+		struct HelperTo<Val,std::string>
 		{
 			static std::string ToString(const Val& v) { return std::to_string(v); }
 		};
@@ -128,7 +129,7 @@ namespace TwitchXX
 
 		///Serialize value to std::wstring
 		template<typename Val>
-		class HelperTo<Val, std::wstring>
+		struct HelperTo<Val, std::wstring>
 		{
 			static std::wstring ToString(const Val& v) { return std::to_wstring(v); }
 		};
@@ -136,7 +137,7 @@ namespace TwitchXX
 
 		///Serialize Date to std::string
 		template<>
-		class HelperTo<TwitchXX::Date, std::string>
+		struct HelperTo<TwitchXX::Date, std::string>
 		{
 			static std::string Tostring(const TwitchXX::Date& tp) 
 			{
@@ -156,7 +157,7 @@ namespace TwitchXX
 
 		///Serialize Date to std::wstring
 		template<>
-		class HelperTo<TwitchXX::Date, std::wstring>
+		struct HelperTo<TwitchXX::Date, std::wstring>
 		{
 			static std::wstring ToString(const TwitchXX::Date& tp)
 			{
@@ -166,14 +167,14 @@ namespace TwitchXX
 
 		///std::wstring to std::wstring stub
 		template<>
-		class HelperTo<std::wstring, std::wstring>
+		struct HelperTo<std::wstring, std::wstring>
 		{
 			static std::wstring ToString(const std::wstring& str) { return str; }
 		};
 
 		///std::string to std::srting stub
 		template<>
-		class HelperTo<std::string, std::string>
+		struct HelperTo<std::string, std::string>
 		{
 			static std::string ToString(const std::string& str) { return str; }
 		};
@@ -181,7 +182,7 @@ namespace TwitchXX
 
 		///Convert std::wstring to std::string
 		template<>
-		class HelperTo<std::wstring, std::string>
+		struct HelperTo<std::wstring, std::string>
 		{
 			static std::string ToString(const std::wstring& str) 
 			{
@@ -192,7 +193,7 @@ namespace TwitchXX
 
 		///Convert std::wstring to std::string
 		template <>
-		class HelperTo<std::string, std::wstring>
+		struct HelperTo<std::string, std::wstring>
 		{
 			static std::wstring ToString(const std::string& str)
 			{
@@ -225,4 +226,48 @@ namespace TwitchXX
 		string_type to_string() { return Serializer<T, string_type>::ToString(_value); }
 		void from_string(const string_type str) { _value = Serializer<T, string_type>::FromString(str); }
 	};
+	/*
+	template<typename Val, typename Key>
+	class PropertyMap
+	{
+	private:
+		std::map<Key, Val> _val;
+	public:
+		const Val& Get(const Key& key) const
+		{
+			if (_val.find(key) != _val.end()) 
+			{
+				return _val[key];
+			}
+			else
+			{
+				throw std::out_of_range("Key not found: " + key);
+			}
+		}
+
+		Val& Get(const Key& key)
+		{
+			return _val[key];
+		}
+
+		bool Haskey(const Key& key)
+		{
+			return _val.find(key) != _val.end();
+		}
+
+		auto begin()
+		{
+			return _val.begin();
+		}
+
+		auto end()
+		{
+			return _val.end();
+		}
+
+		void Set(const Key& key, const Val& val)
+		{
+			_val[key] = val;
+		}
+	};*/
 }
