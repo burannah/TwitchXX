@@ -98,9 +98,6 @@
     <ClCompile Include="TwitchStreams.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TwitchStream.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TwitchChannels.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

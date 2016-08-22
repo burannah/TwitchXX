@@ -59,7 +59,7 @@ TwitchXX::TwitchStreamsVector TwitchXX::TwitchStreams::GetStreams(size_t n, cons
 	// Objects are sorted by names. We need to return mast watched of them == sorted by the number of viewers.
 	// So here comes some trick
 	std::vector<TwitchStream> v(_objects.begin(), _objects.end());
-	std::sort(v.begin(), v.end(), [](const TwitchStream& a, const TwitchStream& b) { return a.Viewers() > b.Viewers(); });
+	std::sort(v.begin(), v.end(), [](const TwitchStream& a, const TwitchStream& b) { return a.Viewers > b.Viewers; });
 	return v;
 
 }
@@ -209,22 +209,22 @@ TwitchXX::TwitchStream TwitchXX::Create(const web::json::value& obj)
 	TwitchStream stream;
 	if (obj.is_null())
 	{
-		stream.Offline(true);
+		stream.Offline.Set(true);
 		return stream;
 	}
 
 	JsonWrapper wrapper (obj);
 
-	stream.Game(*wrapper[U("game")]);
-	stream.Viewers(*wrapper[U("viewers")]);
-	stream.AvgFps(*wrapper[U("average_fps")]);
-	stream.Delay(*wrapper[U("delay")]);
-	stream.VideoHeight(*wrapper[U("video_height")]);
-	stream.IsPlaylist(*wrapper[U("is_playlist")]);
-	stream.Created(*wrapper[U("created_at")]);
-	stream.Id(*wrapper[U("_id")]);
-	stream.Channel(Create<TwitchChannel>(obj.at(U("channel"))));
-	stream.Preview(CreateCollection(obj.at(U("preview"))));
+	stream.Game.Set(*wrapper[U("game")]);
+	stream.Viewers.Set(*wrapper[U("viewers")]);
+	stream.Avg_Fps.Set(*wrapper[U("average_fps")]);
+	stream.Delay.Set(*wrapper[U("delay")]);
+	stream.Video_Height.Set(*wrapper[U("video_height")]);
+	stream.Is_Playlist.Set(*wrapper[U("is_playlist")]);
+	stream.Created.from_string(*wrapper[U("created_at")]);
+	stream.Id.Set(*wrapper[U("_id")]);
+	stream.Channel = Create<TwitchChannel>(obj.at(U("channel")));
+	stream.Preview = CreateCollection(obj.at(U("preview")));
 
 	return stream;
 }
@@ -235,12 +235,12 @@ TwitchXX::TwitchFeaturedStream TwitchXX::Create<TwitchXX::TwitchFeaturedStream>(
 	TwitchFeaturedStream stream;
 	JsonWrapper wrapper(obj);
 
-	stream.Image(*wrapper[U("image")]);
-	stream.Text(*wrapper[U("text")]);
-	stream.Title(*wrapper[U("title")]);
-	stream.Sponsored(*wrapper[U("sponsored")]);
-	stream.Scheduled(*wrapper[U("scheduled")]);
-	stream.Stream(Create<TwitchStream>(obj.at(U("stream"))));
+	stream.Image.Set(*wrapper[U("image")]);
+	stream.Text.Set(*wrapper[U("text")]);
+	stream.Title.Set(*wrapper[U("title")]);
+	stream.Sponsored.Set(*wrapper[U("sponsored")]);
+	stream.Scheduled.Set(*wrapper[U("scheduled")]);
+	stream.Stream = Create<TwitchStream>(obj.at(U("stream")));
 
 	return stream;
 }

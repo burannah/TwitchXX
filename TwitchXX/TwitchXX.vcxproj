@@ -203,7 +203,6 @@
     <ClCompile Include="TwitchChannelFeed.cpp" />
     <ClCompile Include="TwitchChat.cpp" />
     <ClCompile Include="TwitchGames.cpp" />
-    <ClCompile Include="TwitchStream.cpp" />
     <ClCompile Include="TwitchStreams.cpp" />
     <ClCompile Include="TwitchUsers.cpp" />
     <ClCompile Include="TwitchXX.cpp" />
