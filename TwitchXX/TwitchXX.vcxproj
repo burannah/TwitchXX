@@ -178,7 +178,7 @@
     <ClInclude Include="JsonWrapper.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="MakeRequest.h" />
-    <ClInclude Include="TwitchUsers.h" />
+    <ClInclude Include="Property.h" />
     <ClInclude Include="TwitchChannel.h" />
     <ClInclude Include="TwitchChannelFeed.h" />
     <ClInclude Include="TwitchChat.h" />
@@ -193,19 +193,19 @@
     <ClInclude Include="TwitchStreams.h" />
     <ClInclude Include="TwitchTeam.h" />
     <ClInclude Include="TwitchUser.h" />
+    <ClInclude Include="TwitchUsers.h" />
     <ClInclude Include="TwitchXX.h" />
     <ClInclude Include="TwitchChannels.h" />
     <ClInclude Include="TwitchPost.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MakeRequest.cpp" />
-    <ClCompile Include="TwitchUsers.cpp" />
     <ClCompile Include="TwitchChannelFeed.cpp" />
     <ClCompile Include="TwitchChat.cpp" />
-    <ClCompile Include="TwitchGame.cpp" />
     <ClCompile Include="TwitchGames.cpp" />
     <ClCompile Include="TwitchStream.cpp" />
     <ClCompile Include="TwitchStreams.cpp" />
+    <ClCompile Include="TwitchUsers.cpp" />
     <ClCompile Include="TwitchXX.cpp" />
     <ClCompile Include="TwitchChannels.cpp" />
     <ClCompile Include="Utility.cpp" />

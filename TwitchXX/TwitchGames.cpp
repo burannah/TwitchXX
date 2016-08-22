@@ -31,8 +31,8 @@ TwitchXX::TwitchGame TwitchXX::Create<TwitchXX::TwitchGame>(const web::json::val
 {
 	TwitchGame game;
 	JsonWrapper j(json);
-	game.Channels(*j[U("channels")]);
-	game.Viewers(*j[U("viewers")]);
+	game.Channels.Set(*j[U("channels")]);
+	game.Viewers.Set(*j[U("viewers")]);
 	auto game_descriptor = json.at(L"game");
 	if (game_descriptor.is_null())
 	{
@@ -40,9 +40,9 @@ TwitchXX::TwitchGame TwitchXX::Create<TwitchXX::TwitchGame>(const web::json::val
 	}
 
 	JsonWrapper game_wrapper(game_descriptor);
-	game.Name(*game_wrapper[U("name")]);
-	game.Id(*game_wrapper[U("_id")]);
-	game.Giantbomb_Id(*game_wrapper[U("giantbomb_id")]);
+	game.Name.Set(*game_wrapper[U("name")]);
+	game.Id.Set(*game_wrapper[U("_id")]);
+	game.GiantbombId.Set(*game_wrapper[U("giantbomb_id")]);
 
 	game.Box(CreateCollection(game_descriptor.at(L"box")));
 	game.Logo(CreateCollection(game_descriptor.at(L"logo")));
@@ -88,7 +88,7 @@ TwitchXX::TwitchGamesVector TwitchXX::TwitchGames::GetTopGames(size_t n)
 	/// Objects are sorted by names. We need to return mast watched of them == sorted by the number of viewers.
 	/// So here comes some trick
 	std::vector<TwitchGame> v(_objects.begin(), _objects.end());
-	std::sort(v.begin(), v.end(), [](const TwitchGame& a, const TwitchGame& b) { return a.Viewers() > b.Viewers(); });
+	std::sort(v.begin(), v.end(), [](const TwitchGame& a, const TwitchGame& b) { return a.Viewers > b.Viewers; });
 	return v;
 }
 
