@@ -18,6 +18,7 @@ namespace TwitchXX
 	class TwitchPost;
 	class TwitchEmoticon;
 	class TwitchBlockedUser;
+	class TwitchFollower;
 	///@}
 
 	template <typename T>
@@ -33,6 +34,7 @@ namespace TwitchXX
 	using TwitchTeamsContainer = TwitchContainer<TwitchTeam>; ///< TwitchTeam collection
 	using TwitchPostsContainer = TwitchContainer<TwitchPost>; ///< TwitchPost collection
 	using TwitchEmoticonsContainer = TwitchContainer<TwitchEmoticon>; ///< TwitchEmoticon collection
+	using TwitchFollowersContainer = TwitchContainer<TwitchFollower>; ///< Twitch channel followers collection
 	using ImageCollection = std::map<std::wstring, std::wstring>; ///< image collection (image key, image url)
 	using options = std::map<std::wstring, std::wstring>; ///< options collection (option key, option value)
 	using Date = std::chrono::time_point<std::chrono::system_clock>; ///< default date type
@@ -72,5 +74,13 @@ namespace TwitchXX
 		///Less than operator
 		bool operator<(const ChannelBadge& badge) const { return Type < badge.Type; }
 	};
+
+	///Followers list request order
+	enum class Direction
+	{
+		desc, ///Descending 
+		asc   ///Ascending
+	};
+
 
 }

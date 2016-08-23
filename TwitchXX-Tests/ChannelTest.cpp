@@ -89,3 +89,14 @@ TEST_F(ChannelTest,GetTeams)
 
 	EXPECT_EQ(teams.size(), unsigned{ 0 });
 }
+
+TEST_F(ChannelTest,GetChannelFollows)
+{
+	TwitchXX::TwitchFollowersContainer followers;
+	ASSERT_NO_THROW(
+	{
+		followers = _api->GetChannelFollows(_channel_name);
+	});
+
+	EXPECT_EQ(followers.size(), unsigned{ 1 });
+}

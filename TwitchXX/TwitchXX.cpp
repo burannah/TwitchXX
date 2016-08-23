@@ -144,6 +144,11 @@ TwitchXX::TwitchTeamsContainer TwitchXX::Api::GetTeams(const std::wstring& chann
 	return _channels->GetTeams(channel_name);
 }
 
+TwitchXX::TwitchFollowersContainer TwitchXX::Api::GetChannelFollows(const std::wstring& channel_name) const
+{
+	return _channels->GetChannelFollows(channel_name);
+}
+
 TwitchXX::TwitchPostsContainer TwitchXX::Api::GetPosts(const std::wstring& channel_name, size_t count) const
 {
 	return _channel_feed->GetPosts(channel_name, count);

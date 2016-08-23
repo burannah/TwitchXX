@@ -37,7 +37,7 @@ namespace TwitchXX
 		* status			   | Channel's title. 
 		* game				   | Game category to be classified as.
 		* delay				   | Channel delay in seconds. Requires the channel owner's OAuth token.
-		* channel_feed_enabled | 	Whether the channel's feed is enabled. Requires the channel owner's OAuth token.
+		* channel_feed_enabled | Whether the channel's feed is enabled. Requires the channel owner's OAuth token.
 		*/
 		///@return TwitchChannel object with updated values
 		TwitchChannel UpdateChannel(const std::wstring& name, const options& op) const;
@@ -58,10 +58,13 @@ namespace TwitchXX
 		///@param channel_name channel name
 		TwitchTeamsContainer GetTeams(const std::wstring& channel_name) const;
 
-
+		///Returns a list of followers for given channel
+		///@param channel_name channel name
+		TwitchXX::TwitchFollowersContainer GetChannelFollows(const std::wstring& channel_name) const;
 	};
 
 	template<> TwitchChannel Create(const web::json::value& value); ///< Constructs TwitchChannel object from json
 	template<> TwitchTeam Create(const web::json::value& value); ///< Constructs TwitchTeam object from json
+	template<> TwitchFollower Create(const web::json::value& value); ///< Constructs follower object from json
 }
 

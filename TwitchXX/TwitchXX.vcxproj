@@ -186,6 +186,7 @@
     <ClInclude Include="TwitchEmoticon.h" />
     <ClInclude Include="TwitchException.h" />
     <ClInclude Include="TwitchFeaturedStream.h" />
+    <ClInclude Include="TwitchFollower.h" />
     <ClInclude Include="TwitchGame.h" />
     <ClInclude Include="TwitchGames.h" />
     <ClInclude Include="TwitchRequest.h" />

@@ -84,6 +84,9 @@
     <ClInclude Include="TwitchUsers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TwitchFollower.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TwitchXX.cpp">

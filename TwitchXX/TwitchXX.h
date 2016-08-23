@@ -12,6 +12,7 @@
 #include "TwitchFeaturedStream.h"
 #include "TwitchPost.h"
 #include "TwitchUsers.h"
+#include "TwitchFollower.h"
 
 namespace TwitchXX
 {
@@ -53,6 +54,7 @@ namespace TwitchXX
 		std::wstring ResetStreamKey(const std::wstring& channel_name) const;
 		bool StartCommercial(const std::wstring& channel_name, size_t length) const;
 		TwitchTeamsContainer GetTeams(const std::wstring& channel_name) const;
+		TwitchXX::TwitchFollowersContainer GetChannelFollows(const std::wstring& channel_name) const;
 
 		//Channel Feed
 		TwitchPostsContainer GetPosts(const std::wstring& channel_name, size_t count = 0) const;

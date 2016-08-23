@@ -2,6 +2,7 @@
 #include "JsonWrapper.h"
 #include "TwitchException.h"
 #include "TwitchUsers.h"
+#include "TwitchFollower.h"
 
 
 TwitchXX::TwitchChannels::TwitchChannels(std::shared_ptr<MakeRequest> request)
@@ -137,6 +138,45 @@ TwitchXX::TwitchTeamsContainer TwitchXX::TwitchChannels::GetTeams(const std::wst
 	return chunk;
 }
 
+TwitchXX::TwitchFollowersContainer TwitchXX::TwitchChannels::GetChannelFollows(const std::wstring& channel_name) const
+{
+	web::uri_builder builder(U("/channels/") + channel_name + U("/follows"));
+	builder.append_query(U("limit"), 100);
+	auto current_builder = builder;
+
+	TwitchFollowersContainer result;
+
+	while(true)
+	{
+		auto value = (*_request)(current_builder.to_uri());
+		auto followers = value.at(U("follows"));
+		if (!followers.is_null() && followers.is_array())
+		{
+			for (const auto& follower : followers.as_array())
+			{
+				result.insert(Create<TwitchFollower>(follower));
+			}
+		}
+		else
+		{
+			break;
+		}
+
+		if(value.has_field(U("_cursor")) && value.at(U("_cursor")).is_string())
+		{
+			current_builder = builder;
+			current_builder.append_query(U("cursor"), value.at(U("_cursor")).as_string());
+		}
+		else
+		{
+			break;
+		}
+	}
+
+
+	return result;
+}
+
 template<>
 TwitchXX::TwitchChannel TwitchXX::Create(const web::json::value & value)
 {
@@ -167,6 +207,20 @@ TwitchXX::TwitchChannel TwitchXX::Create(const web::json::value & value)
 	channel.Stream_Key.Set(*wrapper[U("stream_key")]);
 
 	return channel;
+}
+
+template <>
+TwitchXX::TwitchFollower TwitchXX::Create<TwitchXX::TwitchFollower>(const web::json::value& value)
+{
+	TwitchFollower follower;
+	JsonWrapper wrapper(value);
+
+	follower.Created.from_string(*wrapper[U("created_at")]);
+	follower.Notifications.Set(*wrapper[U("notifications")]);
+	
+	follower.User = Create<TwitchUser>(value.at(U("user")));
+
+	return  follower;
 }
 
 template <>
