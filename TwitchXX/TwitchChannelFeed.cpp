@@ -50,7 +50,6 @@ TwitchXX::TwitchPost TwitchXX::TwitchChannelFeed::GetPost(const std::wstring & c
 	ss << id;
 	web::uri_builder builder(U("/feed/") + channel_name + U("/posts/") + ss.str());
 	auto response = (*_request)(builder.to_uri());
-
 	return Create<TwitchPost>(response);
 }
 

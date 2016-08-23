@@ -7,18 +7,15 @@
 
 TwitchXX::TwitchBlockedUsersContainer TwitchXX::TwitchUsers::GetBlocked(const std::wstring& user_name) const
 {
+	static const size_t limit = 100;
 	web::uri_builder builder{U("/users/") + user_name + U("/blocks")};
-	builder.append_query(U("limit"), 100); //TODO: Check perfomance!
+	builder.append_query(U("limit"), limit); //TODO: Check perfomance!
 	size_t count = 0;
 	std::wstring cursor;
 	TwitchXX::TwitchBlockedUsersContainer result;
 	for (;;)
 	{
 		auto value = (*_request)(builder.to_uri());
-		if (value.is_null() || _request->status_code() != web::http::status_codes::OK)
-		{
-			break;
-		}
 
 		auto blocks = value.at(U("blocks"));
 		if (blocks.is_null() || !blocks.is_array())
@@ -31,7 +28,7 @@ TwitchXX::TwitchBlockedUsersContainer TwitchXX::TwitchUsers::GetBlocked(const st
 		}
 
 		auto next = value.at(U("_links")).at(U("next"));
-		if (!next.is_null() && next.is_string())
+		if (blocks.size() == limit && !next.is_null() && next.is_string())
 		{
 			builder = web::uri_builder(next.as_string());
 		}
@@ -49,10 +46,6 @@ TwitchXX::TwitchBlockedUser TwitchXX::TwitchUsers::BlockUser(const std::wstring&
 	web::uri_builder builder{U("/users/") + user_name + U("/blocks/") + target_name};
 
 	auto response = (*_request)(builder.to_uri(), web::http::methods::PUT);
-	if (_request->status_code() != web::http::status_codes::OK)
-	{
-		throw TwitchException("Unable to block a user", _request->status_code());
-	}
 	return Create<TwitchBlockedUser>(response);
 }
 
@@ -60,14 +53,20 @@ bool TwitchXX::TwitchUsers::UblockUser(const std::wstring& user_name, const std:
 {
 	web::uri_builder builder{ U("/users/") + user_name + U("/blocks/") + target_name };
 
-	auto response = (*_request)(builder.to_uri(), web::http::methods::DEL);
-	switch(_request->status_code())
+	try
 	{
-	case web::http::status_codes::NoContent:
-		return true;
-	case web::http::status_codes::NotFound://User is not on block list
-	case 422: // Unprocessable Entity
-		return false;
+		auto response = (*_request)(builder.to_uri(), web::http::methods::DEL);
+	}
+	catch(TwitchException e)
+	{
+		switch (_request->status_code())
+		{
+		case web::http::status_codes::NoContent:
+			return true;
+		case web::http::status_codes::NotFound://User is not on block list
+		case 422: // Unprocessable Entity
+			return false;
+		}
 	}
 	throw TwitchException{ "Unexpeced result on delete user from block list!", _request->status_code() };
 }

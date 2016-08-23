@@ -1,4 +1,6 @@
 #include "MakeRequest.h"
+#include "TwitchException.h"
+#include "Property.h"
 
 namespace TwitchXX
 {
@@ -134,8 +136,21 @@ namespace TwitchXX
 									}
 									else
 									{
-										std::wcout << response.to_string();
-										return pplx::task_from_result(web::json::value());
+#ifdef _DEBUG
+										std::wcout << response.to_string()<<U("\n");
+#endif
+										auto error = response.extract_json().get();
+										Property<std::wstring, std::string> msg;
+										if(!error.is_null())
+										{
+											msg.Set(error.at(U("error")).as_string() + U(": ") + error.at(U("message")).as_string());
+										}
+										else
+										{
+											msg.Set(U("")); //No error text in response
+										}
+
+										throw TwitchException(msg.to_string(),response.status_code());
 									}
 								});
 

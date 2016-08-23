@@ -66,8 +66,9 @@ TwitchXX::TwitchStreamsVector TwitchXX::TwitchStreams::GetStreams(size_t n, cons
 
 TwitchXX::TwitchFeaturedStreamsContainer TwitchXX::TwitchStreams::GetFeaturedStreams() const
 {
+	const static size_t limit = 100;
 	web::uri_builder builder(U("/streams/featured"));
-	builder.append_query(U("limit"), 100);
+	builder.append_query(U("limit"), limit);
 	TwitchContainer<TwitchFeaturedStream> chunk;
 	for(;;)
 	{
@@ -91,7 +92,7 @@ TwitchXX::TwitchFeaturedStreamsContainer TwitchXX::TwitchStreams::GetFeaturedStr
 			break;
 		}
 		auto next = value.at(U("_links")).at(U("next"));
-		if(!next.is_null() && next.is_string())
+		if(!next.is_null() && next.is_string() && chunk.size() == limit)
 		{
 			builder = web::uri_builder(next.as_string());
 		}
@@ -131,7 +132,7 @@ TwitchXX::TwitchStreamsContainer TwitchXX::TwitchStreams::GetFollowedStreams(Twi
 	builder.append_query(U("limit"), max_limit); //TODO: Check perfomance if limit is equal to actual number of channel followd (if < 100)
 	if(type != TwitchStream::Type::none)
 	{
-		builder.append_query(U("stream_type"), type_to_string(type));
+		builder.append_query(U("stream_type"), TwitchStream::type_to_string(type));
 	}
 	for(;;)
 	{
@@ -163,7 +164,7 @@ TwitchXX::TwitchStreamsContainer TwitchXX::TwitchStreams::GetFollowedStreams(Twi
 			break;
 		}
 		auto next = value.at(U("_links")).at(U("next"));
-		if (!next.is_null() && next.is_string())
+		if (chunk.size() == max_limit && !next.is_null() && next.is_string())
 		{
 			builder = web::uri_builder(next.as_string());
 		}

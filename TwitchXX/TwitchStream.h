@@ -76,8 +76,4 @@ namespace TwitchXX
 		///Channel's name
 		const std::wstring& Name() const { return Channel.Name.Get(); }
 	};
-
-
-	///Temp helper
-	std::wstring type_to_string(TwitchStream::Type);
 }

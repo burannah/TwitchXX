@@ -12,9 +12,9 @@ TEST_F(UsersTest, GetBlocked)
 
 	EXPECT_EQ(banned.size(), 2U);
 	auto ban = banned.begin();
-	EXPECT_EQ(ban->User().Name(), U("k9rewards"));
+	EXPECT_EQ(ban->User.Name.Get(), U("k9rewards"));
 	ban = std::next(ban);
-	EXPECT_EQ(ban->User().Name(), U("adffjftuyjrthtrh"));
+	EXPECT_EQ(ban->User.Name.Get(), U("adffjftuyjrthtrh"));
 }
 
 TEST_F(UsersTest, BlockUnblock)
@@ -28,9 +28,9 @@ TEST_F(UsersTest, BlockUnblock)
 		new_ban = _api->BlockUser(_channel_name,first_name);
 	});
 
-	EXPECT_EQ(new_ban.User().Name(), first_name);
+	EXPECT_EQ(new_ban.User.Name.Get(), first_name);
 	banned = _api->GetBlockedUsers(_channel_name);
-	auto it = std::find_if(banned.begin(), banned.end(), [&](const TwitchXX::TwitchBlockedUser& e) {return e.User().Name() == first_name; });
+	auto it = std::find_if(banned.begin(), banned.end(), [&](const TwitchXX::TwitchBlockedUser& e) {return e.User.Name.Get() == first_name; });
 	ASSERT_TRUE(it != banned.end());
 
 	ASSERT_NO_THROW(
@@ -39,6 +39,6 @@ TEST_F(UsersTest, BlockUnblock)
 	});
 
 	banned = _api->GetBlockedUsers(_channel_name);
-	it = std::find_if(banned.begin(), banned.end(), [&](const TwitchXX::TwitchBlockedUser& e) {return e.User().Name() == first_name; });
+	it = std::find_if(banned.begin(), banned.end(), [&](const TwitchXX::TwitchBlockedUser& e) {return e.User.Name.Get() == first_name; });
 	ASSERT_TRUE(it == banned.end());
 }

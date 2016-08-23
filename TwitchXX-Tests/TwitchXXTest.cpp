@@ -26,7 +26,7 @@ TEST_F(TwitchXXTest,GetStream)
 	EXPECT_NO_THROW(
 	{
 		result = _api->GetStream(L"starladder1");	
-		if (result.Offline())
+		if (result.Offline)
 		{
 			ASSERT_EQ(result.Name(), L"");
 		}
@@ -47,19 +47,19 @@ TEST_F(TwitchXXTest,TopStreams)
 	EXPECT_LE(result.size(), unsigned{ 100 });
 	for (auto& stream : result)
 	{
-		EXPECT_EQ(stream.Game(), L"Dota 2");
+		EXPECT_EQ(stream.Game.Get(), L"Dota 2");
 	}
 }
 
 TEST_F(TwitchXXTest,FeaturedStreams)
 {
 	TwitchXX::TwitchFeaturedStreamsContainer result;
-	EXPECT_NO_THROW(
+	ASSERT_NO_THROW(
 	{
 		result = _api->GetFeaturedStreams();
 	});
 	EXPECT_GT(result.size(), unsigned{ 0 }); //Expecting some featured streams
-	EXPECT_NE(result.begin()->Title(), L""); //Expecting some title;
+	EXPECT_NE(result.begin()->Title.Get(), L""); //Expecting some title;
 }
 
 TEST_F(TwitchXXTest,GetSummary)

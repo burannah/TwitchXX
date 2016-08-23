@@ -17,7 +17,7 @@ namespace TwitchXX
 			: runtime_error(_Message),
 			_code(code)
 		{
-			_msg = runtime_error::what() + std::string(" Status code: ") + std::to_string(_code);
+			_msg = runtime_error::what() + std::string(". Status code: ") + std::to_string(_code);
 		}
 
 		///Simple exception constructor

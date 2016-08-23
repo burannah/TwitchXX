@@ -15,7 +15,7 @@ namespace TwitchXX
 		Property<size_t> Channels;	  ///Number of broadcasting channgels
 		Property<size_t> Viewers;	  ///Numeber of viewers
 		Property<size_t> Id;		  ///Game's Id
-		Property<size_t> GiantbombId; ///Giantbomb id
+		Property<size_t> Giantbomb_Id; ///Giantbomb id
 		ImageCollection	Box;		  ///Box images
 		ImageCollection Logo;		  ///Game logos
 

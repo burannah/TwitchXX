@@ -42,7 +42,7 @@ TwitchXX::TwitchGame TwitchXX::Create<TwitchXX::TwitchGame>(const web::json::val
 	JsonWrapper game_wrapper(game_descriptor);
 	game.Name.Set(*game_wrapper[U("name")]);
 	game.Id.Set(*game_wrapper[U("_id")]);
-	game.GiantbombId.Set(*game_wrapper[U("giantbomb_id")]);
+	game.Giantbomb_Id.Set(*game_wrapper[U("giantbomb_id")]);
 
 	game.Box = CreateCollection(game_descriptor.at(L"box"));
 	game.Logo = CreateCollection(game_descriptor.at(L"logo"));

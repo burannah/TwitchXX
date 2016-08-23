@@ -9,17 +9,17 @@ TEST_F(ChannelTest,GetChannel)
 		channel = _api->GetChannel(_channel_name);
 	});
 
-	EXPECT_EQ(channel.Background(), U(""));
-	EXPECT_EQ(channel.Banner(), U(""));
-	EXPECT_EQ(channel.BroadcasterLanguage(), U(""));
-	EXPECT_EQ(channel.Created(), TwitchXX::DateFromString(U("2013-11-22T19:41:35Z")));
-	EXPECT_EQ(channel.CreatedAsString(), U("2013-11-22T19:41:35Z"));
-	EXPECT_EQ(channel.Delay(), 0);
-	EXPECT_EQ(channel.DisplayName(), U("burannah"));
-	EXPECT_EQ(channel.Followers(), 1);
-	EXPECT_EQ(channel.Game(), U(""));
-	EXPECT_EQ(channel.Language(), U("ru"));
-	EXPECT_EQ(channel.Id(), 51977856);
+	EXPECT_EQ(channel.Background.Get(), U(""));
+	EXPECT_EQ(channel.Banner.Get(), U(""));
+	EXPECT_EQ(channel.Broadcaster_Language.Get(), U(""));
+	EXPECT_EQ(channel.Created.Get(), TwitchXX::DateFromString(U("2013-11-22T19:41:35Z")));
+	EXPECT_EQ(channel.Created.to_string(), U("2013-11-22T19:41:35Z"));
+	EXPECT_EQ(channel.Delay, 0);
+	EXPECT_EQ(channel.Display_Name.Get(), U("burannah"));
+	EXPECT_EQ(channel.Followers, 1);
+	EXPECT_EQ(channel.Game.Get(), U(""));
+	EXPECT_EQ(channel.Language.Get(), U("ru"));
+	EXPECT_EQ(channel.Id, 51977856);
 }
 
 TEST_F(ChannelTest,GetChannelEditors)
@@ -43,11 +43,11 @@ TEST_F(ChannelTest,UpdateChannel)
 		channel = _api->GetChannel(_channel_name);
 	});
 
-	auto old_title = channel.Status();
+	auto old_title = channel.Status.Get();
 	auto new_status = U("test");
 	TwitchXX::options op{ {U("status"), new_status} };
 	auto new_channel = _api->UpdateChannel(_channel_name,op);
-	EXPECT_EQ(new_channel.Status(), new_status);
+	EXPECT_EQ(new_channel.Status.Get(), new_status);
 	op[U("status")] = old_title;
 	_api->UpdateChannel(_channel_name, op);
 }
@@ -55,7 +55,7 @@ TEST_F(ChannelTest,UpdateChannel)
 TEST_F(ChannelTest,ResetStreamKey)
 {
 	auto channel = _api->GetChannel(_channel_name);
-	auto stream_key = channel.StreamKey();
+	auto stream_key = channel.Stream_Key.Get();
 	std::wstring new_key;
 	ASSERT_NO_THROW(
 	{
