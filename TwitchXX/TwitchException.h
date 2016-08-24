@@ -33,7 +33,9 @@ namespace TwitchXX
 		{
 
 			return _msg.c_str();
-		};
+		}
+
+		web::http::status_code code() const { return _code; }
 	private:
 		web::http::status_code _code;
 		std::string _msg;

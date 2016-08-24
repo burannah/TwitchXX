@@ -2,7 +2,7 @@
 #include <set>
 #include <map>
 #include <chrono>
-#include <functional>
+#include <exception>
 #include <vector>
 
 
@@ -19,6 +19,7 @@ namespace TwitchXX
 	class TwitchEmoticon;
 	class TwitchBlockedUser;
 	class TwitchFollower;
+	class TwitchFollowedChannel;
 	///@}
 
 	template <typename T>
@@ -34,7 +35,8 @@ namespace TwitchXX
 	using TwitchTeamsContainer = TwitchContainer<TwitchTeam>; ///< TwitchTeam collection
 	using TwitchPostsContainer = TwitchContainer<TwitchPost>; ///< TwitchPost collection
 	using TwitchEmoticonsContainer = TwitchContainer<TwitchEmoticon>; ///< TwitchEmoticon collection
-	using TwitchFollowersContainer = TwitchContainer<TwitchFollower>; ///< Twitch channel followers collection
+	using TwitchFollowersContainer = TwitchContainer<TwitchFollower>; ///< Twitch channel followers 
+	using TwitchFollowedChannelsContainer = TwitchContainer<TwitchFollowedChannel>; ///< Channels followed collection
 	using ImageCollection = std::map<std::wstring, std::wstring>; ///< image collection (image key, image url)
 	using options = std::map<std::wstring, std::wstring>; ///< options collection (option key, option value)
 	using Date = std::chrono::time_point<std::chrono::system_clock>; ///< default date type
@@ -78,9 +80,33 @@ namespace TwitchXX
 	///Followers list request order
 	enum class Direction
 	{
-		desc, ///Descending 
-		asc   ///Ascending
+		desc, ///< Descending 
+		asc   ///< Ascending
 	};
+
+
+	///Followed streams request order
+	enum class Sort_Order
+	{
+		Created,		///< By creation date
+		Last_Broadcast, ///< By last updated
+		Login			///< By last login time
+	};
+
+	inline std::wstring Sort_Order_To_string(Sort_Order order)
+	{
+		switch (order)
+		{
+		case Sort_Order::Created:
+			return L"created_at";
+		case Sort_Order::Last_Broadcast:
+			return L"last_broadcast";
+		case Sort_Order::Login:
+			return L"login";
+		default:
+			throw std::out_of_range("Order parameter is out of range!");
+		}
+	}
 
 
 }

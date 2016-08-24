@@ -73,6 +73,7 @@ namespace TwitchXX
 		TwitchBlockedUsersContainer GetBlockedUsers(const std::wstring& user_name) const;
 		TwitchBlockedUser BlockUser(const std::wstring& user_name, const std::wstring& target_name) const;
 		bool UnblockUser(const std::wstring& user_name, const std::wstring& target_name) const;
+		TwitchFollowedChannelsContainer GetChannelsFollowedByUser(const std::wstring& user_name, Sort_Order order = Sort_Order::Created) const;
 
 
 	private:

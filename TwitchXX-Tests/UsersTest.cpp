@@ -42,3 +42,16 @@ TEST_F(UsersTest, BlockUnblock)
 	it = std::find_if(banned.begin(), banned.end(), [&](const TwitchXX::TwitchBlockedUser& e) {return e.User.Name.Get() == first_name; });
 	ASSERT_TRUE(it == banned.end());
 }
+
+
+TEST_F(UsersTest,GetFollowedChannels)
+{
+	TwitchXX::TwitchFollowedChannelsContainer follows;
+
+	ASSERT_NO_THROW(
+	{
+		follows = _api->GetChannelsFollowedByUser(_channel_name);
+	});
+
+	EXPECT_EQ(follows.size(), 34);
+}

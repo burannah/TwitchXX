@@ -208,3 +208,8 @@ bool TwitchXX::Api::UnblockUser(const std::wstring& user_name, const std::wstrin
 {
 	return _users->UblockUser(user_name, target_name);
 }
+
+TwitchXX::TwitchFollowedChannelsContainer TwitchXX::Api::GetChannelsFollowedByUser(const std::wstring& user_name, Sort_Order order) const
+{
+	return _users->GetFollowingChannels(user_name, order);
+}

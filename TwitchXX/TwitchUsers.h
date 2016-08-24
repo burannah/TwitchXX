@@ -30,9 +30,13 @@ namespace TwitchXX
 		///@return true if ok
 		bool UblockUser(const std::wstring& user_name, const std::wstring& target_name) const;
 
+		///Get list of channels that user is subscribed to
+		TwitchFollowedChannelsContainer GetFollowingChannels(const std::wstring& user_name, Sort_Order order = Sort_Order::Created) const;
+
 	};
 
 	template<> TwitchUser Create(const web::json::value& value); ///< Constructs TwitchUser object from json
-	template <> TwitchBlockedUser Create<TwitchBlockedUser>(const web::json::value& value); ///< Craeta TwitchBlockedUser object from Json
+	template <> TwitchBlockedUser Create<TwitchBlockedUser>(const web::json::value& value); ///< Create TwitchBlockedUser object from Json
+	template <> TwitchFollowedChannel Create<TwitchFollowedChannel>(const web::json::value& value); ///< Create descriptor on followed channel 
 	
 }

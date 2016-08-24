@@ -4,6 +4,8 @@
 #include "TwitchUsers.h"
 #include "JsonWrapper.h"
 #include "TwitchException.h"
+#include "TwitchFollower.h"
+#include "TwitchChannels.h"
 
 TwitchXX::TwitchBlockedUsersContainer TwitchXX::TwitchUsers::GetBlocked(const std::wstring& user_name) const
 {
@@ -71,6 +73,52 @@ bool TwitchXX::TwitchUsers::UblockUser(const std::wstring& user_name, const std:
 	throw TwitchException{ "Unexpeced result on delete user from block list!", _request->status_code() };
 }
 
+TwitchXX::TwitchFollowedChannelsContainer TwitchXX::TwitchUsers::GetFollowingChannels(const std::wstring& user_name, TwitchXX::Sort_Order order ) const
+{
+	web::uri_builder builder{ U("/users/") + user_name + U("/follows/channels") };
+	builder.append_query(U("limit"), 100);
+	//builder.append_query(U("sortby"), Sort_Order_To_string(order));
+	TwitchFollowedChannelsContainer result;
+
+	while(true)
+	{
+		web::json::value value;
+		try
+		{
+			value = (*_request)(builder.to_uri());
+		}
+		catch (TwitchException e)
+		{
+			if(e.code() == web::http::status_codes::NotFound)
+			{
+				break;
+			}
+		}
+		if(value.is_null() || !value.has_field(U("follows")) || !value[U("follows")].is_array())
+		{
+			break;
+		}
+
+		for (const auto& follow : value[U("follows")].as_array())
+		{
+			result.insert(Create<TwitchFollowedChannel>(follow));
+		}
+
+		if(value.has_field(U("_links"))&&value[U("_links")].has_field(U("next")))
+		{
+			builder = web::uri_builder(value[U("_links")][U("next")].as_string());
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	return result;
+
+
+}
+
 template <>
 TwitchXX::TwitchBlockedUser TwitchXX::Create<TwitchXX::TwitchBlockedUser>(const web::json::value& value)
 {
@@ -99,4 +147,18 @@ TwitchXX::TwitchUser TwitchXX::Create(const web::json::value & value)
 	user.Bio.Set(*wrapper[U("bio")]);
 
 	return user;
+}
+
+template <>
+TwitchXX::TwitchFollowedChannel TwitchXX::Create<TwitchXX::TwitchFollowedChannel>(const web::json::value& value)
+{
+	TwitchFollowedChannel follow;
+	JsonWrapper wrapper(value);
+
+	follow.Created.from_string(*wrapper[U("created_at")]);
+	follow.Notifications.Set(*wrapper[U("notifications")]);
+
+	follow.Channel = Create<TwitchChannel>(value.at(U("channel")));
+
+	return  follow;
 }
