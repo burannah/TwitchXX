@@ -7,6 +7,7 @@
 #include <TwitchChannelFeed.h>
 #include <TwitchChat.h>
 #include <TwitchUsers.h>
+#include <TwitchTeams.h>
 
 TEST(Create, Game)
 {

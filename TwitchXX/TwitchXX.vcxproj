@@ -79,6 +79,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>C:\Program Files %28x86%29\RapidJSON\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -88,6 +89,7 @@
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(TargetDir)</AdditionalLibraryDirectories>
+      <TargetMachine>MachineX86</TargetMachine>
     </Lib>
     <PreBuildEvent>
       <Command>xcopy $(ProjectDir)..\packages\cpprestsdk.$(PlatformToolset).windesktop.msvcstl.dyn.rt-dyn.2.8.0\lib\native\$(PlatformToolset)\windesktop\msvcstl\dyn\rt-dyn\$(PlatformTarget)\$(Configuration)\cpprest$(PlatformToolsetVersion)d_2_8.* $(TargetDir) /s /d</Command>
@@ -179,6 +181,7 @@
     <ClInclude Include="Logger.h" />
     <ClInclude Include="MakeRequest.h" />
     <ClInclude Include="Property.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="TwitchChannel.h" />
     <ClInclude Include="TwitchChannelFeed.h" />
     <ClInclude Include="TwitchChat.h" />
@@ -189,22 +192,30 @@
     <ClInclude Include="TwitchFollower.h" />
     <ClInclude Include="TwitchGame.h" />
     <ClInclude Include="TwitchGames.h" />
+    <ClInclude Include="TwitchIngest.h" />
+    <ClInclude Include="TwitchIngests.h" />
     <ClInclude Include="TwitchRequest.h" />
+    <ClInclude Include="TwitchSearch.h" />
     <ClInclude Include="TwitchStream.h" />
     <ClInclude Include="TwitchStreams.h" />
     <ClInclude Include="TwitchTeam.h" />
+    <ClInclude Include="TwitchTeams.h" />
     <ClInclude Include="TwitchUser.h" />
     <ClInclude Include="TwitchUsers.h" />
     <ClInclude Include="TwitchXX.h" />
     <ClInclude Include="TwitchChannels.h" />
     <ClInclude Include="TwitchPost.h" />
+    <ClInclude Include="AuthToken.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MakeRequest.cpp" />
     <ClCompile Include="TwitchChannelFeed.cpp" />
     <ClCompile Include="TwitchChat.cpp" />
     <ClCompile Include="TwitchGames.cpp" />
+    <ClCompile Include="TwitchIngests.cpp" />
+    <ClCompile Include="TwitchSearch.cpp" />
     <ClCompile Include="TwitchStreams.cpp" />
+    <ClCompile Include="TwitchTeams.cpp" />
     <ClCompile Include="TwitchUsers.cpp" />
     <ClCompile Include="TwitchXX.cpp" />
     <ClCompile Include="TwitchChannels.cpp" />
@@ -212,6 +223,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="TwitchXX.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -5,6 +5,7 @@
 #include "TwitchChannels.h"
 #include "TwitchChannelFeed.h"
 #include "TwitchChat.h"
+#include "TwitchIngests.h"
 
 namespace TwitchXX
 {
@@ -52,6 +53,8 @@ TwitchXX::Api::Api(const std::wstring& client_id, Version version, std::shared_p
 	_chat = std::make_unique<TwitchChat>(request);
 	_games = std::make_unique<TwitchGames>(request);
 	_users = std::make_unique<TwitchUsers>(request);
+	_ingests = std::make_unique<TwitchIngests>(request);
+	_teams = std::make_unique<TwitchTeams>(request);
 
 	if(log != nullptr)
 	{
@@ -149,6 +152,16 @@ TwitchXX::TwitchFollowersContainer TwitchXX::Api::GetChannelFollows(const std::w
 	return _channels->GetChannelFollows(channel_name);
 }
 
+TwitchXX::TwitchFollowersContainer TwitchXX::Api::GetChannelSubscriptions(const std::wstring& channel_name) const
+{
+	return _channels->GetChannelSubscriptions(channel_name);
+}
+
+TwitchXX::TwitchFollower TwitchXX::Api::GetChannelSubscriptionForUser(const std::wstring& channel_name, const std::wstring& user_name) const
+{
+	return _channels->GetChannelSubscriptionForUser(channel_name, user_name);
+}
+
 TwitchXX::TwitchPostsContainer TwitchXX::Api::GetPosts(const std::wstring& channel_name, size_t count) const
 {
 	return _channel_feed->GetPosts(channel_name, count);
@@ -212,4 +225,44 @@ bool TwitchXX::Api::UnblockUser(const std::wstring& user_name, const std::wstrin
 TwitchXX::TwitchFollowedChannelsContainer TwitchXX::Api::GetChannelsFollowedByUser(const std::wstring& user_name, Sort_Order order) const
 {
 	return _users->GetFollowingChannels(user_name, order);
+}
+
+TwitchXX::TwitchFollowedChannel TwitchXX::Api::GetFollowingChannel(const std::wstring& user_name, const std::wstring& channel_name) const
+{
+	return _users->GetFollowingChannel(user_name, channel_name);
+}
+
+TwitchXX::TwitchFollowedChannel TwitchXX::Api::FollowChannel(const std::wstring& user_name, const std::wstring& channel_name, bool notification) const
+{
+	return _users->FollowChannel(user_name, channel_name, notification);
+}
+
+void TwitchXX::Api::UnfollowChannel(const std::wstring & user_name, const std::wstring & channel_name) const
+{
+	_users->UnfollowChannel(user_name, channel_name);
+}
+
+TwitchXX::AuthToken TwitchXX::Api::GetCurrentUserStatus() const
+{
+	return _users->GetCurrentUserStatus();
+}
+
+TwitchXX::TwitchFollowedChannel TwitchXX::Api::GetUserSubscribedChannel(const std::wstring& channel_name, const std::wstring& user_name) const
+{
+	return _users->GetUserSubscribedChannel(channel_name, user_name);
+}
+
+TwitchXX::TwitchIngestsContainer TwitchXX::Api::GetIngetst() const
+{
+	return _ingests->GetIngests();
+}
+
+TwitchXX::TwitchTeamsContainer TwitchXX::Api::GetTeams() const
+{
+	return _teams->GetTeams();
+}
+
+TwitchXX::TwitchTeam TwitchXX::Api::GetTeam(const std::wstring& team) const
+{
+	return _teams->GetTeam(team);
 }

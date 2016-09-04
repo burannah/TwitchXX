@@ -60,11 +60,23 @@ namespace TwitchXX
 
 		///Returns a list of followers for given channel
 		///@param channel_name channel name
-		TwitchXX::TwitchFollowersContainer GetChannelFollows(const std::wstring& channel_name) const;
+		TwitchFollowersContainer GetChannelFollows(const std::wstring& channel_name) const;
+
+		///Returns a list of subscription objects sorted by subscription relationship creation date which contain users subscribed to channel.
+		///required scope: AuthScope::CHANNEL_SUBSCRIPTIONS
+		///@param channel_name channel name
+		///@return subscription objects collection
+		TwitchFollowersContainer GetChannelSubscriptions(const std::wstring& channel_name) const;
+
+		///Returns a list of subscription objects sorted by subscription relationship creation date which contain users subscribed to channel
+		///required scope: AuthScope::CHANNEL_CHECK_SUBSCRIPTION
+		///@param channel_name channel name
+		///@param user_name user name to check subscription for
+		///@return subscription object for user if he is subscribed to given channel
+		TwitchFollower GetChannelSubscriptionForUser(const std::wstring& channel_name, const std::wstring& user_name) const;
 	};
 
 	template<> TwitchChannel Create(const web::json::value& value); ///< Constructs TwitchChannel object from json
-	template<> TwitchTeam Create(const web::json::value& value); ///< Constructs TwitchTeam object from json
 	template<> TwitchFollower Create(const web::json::value& value); ///< Constructs follower object from json
 }
 

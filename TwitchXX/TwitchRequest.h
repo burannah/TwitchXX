@@ -10,6 +10,7 @@ namespace TwitchXX
 
 	extern std::shared_ptr<std::map<std::wstring, std::wstring>> Options;
 
+	//TODO:Deprecated
 	///Base template class for other twitch request classes
 	template<typename T>
 	class TwitchRequest
@@ -89,7 +90,7 @@ namespace TwitchXX
 	};
 
 	///Template function for creating Twitch objects from JSON
-	/** Default template is a stub, that throws std::runtime_error */
+	/** Default template is a stub */
 	template<typename T>
 	T Create(const web::json::value& json) = delete;
 /*	{

@@ -20,10 +20,11 @@ namespace TwitchXX
 	class TwitchBlockedUser;
 	class TwitchFollower;
 	class TwitchFollowedChannel;
+	class TwitchIngest;
 	///@}
 
 	template <typename T>
-		using TwitchContainer = std::set<T>; ///< Default container type
+	using TwitchContainer = std::set<T>; ///< Default container type
 	using TwitchGamesContainer = TwitchContainer<TwitchGame>; ///< TwitchGame collection
 	using TwitchGamesVector = std::vector<TwitchGame>; ///< TwitchGame vector (explicit)
 	using TwitchStreamsContainer = TwitchContainer<TwitchStream>; ///< TwitchStream collection
@@ -37,6 +38,7 @@ namespace TwitchXX
 	using TwitchEmoticonsContainer = TwitchContainer<TwitchEmoticon>; ///< TwitchEmoticon collection
 	using TwitchFollowersContainer = TwitchContainer<TwitchFollower>; ///< Twitch channel followers 
 	using TwitchFollowedChannelsContainer = TwitchContainer<TwitchFollowedChannel>; ///< Channels followed collection
+	using TwitchIngestsContainer = TwitchContainer<TwitchIngest>; ///< Ingests collection
 	using ImageCollection = std::map<std::wstring, std::wstring>; ///< image collection (image key, image url)
 	using options = std::map<std::wstring, std::wstring>; ///< options collection (option key, option value)
 	using Date = std::chrono::time_point<std::chrono::system_clock>; ///< default date type
@@ -62,7 +64,6 @@ namespace TwitchXX
 
 		///Less then operator
 		bool operator<(const EmoticonImage& image) const { return Id < image.Id; }
-
 	};
 
 	/// ChannelBadge descriptor
@@ -81,18 +82,20 @@ namespace TwitchXX
 	enum class Direction
 	{
 		desc, ///< Descending 
-		asc   ///< Ascending
+		asc ///< Ascending
 	};
 
 
 	///Followed streams request order
 	enum class Sort_Order
 	{
-		Created,		///< By creation date
+		Created, ///< By creation date
 		Last_Broadcast, ///< By last updated
-		Login			///< By last login time
+		Login ///< By last login time
 	};
 
+
+	///Sort_Order enum value as a string
 	inline std::wstring Sort_Order_To_string(Sort_Order order)
 	{
 		switch (order)
@@ -107,6 +110,4 @@ namespace TwitchXX
 			throw std::out_of_range("Order parameter is out of range!");
 		}
 	}
-
-
 }

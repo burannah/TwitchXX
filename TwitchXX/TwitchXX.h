@@ -13,6 +13,8 @@
 #include "TwitchPost.h"
 #include "TwitchUsers.h"
 #include "TwitchFollower.h"
+#include "TwitchIngests.h"
+#include "TwitchTeams.h"
 
 namespace TwitchXX
 {
@@ -54,7 +56,9 @@ namespace TwitchXX
 		std::wstring ResetStreamKey(const std::wstring& channel_name) const;
 		bool StartCommercial(const std::wstring& channel_name, size_t length) const;
 		TwitchTeamsContainer GetTeams(const std::wstring& channel_name) const;
-		TwitchXX::TwitchFollowersContainer GetChannelFollows(const std::wstring& channel_name) const;
+		TwitchFollowersContainer GetChannelFollows(const std::wstring& channel_name) const;
+		TwitchFollowersContainer GetChannelSubscriptions(const std::wstring& channel_name) const;
+		TwitchFollower GetChannelSubscriptionForUser(const std::wstring& channel_name, const std::wstring& user_name) const;
 
 		//Channel Feed
 		TwitchPostsContainer GetPosts(const std::wstring& channel_name, size_t count = 0) const;
@@ -74,6 +78,18 @@ namespace TwitchXX
 		TwitchBlockedUser BlockUser(const std::wstring& user_name, const std::wstring& target_name) const;
 		bool UnblockUser(const std::wstring& user_name, const std::wstring& target_name) const;
 		TwitchFollowedChannelsContainer GetChannelsFollowedByUser(const std::wstring& user_name, Sort_Order order = Sort_Order::Created) const;
+		TwitchFollowedChannel GetFollowingChannel(const std::wstring& user_name, const std::wstring& channel_name) const;
+		TwitchFollowedChannel FollowChannel(const std::wstring& user_name, const std::wstring& channel_name, bool notification = false) const;
+		void UnfollowChannel(const std::wstring& user_name, const std::wstring& channel_name) const;
+		AuthToken GetCurrentUserStatus() const;
+		TwitchFollowedChannel GetUserSubscribedChannel(const std::wstring& channel_name, const std::wstring& user_name) const;
+
+		//Ingests
+		TwitchIngestsContainer GetIngetst() const;
+
+		//Teams
+		TwitchTeamsContainer GetTeams() const;
+		TwitchTeam GetTeam(const std::wstring& team) const;
 
 
 	private:
@@ -84,6 +100,8 @@ namespace TwitchXX
 		std::unique_ptr<TwitchChat> _chat;
 		std::unique_ptr<TwitchGames> _games;
 		std::unique_ptr<TwitchUsers> _users;
+		std::unique_ptr<TwitchIngests> _ingests;
+		std::unique_ptr<TwitchTeams> _teams;
 
 
 	};

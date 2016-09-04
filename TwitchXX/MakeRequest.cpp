@@ -122,6 +122,9 @@ namespace TwitchXX
 		pplx::task<web::json::value> task = http_client.request(request)
 									.then([this](web::http::http_response response) -> pplx::task<web::json::value>
 								{
+									#ifdef _DEBUG
+									std::wcout << response.to_string() << U("\n");
+									#endif
 									this->_last_status = response.status_code();
 									if (response.status_code() == web::http::status_codes::OK)
 									{
@@ -136,9 +139,6 @@ namespace TwitchXX
 									}
 									else
 									{
-#ifdef _DEBUG
-										std::wcout << response.to_string()<<U("\n");
-#endif
 										auto error = response.extract_json().get();
 										Property<std::wstring, std::string> msg;
 										if(!error.is_null())

@@ -123,6 +123,7 @@ std::tuple<size_t, size_t> TwitchXX::TwitchStreams::GetSummary(const std::wstrin
 	return std::make_tuple(viewers, channels);
 }
 
+//TODO: Not sure if it should be here. Probably should be moved to Users
 TwitchXX::TwitchStreamsContainer TwitchXX::TwitchStreams::GetFollowedStreams(TwitchStream::Type type)
 {
 	_limit = max_limit;

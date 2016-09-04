@@ -99,3 +99,16 @@ TEST_F(TwitchXXTest,GetChannel)
 		auto result = _api->GetChannel(L"starladder1");
 	});
 }
+
+TEST_F(TwitchXXTest,GetIngests)
+{
+	TwitchXX::TwitchIngestsContainer result;
+
+	EXPECT_NO_THROW(
+	{
+		result = _api->GetIngetst();
+	});
+
+	EXPECT_GT(result.size(), 0U);
+}
+

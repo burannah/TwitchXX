@@ -3,6 +3,7 @@
 #include "TwitchException.h"
 #include "TwitchUsers.h"
 #include "TwitchFollower.h"
+#include "TwitchTeams.h"
 
 
 TwitchXX::TwitchChannels::TwitchChannels(std::shared_ptr<MakeRequest> request)
@@ -177,6 +178,71 @@ TwitchXX::TwitchFollowersContainer TwitchXX::TwitchChannels::GetChannelFollows(c
 	return result;
 }
 
+TwitchXX::TwitchFollowersContainer TwitchXX::TwitchChannels::GetChannelSubscriptions(const std::wstring& channel_name) const
+{
+	static const size_t limit = 100; //TODO: To some global constants
+	web::uri_builder builder(U("/channels/") + channel_name + U("/subscriptions"));
+	builder.append_query(U("limit"), 100);
+	//builder.append_query(U("direction"), Direction::asc);
+
+	TwitchFollowersContainer result;
+
+	while (true)
+	{
+		TwitchFollowersContainer chunk;
+		auto value = (*_request)(builder.to_uri());
+		auto subscriptions = value.at(U("subscriptions"));
+		if (!subscriptions.is_null() && subscriptions.is_array())
+		{
+			for (const auto& subs : subscriptions.as_array())
+			{
+				chunk.insert(Create<TwitchFollower>(subs));
+			}
+		}
+		else
+		{
+			break;
+		}
+
+		result.insert(chunk.begin(), chunk.end());
+
+		auto next = value.at(U("_links")).at(U("next"));
+		if (chunk.size() == limit && !next.is_null() && next.is_string())
+		{
+			builder = web::uri_builder(next.as_string());
+		}
+		else
+		{
+			break;
+		}
+	}
+
+
+	return result;
+}
+
+TwitchXX::TwitchFollower TwitchXX::TwitchChannels::GetChannelSubscriptionForUser(const std::wstring& channel_name, const std::wstring& user_name) const
+{
+	web::uri_builder builder{ U("/channels/") + channel_name + U("/subscriptions/") + user_name };
+
+	try
+	{
+		auto response = (*_request)(builder.to_uri());
+		return Create<TwitchFollower>(response);
+	}
+	catch (TwitchException e)
+	{
+		if (e.code() == web::http::status_codes::NotFound)
+		{
+			throw TwitchException("User is not subscribed", 404);
+		}
+		else
+		{
+			throw;
+		}
+	}
+}
+
 template<>
 TwitchXX::TwitchChannel TwitchXX::Create(const web::json::value & value)
 {
@@ -221,23 +287,4 @@ TwitchXX::TwitchFollower TwitchXX::Create<TwitchXX::TwitchFollower>(const web::j
 	follower.User = Create<TwitchUser>(value.at(U("user")));
 
 	return  follower;
-}
-
-template <>
-TwitchXX::TwitchTeam TwitchXX::Create<TwitchXX::TwitchTeam>(const web::json::value& value)
-{
-	TwitchTeam team;
-	JsonWrapper wrapper(value);
-
-	team.Created.from_string(*wrapper[U("created_at")]);
-	team.Updated.from_string(*wrapper[U("updated_at")]);
-	team.Id.Set(*wrapper[U("_id")]);
-	team.Background.Set(*wrapper[U("background")]);
-	team.Name.Set(*wrapper[U("name")]);
-	team.Info.Set(*wrapper[U("info")]);
-	team.Display_Name.Set(*wrapper[U("display_name")]);
-	team.Logo.Set(*wrapper[U("logo")]);
-	team.Banner.Set(*wrapper[U("banner")]);
-
-	return team;
 }

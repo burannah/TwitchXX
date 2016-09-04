@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "TwitchRequest.h"
+#include "AuthToken.h"
 
 namespace TwitchXX
 {
@@ -8,6 +9,9 @@ namespace TwitchXX
 	class TwitchUsers : public TwitchRequest<TwitchUser>
 	{
 	public:
+		static std::map<AuthScope, std::wstring> Scopes;
+		static std::map<std::wstring, AuthScope> Rscopes;
+
 		///Constructor
 		explicit TwitchUsers(const std::shared_ptr<MakeRequest>& request)
 			: TwitchRequest<TwitchUser>(request)
@@ -31,12 +35,45 @@ namespace TwitchXX
 		bool UblockUser(const std::wstring& user_name, const std::wstring& target_name) const;
 
 		///Get list of channels that user is subscribed to
+		///@param user_name user name
+		///@param order results sorting order (TwitchXX::Sort_order - by created date, last broadcast time or last login)
+		///@return collection of followed channels
 		TwitchFollowedChannelsContainer GetFollowingChannels(const std::wstring& user_name, Sort_Order order = Sort_Order::Created) const;
 
+		///Get channel follow object if user follows target channel
+		///@param user_name self name
+		///@param channel_name channel to follow
+		///@return channle follow object
+		TwitchFollowedChannel GetFollowingChannel(const std::wstring&  user_name, const std::wstring& channel_name) const;
+
+		///Follow channel for user
+		///Required scope: AuthScope::USER_FOLLOWS_EDIT
+		///@param user_name self name
+		///@param channel_name channel to follow
+		///@return channel follow object
+		TwitchFollowedChannel FollowChannel(const std::wstring& user_name, const std::wstring& channel_name, bool notification = false) const;
+
+		///Unfollow channel for user
+		///Required scope: AuthScope::USER_FOLLOWS_EDIT
+		///@param user_name self name
+		///@param channel_name channel to follow
+		void UnfollowChannel(const std::wstring& user_name, const std::wstring& channel_name) const;
+
+		///Get current user status
+		///@return user status object(UserStatus)
+		AuthToken GetCurrentUserStatus() const;
+
+		///Returns a channel object that user subscribes to. Requires authentication for user.
+		///Requires auth scope: AuthScope::USER_SUBSCRIPTIONS
+		///@param channel_name channel name
+		///@param user_name
+		///@return channel object in case user is subscribed to given channel
+		TwitchXX::TwitchFollowedChannel GetUserSubscribedChannel(const std::wstring& channel_name, const std::wstring& user_name) const;
 	};
 
-	template<> TwitchUser Create(const web::json::value& value); ///< Constructs TwitchUser object from json
-	template <> TwitchBlockedUser Create<TwitchBlockedUser>(const web::json::value& value); ///< Create TwitchBlockedUser object from Json
-	template <> TwitchFollowedChannel Create<TwitchFollowedChannel>(const web::json::value& value); ///< Create descriptor on followed channel 
+	template<> TwitchUser Create<TwitchUser>(const web::json::value& value); ///< Constructs TwitchUser object from json
+	template<> TwitchBlockedUser Create<TwitchBlockedUser>(const web::json::value& value); ///< Create TwitchBlockedUser object from Json
+	template<> TwitchFollowedChannel Create<TwitchFollowedChannel>(const web::json::value& value); ///< Create descriptor on followed channel 
+	template<> AuthToken Create<AuthToken>(const web::json::value& value); ///< Create user status object;
 	
 }

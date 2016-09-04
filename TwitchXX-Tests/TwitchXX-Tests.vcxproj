@@ -166,6 +166,7 @@
     <ClInclude Include="ChatTest.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TeamsTest.h" />
     <ClInclude Include="TwitchXXTest.h" />
     <ClInclude Include="UsersTest.h" />
   </ItemGroup>
@@ -175,6 +176,7 @@
     <ClCompile Include="ChatTest.cpp" />
     <ClCompile Include="ObjectsCreateTests.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="TeamsTest.cpp" />
     <ClCompile Include="TwitchXX-Tests.cpp" />
     <ClCompile Include="TwitchXXTest.cpp" />
     <ClCompile Include="UsersTest.cpp" />

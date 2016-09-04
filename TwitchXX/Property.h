@@ -137,9 +137,9 @@ namespace TwitchXX
 
 		///Serialize Date to std::string
 		template<>
-		struct HelperTo<TwitchXX::Date, std::string>
+		struct HelperTo<Date, std::string>
 		{
-			static std::string Tostring(const TwitchXX::Date& tp) 
+			static std::string Tostring(const Date& tp) 
 			{
 				auto t = std::chrono::system_clock::to_time_t(tp);
 				std::stringstream ss;

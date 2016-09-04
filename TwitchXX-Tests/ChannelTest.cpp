@@ -100,3 +100,26 @@ TEST_F(ChannelTest,GetChannelFollows)
 
 	EXPECT_EQ(followers.size(), unsigned{ 1 });
 }
+
+TEST_F(ChannelTest,GetChannelSubscriptions)
+{
+	TwitchXX::TwitchFollowersContainer subscriptions;
+	ASSERT_NO_THROW(
+	{
+		subscriptions = _api->GetChannelSubscriptions(_channel_name);
+	});
+
+	EXPECT_EQ(subscriptions.size(), 1U);
+}
+
+TEST_F(ChannelTest, GetChannelSubscriptionForUser)
+{
+	TwitchXX::TwitchFollower result;
+
+	ASSERT_NO_THROW(
+	{
+		result = _api->GetChannelSubscriptionForUser(_channel_name,_channel_name);
+	});
+
+	EXPECT_EQ(result.User.Name.Get(), _channel_name);
+}
