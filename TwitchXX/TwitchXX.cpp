@@ -242,6 +242,21 @@ TwitchXX::TwitchFollowedChannel TwitchXX::Api::GetUserSubscribedChannel(const st
 	return _users->GetUserSubscribedChannel(channel_name, user_name);
 }
 
+TwitchXX::TwitchUser TwitchXX::Api::GetUser(const std::wstring& user_name) const
+{
+	return _users->GetUser(user_name);
+}
+
+std::set<TwitchXX::EmoticonImage> TwitchXX::Api::GetUserEmoticons(const std::wstring& user_name) const
+{
+	return _users->GetUserEmoticons(user_name);
+}
+
+TwitchXX::TwitchUser TwitchXX::Api::GetCurrentUser() const
+{
+	return _users->GetCurrentUser();
+}
+
 TwitchXX::TwitchIngestsContainer TwitchXX::Api::GetIngetst() const
 {
 	return _ingests->GetIngests();

@@ -1,6 +1,7 @@
 ﻿#include "UsersTest.h"
 #include <TwitchException.h>
 #include <bitset>
+#include "TwitchEmoticon.h"
 
 
 TEST_F(UsersTest, GetBlocked)
@@ -125,4 +126,40 @@ TEST_F(UsersTest, GetUserSubscribedChannel)
 	});
 
 	EXPECT_EQ(result.Channel.Name.Get(), U("starladder1"));
+}
+
+TEST_F(UsersTest, GetUser)
+{
+	TwitchXX::TwitchUser user;
+
+	ASSERT_NO_THROW(
+	{
+		user = _api->GetUser(_channel_name);
+	});
+
+	EXPECT_EQ(user.Name.Get(), _channel_name);
+}
+
+TEST_F(UsersTest, GetUserEmoticons)
+{
+	std::set<TwitchXX::EmoticonImage> result;
+
+	ASSERT_NO_THROW(
+	{
+		result = _api->GetUserEmoticons(_channel_name);
+	});
+
+	EXPECT_GT(result.size(), 1U);
+}
+
+TEST_F(UsersTest, GetCurrentUser)
+{
+	TwitchXX::TwitchUser user;
+
+	ASSERT_NO_THROW(
+	{ 
+		user = _api->GetCurrentUser();
+	});
+
+	EXPECT_EQ(user.Name.Get(), _channel_name);
 }

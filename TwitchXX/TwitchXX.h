@@ -83,6 +83,9 @@ namespace TwitchXX
 		void UnfollowChannel(const std::wstring& user_name, const std::wstring& channel_name) const;
 		AuthToken GetCurrentUserStatus() const;
 		TwitchFollowedChannel GetUserSubscribedChannel(const std::wstring& channel_name, const std::wstring& user_name) const;
+		TwitchUser GetUser(const std::wstring& user_name) const;
+		std::set<EmoticonImage> GetUserEmoticons(const std::wstring& user_name) const;
+		TwitchUser GetCurrentUser() const;
 
 		//Ingests
 		TwitchIngestsContainer GetIngetst() const;

@@ -7,6 +7,7 @@
 #include "TwitchFollower.h"
 #include "TwitchChannels.h"
 #include <bitset>
+#include "TwitchChat.h"
 
 std::map<TwitchXX::AuthScope, std::wstring> TwitchXX::TwitchUsers::Scopes = {
 	{AuthScope::USER_READ,U("user_read")},
@@ -252,6 +253,26 @@ TwitchXX::TwitchFollowedChannel TwitchXX::TwitchUsers::GetUserSubscribedChannel(
 		}
 	}
 
+}
+
+TwitchXX::TwitchUser TwitchXX::TwitchUsers::GetUser(const std::wstring& user_name) const
+{
+	web::uri_builder builder(U("/users/") + user_name);
+	return GetSingleObject<TwitchUser>(builder.to_uri());
+}
+
+std::set<TwitchXX::EmoticonImage> TwitchXX::TwitchUsers::GetUserEmoticons(const std::wstring& user_name) const
+{
+	web::uri_builder builder(U("/users/") + user_name + U("/emotes"));
+	auto resposne = _request->get(builder.to_uri());
+	auto emoticon_sets = resposne.at(U("emoticon_sets"));
+	return TwitchChat::ParseEmoticonSets(emoticon_sets);
+}
+
+TwitchXX::TwitchUser TwitchXX::TwitchUsers::GetCurrentUser() const
+{
+	web::uri_builder builder(U("/user"));
+	return GetSingleObject<TwitchUser>(builder.to_uri());
 }
 
 template <>

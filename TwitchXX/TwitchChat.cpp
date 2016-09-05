@@ -71,17 +71,13 @@ std::set<TwitchXX::EmoticonImage> TwitchXX::TwitchChat::GetEmoticonsImagesAll() 
 	return result;
 }
 
-std::set<TwitchXX::EmoticonImage> TwitchXX::TwitchChat::GetEmoticonsImagesBySets(const std::set<unsigned>& sets) const
+std::set<TwitchXX::EmoticonImage> TwitchXX::TwitchChat::ParseEmoticonSets(web::json::value emoticon_sets)
 {
-	web::uri_builder builder(U("/chat/emoticon_images"));
-	std::wstringstream ss;
-	std::transform(sets.begin(), sets.end(), std::ostream_iterator<std::wstring, wchar_t>(ss, U(",")), [](size_t set_id) { return std::to_wstring(set_id); }); //TODO: Not sure about NULL set id
-	builder.append_query(U("emotesets"), ss.str());
-	auto resposne = _request->get(builder.to_uri());
-	auto emoticon_sets = resposne.at(U("emoticon_sets"));
-	std::set<EmoticonImage> result;
-
-	if (emoticon_sets.is_null()) return result;
+	std::set<TwitchXX::EmoticonImage> result;
+	if (emoticon_sets.is_null())
+	{
+		return result;
+	}
 	for(const auto& it: emoticon_sets.as_object())
 	{
 		size_t set_id = std::stoi(it.first);
@@ -93,6 +89,17 @@ std::set<TwitchXX::EmoticonImage> TwitchXX::TwitchChat::GetEmoticonsImagesBySets
 	}
 
 	return result;
+}
+
+std::set<TwitchXX::EmoticonImage> TwitchXX::TwitchChat::GetEmoticonsImagesBySets(const std::set<unsigned>& sets) const
+{
+	web::uri_builder builder(U("/chat/emoticon_images"));
+	std::wstringstream ss;
+	std::transform(sets.begin(), sets.end(), std::ostream_iterator<std::wstring, wchar_t>(ss, U(",")), [](size_t set_id) { return std::to_wstring(set_id); }); //TODO: Not sure about NULL set id
+	builder.append_query(U("emotesets"), ss.str());
+	auto resposne = _request->get(builder.to_uri());
+	auto emoticon_sets = resposne.at(U("emoticon_sets"));
+	return ParseEmoticonSets(emoticon_sets);
 }
 
 template <>

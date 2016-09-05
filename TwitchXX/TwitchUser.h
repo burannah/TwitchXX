@@ -25,6 +25,9 @@ namespace TwitchXX
 		Property<std::wstring> Type; //TODO: to type?
 		///Bio
 		Property<std::wstring> Bio;
+
+		//TODO: Add optional notification properties!!!
+
 		///Equals operator
 		/// Distinct users by id
 		bool operator==(const TwitchUser& other) const

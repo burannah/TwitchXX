@@ -76,7 +76,7 @@ namespace TwitchXX
 		TwitchFollower GetChannelSubscriptionForUser(const std::wstring& channel_name, const std::wstring& user_name) const;
 	};
 
-	template<> TwitchChannel Create(const web::json::value& value); ///< Constructs TwitchChannel object from json
-	template<> TwitchFollower Create(const web::json::value& value); ///< Constructs follower object from json
+	template<> TwitchChannel Create<TwitchChannel>(const web::json::value& value); ///< Constructs TwitchChannel object from json
+	template<> TwitchFollower Create<TwitchFollower>(const web::json::value& value); ///< Constructs follower object from json
 }
 

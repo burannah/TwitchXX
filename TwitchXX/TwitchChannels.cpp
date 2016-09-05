@@ -244,7 +244,7 @@ TwitchXX::TwitchFollower TwitchXX::TwitchChannels::GetChannelSubscriptionForUser
 }
 
 template<>
-TwitchXX::TwitchChannel TwitchXX::Create(const web::json::value & value)
+TwitchXX::TwitchChannel TwitchXX::Create<TwitchXX::TwitchChannel>(const web::json::value & value)
 {
 	TwitchChannel channel;
 	JsonWrapper wrapper(value);

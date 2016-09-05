@@ -31,6 +31,7 @@ namespace TwitchXX
 		///@return a collection of ChannelBadge objects (Note: empty badges are not returned) 
 		std::set<ChannelBadge> GetChannelBadges(std::wstring& channel_name) const;
 
+		static std::set<EmoticonImage> ParseEmoticonSets(web::json::value emoticon_sets);
 	private:
 		std::set<EmoticonImage> GetEmoticonsImagesAll() const;
 		std::set<EmoticonImage> GetEmoticonsImagesBySets(const std::set<unsigned>& sets) const;

@@ -31,6 +31,18 @@ namespace TwitchXX
 	protected:
 		TwitchContainer<T> _objects;
 		std::shared_ptr<MakeRequest> _request;
+
+		template<typename T>
+		T GetSingleObject(const web::uri& uri) const
+		{
+			return Create<T>(_request->get(uri));
+		}
+
+		template<typename T>
+		TwitchContainer<T> GetObjectsMap(const web::uri& uri) const
+		{
+
+		}
 	};
 
 	///Template function for creating Twitch objects from JSON

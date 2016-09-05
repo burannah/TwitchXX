@@ -68,7 +68,24 @@ namespace TwitchXX
 		///@param channel_name channel name
 		///@param user_name
 		///@return channel object in case user is subscribed to given channel
-		TwitchXX::TwitchFollowedChannel GetUserSubscribedChannel(const std::wstring& channel_name, const std::wstring& user_name) const;
+		TwitchFollowedChannel GetUserSubscribedChannel(const std::wstring& channel_name, const std::wstring& user_name) const;
+
+		///Request user object by name
+		///@param user_name requested user name
+		///@return user object
+		TwitchUser GetUser(const std::wstring& user_name) const;
+
+		///Get a list of emoticons that user is authorized to use
+		///Requires AuthScope::USER_SUBSCRIPTIONS
+		///@param user_name requested user_name
+		///@return emoticon collection
+		std::set<EmoticonImage> GetUserEmoticons(const std::wstring& user_name) const;
+
+
+		///Get current user
+		///Requires AuthScope::USER_READ
+		///@return user object
+		TwitchUser GetCurrentUser() const;
 	};
 
 	template<> TwitchUser Create<TwitchUser>(const web::json::value& value); ///< Constructs TwitchUser object from json
