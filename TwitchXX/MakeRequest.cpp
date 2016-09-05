@@ -87,32 +87,32 @@ namespace TwitchXX
 		}
 	}
 
+
 	/**
 	*****************************************************************************************
 	*  @brief      MakreRequest main method
 	*
 	*  @usage      Performs request to Twitch service
 	*
-	*  @param      uri request parameters
-	*  @param      method request method type (GET by default)
-	*  @param      body request body for post and put requests
+	*  @param      params MakeRequest::ReqiestParams object - request descriptor
 	*
 	*  @return     resposne parsed to web::json::value object. Null-json if return code != OK.
 	*			   Updates last status_code field.
 	****************************************************************************************/
-	web::json::value MakeRequest::operator()(const web::uri& uri, const web::http::method& method, web::json::value body)
+
+	web::json::value MakeRequest::operator()(const RequestParams params)
 	{
 		web::http::client::http_client http_client(U("https://api.twitch.tv/kraken"), _config);
-		web::http::http_request request(method);
+		web::http::http_request request(params.method);
 
 		if (_api_version.length()) request.headers().add(U("Accept"), _api_version);
 		if (_client_id.length())request.headers().add(U("Client-ID"), _client_id);
 		if (_token.length() > 6)request.headers().add(U("Authorization"), _token);
-		request.set_request_uri(uri);
-		if(!body.is_null())
+		request.set_request_uri(params.uri);
+		if (!params.body.is_null())
 		{
 			std::wstringstream ss;
-			ss << body;
+			ss << params.body;
 			request.set_body(ss.str());
 			request.headers().set_content_type(U("application/json"));
 		}
@@ -120,48 +120,54 @@ namespace TwitchXX
 		std::wcout << "Request: " << request.to_string() << "\n";
 
 		pplx::task<web::json::value> task = http_client.request(request)
-									.then([this](web::http::http_response response) -> pplx::task<web::json::value>
-								{
-									#ifdef _DEBUG
-									std::wcout << response.to_string() << U("\n");
-									#endif
-									this->_last_status = response.status_code();
-									if (response.status_code() == web::http::status_codes::OK)
-									{
-										if(response.headers().content_type().find(U("json")) == std::wstring::npos)
-										{
-											return response.extract_json(true);
-										}
-										else
-										{
-											return response.extract_json();
-										}
-									}
-									else
-									{
-										auto error = response.extract_json().get();
-										Property<std::wstring, std::string> msg;
-										if(!error.is_null())
-										{
-											msg.Set(error.at(U("error")).as_string() + U(": ") + error.at(U("message")).as_string());
-										}
-										else
-										{
-											msg.Set(U("")); //No error text in response
-										}
+			.then([this](web::http::http_response response) -> pplx::task<web::json::value>
+		{
+#ifdef _DEBUG
+			std::wcout << response.to_string() << U("\n");
+#endif
+			this->_last_status = response.status_code();
+			if (response.status_code() == web::http::status_codes::OK)
+			{
+				if (response.headers().content_type().find(U("json")) == std::wstring::npos)
+				{
+					return response.extract_json(true);
+				}
+				else
+				{
+					return response.extract_json();
+				}
+			}
+			else
+			{
+				auto error = response.extract_json().get();
+				Property<std::wstring, std::string> msg;
+				if (!error.is_null())
+				{
+					msg.Set(error.at(U("error")).as_string() + U(": ") + error.at(U("message")).as_string());
+				}
+				else
+				{
+					msg.Set(U("")); //No error text in response
+				}
 
-										throw TwitchException(msg.to_string(),response.status_code());
-									}
-								});
+				throw TwitchException(msg.to_string(), response.status_code());
+			}
+		});
 
 		try
 		{
-			return task.get();
+			auto result = task.get();
+			if (params.callback != nullptr)
+			{
+				params.callback(result);
+			}
+			return result;
 		}
 		catch (const std::exception& e)
 		{
 			printf("Error exception:%s\n", e.what());
 			throw;
 		}
+
 	}
 }

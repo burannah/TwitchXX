@@ -22,7 +22,7 @@ TwitchXX::TwitchChannel TwitchXX::TwitchChannels::GetChannel(const std::wstring 
 	}
 
 	web::uri_builder builder (U("/channels/") + name + U("/"));
-	auto value = (*_request)(builder.to_uri());
+	auto value = _request->get(builder.to_uri());
 	if (value.is_null())
 	{
 		throw std::runtime_error("No objects were returned");
@@ -34,7 +34,7 @@ TwitchXX::TwitchChannel TwitchXX::TwitchChannels::GetChannel(const std::wstring 
 TwitchXX::TwitchUsersContainer TwitchXX::TwitchChannels::GetChannelEditors(const std::wstring & name) const
 {
 	web::uri_builder builder(U("/channels/") + name + U("/editors"));
-	auto value = (*_request)(builder.to_uri());
+	auto value = _request->get(builder.to_uri());
 	if (value.is_null())
 	{
 		throw std::runtime_error("No objects were returned");
@@ -81,7 +81,7 @@ TwitchXX::TwitchChannel TwitchXX::TwitchChannels::UpdateChannel(const std::wstri
 	}
 	requestJSON[U("channel")] = channelJSON;
 
-	auto value = (*_request)(builder.to_uri(), web::http::methods::PUT,requestJSON);
+	auto value = _request->put(builder.to_uri(),requestJSON);
 	if (value.is_null() || _request->status_code() == 422)
 	{
 		throw std::runtime_error("The channel is not partnered!");
@@ -93,7 +93,7 @@ TwitchXX::TwitchChannel TwitchXX::TwitchChannels::UpdateChannel(const std::wstri
 std::wstring TwitchXX::TwitchChannels::ResetStreamKey(const std::wstring& channel_name) const
 {
 	web::uri_builder builder(U("/channels/") + channel_name + U("/stream_key"));
-	auto value = (*_request)(builder.to_uri(),web::http::methods::DEL);
+	auto value = _request->del(builder.to_uri());
 
 	if(value.is_null())
 	{
@@ -112,7 +112,7 @@ bool TwitchXX::TwitchChannels::StartCommercial(const std::wstring& channel_name,
 		length = 30;
 	}
 	builder.append_query(U("length"), length);
-	auto value = (*_request)(builder.to_uri(), web::http::methods::POST);
+	auto value = _request->post(builder.to_uri());
 
 	switch(_request->status_code())
 	{
@@ -127,7 +127,7 @@ TwitchXX::TwitchTeamsContainer TwitchXX::TwitchChannels::GetTeams(const std::wst
 {
 	web::uri_builder builder(U("/channels/") + channel_name + U("/teams"));
 	TwitchTeamsContainer chunk;
-	auto value = (*_request)(builder.to_uri());
+	auto value = _request->get(builder.to_uri());
 	auto teams = value.at(U("teams"));
 	if(!teams.is_null() && teams.is_array())
 	{
@@ -149,7 +149,7 @@ TwitchXX::TwitchFollowersContainer TwitchXX::TwitchChannels::GetChannelFollows(c
 
 	while(true)
 	{
-		auto value = (*_request)(current_builder.to_uri());
+		auto value = _request->get(current_builder.to_uri());
 		auto followers = value.at(U("follows"));
 		if (!followers.is_null() && followers.is_array())
 		{
@@ -190,7 +190,7 @@ TwitchXX::TwitchFollowersContainer TwitchXX::TwitchChannels::GetChannelSubscript
 	while (true)
 	{
 		TwitchFollowersContainer chunk;
-		auto value = (*_request)(builder.to_uri());
+		auto value = _request->get(builder.to_uri());
 		auto subscriptions = value.at(U("subscriptions"));
 		if (!subscriptions.is_null() && subscriptions.is_array())
 		{
@@ -227,7 +227,7 @@ TwitchXX::TwitchFollower TwitchXX::TwitchChannels::GetChannelSubscriptionForUser
 
 	try
 	{
-		auto response = (*_request)(builder.to_uri());
+		auto response = _request->get(builder.to_uri());
 		return Create<TwitchFollower>(response);
 	}
 	catch (TwitchException e)

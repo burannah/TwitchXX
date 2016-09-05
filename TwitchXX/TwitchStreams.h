@@ -23,8 +23,9 @@ namespace TwitchXX
 		///@param channel channel's name
 		TwitchStream GetStream(const std::wstring& channel) const;
 
-		///Get total number of streams now
-		size_t GetTotalNumber();
+		///Update total number of streams now
+		///@return new total
+		size_t UpdateTotal() const;
 
 		///Request streams
 		///@param n maximum number of streams (top most by number of viewers)
@@ -40,7 +41,7 @@ namespace TwitchXX
 		* stream_type		   | Only shows streams from a certain type. Permitted values: all, playlist, live
 		* language			   | Only shows streams of a certain language. Permitted values are locale ID strings, e.g. `en`, `fi`, `es-mx`.
 		*/
-		TwitchStreamsVector GetStreams(size_t n, const options& opt);
+		TwitchXX::TwitchStreamsContainer GetStreams(size_t n, const options& opt);
 
 		///Get featured streams
 		TwitchFeaturedStreamsContainer GetFeaturedStreams() const;
@@ -54,10 +55,7 @@ namespace TwitchXX
 		///Get current user's followed streams.
 		///@param type filter streams by type (see TwitchStream::Type)
 		///@return TwitchStream collection
-		TwitchStreamsContainer GetFollowedStreams(TwitchStream::Type type = TwitchStream::Type::none);
-	private:
-		static web::uri_builder GetBuilder(const std::wstring & url = U("/streams"), const options & op = options()); ///< uri builder helper function
-		web::uri_builder GetBuilder(const std::wstring& url, const options& op, size_t offset, size_t limit) const; ///< uri builder helper function
+		TwitchStreamsContainer GetFollowedStreams(TwitchStream::Type type = TwitchStream::Type::none) const;
 	};
 
 	template<> TwitchStream Create(const web::json::value& obj); ///< Creates TwitchStream object from Json

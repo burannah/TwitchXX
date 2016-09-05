@@ -77,7 +77,7 @@ void TwitchXX::Api::AddLogger(std::shared_ptr<Logger>log)
 	}
 }
 
-TwitchXX::TwitchGamesVector TwitchXX::Api::TopGames(size_t top_count) const
+TwitchXX::TwitchGamesContainer TwitchXX::Api::TopGames(size_t top_count) const
 {
 	return _games->GetTopGames(top_count);
 }
@@ -87,19 +87,9 @@ TwitchXX::TwitchStream TwitchXX::Api::GetStream(const std::wstring& name) const
 	return  _streams->GetStream(name);
 }
 
-TwitchXX::TwitchStreamsVector TwitchXX::Api::TopStreams(size_t top_count, const options& op) const
+TwitchXX::TwitchStreamsContainer TwitchXX::Api::TopStreams(size_t top_count, const options& op) const
 {
-	try
-	{
-		return _streams->GetStreams(top_count, op);
-	}
-	catch(std::runtime_error& e)
-	{
-		std::wcout << e.what() << "\n";
-	}
-
-	return TwitchStreamsVector();
-
+	return _streams->GetStreams(top_count, op);
 }
 
 TwitchXX::TwitchFeaturedStreamsContainer TwitchXX::Api::GetFeaturedStreams() const

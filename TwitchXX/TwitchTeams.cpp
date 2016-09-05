@@ -14,7 +14,7 @@ TwitchXX::TwitchTeamsContainer TwitchXX::TwitchTeams::GetTeams() const
 	while (true)
 	{
 		TwitchTeamsContainer chunk;
-		auto value = (*_request)(builder.to_uri());
+		auto value = _request->get(builder.to_uri());
 		auto subscriptions = value.at(U("teams"));
 		if (!subscriptions.is_null() && subscriptions.is_array())
 		{
@@ -50,7 +50,7 @@ TwitchXX::TwitchTeam TwitchXX::TwitchTeams::GetTeam(const std::wstring& team_nam
 {
 	web::uri_builder builder{ U("/teams/") + team_name + U("/")};
 
-	auto response = (*_request)(builder.to_uri());
+	auto response = _request->get(builder.to_uri());
 	return Create<TwitchTeam>(response);
 }
 

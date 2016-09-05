@@ -40,11 +40,11 @@ namespace TwitchXX
 		static void AddLogger(std::shared_ptr<Logger>log);
 
 		//Games
-		TwitchGamesVector TopGames(size_t top_count = 0) const;
+		TwitchGamesContainer TopGames(size_t top_count = 0) const;
 
 		//Streams
 		TwitchStream GetStream(const std::wstring& name) const;
-		TwitchStreamsVector TopStreams(size_t top_count = 0, const options& op = options()) const;
+		TwitchStreamsContainer TopStreams(size_t top_count = 0, const options& op = options()) const;
 		TwitchFeaturedStreamsContainer GetFeaturedStreams() const;
 		std::tuple<size_t, size_t> GetSummary(const std::wstring& game = std::wstring()) const;
 		TwitchStreamsContainer FollowedStreams() const;

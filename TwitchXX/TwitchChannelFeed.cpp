@@ -14,7 +14,7 @@ TwitchXX::TwitchPostsContainer TwitchXX::TwitchChannelFeed::GetPosts(const std::
 	TwitchPostsContainer result;
 	for (;;)
 	{
-		auto value = (*_request)(builder.to_uri());
+		auto value = _request->get(builder.to_uri());
 		if (value.is_null() || _request->status_code() != web::http::status_codes::OK)
 		{
 			break;
@@ -49,7 +49,7 @@ TwitchXX::TwitchPost TwitchXX::TwitchChannelFeed::GetPost(const std::wstring & c
 	std::wstringstream  ss;
 	ss << id;
 	web::uri_builder builder(U("/feed/") + channel_name + U("/posts/") + ss.str());
-	auto response = (*_request)(builder.to_uri());
+	auto response = _request->get(builder.to_uri());
 	return Create<TwitchPost>(response);
 }
 
@@ -61,7 +61,7 @@ TwitchXX::TwitchPost TwitchXX::TwitchChannelFeed::Post(const std::wstring& chann
 	request_body[U("content")] = web::json::value::string(body);
 	request_body[U("share")] = web::json::value::boolean(share);
 
-	auto response = (*_request)(builder.to_uri(), web::http::methods::POST,request_body);
+	auto response = _request->post(builder.to_uri(), request_body);
 	if(_request->status_code()!= web::http::status_codes::OK)
 	{
 		throw TwitchException("Unable to create post!", _request->status_code());
@@ -81,7 +81,7 @@ bool TwitchXX::TwitchChannelFeed::DeletePost(const std::wstring & channel_name, 
 	std::wstringstream ss;
 	ss << id;
 	web::uri_builder builder(U("/feed/") + channel_name + U("/posts/") + ss.str());
-	auto response = (*_request)(builder.to_uri(),web::http::methods::DEL);
+	auto response = _request->del(builder.to_uri());
 
 	return _request->status_code() == web::http::status_codes::OK;
 }
@@ -100,7 +100,7 @@ bool TwitchXX::TwitchChannelFeed::AddReaction(const std::wstring& channel_name, 
 		builder.append_query(U("emote_id"), U("endorse"));
 	}
 
-	auto response = (*_request)(builder.to_uri(), web::http::methods::POST);
+	auto response = _request->post(builder.to_uri());
 
 	return _request->status_code() == web::http::status_codes::OK;
 }
@@ -119,7 +119,7 @@ bool TwitchXX::TwitchChannelFeed::RemoveReaction(const std::wstring& channel_nam
 		builder.append_query(U("emote_id"), U("endorse"));
 	}
 
-	auto response = (*_request)(builder.to_uri(), web::http::methods::DEL);
+	auto response = _request->del(builder.to_uri());
 
 	return _request->status_code() == web::http::status_codes::OK;
 }

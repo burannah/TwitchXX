@@ -12,7 +12,7 @@ TEST_F(TwitchXXTest, Constructor_No_Throw)
 
 TEST_F(TwitchXXTest,TopGames)
 {
-	TwitchXX::TwitchGamesVector result;
+	TwitchXX::TwitchGamesContainer result;
 	EXPECT_NO_THROW({
 		result = _api->TopGames(100);
 	});
@@ -39,7 +39,7 @@ TEST_F(TwitchXXTest,GetStream)
 
 TEST_F(TwitchXXTest,TopStreams)
 {
-	TwitchXX::TwitchStreamsVector result;
+	TwitchXX::TwitchStreamsContainer result;
 	EXPECT_NO_THROW(
 	{
 		result = _api->TopStreams(100,{ { L"game", L"Dota 2" } });

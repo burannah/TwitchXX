@@ -50,52 +50,52 @@ TwitchXX::TwitchGame TwitchXX::Create<TwitchXX::TwitchGame>(const web::json::val
 	return game;
 }
 
-TwitchXX::TwitchGamesVector TwitchXX::TwitchGames::GetTopGames(size_t n)
+TwitchXX::TwitchGamesContainer TwitchXX::TwitchGames::GetTopGames(size_t n) const
 {
-	auto offset = 0;
-	//Updating limit
-	_limit = n < max_limit ? n : max_limit;
-	auto max_objects = n == 0 ? _total_size : n;
-	const auto max_retries = 3;
-	auto retries = 0;
-	while (_objects.size() < max_objects)
+	static const size_t limit = 100; //TODO: To some global constants
+	web::uri_builder builder(U("/games/top"));
+	builder.append_query(U("limit"), limit);
+
+	TwitchGamesContainer result;
+
+	while (true)
 	{
-		int count = _objects.size();
-		auto chunk = FetchChunk(GetBuilder(_limit,_offset).to_uri(),U("top"));
-		_objects.insert(chunk.begin(), chunk.end());
-		if (chunk.size() == 0 || _objects.size() == count)
+		TwitchGamesContainer chunk;
+		auto value = _request->get(builder.to_uri(), [this](const web::json::value& v) { TotalSize.Set(v.at(U("_total")).as_number().to_uint32()); });
+		auto games = value.at(U("top"));
+		if (!games.is_null() && games.is_array())
 		{
-			++retries;
+			for (const auto& game : games.as_array())
+			{
+				chunk.insert(Create<TwitchGame>(game));
+			}
 		}
 		else
 		{
-			retries = 0;
+			break;
 		}
-		// "Trembling" protection
-		_offset = count + static_cast<size_t>(chunk.size() * 0.8);
-		_offset = std::min(_objects.size(), _offset);
-		if (_offset + _limit > _total_size)
+
+		result.insert(chunk.begin(), chunk.end());
+		auto next = value.at(U("_links")).at(U("next"));
+		if (result.size() < n && chunk.size() == limit && !next.is_null() && next.is_string())
 		{
-			_offset = _total_size < _limit ? 0 : _total_size - _limit;
+			builder = web::uri_builder(next.as_string());
 		}
-		if (retries >= max_retries)
+		else
 		{
 			break;
 		}
-		std::wcout << "Before=" << count << " After=" << _objects.size() << " Chunk=" << chunk.size() << " Offset=" << _offset << " Total=" << _total_size << " Retries = " << retries << std::endl;
 	}
 
-	/// Objects are sorted by names. We need to return mast watched of them == sorted by the number of viewers.
-	/// So here comes some trick
-	std::vector<TwitchGame> v(_objects.begin(), _objects.end());
-	std::sort(v.begin(), v.end(), [](const TwitchGame& a, const TwitchGame& b) { return a.Viewers > b.Viewers; });
-	return v;
+	return result;
 }
 
-web::uri_builder TwitchXX::TwitchGames::GetBuilder(size_t limit, size_t offset) const
+size_t TwitchXX::TwitchGames::UpdateTotal() const
 {
+
 	web::uri_builder builder(U("/games/top"));
-	builder.append_query(U("limit"), limit);
-	builder.append_query(U("offset"), offset);
-	return builder;
+	builder.append_query(U("limit"), 1);
+	auto value = _request->get(builder.to_uri());
+	TotalSize.Set(value.at(U("_total")).as_number().to_uint32());
+	return TotalSize.Get();
 }

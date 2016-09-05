@@ -38,7 +38,7 @@ TwitchXX::TwitchBlockedUsersContainer TwitchXX::TwitchUsers::GetBlocked(const st
 	TwitchXX::TwitchBlockedUsersContainer result;
 	for (;;)
 	{
-		auto value = (*_request)(builder.to_uri());
+		auto value = _request->get(builder.to_uri());
 
 		auto blocks = value.at(U("blocks"));
 		if (blocks.is_null() || !blocks.is_array())
@@ -68,7 +68,7 @@ TwitchXX::TwitchBlockedUser TwitchXX::TwitchUsers::BlockUser(const std::wstring&
 {
 	web::uri_builder builder{U("/users/") + user_name + U("/blocks/") + target_name};
 
-	auto response = (*_request)(builder.to_uri(), web::http::methods::PUT);
+	auto response = _request->put(builder.to_uri());
 	return Create<TwitchBlockedUser>(response);
 }
 
@@ -78,7 +78,7 @@ bool TwitchXX::TwitchUsers::UblockUser(const std::wstring& user_name, const std:
 
 	try
 	{
-		auto response = (*_request)(builder.to_uri(), web::http::methods::DEL);
+		auto response = _request->del(builder.to_uri());
 	}
 	catch(TwitchException e)
 	{
@@ -106,7 +106,7 @@ TwitchXX::TwitchFollowedChannelsContainer TwitchXX::TwitchUsers::GetFollowingCha
 		web::json::value value;
 		try
 		{
-			value = (*_request)(builder.to_uri());
+			value = _request->get(builder.to_uri());
 		}
 		catch (TwitchException e)
 		{
@@ -146,7 +146,7 @@ TwitchXX::TwitchFollowedChannel TwitchXX::TwitchUsers::GetFollowingChannel(const
 
 	try
 	{
-		auto response = (*_request)(builder.to_uri());
+		auto response = _request->get(builder.to_uri());
 		return Create<TwitchFollowedChannel>(response);
 	}
 	catch (TwitchException e)
@@ -172,7 +172,7 @@ TwitchXX::TwitchFollowedChannel TwitchXX::TwitchUsers::FollowChannel(const std::
 			builder.append_query(U("notifications"), U("true"));
 		}
 
-		auto response = (*_request)(builder.to_uri(),web::http::methods::PUT);
+		auto response = _request->put(builder.to_uri());
 		return Create<TwitchFollowedChannel>(response);
 	}
 	catch (TwitchException e)
@@ -191,7 +191,7 @@ void TwitchXX::TwitchUsers::UnfollowChannel(const std::wstring & user_name, cons
 	try
 	{
 		web::uri_builder builder{ U("/users/") + user_name + U("/follows/channels/") + channel_name };
-		auto response = (*_request)(builder.to_uri(), web::http::methods::DEL);
+		auto response = _request->del(builder.to_uri());
 	}
 	catch (TwitchException e)
 	{
@@ -213,7 +213,7 @@ TwitchXX::AuthToken TwitchXX::TwitchUsers::GetCurrentUserStatus() const
 	try
 	{
 		web::uri_builder builder;
-		auto response = (*_request)(builder.to_uri());
+		auto response = _request->get(builder.to_uri());
 		if (response.has_field(U("token")))
 		{
 			auto token = response.at(U("token"));
@@ -236,7 +236,7 @@ TwitchXX::TwitchFollowedChannel TwitchXX::TwitchUsers::GetUserSubscribedChannel(
 	try
 	{
 		web::uri_builder builder{ U("/users/") + user_name + U("/subscriptions/") + channel_name };
-		auto response = (*_request)(builder.to_uri());
+		auto response = _request->get(builder.to_uri());
 		return Create<TwitchFollowedChannel>(response);
 	}
 	catch (TwitchException& e)

@@ -9,7 +9,7 @@ TwitchXX::TwitchIngestsContainer TwitchXX::TwitchIngests::GetIngests() const
 		TwitchIngestsContainer result;
 		web::uri_builder builder{ U("/ingests/")};
 
-		auto response = (*_request)(builder.to_uri(), web::http::methods::PUT);
+		auto response = _request->put(builder.to_uri());
 		auto ingests = response.at(U("ingests"));
 		if(ingests.is_null() || !ingests.is_array())
 		{

@@ -5,7 +5,7 @@ TwitchXX::TwitchEmoticonsContainer TwitchXX::TwitchChat::GetEmoticons() const
 {
 	web::uri_builder builder(U("/chat/emoticons"));
 
-	auto resposne = (*_request)(builder.to_uri());
+	auto resposne = _request->get(builder.to_uri());
 	auto emoticons = resposne.at(U("emoticons"));
 	TwitchEmoticonsContainer result;
 	if(!emoticons.is_null() && emoticons.is_array())
@@ -34,7 +34,7 @@ std::set<TwitchXX::EmoticonImage> TwitchXX::TwitchChat::GetEmoticoneImages(std::
 std::set<TwitchXX::ChannelBadge> TwitchXX::TwitchChat::GetChannelBadges(std::wstring& channel_name) const
 {
 	web::uri_builder builder(U("/chat/") + channel_name + U("/badges"));
-	auto response = (*_request)(builder.to_uri());
+	auto response = _request->get(builder.to_uri());
 	std::set<ChannelBadge> result;
 	if(response.is_null())
 	{
@@ -54,7 +54,7 @@ std::set<TwitchXX::ChannelBadge> TwitchXX::TwitchChat::GetChannelBadges(std::wst
 std::set<TwitchXX::EmoticonImage> TwitchXX::TwitchChat::GetEmoticonsImagesAll() const
 {
 	web::uri_builder builder(U("/chat/emoticon_images"));
-	auto resposne = (*_request)(builder.to_uri());
+	auto resposne = _request->get(builder.to_uri());
 	auto emoticons = resposne.at(U("emoticons"));
 	std::set<EmoticonImage> result;
 	if(emoticons.is_null() || !emoticons.is_array())
@@ -77,7 +77,7 @@ std::set<TwitchXX::EmoticonImage> TwitchXX::TwitchChat::GetEmoticonsImagesBySets
 	std::wstringstream ss;
 	std::transform(sets.begin(), sets.end(), std::ostream_iterator<std::wstring, wchar_t>(ss, U(",")), [](size_t set_id) { return std::to_wstring(set_id); }); //TODO: Not sure about NULL set id
 	builder.append_query(U("emotesets"), ss.str());
-	auto resposne = (*_request)(builder.to_uri());
+	auto resposne = _request->get(builder.to_uri());
 	auto emoticon_sets = resposne.at(U("emoticon_sets"));
 	std::set<EmoticonImage> result;
 
