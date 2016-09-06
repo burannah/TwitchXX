@@ -169,6 +169,7 @@
     <ClInclude Include="TeamsTest.h" />
     <ClInclude Include="TwitchXXTest.h" />
     <ClInclude Include="UsersTest.h" />
+    <ClInclude Include="VideosTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChannelFeedTest.cpp" />
@@ -180,6 +181,7 @@
     <ClCompile Include="TwitchXX-Tests.cpp" />
     <ClCompile Include="TwitchXXTest.cpp" />
     <ClCompile Include="UsersTest.cpp" />
+    <ClCompile Include="VideosTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TwitchXX\TwitchXX.vcxproj">

@@ -202,6 +202,8 @@
     <ClInclude Include="TwitchTeams.h" />
     <ClInclude Include="TwitchUser.h" />
     <ClInclude Include="TwitchUsers.h" />
+    <ClInclude Include="TwitchVideo.h" />
+    <ClInclude Include="TwitchVideos.h" />
     <ClInclude Include="TwitchXX.h" />
     <ClInclude Include="TwitchChannels.h" />
     <ClInclude Include="TwitchPost.h" />
@@ -217,6 +219,7 @@
     <ClCompile Include="TwitchStreams.cpp" />
     <ClCompile Include="TwitchTeams.cpp" />
     <ClCompile Include="TwitchUsers.cpp" />
+    <ClCompile Include="TwitchVideos.cpp" />
     <ClCompile Include="TwitchXX.cpp" />
     <ClCompile Include="TwitchChannels.cpp" />
     <ClCompile Include="Utility.cpp" />

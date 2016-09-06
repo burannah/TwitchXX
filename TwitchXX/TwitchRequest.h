@@ -39,9 +39,42 @@ namespace TwitchXX
 		}
 
 		template<typename T>
-		TwitchContainer<T> GetObjectsMap(const web::uri& uri) const
+		TwitchContainer<T> GetObjectsArray(const web::uri_builder& builder, const std::wstring& node) const
 		{
+			TwitchContainer<T> result;
+			auto current_builder = builder;
 
+			while (true)
+			{
+				TwitchContainer<T> chunk;
+				auto value = _request->get(current_builder.to_uri());
+				auto subscriptions = value.at(node);
+				if (!subscriptions.is_null() && subscriptions.is_array())
+				{
+					for (const auto& subs : subscriptions.as_array())
+					{
+						chunk.insert(Create<T>(subs));
+					}
+				}
+				else
+				{
+					break;
+				}
+
+				result.insert(chunk.begin(), chunk.end());
+
+				auto next = value.at(U("_links")).at(U("next"));
+				if (chunk.size() == max_limit && !next.is_null() && next.is_string())
+				{
+					current_builder = web::uri_builder(next.as_string());
+				}
+				else
+				{
+					break;
+				}
+			}
+
+			return result;
 		}
 	};
 

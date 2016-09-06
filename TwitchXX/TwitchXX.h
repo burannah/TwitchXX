@@ -15,6 +15,7 @@
 #include "TwitchFollower.h"
 #include "TwitchIngests.h"
 #include "TwitchTeams.h"
+#include "TwitchVideos.h"
 
 namespace TwitchXX
 {
@@ -94,6 +95,10 @@ namespace TwitchXX
 		TwitchTeamsContainer GetTeams() const;
 		TwitchTeam GetTeam(const std::wstring& team) const;
 
+		//Videos
+		TwitchVideo GetVideo(unsigned long long id) const;
+		TwitchVideosContainer GetTopVideo(const std::wstring& game = U(""), const std::wstring& period = U("week")) const;
+
 
 	private:
 		static std::map<Version, std::wstring> _version;
@@ -105,6 +110,7 @@ namespace TwitchXX
 		std::unique_ptr<TwitchUsers> _users;
 		std::unique_ptr<TwitchIngests> _ingests;
 		std::unique_ptr<TwitchTeams> _teams;
+		std::unique_ptr<TwitchVideos> _videos;
 
 
 	};

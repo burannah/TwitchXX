@@ -1,5 +1,6 @@
 #pragma once
 #include "Property.h"
+#include "TwitchChannel.h"
 
 namespace TwitchXX
 {
@@ -15,6 +16,9 @@ namespace TwitchXX
 		///Broadcast Id
 		Property<unsigned long long> BroadcastId;
 
+		///Id
+		Property<unsigned long long> Id;
+
 		///Status
 		Property<std::wstring> Status; //TODO: Not sure about string;
 
@@ -25,7 +29,7 @@ namespace TwitchXX
 		Property<Date> Recorded;
 
 		///Game
-		Property<std::string> Game;
+		Property<std::wstring> Game;
 
 		///Length
 		Property<unsigned long long> Length;
@@ -43,7 +47,7 @@ namespace TwitchXX
 		Property<std::wstring> BroadcastType;
 
 		///Channel
-		Property<TwitchChannel> Channel;
+		TwitchChannel Channel;
 
 		///Less than operator
 		bool operator<(const TwitchVideo& other) const

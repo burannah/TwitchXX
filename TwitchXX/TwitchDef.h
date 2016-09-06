@@ -22,6 +22,7 @@ namespace TwitchXX
 	class TwitchFollower;
 	class TwitchFollowedChannel;
 	class TwitchIngest;
+	class TwitchVideo;
 	///@}
 
 	template <typename T>
@@ -40,6 +41,7 @@ namespace TwitchXX
 	using TwitchFollowersContainer = TwitchContainer<TwitchFollower>; ///< Twitch channel followers 
 	using TwitchFollowedChannelsContainer = TwitchContainer<TwitchFollowedChannel>; ///< Channels followed collection
 	using TwitchIngestsContainer = TwitchContainer<TwitchIngest>; ///< Ingests collection
+	using TwitchVideosContainer = TwitchContainer<TwitchVideo>; ///< Video collection
 	using ImageCollection = std::map<std::wstring, std::wstring>; ///< image collection (image key, image url)
 	using options = std::map<std::wstring, std::wstring>; ///< options collection (option key, option value)
 	using Date = std::chrono::time_point<std::chrono::system_clock>; ///< default date type

@@ -55,6 +55,7 @@ TwitchXX::Api::Api(const std::wstring& client_id, Version version, std::shared_p
 	_users = std::make_unique<TwitchUsers>(request);
 	_ingests = std::make_unique<TwitchIngests>(request);
 	_teams = std::make_unique<TwitchTeams>(request);
+	_videos = std::make_unique<TwitchVideos>(request);
 
 	if(log != nullptr)
 	{
@@ -270,4 +271,14 @@ TwitchXX::TwitchTeamsContainer TwitchXX::Api::GetTeams() const
 TwitchXX::TwitchTeam TwitchXX::Api::GetTeam(const std::wstring& team) const
 {
 	return _teams->GetTeam(team);
+}
+
+TwitchXX::TwitchVideo TwitchXX::Api::GetVideo(unsigned long long id) const
+{
+	return _videos->GetVideo(id);
+}
+
+TwitchXX::TwitchVideosContainer TwitchXX::Api::GetTopVideo(const std::wstring& game, const std::wstring& period) const
+{
+	return _videos->GetTopVideos(game, period);
 }

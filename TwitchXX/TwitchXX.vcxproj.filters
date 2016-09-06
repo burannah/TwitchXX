@@ -105,6 +105,12 @@
     <ClInclude Include="TwitchTeams.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TwitchVideo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TwitchVideos.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TwitchXX.cpp">
@@ -141,6 +147,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TwitchTeams.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TwitchVideos.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
