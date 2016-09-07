@@ -12,12 +12,12 @@ namespace TwitchXX
 {
 	///Twitch streams request class
 	/** This class encapsulates all requests that are related to twitch streams opertaions*/
-	class TwitchStreams : public TwitchRequest<TwitchStream>
+	class TwitchStreams : public TwitchRequest
 	{
 	public:
 		///Constructor
 		///@param request transport object
-		explicit TwitchStreams(std::shared_ptr<MakeRequest> request) : TwitchRequest<TwitchXX::TwitchStream>(request) {} ;
+		explicit TwitchStreams(std::shared_ptr<MakeRequest> request) : TwitchRequest(request) {} ;
 
 		///Get stream for channel
 		///@param channel channel's name

@@ -9,11 +9,11 @@ namespace TwitchXX
 {
 
 	///Search requests agregator class
-	class TwitchSearch : TwitchRequest<TwitchChannel>
+	class TwitchSearch : TwitchRequest
 	{
 	public:
 		explicit TwitchSearch(std::shared_ptr<MakeRequest> request) 
-					: TwitchRequest<TwitchChannel>(request) 
+					: TwitchRequest(request) 
 		{
 		};
 

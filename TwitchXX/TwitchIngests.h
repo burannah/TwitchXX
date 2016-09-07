@@ -4,12 +4,12 @@
 
 namespace TwitchXX
 {
-	class TwitchIngests : public TwitchRequest<TwitchIngest>
+	class TwitchIngests : public TwitchRequest
 	{
 	public:
 		///Constructor
 		explicit TwitchIngests(const std::shared_ptr<MakeRequest>& request)
-			: TwitchRequest<TwitchIngest>(request)
+			: TwitchRequest(request)
 		{
 		}
 

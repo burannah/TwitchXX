@@ -5,10 +5,10 @@
 namespace TwitchXX
 {
 	///Teams are an organization of channels.
-	class TwitchTeams : TwitchXX::TwitchRequest<TwitchXX::TwitchTeam>
+	class TwitchTeams : TwitchXX::TwitchRequest
 	{
 	public:
-		explicit TwitchTeams(std::shared_ptr<TwitchXX::MakeRequest> request): TwitchRequest<TwitchXX::TwitchTeam>(request) {};
+		explicit TwitchTeams(std::shared_ptr<TwitchXX::MakeRequest> request): TwitchRequest(request) {};
 
 
 		///Returns a list of active teams.

@@ -6,7 +6,7 @@ namespace TwitchXX
 {
 	///Twitch user properties request object
 	/** This class encapsulates all requests that are related to twitch user operations */
-	class TwitchUsers : public TwitchRequest<TwitchUser>
+	class TwitchUsers : public TwitchRequest
 	{
 	public:
 		static std::map<AuthScope, std::wstring> Scopes;
@@ -14,7 +14,7 @@ namespace TwitchXX
 
 		///Constructor
 		explicit TwitchUsers(const std::shared_ptr<MakeRequest>& request)
-			: TwitchRequest<TwitchUser>(request)
+			: TwitchRequest(request)
 		{
 		}
 

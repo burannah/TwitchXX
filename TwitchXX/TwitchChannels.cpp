@@ -8,12 +8,6 @@
 #include "TwitchVideos.h"
 
 
-TwitchXX::TwitchChannels::TwitchChannels(std::shared_ptr<MakeRequest> request)
-	: TwitchRequest<TwitchXX::TwitchChannel>(request) 
-{
-
-}
-
 TwitchXX::TwitchChannel TwitchXX::TwitchChannels::GetChannel(const std::wstring & name) const
 {
 	//TODO: add test for getting channel of authenticated user

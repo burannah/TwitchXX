@@ -12,7 +12,6 @@ namespace TwitchXX
 	extern std::shared_ptr<std::map<std::wstring, std::wstring>> Options;
 
 	///Base template class for other twitch request classes
-	template<typename T>
 	class TwitchRequest
 	{
 	public:
@@ -28,7 +27,6 @@ namespace TwitchXX
 		mutable Property<size_t> TotalSize;
 
 	protected:
-		TwitchContainer<T> _objects;
 		std::shared_ptr<MakeRequest> _request;
 
 
@@ -45,7 +43,7 @@ namespace TwitchXX
 
 		///Request a collection of objects of type T iterationg through _next field of the response
 		///@param builder uri builder for requet
-		///@param root node for object's collection in the reposbse body
+		///@param node node for object's collection in the reposbse body
 		///@return TwitchContainer collection of elements of type T
 		template<typename T>
 		TwitchContainer<T> GetObjectsArrayByNext(const web::uri_builder& builder, const std::wstring& node) const
@@ -89,7 +87,7 @@ namespace TwitchXX
 
 		///Request a collection of objects of type T iterationg through cursor field of the response
 		///@param builder uri builder for requet
-		///@param root node for object's collection in the reposbse body
+		///@param node node for object's collection in the reposbse body
 		///@return TwitchContainer collection of elements of type T
 		template<typename T>
 		TwitchContainer<T> GetObjectsArrayByCursor(const web::uri_builder& builder, const std::wstring& node) const

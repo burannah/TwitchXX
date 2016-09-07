@@ -6,12 +6,12 @@ namespace TwitchXX
 {
 	///Twitch chat request object
 	/** This class encapsulates all requests that are related to twitch chat emoticons and badges operations*/
-	class TwitchChat : public TwitchRequest<TwitchEmoticon>
+	class TwitchChat : public TwitchRequest
 	{
 	public:
 		///Constructor
 		///@param request transport object
-		explicit TwitchChat(std::shared_ptr<MakeRequest> request) : TwitchRequest<TwitchEmoticon>(request) {};
+		explicit TwitchChat(std::shared_ptr<MakeRequest> request) : TwitchRequest(request) {};
 
 
 		///Returns a list of all emoticon objects for Twitch.

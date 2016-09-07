@@ -6,13 +6,13 @@ namespace TwitchXX
 {
 	///Twitch channel feed request object
 	/** This class encapsulates all requests that are related to twitch channel feed*/
-	class TwitchChannelFeed : TwitchRequest<TwitchPost>
+	class TwitchChannelFeed : TwitchRequest
 	{
 	public:
 		///Constructor
 		///@param request transport object
 		explicit TwitchChannelFeed(std::shared_ptr<MakeRequest> request)
-			: TwitchRequest<TwitchPost>(request) {} ;
+			: TwitchRequest(request) {} ;
 		
 		///Get posts from feed.
 		///Requires scope AuthScope::CHANNEL_FEED_READ

@@ -6,11 +6,11 @@ namespace TwitchXX
 {
 	/// Videos are broadcasts or chapters owned by a channel. Broadcasts are unedited videos that are saved after 
 	/// a streaming session. Chapters are videos edited from broadcasts by the channel's owner.
-	class TwitchVideos : public TwitchRequest<TwitchVideo>
+	class TwitchVideos : public TwitchRequest
 	{
 	public:
 		explicit TwitchVideos(const std::shared_ptr<MakeRequest>& request)
-			: TwitchRequest<TwitchVideo>(request)
+			: TwitchRequest(request)
 		{
 		}
 		

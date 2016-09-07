@@ -11,12 +11,13 @@ namespace TwitchXX
 {
 	///Twitch channels request object
 	/** This class encapsulates all requests that are related to twitch channel operations (excluding channel feed. See TwitchChannelFeed. )*/
-	class TwitchChannels : public TwitchRequest<TwitchChannel>
+	class TwitchChannels : public TwitchRequest
 	{
 	public:
 		///Constructor
 		///@param request transport object
-		explicit TwitchChannels(std::shared_ptr<MakeRequest> request);
+		explicit  TwitchChannels(std::shared_ptr<MakeRequest> request) : TwitchRequest(request) {	}
+
 
 		///Get channel object
 		///@param name requested channel name. If empty - returns a channel object of authenticated user.
