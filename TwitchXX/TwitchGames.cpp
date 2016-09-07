@@ -55,39 +55,7 @@ TwitchXX::TwitchGamesContainer TwitchXX::TwitchGames::GetTopGames(size_t n) cons
 	static const size_t limit = 100; //TODO: To some global constants
 	web::uri_builder builder(U("/games/top"));
 	builder.append_query(U("limit"), limit);
-
-	TwitchGamesContainer result;
-
-	while (true)
-	{
-		TwitchGamesContainer chunk;
-		auto value = _request->get(builder.to_uri(), [this](const web::json::value& v) { TotalSize.Set(v.at(U("_total")).as_number().to_uint32()); });
-		auto games = value.at(U("top"));
-		if (!games.is_null() && games.is_array())
-		{
-			for (const auto& game : games.as_array())
-			{
-				chunk.insert(Create<TwitchGame>(game));
-			}
-		}
-		else
-		{
-			break;
-		}
-
-		result.insert(chunk.begin(), chunk.end());
-		auto next = value.at(U("_links")).at(U("next"));
-		if (result.size() < n && chunk.size() == limit && !next.is_null() && next.is_string())
-		{
-			builder = web::uri_builder(next.as_string());
-		}
-		else
-		{
-			break;
-		}
-	}
-
-	return result;
+	return GetObjectsArrayByNext<TwitchGame>(builder, U("top"));
 }
 
 size_t TwitchXX::TwitchGames::UpdateTotal() const

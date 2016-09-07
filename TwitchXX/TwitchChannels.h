@@ -74,6 +74,16 @@ namespace TwitchXX
 		///@param user_name user name to check subscription for
 		///@return subscription object for user if he is subscribed to given channel
 		TwitchFollower GetChannelSubscriptionForUser(const std::wstring& channel_name, const std::wstring& user_name) const;
+
+		///Returns a list of videos ordered by time of creation, starting with the most recent from channel.
+		///Available options are:
+		///limit	  : Maximum number of objects in array. Default is 10. Maximum is 100.
+		///offset	  : Object offset for pagination. Default is 0.
+		///broadcasts : Returns only broadcasts when true. Otherwise only highlights are returned. Default is false.
+		///hls		  : Returns only HLS VoDs when true. Otherwise only non-HLS VoDs are returned. Default is false.
+		///@param channel_name channel name
+		///@param op collection of filter parameters for request
+		TwitchVideosContainer GetChannelVideos(const std::wstring& channel_name, options& op) const;
 	};
 
 	template<> TwitchChannel Create<TwitchChannel>(const web::json::value& value); ///< Constructs TwitchChannel object from json

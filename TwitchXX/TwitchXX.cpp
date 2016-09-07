@@ -153,6 +153,21 @@ TwitchXX::TwitchFollower TwitchXX::Api::GetChannelSubscriptionForUser(const std:
 	return _channels->GetChannelSubscriptionForUser(channel_name, user_name);
 }
 
+TwitchXX::TwitchVideosContainer TwitchXX::Api::GetChannelVideos(const std::wstring& channel_name, bool broadcasts, bool hls) const
+{
+	options op;
+	if(broadcasts)
+	{
+		op[U("broadcasts")] = U("true");
+	}
+	if(hls)
+	{
+		op[U("hls")] = U("true");
+	}
+	op[U("limit")] = U("100");
+	return _channels->GetChannelVideos(channel_name, op);
+}
+
 TwitchXX::TwitchPostsContainer TwitchXX::Api::GetPosts(const std::wstring& channel_name, size_t count) const
 {
 	return _channel_feed->GetPosts(channel_name, count);
@@ -280,5 +295,26 @@ TwitchXX::TwitchVideo TwitchXX::Api::GetVideo(unsigned long long id) const
 
 TwitchXX::TwitchVideosContainer TwitchXX::Api::GetTopVideo(const std::wstring& game, const std::wstring& period) const
 {
-	return _videos->GetTopVideos(game, period);
+	options op;
+	if(game.size())
+	{
+		op[U("game")] = game;
+	}
+	if(period.size())
+	{
+		op[U("period")] = period;
+	}
+	return _videos->GetTopVideos(op);
+}
+
+TwitchXX::TwitchVideosContainer TwitchXX::Api::GetFollowedVideo(const std::wstring& broadcast_type) const
+{
+	options op;
+	op[U("limit")] = 100;
+	if(broadcast_type.size())
+	{
+		op[U("broadcast_type")] = broadcast_type;
+	}
+
+	return _videos->GetFollowedVideos(op);
 }

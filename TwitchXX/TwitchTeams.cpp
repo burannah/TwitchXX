@@ -8,42 +8,7 @@ TwitchXX::TwitchTeamsContainer TwitchXX::TwitchTeams::GetTeams() const
 	web::uri_builder builder(U("/teams"));
 	builder.append_query(U("limit"), 100);
 	//builder.append_query(U("direction"), Direction::asc);
-
-	TwitchTeamsContainer result;
-
-	while (true)
-	{
-		TwitchTeamsContainer chunk;
-		auto value = _request->get(builder.to_uri());
-		auto subscriptions = value.at(U("teams"));
-		if (!subscriptions.is_null() && subscriptions.is_array())
-		{
-			for (const auto& subs : subscriptions.as_array())
-			{
-				chunk.insert(Create<TwitchTeam>(subs));
-			}
-		}
-		else
-		{
-			break;
-		}
-
-		result.insert(chunk.begin(), chunk.end());
-
-		auto next = value.at(U("_links")).at(U("next"));
-		if (chunk.size() == limit && !next.is_null() && next.is_string())
-		{
-			builder = web::uri_builder(next.as_string());
-		}
-		else
-		{
-			break;
-		}
-	}
-
-
-	return result;
-
+	return GetObjectsArrayByNext<TwitchTeam>(builder, U("teams"));
 }
 
 TwitchXX::TwitchTeam TwitchXX::TwitchTeams::GetTeam(const std::wstring& team_name) const

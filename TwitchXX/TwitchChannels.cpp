@@ -4,6 +4,8 @@
 #include "TwitchUsers.h"
 #include "TwitchFollower.h"
 #include "TwitchTeams.h"
+#include "TwitchVideo.h"
+#include "TwitchVideos.h"
 
 
 TwitchXX::TwitchChannels::TwitchChannels(std::shared_ptr<MakeRequest> request)
@@ -34,25 +36,7 @@ TwitchXX::TwitchChannel TwitchXX::TwitchChannels::GetChannel(const std::wstring 
 TwitchXX::TwitchUsersContainer TwitchXX::TwitchChannels::GetChannelEditors(const std::wstring & name) const
 {
 	web::uri_builder builder(U("/channels/") + name + U("/editors"));
-	auto value = _request->get(builder.to_uri());
-	if (value.is_null())
-	{
-		throw std::runtime_error("No objects were returned");
-	}
-
-
-	auto users = value.at(U("users"));
-	TwitchUsersContainer result;
-
-	if (!users.is_null() && users.is_array())
-	{
-		for each (const auto& user_desciptor in users.as_array())
-		{
-			result.insert(Create<TwitchUser>(user_desciptor));
-		}
-
-	}
-	return result;
+	return GetObjectsArrayOnce<TwitchUser>(builder, U("users"));
 }
 
 TwitchXX::TwitchChannel TwitchXX::TwitchChannels::UpdateChannel(const std::wstring& name, const options& op) const
@@ -127,55 +111,14 @@ TwitchXX::TwitchTeamsContainer TwitchXX::TwitchChannels::GetTeams(const std::wst
 {
 	web::uri_builder builder(U("/channels/") + channel_name + U("/teams"));
 	TwitchTeamsContainer chunk;
-	auto value = _request->get(builder.to_uri());
-	auto teams = value.at(U("teams"));
-	if(!teams.is_null() && teams.is_array())
-	{
-		for (const auto& team : teams.as_array())
-		{
-			chunk.insert(Create<TwitchTeam>(team));
-		}
-	}
-	return chunk;
+	return GetObjectsArrayOnce<TwitchTeam>(builder, U("teams"));
 }
 
 TwitchXX::TwitchFollowersContainer TwitchXX::TwitchChannels::GetChannelFollows(const std::wstring& channel_name) const
 {
 	web::uri_builder builder(U("/channels/") + channel_name + U("/follows"));
 	builder.append_query(U("limit"), 100);
-	auto current_builder = builder;
-
-	TwitchFollowersContainer result;
-
-	while(true)
-	{
-		auto value = _request->get(current_builder.to_uri());
-		auto followers = value.at(U("follows"));
-		if (!followers.is_null() && followers.is_array())
-		{
-			for (const auto& follower : followers.as_array())
-			{
-				result.insert(Create<TwitchFollower>(follower));
-			}
-		}
-		else
-		{
-			break;
-		}
-
-		if(value.has_field(U("_cursor")) && value.at(U("_cursor")).is_string())
-		{
-			current_builder = builder;
-			current_builder.append_query(U("cursor"), value.at(U("_cursor")).as_string());
-		}
-		else
-		{
-			break;
-		}
-	}
-
-
-	return result;
+	return GetObjectsArrayByCursor<TwitchFollower>(builder, U("follows"));
 }
 
 TwitchXX::TwitchFollowersContainer TwitchXX::TwitchChannels::GetChannelSubscriptions(const std::wstring& channel_name) const
@@ -185,40 +128,7 @@ TwitchXX::TwitchFollowersContainer TwitchXX::TwitchChannels::GetChannelSubscript
 	builder.append_query(U("limit"), 100);
 	//builder.append_query(U("direction"), Direction::asc);
 
-	TwitchFollowersContainer result;
-
-	while (true)
-	{
-		TwitchFollowersContainer chunk;
-		auto value = _request->get(builder.to_uri());
-		auto subscriptions = value.at(U("subscriptions"));
-		if (!subscriptions.is_null() && subscriptions.is_array())
-		{
-			for (const auto& subs : subscriptions.as_array())
-			{
-				chunk.insert(Create<TwitchFollower>(subs));
-			}
-		}
-		else
-		{
-			break;
-		}
-
-		result.insert(chunk.begin(), chunk.end());
-
-		auto next = value.at(U("_links")).at(U("next"));
-		if (chunk.size() == limit && !next.is_null() && next.is_string())
-		{
-			builder = web::uri_builder(next.as_string());
-		}
-		else
-		{
-			break;
-		}
-	}
-
-
-	return result;
+	return this->GetObjectsArrayByNext<TwitchFollower>(builder, U("subscriptions"));
 }
 
 TwitchXX::TwitchFollower TwitchXX::TwitchChannels::GetChannelSubscriptionForUser(const std::wstring& channel_name, const std::wstring& user_name) const
@@ -230,7 +140,7 @@ TwitchXX::TwitchFollower TwitchXX::TwitchChannels::GetChannelSubscriptionForUser
 		auto response = _request->get(builder.to_uri());
 		return Create<TwitchFollower>(response);
 	}
-	catch (TwitchException e)
+	catch (TwitchException& e)
 	{
 		if (e.code() == web::http::status_codes::NotFound)
 		{
@@ -241,6 +151,16 @@ TwitchXX::TwitchFollower TwitchXX::TwitchChannels::GetChannelSubscriptionForUser
 			throw;
 		}
 	}
+}
+
+TwitchXX::TwitchVideosContainer TwitchXX::TwitchChannels::GetChannelVideos(const std::wstring& channel_name, options& op) const
+{
+	web::uri_builder builder(U("/channels") + channel_name + U("videos"));
+	AddOption(builder, op, U("limit"));
+	AddOption(builder, op, U("offset"));
+	AddOption(builder, op, U("broadcasts"));
+	AddOption(builder, op, U("hls"));
+	return GetObjectsArrayByNext<TwitchVideo>(builder, U("videos"));
 }
 
 template<>

@@ -24,6 +24,13 @@ namespace TwitchXX
 		///@param op set of filters for video request
 		TwitchVideosContainer GetTopVideos(options& op) const;
 
+		///A list of video objects from channels that the authenticated user is following.
+		///Required scope AuthScope::USER_READ
+		///Default value: limit = 10, offset = 0, broadcast_type = all
+		///Broadcast types: all, archive, highlight
+		///@param op set of filters for video request
+		TwitchVideosContainer GetFollowedVideos(options& op) const;
+
 	};
 
 	template<>

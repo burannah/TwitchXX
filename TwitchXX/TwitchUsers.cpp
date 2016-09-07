@@ -34,41 +34,12 @@ TwitchXX::TwitchBlockedUsersContainer TwitchXX::TwitchUsers::GetBlocked(const st
 	static const size_t limit = 100;
 	web::uri_builder builder{U("/users/") + user_name + U("/blocks")};
 	builder.append_query(U("limit"), limit); //TODO: Check perfomance!
-	size_t count = 0;
-	std::wstring cursor;
-	TwitchXX::TwitchBlockedUsersContainer result;
-	for (;;)
-	{
-		auto value = _request->get(builder.to_uri());
-
-		auto blocks = value.at(U("blocks"));
-		if (blocks.is_null() || !blocks.is_array())
-		{
-			break;
-		}
-		for each (const auto& block_descriptor in blocks.as_array())
-		{
-			result.insert(Create<TwitchBlockedUser>(block_descriptor));
-		}
-
-		auto next = value.at(U("_links")).at(U("next"));
-		if (blocks.size() == limit && !next.is_null() && next.is_string())
-		{
-			builder = web::uri_builder(next.as_string());
-		}
-		else
-		{
-			break;
-		}
-	}
-	return result;
-
+	return GetObjectsArrayByNext<TwitchBlockedUser>(builder, U("blocks"));
 }
 
 TwitchXX::TwitchBlockedUser TwitchXX::TwitchUsers::BlockUser(const std::wstring& user_name, const std::wstring& target_name) const
 {
 	web::uri_builder builder{U("/users/") + user_name + U("/blocks/") + target_name};
-
 	auto response = _request->put(builder.to_uri());
 	return Create<TwitchBlockedUser>(response);
 }
@@ -81,7 +52,7 @@ bool TwitchXX::TwitchUsers::UblockUser(const std::wstring& user_name, const std:
 	{
 		auto response = _request->del(builder.to_uri());
 	}
-	catch(TwitchException e)
+	catch(TwitchException&)
 	{
 		switch (_request->status_code())
 		{
@@ -90,6 +61,8 @@ bool TwitchXX::TwitchUsers::UblockUser(const std::wstring& user_name, const std:
 		case web::http::status_codes::NotFound://User is not on block list
 		case 422: // Unprocessable Entity
 			return false;
+		default:
+			throw;
 		}
 	}
 	throw TwitchException{ "Unexpeced result on delete user from block list!", _request->status_code() };
@@ -100,45 +73,7 @@ TwitchXX::TwitchFollowedChannelsContainer TwitchXX::TwitchUsers::GetFollowingCha
 	web::uri_builder builder{ U("/users/") + user_name + U("/follows/channels") };
 	builder.append_query(U("limit"), 100);
 	//builder.append_query(U("sortby"), Sort_Order_To_string(order));
-	TwitchFollowedChannelsContainer result;
-
-	while(true)
-	{
-		web::json::value value;
-		try
-		{
-			value = _request->get(builder.to_uri());
-		}
-		catch (TwitchException e)
-		{
-			if(e.code() == web::http::status_codes::NotFound)
-			{
-				break;
-			}
-		}
-		if(value.is_null() || !value.has_field(U("follows")) || !value[U("follows")].is_array())
-		{
-			break;
-		}
-
-		for (const auto& follow : value[U("follows")].as_array())
-		{
-			result.insert(Create<TwitchFollowedChannel>(follow));
-		}
-
-		if(value.has_field(U("_links"))&&value[U("_links")].has_field(U("next")))
-		{
-			builder = web::uri_builder(value[U("_links")][U("next")].as_string());
-		}
-		else
-		{
-			break;
-		}
-	}
-
-	return result;
-
-
+	return GetObjectsArrayByNext<TwitchFollowedChannel>(builder, U("follows"));
 }
 
 TwitchXX::TwitchFollowedChannel TwitchXX::TwitchUsers::GetFollowingChannel(const std::wstring & user_name, const std::wstring & channel_name) const
@@ -150,7 +85,7 @@ TwitchXX::TwitchFollowedChannel TwitchXX::TwitchUsers::GetFollowingChannel(const
 		auto response = _request->get(builder.to_uri());
 		return Create<TwitchFollowedChannel>(response);
 	}
-	catch (TwitchException e)
+	catch (TwitchException& e)
 	{
 		if (e.code() == web::http::status_codes::NotFound)
 		{
@@ -176,7 +111,7 @@ TwitchXX::TwitchFollowedChannel TwitchXX::TwitchUsers::FollowChannel(const std::
 		auto response = _request->put(builder.to_uri());
 		return Create<TwitchFollowedChannel>(response);
 	}
-	catch (TwitchException e)
+	catch (TwitchException& e)
 	{
 		if (e.code() == 422)
 		{
@@ -194,7 +129,7 @@ void TwitchXX::TwitchUsers::UnfollowChannel(const std::wstring & user_name, cons
 		web::uri_builder builder{ U("/users/") + user_name + U("/follows/channels/") + channel_name };
 		auto response = _request->del(builder.to_uri());
 	}
-	catch (TwitchException e)
+	catch (TwitchException& e)
 	{
 		switch (e.code())
 		{

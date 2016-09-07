@@ -123,3 +123,15 @@ TEST_F(ChannelTest, GetChannelSubscriptionForUser)
 
 	EXPECT_EQ(result.User.Name.Get(), _channel_name);
 }
+
+TEST_F(ChannelTest, GetChannelVideo)
+{
+	TwitchXX::TwitchVideosContainer result;
+
+	ASSERT_NO_THROW(
+	{
+		result = _api->GetChannelVideos(U("starladder1"));
+	});
+
+	EXPECT_GT(result.size(), 1U);
+}

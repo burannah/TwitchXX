@@ -11,7 +11,6 @@ namespace TwitchXX
 
 	extern std::shared_ptr<std::map<std::wstring, std::wstring>> Options;
 
-	//TODO:Deprecated
 	///Base template class for other twitch request classes
 	template<typename T>
 	class TwitchRequest
@@ -32,14 +31,24 @@ namespace TwitchXX
 		TwitchContainer<T> _objects;
 		std::shared_ptr<MakeRequest> _request;
 
+
+		///Requests a single object of type T.
+		///Probably redundant
+		///@param uri uri for object request
+		///@return object of type T
 		template<typename T>
 		T GetSingleObject(const web::uri& uri) const
 		{
 			return Create<T>(_request->get(uri));
 		}
 
+
+		///Request a collection of objects of type T iterationg through _next field of the response
+		///@param builder uri builder for requet
+		///@param root node for object's collection in the reposbse body
+		///@return TwitchContainer collection of elements of type T
 		template<typename T>
-		TwitchContainer<T> GetObjectsArray(const web::uri_builder& builder, const std::wstring& node) const
+		TwitchContainer<T> GetObjectsArrayByNext(const web::uri_builder& builder, const std::wstring& node) const
 		{
 			TwitchContainer<T> result;
 			auto current_builder = builder;
@@ -76,6 +85,69 @@ namespace TwitchXX
 
 			return result;
 		}
+
+
+		///Request a collection of objects of type T iterationg through cursor field of the response
+		///@param builder uri builder for requet
+		///@param root node for object's collection in the reposbse body
+		///@return TwitchContainer collection of elements of type T
+		template<typename T>
+		TwitchContainer<T> GetObjectsArrayByCursor(const web::uri_builder& builder, const std::wstring& node) const
+		{
+			TwitchContainer<T> result;
+			auto current_builder = builder;
+
+			while (true)
+			{
+				TwitchContainer<T> chunk;
+				auto value = _request->get(current_builder.to_uri());
+				auto objects = value.at(node);
+				if (!objects.is_null() && objects.is_array())
+				{
+					for (const auto& subs : objects.as_array())
+					{
+						chunk.insert(Create<T>(subs));
+					}
+				}
+				else
+				{
+					break;
+				}
+
+				result.insert(chunk.begin(), chunk.end());
+				if (value.has_field(U("_cursor")) && value.at(U("_cursor")).is_string())
+				{
+					current_builder = builder;
+					current_builder.append_query(U("cursor"), value.at(U("_cursor")).as_string());
+				}
+				else
+				{
+					break;
+				}
+			}
+
+			return result;
+		}
+
+		///Request a collection of objects of type T with no iterations
+		///@param builder uri builder for requet
+		///@param root node for object's collection in the reposbse body
+		///@return TwitchContainer collection of elements of type T
+		template<typename T>
+		TwitchContainer<T> GetObjectsArrayOnce(web::uri_builder& builder, const std::wstring& node) const
+		{
+			TwitchContainer<T> result;
+			auto value = _request->get(builder.to_uri());
+			auto objects = value.at(node);
+			if (!objects.is_null() && objects.is_array())
+			{
+				for (const auto& subs : objects.as_array())
+				{
+					result.insert(Create<T>(subs));
+				}
+			}
+			return result;
+		}
 	};
 
 	///Template function for creating Twitch objects from JSON
@@ -85,4 +157,19 @@ namespace TwitchXX
 /*	{
 		throw std::runtime_error("Unknonw requet type!");
 	}*/
+
+
+	///Helper function to add query parameter to builder, only if it exist in options object
+	///@param builder target builder
+	///@param op options collection
+	///@param option_name name of the option to add
+	inline void AddOption(web::uri_builder& builder, const options& op, const std::wstring& option_name)
+	{
+		auto option_it = op.find(option_name);
+		if(option_it != op.end())
+		{
+			builder.append_query(option_name, option_it->second);
+		}
+	}
+
 }

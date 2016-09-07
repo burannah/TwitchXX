@@ -8,21 +8,9 @@ TwitchXX::TwitchIngestsContainer TwitchXX::TwitchIngests::GetIngests() const
 	{
 		TwitchIngestsContainer result;
 		web::uri_builder builder{ U("/ingests/")};
-
-		auto response = _request->put(builder.to_uri());
-		auto ingests = response.at(U("ingests"));
-		if(ingests.is_null() || !ingests.is_array())
-		{
-			throw TwitchException("Wrong repsonse format", _request->status_code());
-		}
-		for (const auto& ingest : ingests.as_array())
-		{
-			result.insert(Create<TwitchIngest>(ingest));
-		}
-
-		return result;
+		return GetObjectsArrayOnce<TwitchIngest>(builder, U("ingests"));
 	}
-	catch (TwitchException e)
+	catch (TwitchException& e)
 	{
 		if (e.code() == web::http::status_codes::ServiceUnavailable)
 		{

@@ -25,3 +25,15 @@ TEST_F(VideosTest, GetTopVideos)
 
 	EXPECT_GT(result.size(), 1U);
 }
+
+TEST_F(VideosTest, GetFollowedVideos)
+{
+	TwitchXX::TwitchVideosContainer result;
+
+	ASSERT_NO_THROW(
+	{
+		result = _api->GetFollowedVideo(U(""));
+	});
+
+	EXPECT_GT(result.size(), 1U);
+}

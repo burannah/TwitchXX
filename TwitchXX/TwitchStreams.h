@@ -58,9 +58,9 @@ namespace TwitchXX
 		TwitchStreamsContainer GetFollowedStreams(TwitchStream::Type type = TwitchStream::Type::none) const;
 	};
 
-	template<> TwitchStream Create(const web::json::value& obj); ///< Creates TwitchStream object from Json
+	template<> TwitchStream Create<TwitchStream>(const web::json::value& obj); ///< Creates TwitchStream object from Json
 	ImageCollection CreateCollection(const web::json::value& json); ///< Creates ImageCollection for TwitchStream
 
-	template<> TwitchFeaturedStream Create(const web::json::value& obj); ///< Creates TwitchFeaturedStream object from json.
+	template<> TwitchFeaturedStream Create<TwitchFeaturedStream>(const web::json::value& obj); ///< Creates TwitchFeaturedStream object from json.
 }
 

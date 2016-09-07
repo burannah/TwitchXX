@@ -28,49 +28,16 @@ TwitchXX::TwitchStreamsContainer TwitchXX::TwitchStreams::GetStreams(size_t n, c
 {
 	static const size_t limit = 100; //TODO: To some global constants
 	web::uri_builder builder(U("/streams"));
-	options options{ op };
-	auto it = options.find(U("offset"));  //TODO: do we need this?
-	if (it != options.end()) options.erase(it);
-	it = options.find(U("limit"));
-	if (it != options.end()) options.erase(it);
-	for (const auto& option : op)
-	{
-		builder.append_query(option.first, option.second);
-	}
+	AddOption(builder, op, U("offset"));
+	//AddOption(builder, op, U("limit"));
+	AddOption(builder, op, U("game"));
+	AddOption(builder, op, U("channel"));
+	AddOption(builder, op, U("client_id"));
+	AddOption(builder, op, U("stream_type"));
+	AddOption(builder, op, U("language"));
 	builder.append_query(U("limit"), limit);
 
-	TwitchStreamsContainer result;
-
-	while (true)
-	{
-		TwitchStreamsContainer chunk;
-		auto value = _request->get(builder.to_uri(), [this](const web::json::value& v) { TotalSize.Set(v.at(U("_total")).as_number().to_uint32()); });
-		auto games = value.at(U("streams"));
-		if (!games.is_null() && games.is_array())
-		{
-			for (const auto& game : games.as_array())
-			{
-				chunk.insert(Create<TwitchStream>(game));
-			}
-		}
-		else
-		{
-			break;
-		}
-
-		result.insert(chunk.begin(), chunk.end());
-		auto next = value.at(U("_links")).at(U("next"));
-		if (result.size() < n && chunk.size() == limit && !next.is_null() && next.is_string())
-		{
-			builder = web::uri_builder(next.as_string());
-		}
-		else
-		{
-			break;
-		}
-	}
-
-	return result;
+	return GetObjectsArrayByNext<TwitchStream>(builder, U("streams"));
 }
 
 TwitchXX::TwitchFeaturedStreamsContainer TwitchXX::TwitchStreams::GetFeaturedStreams() const
@@ -78,39 +45,7 @@ TwitchXX::TwitchFeaturedStreamsContainer TwitchXX::TwitchStreams::GetFeaturedStr
 	const static size_t limit = 100;
 	web::uri_builder builder(U("/streams/featured"));
 	builder.append_query(U("limit"), limit);
-	TwitchContainer<TwitchFeaturedStream> chunk;
-	for(;;)
-	{
-		auto value = _request->get(builder.to_uri());
-		if (value.is_null())
-		{
-			break;
-		}
-
-		auto top = value.at(U("featured"));
-		if (top.is_array())
-		{
-
-			for each (auto& object_descriptor in top.as_array())
-			{
-				chunk.insert(Create<TwitchFeaturedStream>(object_descriptor));
-			}
-		}
-		else
-		{
-			break;
-		}
-		auto next = value.at(U("_links")).at(U("next"));
-		if(!next.is_null() && next.is_string() && chunk.size() == limit)
-		{
-			builder = web::uri_builder(next.as_string());
-		}
-		else
-		{
-			break;
-		}
-	}
-	return chunk;
+	return GetObjectsArrayByNext<TwitchFeaturedStream>(builder, U("featured"));
 }
 
 std::tuple<size_t, size_t> TwitchXX::TwitchStreams::GetSummary(const std::wstring& game) const
@@ -132,7 +67,6 @@ std::tuple<size_t, size_t> TwitchXX::TwitchStreams::GetSummary(const std::wstrin
 	return std::make_tuple(viewers, channels);
 }
 
-//TODO: Not sure if it should be here. Probably should be moved to Users
 TwitchXX::TwitchStreamsContainer TwitchXX::TwitchStreams::GetFollowedStreams(TwitchStream::Type type) const
 {
 	TwitchStreamsContainer result;
@@ -142,54 +76,12 @@ TwitchXX::TwitchStreamsContainer TwitchXX::TwitchStreams::GetFollowedStreams(Twi
 	{
 		builder.append_query(U("stream_type"), TwitchStream::type_to_string(type));
 	}
-	for(;;)
-	{
-		TwitchStreamsContainer chunk;
-		auto value = _request->get(builder.to_uri());
-		if (value.is_null())
-		{
-			if(_request->status_code() == web::http::status_codes::Unauthorized)
-			{
-				throw TwitchException("Unable to get followed streams", _request->status_code());
-			}
-			else
-			{
-				break;
-			}
-		}
 
-		auto top = value.at(U("streams"));
-		if (top.is_array())
-		{
-			for each (auto& object_descriptor in top.as_array())
-			{
-				chunk.insert(Create<TwitchStream>(object_descriptor));
-			}
-			result.insert(chunk.begin(),chunk.end());
-		}
-		else
-		{
-			break;
-		}
-		auto next = value.at(U("_links")).at(U("next"));
-		if (chunk.size() == max_limit && !next.is_null() && next.is_string())
-		{
-			builder = web::uri_builder(next.as_string());
-		}
-		else
-		{
-			break;
-		}
-
-#ifdef DEBUG
-		std::wcout << "Total number of streams followed: " << value.at(U("_total")).as_integer()<<"\n";
-#endif // DEBUG
-	}
-	return result;
+	return GetObjectsArrayByNext<TwitchStream>(builder, U("streams"));
 }
 
 template<>
-TwitchXX::TwitchStream TwitchXX::Create(const web::json::value& obj) 
+TwitchXX::TwitchStream TwitchXX::Create<TwitchXX::TwitchStream>(const web::json::value& obj)
 {
 	TwitchStream stream;
 	if (obj.is_null())

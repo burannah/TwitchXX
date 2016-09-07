@@ -251,3 +251,4 @@ ModelManifest.xml
 /ThirdParty/cpprestsdk/
 TwitchSpy/twitchxx.cfg
 /TwitchXX/docs/html
+*.smproj

@@ -60,6 +60,7 @@ namespace TwitchXX
 		TwitchFollowersContainer GetChannelFollows(const std::wstring& channel_name) const;
 		TwitchFollowersContainer GetChannelSubscriptions(const std::wstring& channel_name) const;
 		TwitchFollower GetChannelSubscriptionForUser(const std::wstring& channel_name, const std::wstring& user_name) const;
+		TwitchVideosContainer GetChannelVideos(const std::wstring& channel_name, bool broadcasts = false, bool hls = false) const;
 
 		//Channel Feed
 		TwitchPostsContainer GetPosts(const std::wstring& channel_name, size_t count = 0) const;
@@ -98,6 +99,7 @@ namespace TwitchXX
 		//Videos
 		TwitchVideo GetVideo(unsigned long long id) const;
 		TwitchVideosContainer GetTopVideo(const std::wstring& game = U(""), const std::wstring& period = U("week")) const;
+		TwitchVideosContainer GetFollowedVideo(const std::wstring& broadcast_type) const;
 
 
 	private:

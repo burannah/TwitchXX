@@ -7,41 +7,8 @@
 TwitchXX::TwitchPostsContainer TwitchXX::TwitchChannelFeed::GetPosts(const std::wstring & channel_name, size_t limit) const
 {
 	web::uri_builder first_builder(U("/feed/") + channel_name + U("/posts"));
-	first_builder.append_query(U("limit"), 100); //TODO: Check perfomance!
-	auto builder(first_builder);
-	size_t count = 0;
-	std::wstring cursor;
-	TwitchPostsContainer result;
-	for (;;)
-	{
-		auto value = _request->get(builder.to_uri());
-		if (value.is_null() || _request->status_code() != web::http::status_codes::OK)
-		{
-			break;
-		}
-
-		count = value.at(U("_total")).as_number().to_uint32();
-		limit = limit == 0 ? count : limit;
-		cursor = value.at(U("_cursor")).as_string();
-		auto posts = value.at(U("posts"));
-		if (posts.is_null() || !posts.is_array())
-		{
-			break;
-		}
-		for each (const auto& post_descriptor in posts.as_array())
-		{
-			result.insert(Create<TwitchPost>(post_descriptor));
-		}
-
-		if (result.size() >= count || (limit > 0 && result.size() >= limit))
-		{
-			break;
-		}
-
-		builder = { first_builder };
-		builder.append_query(U("cursor"), cursor);
-	}
-	return TwitchPostsContainer{ result.begin(),std::next(result.begin(),std::min(result.size(),limit)) };
+	first_builder.append_query(U("limit"), limit == 0 ? 100 : limit);
+	return GetObjectsArrayByNext<TwitchPost>(first_builder, U("posts"));
 }
 
 TwitchXX::TwitchPost TwitchXX::TwitchChannelFeed::GetPost(const std::wstring & channel_name, unsigned long long id) const

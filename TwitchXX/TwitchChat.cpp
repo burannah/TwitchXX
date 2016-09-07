@@ -4,19 +4,7 @@
 TwitchXX::TwitchEmoticonsContainer TwitchXX::TwitchChat::GetEmoticons() const
 {
 	web::uri_builder builder(U("/chat/emoticons"));
-
-	auto resposne = _request->get(builder.to_uri());
-	auto emoticons = resposne.at(U("emoticons"));
-	TwitchEmoticonsContainer result;
-	if(!emoticons.is_null() && emoticons.is_array())
-	{
-		for (const auto& emoticone_descriptor : emoticons.as_array())
-		{
-			result.insert(Create<TwitchEmoticon>(emoticone_descriptor));
-		}
-	}
-
-	return result;
+	return GetObjectsArrayOnce<TwitchEmoticon>(builder, U("emoticons"));
 }
 
 std::set<TwitchXX::EmoticonImage> TwitchXX::TwitchChat::GetEmoticoneImages(std::set<size_t> sets) const

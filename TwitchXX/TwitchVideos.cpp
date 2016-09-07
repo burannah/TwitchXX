@@ -11,28 +11,22 @@ TwitchXX::TwitchVideo TwitchXX::TwitchVideos::GetVideo(unsigned long long id) co
 TwitchXX::TwitchVideosContainer TwitchXX::TwitchVideos::GetTopVideos(options& op) const
 {
 	web::uri_builder builder(U("/videos/top"));
-	auto game_it = op.find(U("game"));
-	if(game_it != op.end())
-	{
-		builder.append_query(U("game"), *game_it);
-	}
-	auto period_it = op.find(U("period"));
-	if(period_it != op.end())
-	{
-		builder.append_query(U("period"), *period_it);
-	}
-	auto limit_it = op.find(U("limit"));
-	if(limit_it != op.end())
-	{
-		builder.append_query(U("limit"), *limit_it);
-	}
-	auto offset_it = op.find(U("offset"));
-	if(offset_it != op.end())
-	{
-		builder.append_query(U("offset"),*offset_it);
-	}
+	AddOption(builder, op, U("game"));
+	AddOption(builder, op, U("period"));
+	AddOption(builder, op, U("limit"));
+	AddOption(builder, op, U("offset"));
 
-	return GetObjectsArray<TwitchVideo>(builder, U("videos"));
+	return GetObjectsArrayByNext<TwitchVideo>(builder, U("videos"));
+}
+
+TwitchXX::TwitchVideosContainer TwitchXX::TwitchVideos::GetFollowedVideos(options& op) const
+{
+	web::uri_builder builder(U("/videos/followed"));
+	AddOption(builder, op, U("limit"));
+	AddOption(builder, op, U("offset"));
+	AddOption(builder, op, U("broadcast_type"));
+
+	return GetObjectsArrayByNext<TwitchVideo>(builder,U("videos"));
 }
 
 template <>

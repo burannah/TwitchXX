@@ -15,6 +15,7 @@ namespace TwitchXX
 			: TwitchRequest<TwitchPost>(request) {} ;
 		
 		///Get posts from feed.
+		///Requires scope AuthScope::CHANNEL_FEED_READ
 		///@param channel_name twitch channel name
 		///@param count max number of posts. If count == 0 fetch all posts
 		///@returns a collection of TwitchPost objects (empty if no posts were fetched)
