@@ -10,27 +10,27 @@ namespace TwitchXX
 	{
 	public:
 		Property<bool> Mature;							///Mature content
-		Property<std::wstring> Status;					///Channel's status
-		Property<std::wstring> Broadcaster_Language;	///Broadcaster's language
-		Property<std::wstring> Language;				///Channel's language
-		Property<std::wstring> Display_Name;			///Display name
-		Property<std::wstring> Game;					///Game name
-		Property<size_t> Delay;							///Delay
-		Property<size_t> Id;							///Channel Id
-		Property<std::wstring> Name;					///Channel name
+		Property<utility::string_t> Status;					///Channel's status
+		Property<utility::string_t> Broadcaster_Language;	///Broadcaster's language
+		Property<utility::string_t> Language;				///Channel's language
+		Property<utility::string_t> Display_Name;			///Display name
+		Property<utility::string_t> Game;					///Game name
+		Property<unsigned int> Delay;							///Delay
+		Property<unsigned int> Id;							///Channel Id
+		Property<utility::string_t> Name;					///Channel name
 		Property<Date> Created;							///Creation date
 		Property<Date> Updated;							///Last updated
-		Property<std::wstring> Logo;					///Channel's logo
-		Property<std::wstring> Banner;					///Banner
-		Property<std::wstring> Video_Banner;			///Video banner
-		Property<std::wstring> Url;						///Url
-		Property<std::wstring> Background;				///Background
-		Property<std::wstring> Profile_Banner;			///Profile banner
-		Property<std::wstring> Profile_Banner_Background_Color; ///Profile banner background color
+		Property<utility::string_t> Logo;					///Channel's logo
+		Property<utility::string_t> Banner;					///Banner
+		Property<utility::string_t> Video_Banner;			///Video banner
+		Property<utility::string_t> Url;						///Url
+		Property<utility::string_t> Background;				///Background
+		Property<utility::string_t> Profile_Banner;			///Profile banner
+		Property<utility::string_t> Profile_Banner_Background_Color; ///Profile banner background color
 		Property<bool> Partner;							///Is partner channel
 		Property<unsigned long long> Views;				///Number of views
 		Property<unsigned long long> Followers;			///Number of followers
-		Property<std::wstring> Stream_Key;				///Stream's key (Only for authorized channels)
+		Property<utility::string_t> Stream_Key;				///Stream's key (Only for authorized channels)
 
 		///Equal operator
 		/**

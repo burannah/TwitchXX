@@ -5,6 +5,13 @@
 #include <exception>
 #include <vector>
 #include <functional>
+#include <cpprest/details/basic_types.h> //TODO: CPPRESTSDK dependency
+#ifdef _WIN32
+#define to_ustring(x) std::to_wstring(x)
+#else
+#define to_ustring(x) std::to_string(x)
+#endif
+
 
 
 namespace TwitchXX
@@ -42,28 +49,28 @@ namespace TwitchXX
 	using TwitchFollowedChannelsContainer = TwitchContainer<TwitchFollowedChannel>; ///< Channels followed collection
 	using TwitchIngestsContainer = TwitchContainer<TwitchIngest>; ///< Ingests collection
 	using TwitchVideosContainer = TwitchContainer<TwitchVideo>; ///< Video collection
-	using ImageCollection = std::map<std::wstring, std::wstring>; ///< image collection (image key, image url)
-	using options = std::map<std::wstring, std::wstring>; ///< options collection (option key, option value)
+	using ImageCollection = std::map<utility::string_t, utility::string_t>; ///< image collection (image key, image url)
+	using options = std::map<utility::string_t, utility::string_t>; ///< options collection (option key, option value)
 	using Date = std::chrono::time_point<std::chrono::system_clock>; ///< default date type
 
 	///Date from string
 	///@param cs string represetnaion of ISO 8601 format time
 	///@return Date value
-	Date DateFromString(const std::wstring& cs);
+	Date DateFromString(const utility::string_t& cs);
 
 	///Date to string
 	///@param tp Date object
 	///@return date string in ISO 8601 format
-	std::wstring DateToString(const Date& tp);
+	utility::string_t DateToString(const Date& tp);
 
 	/// EmoticonImage descriptor
 	struct EmoticonImage
 	{
-		size_t Id;
-		std::wstring Code;
-		size_t EmoticoneSet;
+        unsigned int       Id;
+		utility::string_t  Code;
+		unsigned int       EmoticoneSet;
 
-		//EmoticonImage(size_t id, const std::wstring& code, size_t set) :Id{ id }, Code{ code }, EmoticoneSet{ set } {}
+		//EmoticonImage(size_t id, const string_t& code, size_t set) :Id{ id }, Code{ code }, EmoticoneSet{ set } {}
 
 		///Less then operator
 		bool operator<(const EmoticonImage& image) const { return Id < image.Id; }
@@ -72,10 +79,10 @@ namespace TwitchXX
 	/// ChannelBadge descriptor
 	struct ChannelBadge
 	{
-		std::wstring Type;
-		std::wstring Alpha;
-		std::wstring Image;
-		std::wstring Svg;
+		utility::string_t Type;
+        utility::string_t Alpha;
+        utility::string_t Image;
+        utility::string_t Svg;
 
 		///Less than operator
 		bool operator<(const ChannelBadge& badge) const { return Type < badge.Type; }

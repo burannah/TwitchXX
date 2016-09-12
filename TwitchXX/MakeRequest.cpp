@@ -2,8 +2,10 @@
 #include "TwitchException.h"
 #include "Property.h"
 
+#define out std::cout;
 namespace TwitchXX
 {
+
 	/**
 	*****************************************************************************************
 	*  @brief      MakreRequest setup proxy. 
@@ -47,7 +49,7 @@ namespace TwitchXX
 	*  @param	   token user's token. Some requests requires auth scope granted by user
 	*			   If token is not set such requests will fail.
 	****************************************************************************************/
-	MakeRequest::MakeRequest(std::wstring apiString, std::wstring clientId, std::wstring token)
+	MakeRequest::MakeRequest(const utility::string_t& apiString,const utility::string_t& clientId, const utility::string_t& token)
 		: _client_id(clientId), 
 		_api_version(apiString),
 		_token(U("OAuth ") + token)
@@ -64,7 +66,7 @@ namespace TwitchXX
 		}
 		catch (std::exception& e)
 		{
-			std::wstringstream s;
+			std::stringstream s;
 			s << "Direct connection failed with: \"" << e.what() << "\". Trying to connect though proxy" << std::endl;
 			TwitchXX::Log->Log(s.str(), Logger::LogLevel::Warning);
 		}
@@ -80,7 +82,7 @@ namespace TwitchXX
 		}
 		catch (std::exception& e)
 		{
-			std::wstringstream s;
+			std::stringstream s;
 			s << "Connect through proxy has failed either: \"" << e.what() << "\". " << std::endl;
 			Log->Log(s.str(), Logger::LogLevel::Error);
 			throw;
@@ -111,19 +113,19 @@ namespace TwitchXX
 		request.set_request_uri(params.uri);
 		if (!params.body.is_null())
 		{
-			std::wstringstream ss;
+			std::stringstream ss;
 			ss << params.body;
 			request.set_body(ss.str());
 			request.headers().set_content_type(U("application/json"));
 		}
 
-		std::wcout << "Request: " << request.to_string() << "\n";
+		std::cout << "Request: " << request.to_string() << "\n";
 
 		pplx::task<web::json::value> task = http_client.request(request)
 			.then([this](web::http::http_response response) -> pplx::task<web::json::value>
 		{
 #ifdef _DEBUG
-			std::wcout << response.to_string() << U("\n");
+			out << response.to_string() << U("\n");
 #endif
 			this->_last_status = response.status_code();
 			if (response.status_code() == web::http::status_codes::OK)
@@ -140,7 +142,7 @@ namespace TwitchXX
 			else
 			{
 				auto error = response.extract_json().get();
-				Property<std::wstring, std::string> msg;
+				Property<utility::string_t, std::string> msg;
 				if (!error.is_null())
 				{
 					msg.Set(error.at(U("error")).as_string() + U(": ") + error.at(U("message")).as_string());

@@ -2,7 +2,6 @@
 
 #include <set>
 #include <chrono>
-#include <cpprest\details\basic_types.h>
 #include "TwitchDef.h"
 #include "TwitchChannel.h"
 
@@ -22,7 +21,7 @@ namespace TwitchXX
 			live ///< Live stream
 		};
 
-		static std::wstring type_to_string(Type t)
+		static utility::string_t type_to_string(Type t)
 		{
 			switch (t)
 			{
@@ -40,15 +39,15 @@ namespace TwitchXX
 		///Channel offline flag
 		Property<bool> Offline;
 		///Game name
-		Property<std::wstring> Game;
+		Property<utility::string_t> Game;
 		///Number of viewers
-		Property<size_t> Viewers;
+		Property<unsigned int> Viewers;
 		///Average FPS rate
 		Property<double> Avg_Fps;
 		///Delay
-		Property<size_t> Delay;
+		Property<unsigned int> Delay;
 		///Video_Height
-		Property<size_t> Video_Height;
+		Property<unsigned int> Video_Height;
 		///Is playlist flag
 		Property<bool> Is_Playlist;
 		///Created date
@@ -74,6 +73,6 @@ namespace TwitchXX
 		}
 
 		///Channel's name
-		const std::wstring& Name() const { return Channel.Name.Get(); }
+		const utility::string_t& Name() const { return Channel.Name.Get(); }
 	};
 }

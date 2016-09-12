@@ -14,5 +14,5 @@ protected:
 	}
 
 	std::unique_ptr<TwitchXX::Api> _api;
-	std::wstring _channel_name;
+	utility::string_t _channel_name;
 };

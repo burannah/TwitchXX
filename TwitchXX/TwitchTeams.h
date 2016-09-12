@@ -17,7 +17,7 @@ namespace TwitchXX
 
 		///Returns a team object for team
 		///@return team object
-		TwitchTeam GetTeam(const std::wstring& team_name) const;
+		TwitchTeam GetTeam(const utility::string_t& team_name) const;
 	
 	};
 

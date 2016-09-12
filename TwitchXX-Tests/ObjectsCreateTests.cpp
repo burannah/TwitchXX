@@ -35,7 +35,7 @@ TEST(Create, Game)
 		}");
 	TwitchXX::TwitchGame game;
 	web::json::value v;
-	std::wstringstream ss(s);
+	utility::stringstream_t ss(s);
 	ss >> v;
 	EXPECT_NO_THROW(
 	{
@@ -74,7 +74,7 @@ TEST(Create, StreamOffline)
 	}");
 
 	TwitchXX::TwitchStream stream;
-	std::wstringstream ss(s);
+	utility::stringstream_t ss(s);
 	web::json::value v;
 	ss >> v;
 
@@ -150,7 +150,7 @@ TEST(Create, StreamOnline)
 	}");
 
 	TwitchXX::TwitchStream stream;
-	std::wstringstream ss(s);
+	utility::stringstream_t ss(s);
 	web::json::value v;
 	ss >> v;
 
@@ -264,7 +264,7 @@ TEST(Create,FeaturedStream)
 }");
 
 	TwitchXX::TwitchFeaturedStream featured_stream;
-	std::wstringstream ss(s);
+	utility::stringstream_t ss(s);
 	web::json::value v;
 	ss >> v;
 
@@ -357,7 +357,7 @@ TEST(Create,Channel)
 	}\
 }");
 	TwitchXX::TwitchChannel channel;
-	std::wstringstream ss(s);
+	utility::stringstream_t ss(s);
 	web::json::value v;
 	ss >> v;
 
@@ -407,7 +407,7 @@ TEST(Create,User)
 		}");
 
 	TwitchXX::TwitchUser user;
-	std::wstringstream ss(s);
+	utility::stringstream_t ss(s);
 	web::json::value v;
 	ss >> v;
 
@@ -445,7 +445,7 @@ TEST(Create,Team)
 			\"background\" : null\
 }");
 	TwitchXX::TwitchTeam team;
-	std::wstringstream ss(s);
+	utility::stringstream_t ss(s);
 	web::json::value v;
 	ss >> v;
 
@@ -496,7 +496,7 @@ TEST(Create,TwitchPost)
 	}\
 }");
 	TwitchXX::TwitchPost post;
-	std::wstringstream ss(s);
+	utility::stringstream_t ss(s);
 	web::json::value v;
 	ss >> v;
 
@@ -546,7 +546,7 @@ TEST(Create, TwitchEmoticon)
 		]\
 }");
 	TwitchXX::TwitchEmoticon emote;
-	std::wstringstream ss(s);
+	utility::stringstream_t ss(s);
 	web::json::value v;
 	ss >> v;
 

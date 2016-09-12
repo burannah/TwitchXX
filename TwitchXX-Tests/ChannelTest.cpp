@@ -56,7 +56,7 @@ TEST_F(ChannelTest,ResetStreamKey)
 {
 	auto channel = _api->GetChannel(_channel_name);
 	auto stream_key = channel.Stream_Key.Get();
-	std::wstring new_key;
+	utility::string_t new_key;
 	ASSERT_NO_THROW(
 	{
 		new_key = _api->ResetStreamKey(_channel_name);

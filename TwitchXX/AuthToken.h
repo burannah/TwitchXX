@@ -45,7 +45,7 @@ namespace TwitchXX
 	{
 
 		///User's name
-		Property<std::wstring> Name;
+		Property<utility::string_t> Name;
 
 		///Is user valid flag
 		Property<bool> Valid;

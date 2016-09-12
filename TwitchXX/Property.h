@@ -29,7 +29,7 @@ namespace TwitchXX
 			static size_t FromString(const string_type& str) 
 			{
 				auto val = std::stoul(str);
-				if (val > std::numeric_limits<size_t>::max()) { throw new std::out_of_range(); }
+				if (val > std::numeric_limits<size_t>::max()) { throw new std::out_of_range("Value is too big"); }
 				return val; 
 			}
 		};
@@ -116,7 +116,7 @@ namespace TwitchXX
 		template<typename Val, typename string_type>
 		struct HelperTo
 		{
-			static string_type ToString(const Val& v) { throw std::runtime_error("Undefined!")}
+			static string_type ToString(const Val& v) { throw std::runtime_error("Undefined!"); }
 		};
 
 		///Serialize value to std::string
@@ -134,7 +134,7 @@ namespace TwitchXX
 			static std::wstring ToString(const Val& v) { return std::to_wstring(v); }
 		};
 
-
+#ifdef _WIN32
 		///Serialize Date to std::string
 		template<>
 		struct HelperTo<Date, std::string>
@@ -143,23 +143,23 @@ namespace TwitchXX
 			{
 				auto t = std::chrono::system_clock::to_time_t(tp);
 				std::stringstream ss;
-				tm tt;
-				localtime_s(&tt, &t);
-				if (tt.tm_isdst) //WTF?!
+				tm* tt = localtime(&t);
+				if (tt->tm_isdst) //WTF?!
 				{
 					t = std::chrono::system_clock::to_time_t(tp - std::chrono::hours(1));
-					localtime_s(&tt, &t);
+					tt = localtime(&t);
 				}
-				ss << std::put_time(&tt, "%Y-%m-%dT%H:%M:%SZ");
+				ss << std::put_time(tt, "%Y-%m-%dT%H:%M:%SZ");
 				return ss.str();
 			}
 		};
+#endif
 
-		///Serialize Date to std::wstring
+		///Serialize Date to utility::string_t
 		template<>
-		struct HelperTo<TwitchXX::Date, std::wstring>
+		struct HelperTo<TwitchXX::Date, utility::string_t>
 		{
-			static std::wstring ToString(const TwitchXX::Date& tp)
+			static utility::string_t ToString(const TwitchXX::Date& tp)
 			{
 				return DateToString(tp);
 			}
@@ -212,7 +212,7 @@ namespace TwitchXX
 	};
 
 
-	template <typename T, typename string_type = std::wstring>
+	template <typename T, typename string_type = utility::string_t>
 	class Property
 	{
 		T _value;

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 project(TwitchSpy)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
 find_package(Threads REQUIRED)
 
@@ -61,6 +61,6 @@ set_target_properties(libcpprestsdk PROPERTIES
 include_directories("${source_dir}/Release/include")
 
 
-
+add_subdirectory(bin/cpprestsdk/src/cpprestsdk/Release)
 add_subdirectory(TwitchXX)
 add_subdirectory(TwitchXX-Tests)

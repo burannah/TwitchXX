@@ -15,6 +15,14 @@ namespace TwitchXX
 	class Logger
 	{
 	public:
+#ifdef _WIN32
+		using string_t = std::wstring;
+    using stringstream_t = std::wstringstream;
+#else
+		using string_t = std::string;
+		using stringstream_t = std::stringstream;
+#endif
+
 		///Destructor
 		virtual ~Logger()
 		{
@@ -41,7 +49,7 @@ namespace TwitchXX
 		/**
 		* Doesn't do any actual logging. Just check that all objects are alive and broadcast incoming message to them.
 		*/
-		virtual void Log(std::wstring msg, LogLevel level = LogLevel::Message)
+		virtual void Log(string_t msg, LogLevel level = LogLevel::Message)
 		{
 			_subscribers.remove_if([](const auto& log) { return log.expired(); });
 			std::for_each(_subscribers.begin(), _subscribers.end(), [&](const auto& log) {if (auto sp = log.lock()) { sp->Log(msg, level); } });

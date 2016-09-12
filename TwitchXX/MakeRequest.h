@@ -1,22 +1,28 @@
 #pragma once
 
 #include <string>
+#include <iostream>
 #include <cpprest/uri.h>
 #include <cpprest/json.h>
 #include <cpprest/http_client.h>
+#include <cpprest/details/basic_types.h> //TODO: CPPRESTSDK dependency
 #include "Logger.h"
+
+
 
 namespace TwitchXX
 {
+
 	class value;
 	using Callback = std::function<void(const web::json::value&)>;
 
 	///Global object options should be defined and filled with values (for proxy parameters e.t.c.)
-	extern std::shared_ptr<std::map<std::wstring, std::wstring>> Options;
+    extern std::shared_ptr<std::map<utility::string_t, utility::string_t>> Options;
+
 	///Global logger
 	extern std::shared_ptr<Logger> Log;
 
-	class MakeRequest
+    class MakeRequest
 	{
 	public:
 		struct RequestParams
@@ -31,9 +37,9 @@ namespace TwitchXX
 		};
 
 		///MakerRequest constructor
-		explicit MakeRequest(std::wstring apiString = L"", /**< [in] Api-version string*/ 
-							 std::wstring clientId = L"", /**< [in] Client-id stirng*/
-							 std::wstring token= L"" /**< [in] User's auth token*/);
+		explicit MakeRequest(const utility::string_t& apiString, /**< [in] Api-version string*/
+							 const utility::string_t& clientId, /**< [in] Client-id stirng*/
+							 const utility::string_t& token /**< [in] User's auth token*/);
 
 		///MakeRequest destructor
 		virtual ~MakeRequest() {};
@@ -71,11 +77,11 @@ namespace TwitchXX
 		web::http::status_code status_code() const { return _last_status; }
 
 	private:
-		std::wstring _client_id;
-		std::wstring _api_version;
+		utility::string_t _client_id;
+		utility::string_t _api_version;
 		web::http::client::http_client_config _config;
 		web::http::status_code _last_status;
-		std::wstring _token;
+		utility::string_t _token;
 
 		void SetupProxy();
 

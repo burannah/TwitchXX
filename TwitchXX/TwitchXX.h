@@ -35,58 +35,59 @@ namespace TwitchXX
 			v2,
 			v3
 		};
-		explicit Api(const std::wstring& clinet_id = std::wstring(), Version version = Version::v3, std::shared_ptr<Logger> = nullptr);
+		explicit Api(const utility::string_t& clinet_id = {}, Version version = Version::v3, std::shared_ptr<Logger> = nullptr);
 		virtual ~Api();
 		//Log
 		static void AddLogger(std::shared_ptr<Logger>log);
 
 		//Games
-		TwitchGamesContainer TopGames(size_t top_count = 0) const;
+		TwitchGamesContainer TopGames(unsigned int top_count = 0) const;
 
 		//Streams
-		TwitchStream GetStream(const std::wstring& name) const;
-		TwitchStreamsContainer TopStreams(size_t top_count = 0, const options& op = options()) const;
+		TwitchStream GetStream(const utility::string_t& name) const;
+		TwitchStreamsContainer TopStreams(unsigned int top_count = {}, const options& op = {}) const;
 		TwitchFeaturedStreamsContainer GetFeaturedStreams() const;
-		std::tuple<size_t, size_t> GetSummary(const std::wstring& game = std::wstring()) const;
+		std::tuple<unsigned int, unsigned int> GetSummary(const utility::string_t& game = {}) const;
 		TwitchStreamsContainer FollowedStreams() const;
 
 		//Channels
-		TwitchChannel GetChannel(const std::wstring& name) const;
-		TwitchUsersContainer GetChannelEditors(const std::wstring& channel_name) const;
-		TwitchChannel UpdateChannel(const std::wstring& channel_name, const options& op) const;
-		std::wstring ResetStreamKey(const std::wstring& channel_name) const;
-		bool StartCommercial(const std::wstring& channel_name, size_t length) const;
-		TwitchTeamsContainer GetTeams(const std::wstring& channel_name) const;
-		TwitchFollowersContainer GetChannelFollows(const std::wstring& channel_name) const;
-		TwitchFollowersContainer GetChannelSubscriptions(const std::wstring& channel_name) const;
-		TwitchFollower GetChannelSubscriptionForUser(const std::wstring& channel_name, const std::wstring& user_name) const;
-		TwitchVideosContainer GetChannelVideos(const std::wstring& channel_name, bool broadcasts = false, bool hls = false) const;
+		TwitchChannel GetChannel(const utility::string_t& name) const;
+		TwitchUsersContainer GetChannelEditors(const utility::string_t& channel_name) const;
+		TwitchChannel UpdateChannel(const utility::string_t& channel_name, const options& op) const;
+		utility::string_t ResetStreamKey(const utility::string_t& channel_name) const;
+		bool StartCommercial(const utility::string_t& channel_name, unsigned int length) const;
+		TwitchTeamsContainer GetTeams(const utility::string_t& channel_name) const;
+		TwitchFollowersContainer GetChannelFollows(const utility::string_t& channel_name) const;
+		TwitchFollowersContainer GetChannelSubscriptions(const utility::string_t& channel_name) const;
+		TwitchFollower GetChannelSubscriptionForUser(const utility::string_t& channel_name, const utility::string_t& user_name) const;
+		TwitchVideosContainer GetChannelVideos(const utility::string_t& channel_name, bool broadcasts = false, bool hls = false) const;
 
 		//Channel Feed
-		TwitchPostsContainer GetPosts(const std::wstring& channel_name, size_t count = 0) const;
-		TwitchPost GetPost(const std::wstring& channel_name, unsigned long long id) const;
-		TwitchPost Post(const std::wstring& channel_name, const std::wstring& body, bool share = false) const;
-		bool DeletePost(const std::wstring& channel_name, unsigned long long id) const;
-		bool AddReaction(const std::wstring& channel_name, unsigned long long id, size_t emote_id) const;
-		bool RemoveReaction(const std::wstring& channel_name, unsigned long long id, size_t emote_id) const;
+		TwitchPostsContainer GetPosts(const utility::string_t& channel_name, unsigned int count = 0) const;
+		TwitchPost GetPost(const utility::string_t& channel_name, unsigned long long id) const;
+		TwitchPost Post(const utility::string_t& channel_name, const utility::string_t& body, bool share = false) const;
+		bool DeletePost(const utility::string_t& channel_name, unsigned long long id) const;
+		bool AddReaction(const utility::string_t& channel_name, unsigned long long id, unsigned int emote_id) const;
+		bool RemoveReaction(const utility::string_t& channel_name, unsigned long long id, unsigned int emote_id) const;
 
 		//Chat
 		TwitchEmoticonsContainer GetEmoticons() const;
-		std::set<EmoticonImage> GetEmoticoneImages(std::set<size_t> sets = std::set<size_t>()) const;
-		std::set<ChannelBadge> GetChannelBadges(std::wstring& channel_name) const;
+		std::set<EmoticonImage> GetEmoticoneImages(std::set<unsigned int> sets = {}) const;
+		std::set<ChannelBadge> GetChannelBadges(
+				const std::basic_string<char, std::char_traits<char>, std::allocator<char>> &channel_name) const;
 
 		//Users
-		TwitchBlockedUsersContainer GetBlockedUsers(const std::wstring& user_name) const;
-		TwitchBlockedUser BlockUser(const std::wstring& user_name, const std::wstring& target_name) const;
-		bool UnblockUser(const std::wstring& user_name, const std::wstring& target_name) const;
-		TwitchFollowedChannelsContainer GetChannelsFollowedByUser(const std::wstring& user_name, Sort_Order order = Sort_Order::Created) const;
-		TwitchFollowedChannel GetFollowingChannel(const std::wstring& user_name, const std::wstring& channel_name) const;
-		TwitchFollowedChannel FollowChannel(const std::wstring& user_name, const std::wstring& channel_name, bool notification = false) const;
-		void UnfollowChannel(const std::wstring& user_name, const std::wstring& channel_name) const;
+		TwitchBlockedUsersContainer GetBlockedUsers(const utility::string_t& user_name) const;
+		TwitchBlockedUser BlockUser(const utility::string_t& user_name, const utility::string_t& target_name) const;
+		bool UnblockUser(const utility::string_t& user_name, const utility::string_t& target_name) const;
+		TwitchFollowedChannelsContainer GetChannelsFollowedByUser(const utility::string_t& user_name, Sort_Order order = Sort_Order::Created) const;
+		TwitchFollowedChannel GetFollowingChannel(const utility::string_t& user_name, const utility::string_t& channel_name) const;
+		TwitchFollowedChannel FollowChannel(const utility::string_t& user_name, const utility::string_t& channel_name, bool notification = false) const;
+		void UnfollowChannel(const utility::string_t& user_name, const utility::string_t& channel_name) const;
 		AuthToken GetCurrentUserStatus() const;
-		TwitchFollowedChannel GetUserSubscribedChannel(const std::wstring& channel_name, const std::wstring& user_name) const;
-		TwitchUser GetUser(const std::wstring& user_name) const;
-		std::set<EmoticonImage> GetUserEmoticons(const std::wstring& user_name) const;
+		TwitchFollowedChannel GetUserSubscribedChannel(const utility::string_t& channel_name, const utility::string_t& user_name) const;
+		TwitchUser GetUser(const utility::string_t& user_name) const;
+		std::set<EmoticonImage> GetUserEmoticons(const utility::string_t& user_name) const;
 		TwitchUser GetCurrentUser() const;
 
 		//Ingests
@@ -94,16 +95,16 @@ namespace TwitchXX
 
 		//Teams
 		TwitchTeamsContainer GetTeams() const;
-		TwitchTeam GetTeam(const std::wstring& team) const;
+		TwitchTeam GetTeam(const utility::string_t& team) const;
 
 		//Videos
 		TwitchVideo GetVideo(unsigned long long id) const;
-		TwitchVideosContainer GetTopVideo(const std::wstring& game = U(""), const std::wstring& period = U("week")) const;
-		TwitchVideosContainer GetFollowedVideo(const std::wstring& broadcast_type) const;
+		TwitchVideosContainer GetTopVideo(const utility::string_t& game = U(""), const utility::string_t& period = U("week")) const;
+		TwitchVideosContainer GetFollowedVideo(const utility::string_t& broadcast_type) const;
 
 
 	private:
-		static std::map<Version, std::wstring> _version;
+		static std::map<Version, utility::string_t> _version;
 		std::unique_ptr<TwitchStreams> _streams;
 		std::unique_ptr<TwitchChannels> _channels;
 		std::unique_ptr<TwitchChannelFeed> _channel_feed;
