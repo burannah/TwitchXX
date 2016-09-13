@@ -11,11 +11,11 @@ namespace TwitchXX
 	class TwitchGame
 	{
 	public:
-		Property<std::wstring> Name;  ///Game's name
-		Property<size_t> Channels;	  ///Number of broadcasting channgels
-		Property<size_t> Viewers;	  ///Numeber of viewers
-		Property<size_t> Id;		  ///Game's Id
-		Property<size_t> Giantbomb_Id; ///Giantbomb id
+		Property<utility::string_t> Name;  ///Game's name
+		Property<unsigned int> Channels;	  ///Number of broadcasting channgels
+		Property<unsigned int> Viewers;	  ///Numeber of viewers
+		Property<unsigned int> Id;		  ///Game's Id
+		Property<unsigned int> Giantbomb_Id; ///Giantbomb id
 		ImageCollection	Box;		  ///Box images
 		ImageCollection Logo;		  ///Game logos
 

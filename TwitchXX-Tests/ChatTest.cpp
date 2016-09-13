@@ -20,9 +20,9 @@ TEST_F(ChatTest,GetEmoticonSets)
 		result = _api->GetEmoticoneImages();
 	});
 
-	EXPECT_GT(result.size(), unsigned{ 1 });
+	EXPECT_GT(result.size(), 1U);
 
-	std::set<size_t> sets{ 469,0 };
+	std::set<unsigned int> sets{ 469,0 };
 	ASSERT_NO_THROW(
 	{
 		result = _api->GetEmoticoneImages(sets);

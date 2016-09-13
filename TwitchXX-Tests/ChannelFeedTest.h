@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "TwitchXXTest.h"
-#include <cpprest\details\basic_types.h>
 
 class ChannelFeedTest : public ::testing::Test
 {
@@ -12,6 +11,6 @@ protected:
 	}
 
 	std::unique_ptr<TwitchXX::Api> _api;
-	std::wstring _channel_name;
+	utility::string_t _channel_name;
 
 };

@@ -9,7 +9,7 @@
 #include <bitset>
 #include "TwitchChat.h"
 
-std::map<TwitchXX::AuthScope, std::wstring> TwitchXX::TwitchUsers::Scopes = {
+std::map<TwitchXX::AuthScope, utility::string_t> TwitchXX::TwitchUsers::Scopes = {
 	{AuthScope::USER_READ,U("user_read")},
 	{AuthScope::USER_BLOCKS_EDIT,U("user_blocks_edit")},
 	{AuthScope::USER_BLOCKS_READ,U("user_blocks_read")},
@@ -26,10 +26,10 @@ std::map<TwitchXX::AuthScope, std::wstring> TwitchXX::TwitchUsers::Scopes = {
 	{AuthScope::CHANNEL_FEED_EDIT,U("channel_feed_edit")}
 };
 
-std::map<std::wstring, TwitchXX::AuthScope> TwitchXX::TwitchUsers::Rscopes = {};
+std::map<utility::string_t, TwitchXX::AuthScope> TwitchXX::TwitchUsers::Rscopes = {};
 
 
-TwitchXX::TwitchBlockedUsersContainer TwitchXX::TwitchUsers::GetBlocked(const std::wstring& user_name) const
+TwitchXX::TwitchBlockedUsersContainer TwitchXX::TwitchUsers::GetBlocked(const utility::string_t& user_name) const
 {
 	static const size_t limit = 100;
 	web::uri_builder builder{U("/users/") + user_name + U("/blocks")};
@@ -37,14 +37,14 @@ TwitchXX::TwitchBlockedUsersContainer TwitchXX::TwitchUsers::GetBlocked(const st
 	return GetObjectsArrayByNext<TwitchBlockedUser>(builder, U("blocks"));
 }
 
-TwitchXX::TwitchBlockedUser TwitchXX::TwitchUsers::BlockUser(const std::wstring& user_name, const std::wstring& target_name) const
+TwitchXX::TwitchBlockedUser TwitchXX::TwitchUsers::BlockUser(const utility::string_t& user_name, const utility::string_t& target_name) const
 {
 	web::uri_builder builder{U("/users/") + user_name + U("/blocks/") + target_name};
 	auto response = _request->put(builder.to_uri());
 	return Create<TwitchBlockedUser>(response);
 }
 
-bool TwitchXX::TwitchUsers::UblockUser(const std::wstring& user_name, const std::wstring& target_name) const
+bool TwitchXX::TwitchUsers::UblockUser(const utility::string_t& user_name, const utility::string_t& target_name) const
 {
 	web::uri_builder builder{ U("/users/") + user_name + U("/blocks/") + target_name };
 
@@ -68,7 +68,7 @@ bool TwitchXX::TwitchUsers::UblockUser(const std::wstring& user_name, const std:
 	throw TwitchException{ "Unexpeced result on delete user from block list!", _request->status_code() };
 }
 
-TwitchXX::TwitchFollowedChannelsContainer TwitchXX::TwitchUsers::GetFollowingChannels(const std::wstring& user_name, TwitchXX::Sort_Order order ) const
+TwitchXX::TwitchFollowedChannelsContainer TwitchXX::TwitchUsers::GetFollowingChannels(const utility::string_t& user_name, TwitchXX::Sort_Order order ) const
 {
 	web::uri_builder builder{ U("/users/") + user_name + U("/follows/channels") };
 	builder.append_query(U("limit"), 100);
@@ -76,7 +76,7 @@ TwitchXX::TwitchFollowedChannelsContainer TwitchXX::TwitchUsers::GetFollowingCha
 	return GetObjectsArrayByNext<TwitchFollowedChannel>(builder, U("follows"));
 }
 
-TwitchXX::TwitchFollowedChannel TwitchXX::TwitchUsers::GetFollowingChannel(const std::wstring & user_name, const std::wstring & channel_name) const
+TwitchXX::TwitchFollowedChannel TwitchXX::TwitchUsers::GetFollowingChannel(const utility::string_t & user_name, const utility::string_t & channel_name) const
 {
 	web::uri_builder builder{ U("/users/") + user_name + U("/follows/channels/") + channel_name };
 
@@ -98,7 +98,7 @@ TwitchXX::TwitchFollowedChannel TwitchXX::TwitchUsers::GetFollowingChannel(const
 	}
 }
 
-TwitchXX::TwitchFollowedChannel TwitchXX::TwitchUsers::FollowChannel(const std::wstring& user_name, const std::wstring & channel_name, bool notification) const
+TwitchXX::TwitchFollowedChannel TwitchXX::TwitchUsers::FollowChannel(const utility::string_t& user_name, const utility::string_t & channel_name, bool notification) const
 {
 	try
 	{
@@ -122,7 +122,7 @@ TwitchXX::TwitchFollowedChannel TwitchXX::TwitchUsers::FollowChannel(const std::
 
 }
 
-void TwitchXX::TwitchUsers::UnfollowChannel(const std::wstring & user_name, const std::wstring & channel_name) const
+void TwitchXX::TwitchUsers::UnfollowChannel(const utility::string_t & user_name, const utility::string_t & channel_name) const
 {
 	try
 	{
@@ -167,7 +167,7 @@ TwitchXX::AuthToken TwitchXX::TwitchUsers::GetCurrentUserStatus() const
 	}
 }
 
-TwitchXX::TwitchFollowedChannel TwitchXX::TwitchUsers::GetUserSubscribedChannel(const std::wstring& channel_name, const std::wstring& user_name) const
+TwitchXX::TwitchFollowedChannel TwitchXX::TwitchUsers::GetUserSubscribedChannel(const utility::string_t& channel_name, const utility::string_t& user_name) const
 {
 	try
 	{
@@ -190,13 +190,13 @@ TwitchXX::TwitchFollowedChannel TwitchXX::TwitchUsers::GetUserSubscribedChannel(
 
 }
 
-TwitchXX::TwitchUser TwitchXX::TwitchUsers::GetUser(const std::wstring& user_name) const
+TwitchXX::TwitchUser TwitchXX::TwitchUsers::GetUser(const utility::string_t& user_name) const
 {
 	web::uri_builder builder(U("/users/") + user_name);
 	return GetSingleObject<TwitchUser>(builder.to_uri());
 }
 
-std::set<TwitchXX::EmoticonImage> TwitchXX::TwitchUsers::GetUserEmoticons(const std::wstring& user_name) const
+std::set<TwitchXX::EmoticonImage> TwitchXX::TwitchUsers::GetUserEmoticons(const utility::string_t& user_name) const
 {
 	web::uri_builder builder(U("/users/") + user_name + U("/emotes"));
 	auto resposne = _request->get(builder.to_uri());

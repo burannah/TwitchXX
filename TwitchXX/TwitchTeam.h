@@ -11,23 +11,23 @@ namespace TwitchXX
 	{
 	public:
 		///Id
-		Property<size_t> Id{ 0 };
+		Property<unsigned int> Id{ 0 };
 		///Team name
-		Property<std::wstring> Name;
+		Property<utility::string_t> Name;
 		///Team info
-		Property<std::wstring> Info;
+		Property<utility::string_t> Info;
 		///Display name
-		Property<std::wstring> Display_Name;
+		Property<utility::string_t> Display_Name;
 		///Created
 		Property<Date> Created;
 		///Updated
 		Property<Date> Updated;
 		///Team logo
-		Property<std::wstring> Logo;
+		Property<utility::string_t> Logo;
 		///Team banner
-		Property<std::wstring> Banner;
+		Property<utility::string_t> Banner;
 		///Background
-		Property<std::wstring> Background;
+		Property<utility::string_t> Background;
 
 		///Operator equals
 		/// Distinc objects by Id

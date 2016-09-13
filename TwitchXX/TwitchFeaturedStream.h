@@ -11,11 +11,11 @@ namespace TwitchXX
 	{
 	public:
 		///Image
-		Property<std::wstring> Image;
+		Property<utility::string_t> Image;
 		///Text
-		Property<std::wstring> Text;
+		Property<utility::string_t> Text;
 		///Title
-		Property<std::wstring> Title;
+		Property<utility::string_t> Title;
 		///Sponsored
 		Property<bool> Sponsored{ false };
 		///Scheduled

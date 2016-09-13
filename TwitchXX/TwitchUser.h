@@ -12,19 +12,19 @@ namespace TwitchXX
 		///User creation date
 		Property<Date> Created;
 		///Name
-		Property<std::wstring> Name;
+		Property<utility::string_t> Name;
 		///Last updated
 		Property<Date> Updated;
 		///Id
-		Property<size_t> Id{ 0 };
+		Property<unsigned int> Id{ 0 };
 		///Display name
-		Property<std::wstring> Display_Name;
+		Property<utility::string_t> Display_Name;
 		///Logo
-		Property<std::wstring> Logo;
+		Property<utility::string_t> Logo;
 		///Type
-		Property<std::wstring> Type; //TODO: to type?
+		Property<utility::string_t> Type; //TODO: to type?
 		///Bio
-		Property<std::wstring> Bio;
+		Property<utility::string_t> Bio;
 
 		//TODO: Add optional notification properties!!!
 
@@ -51,7 +51,7 @@ namespace TwitchXX
 	{
 	public:
 		///Blcok Id
-		Property<size_t> Block_Id{ 0 };
+		Property<unsigned int> Block_Id{ 0 };
 		///Block updated date
 		Property<Date> Block_Updated;
 		///Blocked user

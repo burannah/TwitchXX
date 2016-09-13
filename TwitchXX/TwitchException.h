@@ -29,7 +29,7 @@ namespace TwitchXX
 
 		///Exception message
 		///@return exception description as a string
-		const char* what() const override
+		const char* what() const noexcept override
 		{
 
 			return _msg.c_str();

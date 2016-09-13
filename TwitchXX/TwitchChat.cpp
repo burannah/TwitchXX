@@ -7,7 +7,7 @@ TwitchXX::TwitchEmoticonsContainer TwitchXX::TwitchChat::GetEmoticons() const
 	return GetObjectsArrayOnce<TwitchEmoticon>(builder, U("emoticons"));
 }
 
-std::set<TwitchXX::EmoticonImage> TwitchXX::TwitchChat::GetEmoticoneImages(std::set<size_t> sets) const
+std::set<TwitchXX::EmoticonImage> TwitchXX::TwitchChat::GetEmoticoneImages(std::set<unsigned int> sets) const
 {
 	if(sets.size() == 0)
 	{
@@ -19,7 +19,7 @@ std::set<TwitchXX::EmoticonImage> TwitchXX::TwitchChat::GetEmoticoneImages(std::
 	}
 }
 
-std::set<TwitchXX::ChannelBadge> TwitchXX::TwitchChat::GetChannelBadges(std::wstring& channel_name) const
+std::set<TwitchXX::ChannelBadge> TwitchXX::TwitchChat::GetChannelBadges(const utility::string_t &channel_name) const
 {
 	web::uri_builder builder(U("/chat/") + channel_name + U("/badges"));
 	auto response = _request->get(builder.to_uri());
@@ -68,7 +68,7 @@ std::set<TwitchXX::EmoticonImage> TwitchXX::TwitchChat::ParseEmoticonSets(web::j
 	}
 	for(const auto& it: emoticon_sets.as_object())
 	{
-		size_t set_id = std::stoi(it.first);
+		unsigned int set_id = std::stoi(it.first);
 		for(const auto& emoticone: it.second.as_array())
 		{
 			JsonWrapper wrapper(emoticone);
@@ -79,11 +79,11 @@ std::set<TwitchXX::EmoticonImage> TwitchXX::TwitchChat::ParseEmoticonSets(web::j
 	return result;
 }
 
-std::set<TwitchXX::EmoticonImage> TwitchXX::TwitchChat::GetEmoticonsImagesBySets(const std::set<unsigned>& sets) const
+std::set<TwitchXX::EmoticonImage> TwitchXX::TwitchChat::GetEmoticonsImagesBySets(const std::set<unsigned int>& sets) const
 {
 	web::uri_builder builder(U("/chat/emoticon_images"));
-	std::wstringstream ss;
-	std::transform(sets.begin(), sets.end(), std::ostream_iterator<std::wstring, wchar_t>(ss, U(",")), [](size_t set_id) { return std::to_wstring(set_id); }); //TODO: Not sure about NULL set id
+	utility::stringstream_t ss;
+	std::copy(sets.begin(),sets.end(),std::ostream_iterator<unsigned int,utility::char_t>(ss,U(",")));
 	builder.append_query(U("emotesets"), ss.str());
 	auto resposne = _request->get(builder.to_uri());
 	auto emoticon_sets = resposne.at(U("emoticon_sets"));
@@ -114,7 +114,7 @@ std::set<TwitchXX::TwitchEmoticon::EmoticoneImageDescriptor> TwitchXX::GetImages
 	for (const auto& image_descriptor : value.as_array())
 	{
 		JsonWrapper wrapper(image_descriptor);
-		result.insert({ *wrapper[U("emoticon_set")],*wrapper[U("height")], *wrapper[U("width")], *wrapper[U("url")] });
+		result.insert(TwitchEmoticon::EmoticoneImageDescriptor{ (unsigned int)(*wrapper[U("emoticon_set")]), (unsigned int)*wrapper[U("height")], (unsigned int)*wrapper[U("width")], (utility::string_t)*wrapper[U("url")] });
 	}
 
 	return result;

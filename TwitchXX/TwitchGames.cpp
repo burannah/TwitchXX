@@ -14,7 +14,7 @@ namespace TwitchXX
 
 TwitchXX::ImageCollection TwitchXX::CreateCollection(const web::json::value& json)
 {
-	ImageCollection col = { { L"small", L"" },{ L"medium", L"" },{ L"large", L"" },{ L"template",L"" } };
+	ImageCollection col = { { U("small"), U("") },{ U("medium"), U("") },{ U("large"), U("") },{ U("template"),U("") } };
 	if (!json.is_null())
 	{
 		for (auto& entry : col)
@@ -33,7 +33,7 @@ TwitchXX::TwitchGame TwitchXX::Create<TwitchXX::TwitchGame>(const web::json::val
 	JsonWrapper j(json);
 	game.Channels.Set(*j[U("channels")]);
 	game.Viewers.Set(*j[U("viewers")]);
-	auto game_descriptor = json.at(L"game");
+	auto game_descriptor = json.at(U("game"));
 	if (game_descriptor.is_null())
 	{
 		throw std::runtime_error("Not a valid game description json");
@@ -44,8 +44,8 @@ TwitchXX::TwitchGame TwitchXX::Create<TwitchXX::TwitchGame>(const web::json::val
 	game.Id.Set(*game_wrapper[U("_id")]);
 	game.Giantbomb_Id.Set(*game_wrapper[U("giantbomb_id")]);
 
-	game.Box = CreateCollection(game_descriptor.at(L"box"));
-	game.Logo = CreateCollection(game_descriptor.at(L"logo"));
+	game.Box = CreateCollection(game_descriptor.at(U("box")));
+	game.Logo = CreateCollection(game_descriptor.at(U("logo")));
 
 	return game;
 }

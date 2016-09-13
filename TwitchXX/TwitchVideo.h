@@ -8,10 +8,10 @@ namespace TwitchXX
 	{
 	public:
 		///Title
-		Property<std::wstring> Title;
+		Property<utility::string_t> Title;
 
 		///Description
-		Property<std::wstring> Description;
+		Property<utility::string_t> Description;
 
 		///Broadcast Id
 		Property<unsigned long long> BroadcastId;
@@ -20,31 +20,31 @@ namespace TwitchXX
 		Property<unsigned long long> Id;
 
 		///Status
-		Property<std::wstring> Status; //TODO: Not sure about string;
+		Property<utility::string_t> Status; //TODO: Not sure about string;
 
 		///Tag list
-		Property<std::wstring> TagList; //TODO: Not sure about string
+		Property<utility::string_t> TagList; //TODO: Not sure about string
 
 		///Recording date
 		Property<Date> Recorded;
 
 		///Game
-		Property<std::wstring> Game;
+		Property<utility::string_t> Game;
 
 		///Length
 		Property<unsigned long long> Length;
 
 		///Preview
-		Property<std::wstring> Preview;
+		Property<utility::string_t> Preview;
 
 		///Url
-		Property<std::wstring> Url;
+		Property<utility::string_t> Url;
 
 		///Views
 		Property<unsigned long long> Views;
 
 		///Broadcast type
-		Property<std::wstring> BroadcastType;
+		Property<utility::string_t> BroadcastType;
 
 		///Channel
 		TwitchChannel Channel;

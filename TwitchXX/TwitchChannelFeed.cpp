@@ -4,23 +4,23 @@
 #include "TwitchException.h"
 #include "TwitchUsers.h"
 
-TwitchXX::TwitchPostsContainer TwitchXX::TwitchChannelFeed::GetPosts(const std::wstring & channel_name, size_t limit) const
+TwitchXX::TwitchPostsContainer TwitchXX::TwitchChannelFeed::GetPosts(const utility::string_t & channel_name, size_t limit) const
 {
 	web::uri_builder first_builder(U("/feed/") + channel_name + U("/posts"));
 	first_builder.append_query(U("limit"), limit == 0 ? 100 : limit);
 	return GetObjectsArrayByNext<TwitchPost>(first_builder, U("posts"));
 }
 
-TwitchXX::TwitchPost TwitchXX::TwitchChannelFeed::GetPost(const std::wstring & channel_name, unsigned long long id) const
+TwitchXX::TwitchPost TwitchXX::TwitchChannelFeed::GetPost(const utility::string_t & channel_name, unsigned long long id) const
 {
-	std::wstringstream  ss;
+	utility::stringstream_t  ss;
 	ss << id;
 	web::uri_builder builder(U("/feed/") + channel_name + U("/posts/") + ss.str());
 	auto response = _request->get(builder.to_uri());
 	return Create<TwitchPost>(response);
 }
 
-TwitchXX::TwitchPost TwitchXX::TwitchChannelFeed::Post(const std::wstring& channel_name, const std::wstring & body, bool share) const
+TwitchXX::TwitchPost TwitchXX::TwitchChannelFeed::Post(const utility::string_t& channel_name, const utility::string_t & body, bool share) const
 {
 	web::uri_builder builder(U("/feed/") + channel_name + U("/posts"));
 
@@ -43,9 +43,9 @@ TwitchXX::TwitchPost TwitchXX::TwitchChannelFeed::Post(const std::wstring& chann
 	return post;
 }
 
-bool TwitchXX::TwitchChannelFeed::DeletePost(const std::wstring & channel_name, unsigned long long id) const
+bool TwitchXX::TwitchChannelFeed::DeletePost(const utility::string_t & channel_name, unsigned long long id) const
 {
-	std::wstringstream ss;
+	utility::stringstream_t ss;
 	ss << id;
 	web::uri_builder builder(U("/feed/") + channel_name + U("/posts/") + ss.str());
 	auto response = _request->del(builder.to_uri());
@@ -53,9 +53,9 @@ bool TwitchXX::TwitchChannelFeed::DeletePost(const std::wstring & channel_name, 
 	return _request->status_code() == web::http::status_codes::OK;
 }
 
-bool TwitchXX::TwitchChannelFeed::AddReaction(const std::wstring& channel_name, unsigned long long id, size_t emote_id) const
+bool TwitchXX::TwitchChannelFeed::AddReaction(const utility::string_t& channel_name, unsigned long long id, size_t emote_id) const
 {
-	std::wstringstream ss_id;
+	utility::stringstream_t ss_id;
 	ss_id << id;
 	web::uri_builder builder(U("/feed/") + channel_name + U("/posts/") + ss_id.str() + U("/reactions"));
 	if(emote_id)
@@ -72,9 +72,9 @@ bool TwitchXX::TwitchChannelFeed::AddReaction(const std::wstring& channel_name, 
 	return _request->status_code() == web::http::status_codes::OK;
 }
 
-bool TwitchXX::TwitchChannelFeed::RemoveReaction(const std::wstring& channel_name, unsigned long long id, size_t emote_id) const
+bool TwitchXX::TwitchChannelFeed::RemoveReaction(const utility::string_t& channel_name, unsigned long long id, size_t emote_id) const
 {
-	std::wstringstream ss_id;
+	utility::stringstream_t ss_id;
 	ss_id << id;
 	web::uri_builder builder(U("/feed/") + channel_name + U("/posts/") + ss_id.str() + U("/reactions"));
 	if (emote_id)

@@ -21,7 +21,7 @@ namespace TwitchXX
 		virtual unsigned long long as_ulong() const { return 0; }
 
 
-		virtual operator std::wstring() const { return as_string(); };
+		virtual operator utility::string_t() const { return as_string(); };
 		virtual operator int() const { return as_integer(); };
 		virtual operator bool() const { return as_bool(); };
 		virtual operator double() const { return as_double(); }
@@ -105,7 +105,7 @@ namespace TwitchXX
 
 		/// Accessing the values of keys
 		/** If key exist for current json object returns JsonNotNullValueWrapper object, and if it does not - JsonNullVAlueWrapper one.*/
-		std::unique_ptr<JsonValueWrapper> operator[] (const std::wstring& param)
+		std::unique_ptr<JsonValueWrapper> operator[] (const utility::string_t& param)
 		{
 			if (param_exist(param)) 
 				return std::make_unique<JsonNotNullValueWrapper>(_json[param]); 
@@ -115,7 +115,7 @@ namespace TwitchXX
 	private:
 		web::json::value _json;
 
-		bool param_exist(const std::wstring & param) { return _json.has_field(param) && !_json[param].is_null(); };
+		bool param_exist(const utility::string_t & param) { return _json.has_field(param) && !_json[param].is_null(); };
 	};
 	
 }

@@ -24,11 +24,11 @@ namespace TwitchXX
 		///Endorsed users
 		std::set<unsigned long long> Endorsed_Users;
 		///Post's body
-		Property<std::wstring> Body;
+		Property<utility::string_t> Body;
 		///Author
 		TwitchUser Author;
 		///Tweet url
-		Property<std::wstring> Tweet;
+		Property<utility::string_t> Tweet;
 
 		///Equals operator
 		/// Distinct by Id
