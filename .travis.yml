@@ -1,0 +1,25 @@
+language: cpp
+compiler:
+  - gcc
+before_install:
+ - sudo apt-get install libboost-regex1.55-dev libboost-system1.55-dev libboost-thread1.55-dev libboost-test1.55-dev libboost-random1.55-dev -y
+env:
+  global:
+    - BOOST_INCLUDES=/usr/include
+    - BOOST_LIBS=/usr/lib
+before_script:
+   - mkdir bin
+   - cd bin
+   - cmake ..
+
+script: make
+
+branches:
+  only:
+    - master
+notifications:
+  recipients:
+    - burannah@gmail.com
+  email:
+    on_success: change
+    on_failure: always
