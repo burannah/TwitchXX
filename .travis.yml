@@ -1,8 +1,18 @@
 language: cpp
 compiler:
   - gcc
+addons:
+  apt:
+    sources:
+    # add PPAs with more up-to-date toolchains
+    - ubuntu-toolchain-r-test
+    packages:
+    # install toolchains
+    - gcc-5
+    - g++-5
+
 before_install:
- - sudo apt-get install libboost-regex1.55-dev libboost-system1.55-dev libboost-thread1.55-dev libboost-test1.55-dev libboost-random1.55-dev -y
+ - sudo apt-get install libboost-regex-dev libboost-system-dev libboost-thread-dev libboost-test-dev libboost-random-dev -y
 env:
   global:
     - BOOST_INCLUDES=/usr/include
