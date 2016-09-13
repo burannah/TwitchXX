@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "TwitchRequest.h"
 #include "TwitchEmoticon.h"
-#include "../../../.CLion2016.2/system/cmake/generated/TwitchSpy-4ecddfcf/4ecddfcf/Debug0/cpprestsdk/src/cpprestsdk/Release/include/cpprest/details/basic_types.h"
 
 namespace TwitchXX
 {

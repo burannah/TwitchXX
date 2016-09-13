@@ -1,6 +1,5 @@
 ﻿#include "ChannelFeedTest.h"
 #include <TwitchDef.h>
-#include <cpprest/details/basic_types.h>
 
 
 TEST_F(ChannelFeedTest,GetPosts1)
