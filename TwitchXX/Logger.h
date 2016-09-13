@@ -49,7 +49,7 @@ namespace TwitchXX
 		/**
 		* Doesn't do any actual logging. Just check that all objects are alive and broadcast incoming message to them.
 		*/
-		virtual void Log(string_t msg, LogLevel level = LogLevel::Message)
+		virtual void Log(utility::string_t msg, LogLevel level = LogLevel::Message)
 		{
 			_subscribers.remove_if([](const auto& log) { return log.expired(); });
 			std::for_each(_subscribers.begin(), _subscribers.end(), [&](const auto& log) {if (auto sp = log.lock()) { sp->Log(msg, level); } });

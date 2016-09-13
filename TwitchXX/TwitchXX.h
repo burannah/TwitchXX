@@ -73,8 +73,7 @@ namespace TwitchXX
 		//Chat
 		TwitchEmoticonsContainer GetEmoticons() const;
 		std::set<EmoticonImage> GetEmoticoneImages(std::set<unsigned int> sets = {}) const;
-		std::set<ChannelBadge> GetChannelBadges(
-				const std::basic_string<char, std::char_traits<char>, std::allocator<char>> &channel_name) const;
+		std::set<ChannelBadge> GetChannelBadges(const utility::string_t &channel_name) const;
 
 		//Users
 		TwitchBlockedUsersContainer GetBlockedUsers(const utility::string_t& user_name) const;

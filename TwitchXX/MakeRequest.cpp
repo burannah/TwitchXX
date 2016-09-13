@@ -66,7 +66,7 @@ namespace TwitchXX
 		}
 		catch (std::exception& e)
 		{
-			std::stringstream s;
+			utility::stringstream_t s;
 			s << "Direct connection failed with: \"" << e.what() << "\". Trying to connect though proxy" << std::endl;
 			TwitchXX::Log->Log(s.str(), Logger::LogLevel::Warning);
 		}
@@ -82,7 +82,7 @@ namespace TwitchXX
 		}
 		catch (std::exception& e)
 		{
-			std::stringstream s;
+			utility::stringstream_t s;
 			s << "Connect through proxy has failed either: \"" << e.what() << "\". " << std::endl;
 			Log->Log(s.str(), Logger::LogLevel::Error);
 			throw;
@@ -113,19 +113,19 @@ namespace TwitchXX
 		request.set_request_uri(params.uri);
 		if (!params.body.is_null())
 		{
-			std::stringstream ss;
+			utility::stringstream_t ss;
 			ss << params.body;
 			request.set_body(ss.str());
 			request.headers().set_content_type(U("application/json"));
 		}
 
-		std::cout << "Request: " << request.to_string() << "\n";
+		ucout << "Request: " << request.to_string() << "\n";
 
 		pplx::task<web::json::value> task = http_client.request(request)
 			.then([this](web::http::http_response response) -> pplx::task<web::json::value>
 		{
 #ifdef _DEBUG
-			out << response.to_string() << U("\n");
+			ucout << response.to_string() << U("\n");
 #endif
 			this->_last_status = response.status_code();
 			if (response.status_code() == web::http::status_codes::OK)

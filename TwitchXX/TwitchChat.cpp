@@ -83,8 +83,7 @@ std::set<TwitchXX::EmoticonImage> TwitchXX::TwitchChat::GetEmoticonsImagesBySets
 {
 	web::uri_builder builder(U("/chat/emoticon_images"));
 	utility::stringstream_t ss;
-	//std::transform(sets.begin(), sets.end(), std::ostream_iterator<utility::string_t, wchar_t>(ss, U(",")), [](unsigned int set_id) { return to_ustring(set_id); }); //TODO: Not sure about NULL set id
-	std::copy(sets.begin(),sets.end(),std::ostream_iterator<decltype(*sets.begin())>(ss,U(",")));
+	std::copy(sets.begin(),sets.end(),std::ostream_iterator<unsigned int,utility::char_t>(ss,U(",")));
 	builder.append_query(U("emotesets"), ss.str());
 	auto resposne = _request->get(builder.to_uri());
 	auto emoticon_sets = resposne.at(U("emoticon_sets"));
