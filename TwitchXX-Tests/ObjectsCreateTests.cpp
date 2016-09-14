@@ -8,6 +8,9 @@
 #include <TwitchChat.h>
 #include <TwitchUsers.h>
 #include <TwitchTeams.h>
+#include <TwitchFollower.h>
+#include <TwitchIngests.h>
+#include <TwitchVideos.h>
 
 TEST(Create, Game)
 {
@@ -568,4 +571,191 @@ TEST(Create, TwitchEmoticon)
 	EXPECT_EQ(it->Height, 18);
 	EXPECT_EQ(it->Width, 21);
 	EXPECT_EQ(it->Url.Get(), U("http://static-cdn.jtvnw.net/jtv_user_pictures/chansub-global-emoticon-c41c5c6c88f481cd-21x18.png"));
+}
+
+TEST(Create, TwitchFollower)
+{
+	auto s = U("{\
+		\"created_at\": \"2013-06-02T09:38:45Z\",\
+		\"_links\" : {\
+		\"self\": \"https://api.twitch.tv/kraken/users/test_user2/follows/channels/test_user1\"\
+	},\
+		\"notifications\" : true,\
+			\"user\" : {\
+			\"_links\": {\
+				\"self\": \"https://api.twitch.tv/kraken/users/test_user2\"\
+			},\
+				\"type\" : \"user\",\
+					\"bio\" : \"test user's bio\",\
+					\"logo\" : null,\
+					\"display_name\" : \"test_user2\",\
+					\"created_at\" : \"2013-02-06T21:21:57Z\",\
+					\"updated_at\" : \"2013-02-13T20:59:42Z\",\
+					\"_id\" : 40091581,\
+					\"name\" : \"test_user2\"\
+		}\
+}");
+	TwitchXX::TwitchFollower follower;
+	std::wstringstream ss(s);
+	web::json::value v;
+	ss >> v;
+
+	EXPECT_NO_THROW(
+	{
+		follower = TwitchXX::Create<TwitchXX::TwitchFollower>(v);
+	});
+
+	EXPECT_TRUE(follower.Notifications); 
+	EXPECT_EQ(follower.Created.Get(), TwitchXX::DateFromString(U("2013-06-02T09:38:45Z")));
+	EXPECT_EQ(follower.Created.to_string(), U("2013-06-02T09:38:45Z"));
+	auto user = follower.User;
+	EXPECT_EQ(user.Type.Get(), U("user"));
+	EXPECT_EQ(user.Bio.Get(), U("test user's bio"));
+	EXPECT_EQ(user.Logo.Get(), U(""));
+	EXPECT_EQ(user.Display_Name.Get(), U("test_user2"));
+	EXPECT_EQ(user.Created.Get(), TwitchXX::DateFromString(U("2013-02-06T21:21:57Z")));
+	EXPECT_EQ(user.Created.to_string(), U("2013-02-06T21:21:57Z"));
+	EXPECT_EQ(user.Updated.Get(), TwitchXX::DateFromString(U("2013-02-13T20:59:42Z")));
+	EXPECT_EQ(user.Updated.to_string(), U("2013-02-13T20:59:42Z"));
+	EXPECT_EQ(user.Id.Get(), 40091581U);
+	EXPECT_EQ(user.Name.Get(), U("test_user2"));
+}
+
+TEST(Create, TwitchIngest)
+{
+	auto s = U("{\
+		\"name\": \"EU: Amsterdam, NL\",\
+		\"default\" : false,\
+		\"_id\" : 24,\
+		\"url_template\" : \"rtmp://live-ams.twitch.tv/app/{stream_key}\",\
+		\"availability\" : 1.0\
+}");
+	TwitchXX::TwitchIngest ingest;
+	std::wstringstream ss(s);
+	web::json::value v;
+	ss >> v;
+
+	EXPECT_NO_THROW(
+	{
+		ingest = TwitchXX::Create<TwitchXX::TwitchIngest>(v);
+	});
+
+	EXPECT_EQ(ingest.Name.Get(), U("EU: Amsterdam, NL"));
+	EXPECT_FALSE(ingest.Default.Get());
+	EXPECT_EQ(ingest.Id.Get(), 24U);
+	EXPECT_EQ(ingest.UrlTemplate.Get(), U("rtmp://live-ams.twitch.tv/app/{stream_key}"));
+	EXPECT_EQ(ingest.Availability.Get(), U("1.0"));
+}
+
+TEST(Create, TwitchVideo)
+{
+	auto s = U("{\
+		\"title\": \"Twitch Weekly - February 6, 2015\",\
+		\"description\" : \"Twitch Weekly LIVE on February 6, 2015!\",\
+		\"broadcast_id\" : 13019796368,\
+		\"status\" : \"recorded\",\
+		\"_id\" : \"c6055863\",\
+		\"tag_list\" : \"\",\
+		\"recorded_at\" : \"2015-02-06T21:01:09Z\",\
+		\"game\" : null,\
+		\"length\" : 4015,\
+		\"preview\" : \"http://static-cdn.jtvnw.net/jtv.thumbs/archive-621292653-320x240.jpg\",\
+		\"url\" : \"http://www.twitch.tv/twitch/c/6055863\",\
+		\"views\" : 318,\
+		\"broadcast_type\" : \"highlight\",\
+		\"_links\" : {\
+		\"self\": \"https://api.twitch.tv/kraken/videos/c6055863\",\
+			\"channel\" : \"https://api.twitch.tv/kraken/channels/twitch\"\
+	},\
+		\"channel\" : {\
+			\"name\": \"twitch\",\
+				\"display_name\" : \"Twitch\"\
+		}\
+}");
+	TwitchXX::TwitchVideo video;
+	std::wstringstream ss(s);
+	web::json::value v;
+	ss >> v;
+
+	EXPECT_NO_THROW(
+	{
+		video = TwitchXX::Create<TwitchXX::TwitchVideo>(v);
+	});
+
+	EXPECT_EQ(video.Title.Get(), U("Twitch Weekly - February 6, 2015"));
+	EXPECT_EQ(video.Description.Get(), U("Twitch Weekly LIVE on February 6, 2015!"));
+	EXPECT_EQ(video.BroadcastId.Get(), 13019796368U);
+	EXPECT_EQ(video.Status.Get(), U("recorded"));
+	EXPECT_EQ(video.Id.Get(), U("c6055863"));
+	EXPECT_EQ(video.TagList.Get(), U(""));
+	EXPECT_EQ(video.Recorded.Get(), TwitchXX::DateFromString(U("2015-02-06T21:01:09Z")));
+	EXPECT_EQ(video.Recorded.to_string(), U("2015-02-06T21:01:09Z"));
+	EXPECT_EQ(video.Game.Get(), U(""));
+	EXPECT_EQ(video.Length.Get(), 4015);
+	EXPECT_EQ(video.Preview.Get(), U("http://static-cdn.jtvnw.net/jtv.thumbs/archive-621292653-320x240.jpg"));
+	EXPECT_EQ(video.Url.Get(), U("http://www.twitch.tv/twitch/c/6055863"));
+	EXPECT_EQ(video.Views.Get(), 318);
+	EXPECT_EQ(video.BroadcastType.Get(), U("highlight"));
+	auto channel = video.Channel;
+	EXPECT_EQ(channel.Name.Get(), U("twitch"));
+	EXPECT_EQ(channel.Display_Name.Get(), U("Twitch"));
+}
+
+TEST(Create, TwitchFollowedChannel)
+{
+	auto s = U("{
+		\"created_at\": \"2013-06-02T09:38:45Z\", \
+		\"_links\" : {\
+		\"self\": \"https://api.twitch.tv/kraken/users/test_user1/follows/channels/test_channel\"\
+	},\
+		\"notifications\" : true,\
+			\"channel\" : {\
+			\"mature\": false,\
+				\"status\" : \"test status\",\
+				\"broadcaster_language\" : \"en\",\
+				\"display_name\" : \"test_channel\",\
+				\"game\" : \"Gaming Talk Shows\",\
+				\"delay\" : 0,\
+				\"language\" : \"en\",\
+				\"_id\" : 12345,\
+				\"name\" : \"test_channel\",\
+				\"created_at\" : \"2007-05-22T10:39:54Z\",\
+				\"updated_at\" : \"2015-02-12T04:15:49Z\",\
+				\"logo\" : \"http://static-cdn.jtvnw.net/jtv_user_pictures/test_channel-profile_image-94a42b3a13c31c02-300x300.jpeg\",\
+				\"banner\" : \"http://static-cdn.jtvnw.net/jtv_user_pictures/test_channel-channel_header_image-08dd874c17f39837-640x125.png\",\
+				\"video_banner\" : \"http://static-cdn.jtvnw.net/jtv_user_pictures/test_channel-channel_offline_image-b314c834d210dc1a-640x360.png\",\
+				\"background\" : null,\
+				\"profile_banner\" : \"http://static-cdn.jtvnw.net/jtv_user_pictures/test_channel-profile_banner-6936c61353e4aeed-480.png\",\
+				\"profile_banner_background_color\" : \"null\",\
+				\"partner\" : true,\
+				\"url\" : \"http://www.twitch.tv/test_channel\",\
+				\"views\" : 49144894,\
+				\"followers\" : 215780,\
+				\"_links\" : {\
+				\"self\": \"https://api.twitch.tv/kraken/channels/test_channel\",\
+					\"follows\" : \"https://api.twitch.tv/kraken/channels/test_channel/follows\",\
+					\"commercial\" : \"https://api.twitch.tv/kraken/channels/test_channel/commercial\",\
+					\"stream_key\" : \"https://api.twitch.tv/kraken/channels/test_channel/stream_key\",\
+					\"chat\" : \"https://api.twitch.tv/kraken/chat/test_channel\",\
+					\"features\" : \"https://api.twitch.tv/kraken/channels/test_channel/features\",\
+					\"subscriptions\" : \"https://api.twitch.tv/kraken/channels/test_channel/subscriptions\",\
+					\"editors\" : \"https://api.twitch.tv/kraken/channels/test_channel/editors\",\
+					\"teams\" : \"https://api.twitch.tv/kraken/channels/test_channel/teams\",\
+					\"videos\" : \"https://api.twitch.tv/kraken/channels/test_channel/videos\"\
+			}\
+		}\
+}");
+	TwitchXX::TwitchFollowedChannel followed_channel;
+	std::wstringstream ss(s);
+	web::json::value v;
+	ss >> v;
+
+	EXPECT_NO_THROW(
+	{
+		followed_channel = TwitchXX::Create<TwitchXX::TwitchFollowedChannel>(v);
+	});
+
+	EXPECT_EQ(followed_channel.Created.Get(), TwitchXX::DateFromString(U("2013-06-02T09:38:45Z")));
+	EXPECT_EQ(followed_channel.Created.to_string(), U("2013-06-02T09:38:45Z"));
+	EXPECT_EQ(followed_channel.Channel.Display_Name.Get(), U("test_channel"));
 }
