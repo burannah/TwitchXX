@@ -596,7 +596,7 @@ TEST(Create, TwitchFollower)
 		}\
 }");
 	TwitchXX::TwitchFollower follower;
-	std::wstringstream ss(s);
+	utility::stringstream_t ss(s);
 	web::json::value v;
 	ss >> v;
 
@@ -631,7 +631,7 @@ TEST(Create, TwitchIngest)
 		\"availability\" : 1.0\
 }");
 	TwitchXX::TwitchIngest ingest;
-	std::wstringstream ss(s);
+	utility::stringstream_t ss(s);
 	web::json::value v;
 	ss >> v;
 
@@ -673,7 +673,7 @@ TEST(Create, TwitchVideo)
 		}\
 }");
 	TwitchXX::TwitchVideo video;
-	std::wstringstream ss(s);
+	utility::stringstream_t ss(s);
 	web::json::value v;
 	ss >> v;
 
@@ -703,7 +703,7 @@ TEST(Create, TwitchVideo)
 
 TEST(Create, TwitchFollowedChannel)
 {
-	auto s = U("{
+	auto s = U("{\
 		\"created_at\": \"2013-06-02T09:38:45Z\", \
 		\"_links\" : {\
 		\"self\": \"https://api.twitch.tv/kraken/users/test_user1/follows/channels/test_channel\"\
@@ -746,7 +746,7 @@ TEST(Create, TwitchFollowedChannel)
 		}\
 }");
 	TwitchXX::TwitchFollowedChannel followed_channel;
-	std::wstringstream ss(s);
+	utility::stringstream_t ss(s);
 	web::json::value v;
 	ss >> v;
 

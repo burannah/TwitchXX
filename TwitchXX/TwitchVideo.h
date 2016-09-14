@@ -17,7 +17,7 @@ namespace TwitchXX
 		Property<unsigned long long> BroadcastId;
 
 		///Id
-		Property<unsigned long long> Id;
+		Property<utility::string_t> Id;
 
 		///Status
 		Property<utility::string_t> Status; //TODO: Not sure about string;
