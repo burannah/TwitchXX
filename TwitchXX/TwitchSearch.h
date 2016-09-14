@@ -19,13 +19,13 @@ namespace TwitchXX
 
 
 		///Search for specific channels
-		TwitchChannelsContainer SearchChannels(const std::wstring& query, size_t limit = 25, size_t offset = 0);
+		TwitchChannelsContainer SearchChannels(const utility::string_t& query, unsigned int limit = 25, unsigned int offset = 0);
 
 		///Search for specific streams
-		TwitchStreamsContainer SearchStreams(const std::wstring& query, size_t limit = 25, size_t offset = 0);
+		TwitchStreamsContainer SearchStreams(const utility::string_t& query, unsigned int limit = 25, unsigned int offset = 0);
 
 		///Search for specific games
-		TwitchGamesContainer SearchGames(const std::wstring& query, size_t limit = 25, size_t offset = 0);
+		TwitchGamesContainer SearchGames(const utility::string_t& query, unsigned int limit = 25, unsigned int offset = 0);
 
 	private:
 

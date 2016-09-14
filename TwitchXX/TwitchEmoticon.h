@@ -14,14 +14,15 @@ namespace TwitchXX
 		///Emoticon image descriptor
 		struct EmoticoneImageDescriptor
 		{
+
 			///Emoticon set Id
-			Property<size_t> Set_Id;
+			Property<unsigned int> Set_Id;
 			///Height
-			Property<size_t> Height;
+			Property<unsigned int> Height;
 			///Url
-			Property<size_t> Width;
+			Property<unsigned int> Width;
 			///Url
-			Property<std::wstring> Url;
+			Property<utility::string_t> Url;
 
 			///Less than operator
 			bool operator<(const EmoticoneImageDescriptor& desc) const { return Set_Id < desc.Set_Id; }
@@ -36,7 +37,7 @@ namespace TwitchXX
 
 		///@{
 		///Regular expression
-		Property<std::wstring> Regex;
+		Property<utility::string_t> Regex;
 		///@}
 
 		///@{

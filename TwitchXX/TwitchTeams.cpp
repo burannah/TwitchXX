@@ -11,7 +11,7 @@ TwitchXX::TwitchTeamsContainer TwitchXX::TwitchTeams::GetTeams() const
 	return GetObjectsArrayByNext<TwitchTeam>(builder, U("teams"));
 }
 
-TwitchXX::TwitchTeam TwitchXX::TwitchTeams::GetTeam(const std::wstring& team_name) const
+TwitchXX::TwitchTeam TwitchXX::TwitchTeams::GetTeam(const utility::string_t& team_name) const
 {
 	web::uri_builder builder{ U("/teams/") + team_name + U("/")};
 

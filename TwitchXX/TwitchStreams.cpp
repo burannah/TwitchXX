@@ -4,7 +4,7 @@
 #include "JsonWrapper.h"
 #include "TwitchException.h"
 
-TwitchXX::TwitchStream TwitchXX::TwitchStreams::GetStream(const std::wstring & chanel) const
+TwitchXX::TwitchStream TwitchXX::TwitchStreams::GetStream(const utility::string_t & chanel) const
 {
 	web::uri_builder builder(U("/streams/") + chanel + U("/"));
 	auto value = _request->get(builder.to_uri());
@@ -24,7 +24,7 @@ size_t TwitchXX::TwitchStreams::UpdateTotal() const
 	return TotalSize.Get();
 };
 
-TwitchXX::TwitchStreamsContainer TwitchXX::TwitchStreams::GetStreams(size_t n, const options& op)
+TwitchXX::TwitchStreamsContainer TwitchXX::TwitchStreams::GetStreams(unsigned int n, const options& op)
 {
 	static const size_t limit = 100; //TODO: To some global constants
 	web::uri_builder builder(U("/streams"));
@@ -48,7 +48,7 @@ TwitchXX::TwitchFeaturedStreamsContainer TwitchXX::TwitchStreams::GetFeaturedStr
 	return GetObjectsArrayByNext<TwitchFeaturedStream>(builder, U("featured"));
 }
 
-std::tuple<size_t, size_t> TwitchXX::TwitchStreams::GetSummary(const std::wstring& game) const
+std::tuple<unsigned int, unsigned int> TwitchXX::TwitchStreams::GetSummary(const utility::string_t& game) const
 {
 	web::uri_builder builder(U("/streams/summary"));
 	if (game.length() > 0)

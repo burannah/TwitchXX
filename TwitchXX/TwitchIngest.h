@@ -7,19 +7,19 @@ namespace TwitchXX
 	{
 	public:
 		///Ingest name
-		Property<std::wstring> Name;
+		Property<utility::string_t> Name;
 
 		///Is default ingest flag
 		Property<bool> Default;
 
 		///Ingest id
-		Property<size_t> Id;
+		Property<unsigned int> Id;
 
 		///Url template for current ingest
-		Property<std::wstring> UrlTemplate;
+		Property<utility::string_t> UrlTemplate;
 
 		///Supported version information
-		Property<std::wstring> Availability; //TODO: Introduce version type?
+		Property<utility::string_t> Availability; //TODO: Introduce version type?
 
 
 		///Less than operator

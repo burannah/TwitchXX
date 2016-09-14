@@ -64,10 +64,10 @@ TEST_F(UsersTest, GetFollowedChannel)
 	TwitchXX::TwitchFollowedChannel follow;
 	ASSERT_NO_THROW(
 	{
-		follow = _api->GetFollowingChannel(_channel_name,L"starladder1");
+		follow = _api->GetFollowingChannel(_channel_name,U("starladder1"));
 	});
 
-	EXPECT_EQ(follow.Channel.Name.Get(), L"starladder1");
+	EXPECT_EQ(follow.Channel.Name.Get(), U("starladder1"));
 	EXPECT_FALSE(follow.Notifications.Get());
 }
 
@@ -77,20 +77,20 @@ TEST_F(UsersTest, FollowUnfollowChannel)
 
 	ASSERT_THROW(
 	{
-		follow = _api->GetFollowingChannel(_channel_name,L"test_channel");
+		follow = _api->GetFollowingChannel(_channel_name,U("test_channel"));
 	}, TwitchXX::TwitchException);
 
 	ASSERT_NO_THROW(
 	{
-		follow = _api->FollowChannel(_channel_name,L"test_channel",true);
+		follow = _api->FollowChannel(_channel_name,U("test_channel"),true);
 	});
 
-	EXPECT_EQ(follow.Channel.Name.Get(), L"test_channel");
+	EXPECT_EQ(follow.Channel.Name.Get(), U("test_channel"));
 	EXPECT_TRUE(follow.Notifications.Get());
 
 	ASSERT_NO_THROW(
 	{
-		_api->UnfollowChannel(_channel_name,L"test_channel");
+		_api->UnfollowChannel(_channel_name,U("test_channel"));
 	});
 }
 
@@ -110,7 +110,7 @@ TEST_F(UsersTest, GetCurrentUserStatus)
 		auto has_flag = token_scopes & scope.first;
 		if(!has_flag)
 		{
-			std::wcout << L"Has no flag " << scope.second << "\n";
+			ucout << U("Has no flag ") << scope.second << "\n";
 		}
 		EXPECT_TRUE(has_flag);
 	}

@@ -9,7 +9,21 @@ namespace TwitchXX
 	class TwithcGame;
 	class TwitchStream;
 
-	extern std::shared_ptr<std::map<std::wstring, std::wstring>> Options;
+#ifdef _WIN32
+    extern std::shared_ptr<std::map<std::wstring, std::wstring>> Options;
+#else
+    extern std::shared_ptr<std::map<std::string, std::string>> Options;
+#endif
+
+
+	///Template function for creating Twitch objects from JSON
+	/** Default template is a stub */
+	template<typename T>
+	T Create(const web::json::value& json) = delete;
+/*	{
+		throw std::runtime_error("Unknonw requet type!");
+	}*/
+
 
 	///Base template class for other twitch request classes
 	class TwitchRequest
@@ -46,7 +60,7 @@ namespace TwitchXX
 		///@param node node for object's collection in the reposbse body
 		///@return TwitchContainer collection of elements of type T
 		template<typename T>
-		TwitchContainer<T> GetObjectsArrayByNext(const web::uri_builder& builder, const std::wstring& node) const
+		TwitchContainer<T> GetObjectsArrayByNext(const web::uri_builder& builder, const utility::string_t& node) const
 		{
 			TwitchContainer<T> result;
 			auto current_builder = builder;
@@ -90,7 +104,7 @@ namespace TwitchXX
 		///@param node node for object's collection in the reposbse body
 		///@return TwitchContainer collection of elements of type T
 		template<typename T>
-		TwitchContainer<T> GetObjectsArrayByCursor(const web::uri_builder& builder, const std::wstring& node) const
+		TwitchContainer<T> GetObjectsArrayByCursor(const web::uri_builder& builder, const utility::string_t& node) const
 		{
 			TwitchContainer<T> result;
 			auto current_builder = builder;
@@ -132,7 +146,7 @@ namespace TwitchXX
 		///@param root node for object's collection in the reposbse body
 		///@return TwitchContainer collection of elements of type T
 		template<typename T>
-		TwitchContainer<T> GetObjectsArrayOnce(web::uri_builder& builder, const std::wstring& node) const
+		TwitchContainer<T> GetObjectsArrayOnce(web::uri_builder& builder, const utility::string_t& node) const
 		{
 			TwitchContainer<T> result;
 			auto value = _request->get(builder.to_uri());
@@ -148,20 +162,11 @@ namespace TwitchXX
 		}
 	};
 
-	///Template function for creating Twitch objects from JSON
-	/** Default template is a stub */
-	template<typename T>
-	T Create(const web::json::value& json) = delete;
-/*	{
-		throw std::runtime_error("Unknonw requet type!");
-	}*/
-
-
 	///Helper function to add query parameter to builder, only if it exist in options object
 	///@param builder target builder
 	///@param op options collection
 	///@param option_name name of the option to add
-	inline void AddOption(web::uri_builder& builder, const options& op, const std::wstring& option_name)
+	inline void AddOption(web::uri_builder& builder, const options& op, const utility::string_t& option_name)
 	{
 		auto option_it = op.find(option_name);
 		if(option_it != op.end())

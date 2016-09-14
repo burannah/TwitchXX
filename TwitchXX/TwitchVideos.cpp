@@ -4,7 +4,7 @@
 
 TwitchXX::TwitchVideo TwitchXX::TwitchVideos::GetVideo(unsigned long long id) const
 {
-	web::uri_builder builder(U("/videos/") + std::to_wstring(id));
+	web::uri_builder builder(U("/videos/") + to_ustring(id));
 	return GetSingleObject<TwitchVideo>(builder.to_uri());
 }
 

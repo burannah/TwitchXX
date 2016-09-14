@@ -24,12 +24,12 @@ namespace TwitchXX
 		///Returns a list of emoticons.
 		///@param sets sets ids to request
 		///@return a collection of EmoticonImage objects 
-		std::set<EmoticonImage> GetEmoticoneImages(std::set<size_t> sets = std::set<size_t>()) const;
+		std::set<EmoticonImage> GetEmoticoneImages(std::set<unsigned int> sets = {}) const;
 
 		///Returns a list of chat badges that can be used in the channel's chat.
 		///@param channel_name channel name
 		///@return a collection of ChannelBadge objects (Note: empty badges are not returned) 
-		std::set<ChannelBadge> GetChannelBadges(std::wstring& channel_name) const;
+		std::set<ChannelBadge> GetChannelBadges(const utility::string_t &channel_name) const;
 
 		static std::set<EmoticonImage> ParseEmoticonSets(web::json::value emoticon_sets);
 	private:

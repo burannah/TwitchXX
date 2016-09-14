@@ -25,14 +25,14 @@ TEST_F(TwitchXXTest,GetStream)
 	TwitchXX::TwitchStream result;
 	EXPECT_NO_THROW(
 	{
-		result = _api->GetStream(L"starladder1");	
+		result = _api->GetStream(U("starladder1"));
 		if (result.Offline)
 		{
-			ASSERT_EQ(result.Name(), L"");
+			ASSERT_EQ(result.Name(), U(""));
 		}
 		else
 		{
-			ASSERT_EQ(result.Name(), L"starladder1");
+			ASSERT_EQ(result.Name(), U("starladder1"));
 		}
 	});
 }
@@ -42,12 +42,12 @@ TEST_F(TwitchXXTest,TopStreams)
 	TwitchXX::TwitchStreamsContainer result;
 	EXPECT_NO_THROW(
 	{
-		result = _api->TopStreams(100,{ { L"game", L"Dota 2" } });
+		result = _api->TopStreams(100,{ { U("game"), U("Dota 2") } });
 	});
-	EXPECT_LE(result.size(), unsigned{ 100 });
+	EXPECT_LE(result.size(), 100U);
 	for (auto& stream : result)
 	{
-		EXPECT_EQ(stream.Game.Get(), L"Dota 2");
+		EXPECT_EQ(stream.Game.Get(), U("Dota 2"));
 	}
 }
 
@@ -58,8 +58,8 @@ TEST_F(TwitchXXTest,FeaturedStreams)
 	{
 		result = _api->GetFeaturedStreams();
 	});
-	EXPECT_GT(result.size(), unsigned{ 0 }); //Expecting some featured streams
-	EXPECT_NE(result.begin()->Title.Get(), L""); //Expecting some title;
+	EXPECT_GT(result.size(), 0u); //Expecting some featured streams
+	EXPECT_NE(result.begin()->Title.Get(), U("")); //Expecting some title;
 }
 
 TEST_F(TwitchXXTest,GetSummary)
@@ -71,17 +71,17 @@ TEST_F(TwitchXXTest,GetSummary)
 	});
 
 	//Someone is out there... watching
-	EXPECT_GT(std::get<0>(result), unsigned{ 1 }); //viewers
-	EXPECT_GT(std::get<1>(result), unsigned{ 1 }); //channels
+	EXPECT_GT(std::get<0>(result), 1U); //viewers
+	EXPECT_GT(std::get<1>(result), 1U); //channels
 
 	EXPECT_NO_THROW(
 	{
-		result = _api->GetSummary(L"Dota 2");
+		result = _api->GetSummary(U("Dota 2"));
 	});
 
 	//Long live Dota!
-	EXPECT_GT(std::get<0>(result), unsigned{ 1 });
-	EXPECT_GT(std::get<1>(result), unsigned{ 1 });
+	EXPECT_GT(std::get<0>(result), 1U);
+	EXPECT_GT(std::get<1>(result), 1U);
 }
 
 TEST_F(TwitchXXTest,GetFollowedStreams)
@@ -96,7 +96,7 @@ TEST_F(TwitchXXTest,GetChannel)
 {
 	EXPECT_NO_THROW(
 	{
-		auto result = _api->GetChannel(L"starladder1");
+		auto result = _api->GetChannel(U("starladder1"));
 	});
 }
 

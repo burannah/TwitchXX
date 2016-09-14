@@ -1,3 +1,4 @@
+#include "TwitchDef.h"
 #include "TwitchChannels.h"
 #include "JsonWrapper.h"
 #include "TwitchException.h"
@@ -8,10 +9,10 @@
 #include "TwitchVideos.h"
 
 
-TwitchXX::TwitchChannel TwitchXX::TwitchChannels::GetChannel(const std::wstring & name) const
+TwitchXX::TwitchChannel TwitchXX::TwitchChannels::GetChannel(const utility::string_t & name) const
 {
 	//TODO: add test for getting channel of authenticated user
-	std::wstring request_string = U("/channel");
+	utility::string_t request_string = U("/channel");
 	if (name.length() > 0)
 	{
 		request_string += U("s/") + name + U("/");
@@ -27,13 +28,13 @@ TwitchXX::TwitchChannel TwitchXX::TwitchChannels::GetChannel(const std::wstring 
 	return Create<TwitchChannel>(value);
 
 }
-TwitchXX::TwitchUsersContainer TwitchXX::TwitchChannels::GetChannelEditors(const std::wstring & name) const
+TwitchXX::TwitchUsersContainer TwitchXX::TwitchChannels::GetChannelEditors(const utility::string_t & name) const
 {
 	web::uri_builder builder(U("/channels/") + name + U("/editors"));
 	return GetObjectsArrayOnce<TwitchUser>(builder, U("users"));
 }
 
-TwitchXX::TwitchChannel TwitchXX::TwitchChannels::UpdateChannel(const std::wstring& name, const options& op) const
+TwitchXX::TwitchChannel TwitchXX::TwitchChannels::UpdateChannel(const utility::string_t& name, const options& op) const
 {
 	auto channel = GetChannel(name);
 	auto o(op);
@@ -47,7 +48,7 @@ TwitchXX::TwitchChannel TwitchXX::TwitchChannels::UpdateChannel(const std::wstri
 	}
 	if(o.find(U("delay"))== o.end())
 	{
-		o[U("delay")] = std::to_wstring(channel.Delay.Get());
+		o[U("delay")] = to_ustring(channel.Delay.Get());
 	}
 
 	web::json::value channelJSON,requestJSON;
@@ -68,7 +69,7 @@ TwitchXX::TwitchChannel TwitchXX::TwitchChannels::UpdateChannel(const std::wstri
 	return Create<TwitchChannel>(value);
 }
 
-std::wstring TwitchXX::TwitchChannels::ResetStreamKey(const std::wstring& channel_name) const
+utility::string_t TwitchXX::TwitchChannels::ResetStreamKey(const utility::string_t& channel_name) const
 {
 	web::uri_builder builder(U("/channels/") + channel_name + U("/stream_key"));
 	auto value = _request->del(builder.to_uri());
@@ -81,7 +82,7 @@ std::wstring TwitchXX::TwitchChannels::ResetStreamKey(const std::wstring& channe
 	return value.at(U("stream_key")).as_string();
 }
 
-bool TwitchXX::TwitchChannels::StartCommercial(const std::wstring& channel_name, size_t length) const
+bool TwitchXX::TwitchChannels::StartCommercial(const utility::string_t& channel_name, size_t length) const
 {
 	web::uri_builder builder(U("/channels/") + channel_name + U("/commercial"));
 	static std::set<size_t> valid_lengths{ 30, 60, 90 , 120, 150, 180 };
@@ -101,21 +102,21 @@ bool TwitchXX::TwitchChannels::StartCommercial(const std::wstring& channel_name,
 	return false;
 }
 
-TwitchXX::TwitchTeamsContainer TwitchXX::TwitchChannels::GetTeams(const std::wstring& channel_name) const
+TwitchXX::TwitchTeamsContainer TwitchXX::TwitchChannels::GetTeams(const utility::string_t& channel_name) const
 {
 	web::uri_builder builder(U("/channels/") + channel_name + U("/teams"));
 	TwitchTeamsContainer chunk;
 	return GetObjectsArrayOnce<TwitchTeam>(builder, U("teams"));
 }
 
-TwitchXX::TwitchFollowersContainer TwitchXX::TwitchChannels::GetChannelFollows(const std::wstring& channel_name) const
+TwitchXX::TwitchFollowersContainer TwitchXX::TwitchChannels::GetChannelFollows(const utility::string_t& channel_name) const
 {
 	web::uri_builder builder(U("/channels/") + channel_name + U("/follows"));
 	builder.append_query(U("limit"), 100);
 	return GetObjectsArrayByCursor<TwitchFollower>(builder, U("follows"));
 }
 
-TwitchXX::TwitchFollowersContainer TwitchXX::TwitchChannels::GetChannelSubscriptions(const std::wstring& channel_name) const
+TwitchXX::TwitchFollowersContainer TwitchXX::TwitchChannels::GetChannelSubscriptions(const utility::string_t& channel_name) const
 {
 	static const size_t limit = 100; //TODO: To some global constants
 	web::uri_builder builder(U("/channels/") + channel_name + U("/subscriptions"));
@@ -125,7 +126,7 @@ TwitchXX::TwitchFollowersContainer TwitchXX::TwitchChannels::GetChannelSubscript
 	return this->GetObjectsArrayByNext<TwitchFollower>(builder, U("subscriptions"));
 }
 
-TwitchXX::TwitchFollower TwitchXX::TwitchChannels::GetChannelSubscriptionForUser(const std::wstring& channel_name, const std::wstring& user_name) const
+TwitchXX::TwitchFollower TwitchXX::TwitchChannels::GetChannelSubscriptionForUser(const utility::string_t& channel_name, const utility::string_t& user_name) const
 {
 	web::uri_builder builder{ U("/channels/") + channel_name + U("/subscriptions/") + user_name };
 
@@ -147,7 +148,7 @@ TwitchXX::TwitchFollower TwitchXX::TwitchChannels::GetChannelSubscriptionForUser
 	}
 }
 
-TwitchXX::TwitchVideosContainer TwitchXX::TwitchChannels::GetChannelVideos(const std::wstring& channel_name, options& op) const
+TwitchXX::TwitchVideosContainer TwitchXX::TwitchChannels::GetChannelVideos(const utility::string_t& channel_name, options& op) const
 {
 	web::uri_builder builder(U("/channels") + channel_name + U("videos"));
 	AddOption(builder, op, U("limit"));

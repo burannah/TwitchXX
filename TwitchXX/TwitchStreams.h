@@ -21,7 +21,7 @@ namespace TwitchXX
 
 		///Get stream for channel
 		///@param channel channel's name
-		TwitchStream GetStream(const std::wstring& channel) const;
+		TwitchStream GetStream(const utility::string_t& channel) const;
 
 		///Update total number of streams now
 		///@return new total
@@ -41,7 +41,7 @@ namespace TwitchXX
 		* stream_type		   | Only shows streams from a certain type. Permitted values: all, playlist, live
 		* language			   | Only shows streams of a certain language. Permitted values are locale ID strings, e.g. `en`, `fi`, `es-mx`.
 		*/
-		TwitchXX::TwitchStreamsContainer GetStreams(size_t n, const options& opt);
+		TwitchXX::TwitchStreamsContainer GetStreams(unsigned int n, const options& opt);
 
 		///Get featured streams
 		TwitchFeaturedStreamsContainer GetFeaturedStreams() const;
@@ -50,7 +50,7 @@ namespace TwitchXX
 		///Returns number of channels and users currently online. 
 		///@param game filter by game
 		///@return typle (number of channels, number of viewers)
-		std::tuple<size_t, size_t> GetSummary(const std::wstring& game = std::wstring()) const;
+		std::tuple<unsigned int, unsigned int> GetSummary(const utility::string_t& game = U("")) const;
 
 		///Get current user's followed streams.
 		///@param type filter streams by type (see TwitchStream::Type)

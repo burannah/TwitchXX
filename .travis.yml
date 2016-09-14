@@ -1,0 +1,35 @@
+language: cpp
+compiler:
+  - gcc
+addons:
+  apt:
+    sources:
+    # add PPAs with more up-to-date toolchains
+    - ubuntu-toolchain-r-test
+    packages:
+    # install toolchains
+    - gcc-5
+    - g++-5
+
+before_install:
+ - sudo apt-get install libboost-regex-dev libboost-system-dev libboost-thread-dev libboost-test-dev libboost-random-dev -y
+env:
+  global:
+    - BOOST_INCLUDES=/usr/include
+    - BOOST_LIBS=/usr/lib
+before_script:
+   - mkdir bin
+   - cd bin
+   - cmake ..
+
+script: make
+
+branches:
+  only:
+    - master
+notifications:
+  recipients:
+    - burannah@gmail.com
+  email:
+    on_success: change
+    on_failure: always

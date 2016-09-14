@@ -1,6 +1,5 @@
 ﻿#include "ChannelFeedTest.h"
 #include <TwitchDef.h>
-#include <cpprest/details/basic_types.h>
 
 
 TEST_F(ChannelFeedTest,GetPosts1)
@@ -97,7 +96,7 @@ TEST_F(ChannelFeedTest,GetPostById)
 TEST_F(ChannelFeedTest, CreateDeletePost)
 {
 	TwitchXX::TwitchPost post;
-	std::wstring post_body(U("kappa"));
+	utility::string_t post_body(U("kappa"));
 
 	ASSERT_NO_THROW(
 	{
@@ -123,7 +122,7 @@ TEST_F(ChannelFeedTest, CreateDeletePost)
 TEST_F(ChannelFeedTest, AddDeleteReaction)
 {
 	TwitchXX::TwitchPost post;
-	std::wstring post_body(U("kappa"));
+	utility::string_t post_body(U("kappa"));
 
 	ASSERT_NO_THROW(
 	{
