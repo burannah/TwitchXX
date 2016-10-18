@@ -13,7 +13,7 @@ namespace TwitchXX
 		static std::map<utility::string_t, AuthScope> Rscopes;
 
 		///Constructor
-		explicit TwitchUsers(MakeRequest *request)
+		explicit TwitchUsers(MakeRequest request)
 			: TwitchRequest(request)
 		{
 		}

@@ -9,7 +9,7 @@ namespace TwitchXX
 	class TwitchVideos : public TwitchRequest
 	{
 	public:
-		explicit TwitchVideos(MakeRequest *request)
+		explicit TwitchVideos(MakeRequest request)
 			: TwitchRequest(request)
 		{
 		}

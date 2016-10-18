@@ -106,5 +106,6 @@ namespace TwitchXX
 
 	private:
 		static std::map<Version, utility::string_t> _version;
+        MakeRequest _request;
 	};
 }

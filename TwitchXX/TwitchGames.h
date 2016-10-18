@@ -17,7 +17,7 @@ namespace TwitchXX
 	public:
 		///Constructor
 		///@param equest transport object
-		explicit TwitchGames(MakeRequest *equest)
+		explicit TwitchGames(MakeRequest equest)
 			: TwitchRequest(equest)
 		{ 
 		};

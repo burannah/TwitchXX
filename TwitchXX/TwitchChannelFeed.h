@@ -11,7 +11,7 @@ namespace TwitchXX
 	public:
 		///Constructor
 		///@param request transport object
-		explicit TwitchChannelFeed(MakeRequest *request)
+		explicit TwitchChannelFeed(MakeRequest request)
 			: TwitchRequest(request) {} ;
 		
 		///Get posts from feed.

@@ -17,7 +17,7 @@ namespace TwitchXX
 	public:
 		///Constructor
 		///@param request transport object
-		explicit TwitchStreams(MakeRequest *request) : TwitchRequest(request) {} ;
+		explicit TwitchStreams(MakeRequest request) : TwitchRequest(request) {} ;
 
 		///Get stream for channel
 		///@param channel channel's name

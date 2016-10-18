@@ -8,7 +8,7 @@ namespace TwitchXX
 	{
 	public:
 		///Constructor
-		explicit TwitchIngests(MakeRequest *request)
+		explicit TwitchIngests(MakeRequest request)
 			: TwitchRequest(request)
 		{
 		}

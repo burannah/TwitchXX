@@ -11,7 +11,7 @@ namespace TwitchXX
 	public:
 		///Constructor
 		///@param request transport object
-		explicit TwitchChat(MakeRequest *request) : TwitchRequest(request) {};
+		explicit TwitchChat(MakeRequest request) : TwitchRequest(request) {};
 
 
 		///Returns a list of all emoticon objects for Twitch.

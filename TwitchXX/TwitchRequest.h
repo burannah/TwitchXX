@@ -31,7 +31,7 @@ namespace TwitchXX
 	public:
 		///Constructor
 		///@param request transport object
-		explicit TwitchRequest(MakeRequest *request)
+		explicit TwitchRequest(MakeRequest request)
 			:_request(request)
 		{
 
@@ -41,7 +41,7 @@ namespace TwitchXX
 		mutable Property<size_t> TotalSize;
 
 	protected:
-		MakeRequest* _request;
+		MakeRequest _request;
 
 
 		///Requests a single object of type T.

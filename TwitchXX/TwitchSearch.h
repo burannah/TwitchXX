@@ -12,7 +12,7 @@ namespace TwitchXX
 	class TwitchSearch : TwitchRequest
 	{
 	public:
-		explicit TwitchSearch(MakeRequest *request)
+		explicit TwitchSearch(MakeRequest request)
 					: TwitchRequest(request) 
 		{
 		};

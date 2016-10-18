@@ -8,7 +8,7 @@ namespace TwitchXX
 	class TwitchTeams : TwitchXX::TwitchRequest
 	{
 	public:
-		explicit TwitchTeams(MakeRequest *request): TwitchRequest(request) {};
+		explicit TwitchTeams(MakeRequest request): TwitchRequest(request) {};
 
 
 		///Returns a list of active teams.
