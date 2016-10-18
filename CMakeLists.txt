@@ -59,7 +59,7 @@ set_target_properties(libcpprest PROPERTIES
         )
 
 
-include_directories("${gtest_source_dir}/googletest/include"
+include_directories("${gtesource_dir}/googletest/include"
                     "${gtest_source_dir}/googlemock/include"
                     "${cpprestsdk_source_dir}/Release/include"
                     "${PROJECT_SOURCE_DIR}/TwitchXX"

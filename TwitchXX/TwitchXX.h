@@ -36,6 +36,8 @@ namespace TwitchXX
 			v3
 		};
 		explicit Api(const utility::string_t& clinet_id = {}, Version version = Version::v3, std::shared_ptr<Logger> = nullptr);
+		Api(const Api&) = default;
+		Api(Api&& ) = default;
 		virtual ~Api();
 		//Log
 		static void AddLogger(std::shared_ptr<Logger>log);
