@@ -68,6 +68,7 @@ include_directories("${gtesource_dir}/googletest/include"
 add_subdirectory(TwitchXX)
 
 if(BUILD_TESTS)
+    message("Building tests!")
     add_subdirectory(TwitchXX-Tests)
 endif()
 
