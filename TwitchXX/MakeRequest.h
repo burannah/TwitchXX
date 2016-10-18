@@ -41,11 +41,15 @@ namespace TwitchXX
 							 const utility::string_t& clientId, /**< [in] Client-id stirng*/
 							 const utility::string_t& token /**< [in] User's auth token*/);
 
-		///MakeRequest destructor
+		/// MakeRequest destructor
 		virtual ~MakeRequest() {};
-		///Default copy assigment operator.
+        /// Default copy constructor
+        MakeRequest(const MakeRequest&) = default;
+		/// Default copy assigment operator.
 		MakeRequest& operator=(const MakeRequest&) = default;
-		///Default move assigment operator.
+        /// Default move constructor
+        MakeRequest(MakeRequest&&) = default;
+		/// Default move assigment operator.
 		MakeRequest& operator=(MakeRequest&&) = default;
 
 
