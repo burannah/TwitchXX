@@ -22,7 +22,7 @@ std::set<TwitchXX::EmoticonImage> TwitchXX::TwitchChat::GetEmoticoneImages(std::
 std::set<TwitchXX::ChannelBadge> TwitchXX::TwitchChat::GetChannelBadges(const utility::string_t &channel_name) const
 {
 	web::uri_builder builder(U("/chat/") + channel_name + U("/badges"));
-	auto response = _request->get(builder.to_uri());
+	auto response = _request.get(builder.to_uri());
 	std::set<ChannelBadge> result;
 	if(response.is_null())
 	{
@@ -42,7 +42,7 @@ std::set<TwitchXX::ChannelBadge> TwitchXX::TwitchChat::GetChannelBadges(const ut
 std::set<TwitchXX::EmoticonImage> TwitchXX::TwitchChat::GetEmoticonsImagesAll() const
 {
 	web::uri_builder builder(U("/chat/emoticon_images"));
-	auto resposne = _request->get(builder.to_uri());
+	auto resposne = _request.get(builder.to_uri());
 	auto emoticons = resposne.at(U("emoticons"));
 	std::set<EmoticonImage> result;
 	if(emoticons.is_null() || !emoticons.is_array())
@@ -85,7 +85,7 @@ std::set<TwitchXX::EmoticonImage> TwitchXX::TwitchChat::GetEmoticonsImagesBySets
 	utility::stringstream_t ss;
 	std::copy(sets.begin(),sets.end(),std::ostream_iterator<unsigned int,utility::char_t>(ss,U(",")));
 	builder.append_query(U("emotesets"), ss.str());
-	auto resposne = _request->get(builder.to_uri());
+	auto resposne = _request.get(builder.to_uri());
 	auto emoticon_sets = resposne.at(U("emoticon_sets"));
 	return ParseEmoticonSets(emoticon_sets);
 }

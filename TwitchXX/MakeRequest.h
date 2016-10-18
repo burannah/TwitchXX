@@ -54,25 +54,25 @@ namespace TwitchXX
 
 
 		///Perform get request
-		web::json::value get(const web::uri& uri, Callback callback = Callback())
+		web::json::value get(const web::uri& uri, Callback callback = Callback()) const
 		{
 			return (*this)({ uri,web::http::methods::GET,web::json::value::null(),callback });
 		}
 
 		///Perform put request
-		web::json::value put(const web::uri& uri,const web::json::value& body = web::json::value::null(),Callback callback = Callback() )
+		web::json::value put(const web::uri& uri,const web::json::value& body = web::json::value::null(),Callback callback = Callback() ) const
 		{
 			return (*this)({ uri,web::http::methods::PUT,body,callback });
 		}
 
 		///Perform post request
-		web::json::value post(const web::uri& uri, const web::json::value& body = web::json::value::null(), Callback callback = Callback())
+		web::json::value post(const web::uri& uri, const web::json::value& body = web::json::value::null(), Callback callback = Callback()) const
 		{
 			return (*this)({ uri,web::http::methods::POST,body,callback });
 		}
 
 		///Perform delete request
-		web::json::value del(const web::uri& uri, Callback callback = Callback())
+		web::json::value del(const web::uri& uri, Callback callback = Callback()) const
 		{
 			return (*this)({ uri,web::http::methods::DEL,web::json::value::null(),callback });
 		}
@@ -84,7 +84,7 @@ namespace TwitchXX
 		utility::string_t _client_id;
 		utility::string_t _api_version;
 		web::http::client::http_client_config _config;
-		web::http::status_code _last_status;
+		mutable web::http::status_code _last_status;
 		utility::string_t _token;
 
 		void SetupProxy();
@@ -92,7 +92,7 @@ namespace TwitchXX
 		///MakeRequest's main method.
 		///@param	params request parameters descriptor
 		///@return	response parsed to web::json::value object. Null json value if HTTP result code != OK.
-		web::json::value operator()(const RequestParams params);
+		web::json::value operator()(const RequestParams params) const;
 		///Deprecated version of the request
 		///@param      uri request parameters
 		///@param      method request method type(GET by default)
@@ -100,7 +100,7 @@ namespace TwitchXX
 		///@return     resposne parsed to web::json::value object.Null - json if return code != OK.
 		web::json::value operator()(const web::uri& uri,/**< [in] request's uri (parameters and options)*/
 			const web::http::method& method = web::http::methods::GET, /**< [in] request method*/
-			web::json::value body = web::json::value()/**< [in] requests body for put and post methods */)//TODO: By value?!
+			web::json::value body = web::json::value()/**< [in] requests body for put and post methods */) const//TODO: By value?!
 		{
 			return (*this)({ uri,method,body,Callback() });;
 		}

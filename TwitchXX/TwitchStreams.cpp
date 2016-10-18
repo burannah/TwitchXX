@@ -7,7 +7,7 @@
 TwitchXX::TwitchStream TwitchXX::TwitchStreams::GetStream(const utility::string_t & chanel) const
 {
 	web::uri_builder builder(U("/streams/") + chanel + U("/"));
-	auto value = _request->get(builder.to_uri());
+	auto value = _request.get(builder.to_uri());
 	if (value.is_null())
 	{
 		throw std::runtime_error("No objects were returned");
@@ -18,7 +18,7 @@ TwitchXX::TwitchStream TwitchXX::TwitchStreams::GetStream(const utility::string_
 size_t TwitchXX::TwitchStreams::UpdateTotal() const
 {
 	web::uri_builder builder(U("/streams"));
-	auto value = _request->get(builder.to_uri());
+	auto value = _request.get(builder.to_uri());
 	builder.append_query(U("limit"), 1);
 	TotalSize.Set(value.at(U("_total")).as_number().to_uint32());
 	return TotalSize.Get();
@@ -55,7 +55,7 @@ std::tuple<unsigned int, unsigned int> TwitchXX::TwitchStreams::GetSummary(const
 	{
 		builder.append_query(U("game"), game);
 	}
-	auto value = _request->get(builder.to_uri());
+	auto value = _request.get(builder.to_uri());
 	if (value.is_null())
 	{
 		throw std::runtime_error("Can not get streams summary!");

@@ -63,7 +63,7 @@ size_t TwitchXX::TwitchGames::UpdateTotal() const
 
 	web::uri_builder builder(U("/games/top"));
 	builder.append_query(U("limit"), 1);
-	auto value = _request->get(builder.to_uri());
+	auto value = _request.get(builder.to_uri());
 	TotalSize.Set(value.at(U("_total")).as_number().to_uint32());
 	return TotalSize.Get();
 }

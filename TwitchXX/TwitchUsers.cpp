@@ -40,7 +40,7 @@ TwitchXX::TwitchBlockedUsersContainer TwitchXX::TwitchUsers::GetBlocked(const ut
 TwitchXX::TwitchBlockedUser TwitchXX::TwitchUsers::BlockUser(const utility::string_t& user_name, const utility::string_t& target_name) const
 {
 	web::uri_builder builder{U("/users/") + user_name + U("/blocks/") + target_name};
-	auto response = _request->put(builder.to_uri());
+	auto response = _request.put(builder.to_uri());
 	return Create<TwitchBlockedUser>(response);
 }
 
@@ -50,11 +50,11 @@ bool TwitchXX::TwitchUsers::UblockUser(const utility::string_t& user_name, const
 
 	try
 	{
-		auto response = _request->del(builder.to_uri());
+		auto response = _request.del(builder.to_uri());
 	}
 	catch(TwitchException&)
 	{
-		switch (_request->status_code())
+		switch (_request.status_code())
 		{
 		case web::http::status_codes::NoContent:
 			return true;
@@ -65,7 +65,7 @@ bool TwitchXX::TwitchUsers::UblockUser(const utility::string_t& user_name, const
 			throw;
 		}
 	}
-	throw TwitchException{ "Unexpeced result on delete user from block list!", _request->status_code() };
+	throw TwitchException{ "Unexpeced result on delete user from block list!", _request.status_code() };
 }
 
 TwitchXX::TwitchFollowedChannelsContainer TwitchXX::TwitchUsers::GetFollowingChannels(const utility::string_t& user_name, TwitchXX::Sort_Order order ) const
@@ -82,7 +82,7 @@ TwitchXX::TwitchFollowedChannel TwitchXX::TwitchUsers::GetFollowingChannel(const
 
 	try
 	{
-		auto response = _request->get(builder.to_uri());
+		auto response = _request.get(builder.to_uri());
 		return Create<TwitchFollowedChannel>(response);
 	}
 	catch (TwitchException& e)
@@ -108,7 +108,7 @@ TwitchXX::TwitchFollowedChannel TwitchXX::TwitchUsers::FollowChannel(const utili
 			builder.append_query(U("notifications"), U("true"));
 		}
 
-		auto response = _request->put(builder.to_uri());
+		auto response = _request.put(builder.to_uri());
 		return Create<TwitchFollowedChannel>(response);
 	}
 	catch (TwitchException& e)
@@ -127,7 +127,7 @@ void TwitchXX::TwitchUsers::UnfollowChannel(const utility::string_t & user_name,
 	try
 	{
 		web::uri_builder builder{ U("/users/") + user_name + U("/follows/channels/") + channel_name };
-		auto response = _request->del(builder.to_uri());
+		auto response = _request.del(builder.to_uri());
 	}
 	catch (TwitchException& e)
 	{
@@ -149,7 +149,7 @@ TwitchXX::AuthToken TwitchXX::TwitchUsers::GetCurrentUserStatus() const
 	try
 	{
 		web::uri_builder builder;
-		auto response = _request->get(builder.to_uri());
+		auto response = _request.get(builder.to_uri());
 		if (response.has_field(U("token")))
 		{
 			auto token = response.at(U("token"));
@@ -157,9 +157,9 @@ TwitchXX::AuthToken TwitchXX::TwitchUsers::GetCurrentUserStatus() const
 			{
 				return Create<AuthToken>(token);
 			}
-			throw TwitchException("Not authorized!", _request->status_code());
+			throw TwitchException("Not authorized!", _request.status_code());
 		}
-		throw TwitchException("Unknown response", _request->status_code());
+		throw TwitchException("Unknown response", _request.status_code());
 	}
 	catch (TwitchException& e)
 	{
@@ -172,7 +172,7 @@ TwitchXX::TwitchFollowedChannel TwitchXX::TwitchUsers::GetUserSubscribedChannel(
 	try
 	{
 		web::uri_builder builder{ U("/users/") + user_name + U("/subscriptions/") + channel_name };
-		auto response = _request->get(builder.to_uri());
+		auto response = _request.get(builder.to_uri());
 		return Create<TwitchFollowedChannel>(response);
 	}
 	catch (TwitchException& e)
@@ -199,7 +199,7 @@ TwitchXX::TwitchUser TwitchXX::TwitchUsers::GetUser(const utility::string_t& use
 std::set<TwitchXX::EmoticonImage> TwitchXX::TwitchUsers::GetUserEmoticons(const utility::string_t& user_name) const
 {
 	web::uri_builder builder(U("/users/") + user_name + U("/emotes"));
-	auto resposne = _request->get(builder.to_uri());
+	auto resposne = _request.get(builder.to_uri());
 	auto emoticon_sets = resposne.at(U("emoticon_sets"));
 	return TwitchChat::ParseEmoticonSets(emoticon_sets);
 }

@@ -19,7 +19,7 @@ TwitchXX::TwitchChannel TwitchXX::TwitchChannels::GetChannel(const utility::stri
 	}
 
 	web::uri_builder builder (U("/channels/") + name + U("/"));
-	auto value = _request->get(builder.to_uri());
+	auto value = _request.get(builder.to_uri());
 	if (value.is_null())
 	{
 		throw std::runtime_error("No objects were returned");
@@ -60,8 +60,8 @@ TwitchXX::TwitchChannel TwitchXX::TwitchChannels::UpdateChannel(const utility::s
 	}
 	requestJSON[U("channel")] = channelJSON;
 
-	auto value = _request->put(builder.to_uri(),requestJSON);
-	if (value.is_null() || _request->status_code() == 422)
+	auto value = _request.put(builder.to_uri(),requestJSON);
+	if (value.is_null() || _request.status_code() == 422)
 	{
 		throw std::runtime_error("The channel is not partnered!");
 	}
@@ -72,7 +72,7 @@ TwitchXX::TwitchChannel TwitchXX::TwitchChannels::UpdateChannel(const utility::s
 utility::string_t TwitchXX::TwitchChannels::ResetStreamKey(const utility::string_t& channel_name) const
 {
 	web::uri_builder builder(U("/channels/") + channel_name + U("/stream_key"));
-	auto value = _request->del(builder.to_uri());
+	auto value = _request.del(builder.to_uri());
 
 	if(value.is_null())
 	{
@@ -91,13 +91,13 @@ bool TwitchXX::TwitchChannels::StartCommercial(const utility::string_t& channel_
 		length = 30;
 	}
 	builder.append_query(U("length"), length);
-	auto value = _request->post(builder.to_uri());
+	auto value = _request.post(builder.to_uri());
 
-	switch(_request->status_code())
+	switch(_request.status_code())
 	{
 		case 204: return true;
 		case 422: return false; //A commercial was ran less than 8 minutes ago, or the channel is not partnered.
-		default: TwitchException("Unable to start commercial for this channel!",_request->status_code());
+		default: TwitchException("Unable to start commercial for this channel!",_request.status_code());
 	}
 	return false;
 }
@@ -132,7 +132,7 @@ TwitchXX::TwitchFollower TwitchXX::TwitchChannels::GetChannelSubscriptionForUser
 
 	try
 	{
-		auto response = _request->get(builder.to_uri());
+		auto response = _request.get(builder.to_uri());
 		return Create<TwitchFollower>(response);
 	}
 	catch (TwitchException& e)

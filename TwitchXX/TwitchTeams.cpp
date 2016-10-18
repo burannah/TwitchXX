@@ -15,7 +15,7 @@ TwitchXX::TwitchTeam TwitchXX::TwitchTeams::GetTeam(const utility::string_t& tea
 {
 	web::uri_builder builder{ U("/teams/") + team_name + U("/")};
 
-	auto response = _request->get(builder.to_uri());
+	auto response = _request.get(builder.to_uri());
 	return Create<TwitchTeam>(response);
 }
 

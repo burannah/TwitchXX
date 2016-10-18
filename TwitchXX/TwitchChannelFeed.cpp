@@ -16,7 +16,7 @@ TwitchXX::TwitchPost TwitchXX::TwitchChannelFeed::GetPost(const utility::string_
 	utility::stringstream_t  ss;
 	ss << id;
 	web::uri_builder builder(U("/feed/") + channel_name + U("/posts/") + ss.str());
-	auto response = _request->get(builder.to_uri());
+	auto response = _request.get(builder.to_uri());
 	return Create<TwitchPost>(response);
 }
 
@@ -28,10 +28,10 @@ TwitchXX::TwitchPost TwitchXX::TwitchChannelFeed::Post(const utility::string_t& 
 	request_body[U("content")] = web::json::value::string(body);
 	request_body[U("share")] = web::json::value::boolean(share);
 
-	auto response = _request->post(builder.to_uri(), request_body);
-	if(_request->status_code()!= web::http::status_codes::OK)
+	auto response = _request.post(builder.to_uri(), request_body);
+	if(_request.status_code()!= web::http::status_codes::OK)
 	{
-		throw TwitchException("Unable to create post!", _request->status_code());
+		throw TwitchException("Unable to create post!", _request.status_code());
 	}
 	auto post = Create<TwitchPost>(response[U("post")]);
 	auto tweet = response[U("tweet")];
@@ -48,9 +48,9 @@ bool TwitchXX::TwitchChannelFeed::DeletePost(const utility::string_t & channel_n
 	utility::stringstream_t ss;
 	ss << id;
 	web::uri_builder builder(U("/feed/") + channel_name + U("/posts/") + ss.str());
-	auto response = _request->del(builder.to_uri());
+	auto response = _request.del(builder.to_uri());
 
-	return _request->status_code() == web::http::status_codes::OK;
+	return _request.status_code() == web::http::status_codes::OK;
 }
 
 bool TwitchXX::TwitchChannelFeed::AddReaction(const utility::string_t& channel_name, unsigned long long id, size_t emote_id) const
@@ -67,9 +67,9 @@ bool TwitchXX::TwitchChannelFeed::AddReaction(const utility::string_t& channel_n
 		builder.append_query(U("emote_id"), U("endorse"));
 	}
 
-	auto response = _request->post(builder.to_uri());
+	auto response = _request.post(builder.to_uri());
 
-	return _request->status_code() == web::http::status_codes::OK;
+	return _request.status_code() == web::http::status_codes::OK;
 }
 
 bool TwitchXX::TwitchChannelFeed::RemoveReaction(const utility::string_t& channel_name, unsigned long long id, size_t emote_id) const
@@ -86,9 +86,9 @@ bool TwitchXX::TwitchChannelFeed::RemoveReaction(const utility::string_t& channe
 		builder.append_query(U("emote_id"), U("endorse"));
 	}
 
-	auto response = _request->del(builder.to_uri());
+	auto response = _request.del(builder.to_uri());
 
-	return _request->status_code() == web::http::status_codes::OK;
+	return _request.status_code() == web::http::status_codes::OK;
 }
 
 template <> 

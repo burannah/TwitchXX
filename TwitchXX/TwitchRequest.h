@@ -51,7 +51,7 @@ namespace TwitchXX
 		template<typename T>
 		T GetSingleObject(const web::uri& uri) const
 		{
-			return Create<T>(_request->get(uri));
+			return Create<T>(_request.get(uri));
 		}
 
 
@@ -68,7 +68,7 @@ namespace TwitchXX
 			while (true)
 			{
 				TwitchContainer<T> chunk;
-				auto value = _request->get(current_builder.to_uri());
+				auto value = _request.get(current_builder.to_uri());
 				auto subscriptions = value.at(node);
 				if (!subscriptions.is_null() && subscriptions.is_array())
 				{
@@ -112,7 +112,7 @@ namespace TwitchXX
 			while (true)
 			{
 				TwitchContainer<T> chunk;
-				auto value = _request->get(current_builder.to_uri());
+				auto value = _request.get(current_builder.to_uri());
 				auto objects = value.at(node);
 				if (!objects.is_null() && objects.is_array())
 				{
@@ -149,7 +149,7 @@ namespace TwitchXX
 		TwitchContainer<T> GetObjectsArrayOnce(web::uri_builder& builder, const utility::string_t& node) const
 		{
 			TwitchContainer<T> result;
-			auto value = _request->get(builder.to_uri());
+			auto value = _request.get(builder.to_uri());
 			auto objects = value.at(node);
 			if (!objects.is_null() && objects.is_array())
 			{

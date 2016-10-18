@@ -47,10 +47,10 @@ namespace TwitchXX
 			{
 				results_node = results_node.substr(delimetr + 1);
 			}
-			auto response = _request->get(builder.to_uri());
+			auto response = _request.get(builder.to_uri());
 			if(!response.has_field(results_node) || !response.at(results_node).is_array())
 			{
-				throw TwitchException("Unknwon format!", _request->status_code());
+				throw TwitchException("Unknwon format!", _request.status_code());
 			}
 
 			TwitchContainer<T> result;
