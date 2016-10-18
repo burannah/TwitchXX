@@ -17,7 +17,7 @@ namespace TwitchXX
 	public:
 		///Constructor
 		///@param request transport object
-		explicit TwitchStreams(std::shared_ptr<MakeRequest> request) : TwitchRequest(request) {} ;
+		explicit TwitchStreams(MakeRequest *request) : TwitchRequest(request) {} ;
 
 		///Get stream for channel
 		///@param channel channel's name
@@ -41,7 +41,7 @@ namespace TwitchXX
 		* stream_type		   | Only shows streams from a certain type. Permitted values: all, playlist, live
 		* language			   | Only shows streams of a certain language. Permitted values are locale ID strings, e.g. `en`, `fi`, `es-mx`.
 		*/
-		TwitchXX::TwitchStreamsContainer GetStreams(unsigned int n, const options& opt);
+		TwitchXX::TwitchStreamsContainer GetStreams(unsigned int n, const options& opt) const;
 
 		///Get featured streams
 		TwitchFeaturedStreamsContainer GetFeaturedStreams() const;

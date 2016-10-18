@@ -106,16 +106,5 @@ namespace TwitchXX
 
 	private:
 		static std::map<Version, utility::string_t> _version;
-		std::unique_ptr<TwitchStreams> _streams;
-		std::unique_ptr<TwitchChannels> _channels;
-		std::unique_ptr<TwitchChannelFeed> _channel_feed;
-		std::unique_ptr<TwitchChat> _chat;
-		std::unique_ptr<TwitchGames> _games;
-		std::unique_ptr<TwitchUsers> _users;
-		std::unique_ptr<TwitchIngests> _ingests;
-		std::unique_ptr<TwitchTeams> _teams;
-		std::unique_ptr<TwitchVideos> _videos;
-
-
 	};
 }

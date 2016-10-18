@@ -16,7 +16,7 @@ namespace TwitchXX
 	public:
 		///Constructor
 		///@param request transport object
-		explicit  TwitchChannels(std::shared_ptr<MakeRequest> request) : TwitchRequest(request) {	}
+		explicit  TwitchChannels(MakeRequest *request) : TwitchRequest(request) {	}
 
 
 		///Get channel object

@@ -16,9 +16,9 @@ namespace TwitchXX
 	{
 	public:
 		///Constructor
-		///@param request transport object
-		explicit TwitchGames(std::shared_ptr<MakeRequest> request) 
-			: TwitchRequest(request) 
+		///@param equest transport object
+		explicit TwitchGames(MakeRequest *equest)
+			: TwitchRequest(equest)
 		{ 
 		};
 

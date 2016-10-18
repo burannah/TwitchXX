@@ -12,7 +12,7 @@ namespace TwitchXX
 	class TwitchSearch : TwitchRequest
 	{
 	public:
-		explicit TwitchSearch(std::shared_ptr<MakeRequest> request) 
+		explicit TwitchSearch(MakeRequest *request)
 					: TwitchRequest(request) 
 		{
 		};

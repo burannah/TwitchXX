@@ -9,7 +9,7 @@ namespace TwitchXX
 	class TwitchVideos : public TwitchRequest
 	{
 	public:
-		explicit TwitchVideos(const std::shared_ptr<MakeRequest>& request)
+		explicit TwitchVideos(MakeRequest *request)
 			: TwitchRequest(request)
 		{
 		}

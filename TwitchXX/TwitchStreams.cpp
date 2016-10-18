@@ -24,7 +24,7 @@ size_t TwitchXX::TwitchStreams::UpdateTotal() const
 	return TotalSize.Get();
 };
 
-TwitchXX::TwitchStreamsContainer TwitchXX::TwitchStreams::GetStreams(unsigned int n, const options& op)
+TwitchXX::TwitchStreamsContainer TwitchXX::TwitchStreams::GetStreams(unsigned int n, const options& op) const
 {
 	static const size_t limit = 100; //TODO: To some global constants
 	web::uri_builder builder(U("/streams"));
