@@ -42,6 +42,8 @@ namespace TwitchXX
 		//Log
 		static void AddLogger(std::shared_ptr<Logger>log);
 
+        static inline utility::string_t GetApiVersionString(Version v);
+
 		//Games
 		TwitchGamesContainer TopGames(unsigned int top_count = 0) const;
 
@@ -105,7 +107,9 @@ namespace TwitchXX
 
 
 	private:
-		static std::map<Version, utility::string_t> _version;
         std::shared_ptr<MakeRequest> _request;
 	};
+
+
+
 }

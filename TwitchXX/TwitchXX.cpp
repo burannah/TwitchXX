@@ -14,13 +14,6 @@ namespace TwitchXX
 	std::shared_ptr<Logger> Log = std::make_shared<Logger>();
 	extern void trim(utility::string_t& s);
 }
-
-std::map<TwitchXX::Api::Version,utility::string_t> TwitchXX::Api::_version =
-{
-	{ Version::v2, U("application/vnd.twitchtv.v2+json") },
-	{ Version::v3, U("application/vnd.twitchtv.v3+json") }
-};
-
 TwitchXX::Api::Api(const utility::string_t& client_id, Version version, std::shared_ptr<Logger> log)
 {
 	//reading options
@@ -37,13 +30,14 @@ TwitchXX::Api::Api(const utility::string_t& client_id, Version version, std::sha
 
 		Options->insert(std::make_pair(name, value));
 	}
-	if (client_id.size() && Options->find(U("api_key")) != Options->end())
-	{
-		//Do not override config file's api_key parameter event if explicitly provided by parameter
-		Options->insert(std::make_pair(U("api_key"), client_id));
-	}
 
-	(*Options)[U("version")] = _version[version];
+    if(client_id.size())
+    {
+        // Api_key will be overridden by the input parameter
+        (*Options)[U("api_key")] = client_id;
+    }
+
+	(*Options)[U("version")] = GetApiVersionString(version);
 
 	_request = std::make_shared<MakeRequest>((*Options)[U("version")], (*Options)[U("api_key")], (*Options)[U("token")]);
 
@@ -351,4 +345,17 @@ TwitchXX::TwitchVideosContainer TwitchXX::Api::GetFollowedVideo(const utility::s
 
     TwitchVideos _videos(*_request);
 	return _videos.GetFollowedVideos(op);
+}
+
+utility::string_t TwitchXX::Api::GetApiVersionString(TwitchXX::Api::Version v)
+{
+    switch (v)
+    {
+        case Version::v2:
+            return U("application/vnd.twitchtv.v2+json");
+        case Version::v3:
+            return U("application/vnd.twitchtv.v3+json");
+        default:
+            return U("UNSUPPORTED API VERSION!");
+    }
 }
