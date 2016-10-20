@@ -11,7 +11,6 @@ namespace TwitchXX
 {
 	class TwitchStreams;
 	std::shared_ptr<std::map<utility::string_t,utility::string_t>> Options = std::make_shared<std::map<utility::string_t,utility::string_t>>();
-	std::string DatabaseName = "TwitchSpy";
 	std::shared_ptr<Logger> Log = std::make_shared<Logger>();
 	extern void trim(utility::string_t& s);
 }
@@ -49,7 +48,7 @@ TwitchXX::Api::Api(const utility::string_t& client_id, Version version, std::sha
 	_request = std::make_shared<MakeRequest>((*Options)[U("version")], (*Options)[U("api_key")], (*Options)[U("token")]);
 
 
-	if(log != nullptr)
+	if(log)
 	{
 		Log->Subscribe(log);
 	}

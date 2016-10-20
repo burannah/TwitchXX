@@ -15,24 +15,6 @@ namespace TwitchXX
 	class Logger
 	{
 	public:
-#ifdef _WIN32
-		using string_t = std::wstring;
-    using stringstream_t = std::wstringstream;
-#else
-		using string_t = std::string;
-		using stringstream_t = std::stringstream;
-#endif
-
-		///Destructor
-		virtual ~Logger()
-		{
-		}
-
-		///Default copy assigment
-		Logger& operator=(const Logger&) = default;
-		///Default move assigment
-		Logger& operator=(Logger&&) = default;
-
 		///Log level enum.
 		/**
 		* In future Debug messages will only be showed if library compiled with DEBUG flag (to be decided).
