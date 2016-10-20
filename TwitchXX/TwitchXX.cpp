@@ -9,8 +9,6 @@
 
 namespace TwitchXX
 {
-	class TwitchStreams;
-	std::shared_ptr<std::map<utility::string_t,utility::string_t>> Options = std::make_shared<std::map<utility::string_t,utility::string_t>>();
 	std::shared_ptr<Logger> Log = std::make_shared<Logger>();
 	extern void trim(utility::string_t& s);
 }
@@ -19,6 +17,7 @@ TwitchXX::Api::Api(const utility::string_t& client_id, Version version, std::sha
 	//reading options
 	utility::ifstream_t options_file("twitchxx.cfg");
 	utility::string_t line;
+    std::map<utility::string_t,utility::string_t> options;
 	while(std::getline(options_file,line))
 	{
 		utility::stringstream_t iss(line);
@@ -27,19 +26,18 @@ TwitchXX::Api::Api(const utility::string_t& client_id, Version version, std::sha
 		std::getline(iss, value);
 		trim(name);
 		trim(value);
-
-		Options->insert(std::make_pair(name, value));
+        options[name] = value;
 	}
 
     if(client_id.size())
     {
         // Api_key will be overridden by the input parameter
-        (*Options)[U("api_key")] = client_id;
+        options[U("api_key")] = client_id;
     }
 
-	(*Options)[U("version")] = GetApiVersionString(version);
+    options[U("version")] = GetApiVersionString(version);
 
-	_request = std::make_shared<MakeRequest>((*Options)[U("version")], (*Options)[U("api_key")], (*Options)[U("token")]);
+	_request = std::make_shared<MakeRequest>(options);
 
 
 	if(log)

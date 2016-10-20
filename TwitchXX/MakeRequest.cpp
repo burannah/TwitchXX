@@ -1,6 +1,9 @@
+#include <stdexcept>
+
 #include "MakeRequest.h"
 #include "TwitchException.h"
 #include "Property.h"
+#include "TwitchRequest.h"
 
 namespace TwitchXX
 {
@@ -9,22 +12,24 @@ namespace TwitchXX
 	*****************************************************************************************
 	*  @brief      MakreRequest setup proxy. 
 	*
-	*  @usage      SetupProxy() requires global object Options to be defined and filled 
+	*  @usage      SetupProxy() requires options to be defined and filled
 	*			   with values (proxy & proxy_password).
 	*			   Note: Proxy host must starts with connection scheme (i.e. http,https etc).
+	*  @param      options options dictionary (must contain proxy and/or proxy_password)
+	*              proxy hostname shoudl start with a scheme - http, https etc.
 	*
 	*  @return     throws std::runtime_error if proxy settings not present in Options
 	****************************************************************************************/
-	void MakeRequest::SetupProxy()
+    void MakeRequest::SetupProxy(const std::map<utility::string_t, utility::string_t> &options)
 	{
 		//Check global Options object for proxy settings;
-		if (TwitchXX::Options->find(U("proxy")) != TwitchXX::Options->end())
+		if (options.find(U("proxy")) != options.end())
 		{
-			web::web_proxy proxy((*TwitchXX::Options)[U("proxy")]);
+			web::web_proxy proxy(options.at(U("proxy")));
 			//Check that both login and password were found in the options.
-			if (TwitchXX::Options->find(U("proxy_user")) != TwitchXX::Options->find(U("proxy_password")))
+			if (options.find(U("proxy_user")) != options.find(U("proxy_password")))
 			{
-				web::credentials creds((*TwitchXX::Options)[U("proxy_user")], (*TwitchXX::Options)[U("proxy_password")]);
+				web::credentials creds(options.at(U("proxy_user")), options.at(U("proxy_password")));
 				proxy.set_credentials(creds);
 			}
 			_config.set_proxy(proxy);
@@ -36,23 +41,25 @@ namespace TwitchXX
 	}
 
 	/**
-	*****************************************************************************************
+	****************************************s*************************************************
 	*  @brief      MakeRequest constructor
 	*
 	*  @usage      Creates MakeRequest object. 
-	*			   Note: For now Twich allows to perform requests without client id.
-	*			   But soon it wont be possible. Take care.
 	*
-	*  @param      apiString api version string, ex. application/vnd.twitchtv.v3+json
+	*  @param      options - string map containing request options. apiString api version string, ex. application/vnd.twitchtv.v3+json
 	*  @param      clientId Client-id value
 	*  @param	   token user's token. Some requests requires auth scope granted by user
 	*			   If token is not set such requests will fail.
 	****************************************************************************************/
-	MakeRequest::MakeRequest(const utility::string_t& apiString,const utility::string_t& clientId, const utility::string_t& token)
-		: _client_id(clientId), 
-		_api_version(apiString),
-		_token(U("OAuth ") + token)
+	MakeRequest::MakeRequest(const std::map<utility::string_t,utility::string_t>& options)
 	{
+        if(options.find("api_key") == options.end() || options.find("version") == options.end() || options.find("token") == options.end())
+        {
+            throw std::invalid_argument("Not enough parameters");
+        }
+        _client_id = options.at(U("api_key"));
+        _api_version = options.at(U("version"));
+        _token = options.at(U("token"));
 		try
 		{
 			//Making a "naked" request to check if we need to use proxy
@@ -69,7 +76,7 @@ namespace TwitchXX
 			s << "Direct connection failed with: \"" << e.what() << "\". Trying to connect though proxy" << std::endl;
 			TwitchXX::Log->Log(s.str(), Logger::LogLevel::Warning);
 		}
-		SetupProxy();
+        SetupProxy(options);
 		try
 		{
 			auto response = this->operator()(U(""));

@@ -16,9 +16,6 @@ namespace TwitchXX
 	class value;
 	using Callback = std::function<void(const web::json::value&)>;
 
-	///Global object options should be defined and filled with values (for proxy parameters e.t.c.)
-    extern std::shared_ptr<std::map<utility::string_t, utility::string_t>> Options;
-
 	///Global logger
 	extern std::shared_ptr<Logger> Log;
 
@@ -37,9 +34,8 @@ namespace TwitchXX
 		};
 
 		///MakerRequest constructor
-		explicit MakeRequest(const utility::string_t& apiString, /**< [in] Api-version string*/
-							 const utility::string_t& clientId, /**< [in] Client-id stirng*/
-							 const utility::string_t& token /**< [in] User's auth token*/);
+		explicit MakeRequest(const std::map<utility::string_t,utility::string_t>& options /**< [in] Api-version string*/
+                                                                                            );
 
 		/// MakeRequest destructor
 		virtual ~MakeRequest() {};
@@ -87,7 +83,7 @@ namespace TwitchXX
 		mutable web::http::status_code _last_status;
 		utility::string_t _token;
 
-		void SetupProxy();
+		void SetupProxy(const std::map<utility::string_t, utility::string_t> &options);
 
 		///MakeRequest's main method.
 		///@param	params request parameters descriptor
