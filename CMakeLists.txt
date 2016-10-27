@@ -24,7 +24,8 @@ set(gtest_binary_dir ${binary_dir})
 
 ExternalProject_add(
         cpprest
-        URL https://github.com/Microsoft/cpprestsdk/archive/master.zip
+        GIT_REPOSITORY https://github.com/Microsoft/cpprestsdk.git
+	GIT_TAG master
         PREFIX ${CMAKE_CURRENT_BINARY_DIR}/cpprest
         SOURCE_SUBDIR Release
         CMAKE_ARGS -DBUILD_TESTS=OFF -DBUILD_SAMPLES=OFF
