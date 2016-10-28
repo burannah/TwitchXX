@@ -11,9 +11,10 @@ include(ExternalProject)
 
 ExternalProject_add(
         gtest
-        URL https://github.com/google/googletest/archive/master.zip
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG master
         PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
-        #UPDATE_DISCONNECTED 1
+        UPDATE_DISCONNECTED 1
         INSTALL_COMMAND ""
 )
 
@@ -25,13 +26,11 @@ set(gtest_binary_dir ${binary_dir})
 ExternalProject_add(
         cpprest
         GIT_REPOSITORY https://github.com/Microsoft/cpprestsdk.git
-	GIT_TAG master
+        GIT_TAG master
         PREFIX ${CMAKE_CURRENT_BINARY_DIR}/cpprest
         SOURCE_SUBDIR Release
         CMAKE_ARGS -DBUILD_TESTS=OFF -DBUILD_SAMPLES=OFF
-        #UPDATE_DISCONNECTED 1
         INSTALL_COMMAND ""
-        #CONFIGURE_COMMAND ""
 )
 
 ExternalProject_Get_Property(cpprest source_dir binary_dir)
