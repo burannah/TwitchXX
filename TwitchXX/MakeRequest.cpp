@@ -53,7 +53,7 @@ namespace TwitchXX
 	****************************************************************************************/
 	MakeRequest::MakeRequest(const std::map<utility::string_t,utility::string_t>& options)
 	{
-        if(options.find("api_key") == options.end() || options.find("version") == options.end() || options.find("token") == options.end())
+        if(options.find(U("api_key")) == options.end() || options.find(U("version")) == options.end() || options.find(U("token")) == options.end())
         {
             throw std::invalid_argument("Not enough parameters");
         }
