@@ -54,11 +54,12 @@ set_target_properties(libgmock PROPERTIES
         "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}")
 
 include_directories(${Boost_INCLUDE_DIR} ${OPENSSL_INCLUDE_DIR} cpprestsdk/Release/include)
-link_directories(${Boost_LIBRARY_DIRS})		
+link_directories(${Boost_LIBRARY_DIRS})
+set(BUILD_TESTS_IN BUILD_TESTS)		
 set(BUILD_TESTS OFF)
 set(BUILD_SAMPLES OFF)
 add_subdirectory(cpprestsdk/Release)
-set(BUILD_TESTS ON)
+set(BUILD_TESTS BUILD_TESTS_IN)
 		
 include_directories("${gtest_source_dir}/googletest/include"
                     "${gtest_source_dir}/googlemock/include"
