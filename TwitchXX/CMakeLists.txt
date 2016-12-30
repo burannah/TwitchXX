@@ -8,6 +8,6 @@ file(GLOB SOURCES *.cpp)
 #   endif(${flag_var} MATCHES "/MD")
 #endforeach(flag_var)
 
-add_library(TwitchXX SHARED ${SOURCES})
+add_library(TwitchXX STATIC ${SOURCES})
 target_link_libraries(TwitchXX ${LIB_CPPREST})
 
