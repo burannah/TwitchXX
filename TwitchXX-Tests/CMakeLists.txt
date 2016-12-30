@@ -11,5 +11,6 @@ file(GLOB SOURCES *.cpp)
 #endforeach(flag_var)
 
 add_executable(TwitchXX-Tests ${SOURCES})
-target_link_libraries(TwitchXX-Tests ${LIB_GTEST} TwitchXX ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES} ${LIB_CPPREST})
+message("Debug===${LIB_GTEST}")
+target_link_libraries(TwitchXX-Tests TwitchXX ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES} ${LIB_CPPREST} ${LIB_GTEST})
 install(TARGETS TwitchXX-Tests DESTINATION bin)

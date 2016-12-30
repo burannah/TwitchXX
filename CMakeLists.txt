@@ -14,8 +14,6 @@ set(CPP_REST_FOUND False)
 set(CPP_REST_FIND_REQUIRED True)
 find_package(cpprestsdk REQUIRED) # populates CPP_REST_INCLUDE_DIR and CPP_REST_LIBRARY
 
-set(LIB_CPPREST optimized ${CPP_REST_LIBRARY} debug ${CPP_REST_LIBRARY_DEBUG})
-
 set(OpenSSL_libeay_LIBRARY ${OPENSSL_LIBRARIES})
 set(OpenSSL_ssleay_LIBRARY ${OPENSSL_LIBRARIES})
 
@@ -55,15 +53,17 @@ if(MSVC)
 			"IMPORTED_LOCATION" "${gtest_binary_dir}/googlemock/gtest/Debug/gtest.lib"
 			"IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LINS_INIT}"
 			)
-	set(LIB_GTEST optimized libgtest debug libgtestd) 
+	set(LIB_GTEST optimized libgtest debug libgtestd)
 
+	set(LIB_CPPREST optimized ${CPP_REST_LIBRARY} debug ${CPP_REST_LIBRARY_DEBUG})
 else()
 	set_target_properties(libgtest PROPERTIES
-			"IMPORTED_LOCATION" "${gtest_binary_dir}/googlemock/gtest/libgtest.a"
+			"IMPORTED_LOCATION" "${gtest_binary_dir}/googlemock/gtest/libgtest.so"
 			"IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LINS_INIT}"
 			)
 	set(LIB_GTEST libgtest)
 
+	set(LIB_CPPREST ${CPP_REST_LIBRARY})
 endif()
 
 #add_library(libgmock IMPORTED STATIC GLOBAL)

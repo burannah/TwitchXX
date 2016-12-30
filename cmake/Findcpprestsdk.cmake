@@ -2,6 +2,7 @@ IF(UNIX)
     FIND_PATH(CPP_REST_INCLUDE_DIR http_client.h
       "$ENV{LIB_DIR}/include"
       "$ENV{LIB_DIR}/include/cpprest"
+            "/usr/local/include/cpprest"
       "${CMAKE_SOURCE_DIR}/include"
       "${CMAKE_SOURCE_DIR}/include/cpprest"
       #mingw
@@ -13,13 +14,16 @@ IF(UNIX)
     SET(CMAKE_FIND_LIBRARY_SUFFIXES ".so" ".a" ".lib")
     FIND_LIBRARY(CPP_REST_LIBRARY NAMES cpprest PATHS
       $ENV{LIB}
-      /usr/lib
+      "/usr/lib"
       "$ENV{LIB_DIR}/lib"
       "${CMAKE_SOURCE_DIR}/lib"
+            "/usr/local/lib"
       #mingw
       c:/msys/local/lib
       NO_DEFAULT_PATH
       )
+
+    SET(CPP_REST_LIBRARY_DEBUG True)
 ELSE()
     set(CPP_REST_HEADERS_DIR "${CPP_REST_DIR}/Release/include/cpprest")
     FIND_PATH(CPP_REST_INCLUDE_DIR http_client.h
