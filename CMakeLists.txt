@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.6)
 project(TwitchSpy)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+endif()
 
 # Use custom Find-.cmake path
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
@@ -21,64 +23,17 @@ option(BUILD_TESTS "Build tests." ON)
 
 include(ExternalProject)
 
-ExternalProject_add(
-        gtest
-        GIT_REPOSITORY https://github.com/google/googletest.git
-        GIT_TAG master
-        PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
-		CMAKE_ARGS -DBUILD_SHARED_LIBS=ON
-        UPDATE_DISCONNECTED 1
-        INSTALL_COMMAND ""
-)
-
-ExternalProject_Get_Property(gtest source_dir binary_dir)
-
-set(gtest_source_dir ${source_dir})
-set(gtest_binary_dir ${binary_dir})
-
-add_library(libgtest IMPORTED STATIC GLOBAL)
-add_dependencies(libgtest gtest)
-
-
 if(MSVC)
-	add_library(libgtestd IMPORTED STATIC GLOBAL)
-	add_dependencies(libgtestd gtest)
-
-	set_target_properties(libgtest PROPERTIES
-			"IMPORTED_LOCATION" "${gtest_binary_dir}/googlemock/gtest/Release/gtest.lib"
-			"IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LINS_INIT}"
-			)
-
-	set_target_properties(libgtestd PROPERTIES
-			"IMPORTED_LOCATION" "${gtest_binary_dir}/googlemock/gtest/Debug/gtest.lib"
-			"IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LINS_INIT}"
-			)
-	set(LIB_GTEST optimized libgtest debug libgtestd)
-
-	set(LIB_CPPREST optimized ${CPP_REST_LIBRARY} debug ${CPP_REST_LIBRARY_DEBUG})
+	#set(LIB_CPPREST optimized ${CPP_REST_LIBRARY} debug ${CPP_REST_LIBRARY_DEBUG})
+	set(LIB_CPPREST ${CPP_REST_LIBRARY})
 else()
-	set_target_properties(libgtest PROPERTIES
-			"IMPORTED_LOCATION" "${gtest_binary_dir}/googlemock/gtest/libgtest.so"
-			"IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LINS_INIT}"
-			)
-	set(LIB_GTEST libgtest)
-
 	set(LIB_CPPREST ${CPP_REST_LIBRARY})
 endif()
-
-#add_library(libgmock IMPORTED STATIC GLOBAL)
-#add_dependencies(libgmock gtest)
-
-#set_target_properties(libgmock PROPERTIES
-#        "IMPORTED_LOCATION" "${gtest_binary_dir}/googlemock/libgmock.a"
-#        "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}")
 
 include_directories(${Boost_INCLUDE_DIR} ${OPENSSL_INCLUDE_DIR} "${CPP_REST_INCLUDE_DIR}/..")
 link_directories(${Boost_LIBRARY_DIRS})
 		
-include_directories("${gtest_source_dir}/googletest/include"
-                    "${gtest_source_dir}/googlemock/include"
-                    "${PROJECT_SOURCE_DIR}/TwitchXX"
+include_directories("${PROJECT_SOURCE_DIR}/TwitchXX"
                     "${PROJECT_SOURCE_DIR}/TwitchXX-Tests")
 
 
