@@ -21,8 +21,6 @@ set(OpenSSL_ssleay_LIBRARY ${OPENSSL_LIBRARIES})
 
 option(BUILD_TESTS "Build tests." ON)
 
-include(ExternalProject)
-
 if(MSVC)
 	#set(LIB_CPPREST optimized ${CPP_REST_LIBRARY} debug ${CPP_REST_LIBRARY_DEBUG})
 	set(LIB_CPPREST ${CPP_REST_LIBRARY})

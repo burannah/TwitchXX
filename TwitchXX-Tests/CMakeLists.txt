@@ -3,6 +3,8 @@ find_package(OpenSSL REQUIRED)
 set(GTEST_MSVC_SEARCH MD)
 find_package(GTest REQUIRED)
 file(GLOB SOURCES *.cpp)
+set (CMAKE_CXX_STANDARD 14)
+
 
 #TODO: For Windows only
 foreach(flag_var

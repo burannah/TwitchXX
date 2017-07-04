@@ -10,6 +10,8 @@ foreach(flag_var
    endif(${flag_var} MATCHES "/MD")
 endforeach(flag_var)
 
+set (CMAKE_CXX_STANDARD 14)
+
 add_library(TwitchXX STATIC ${SOURCES})
 target_link_libraries(TwitchXX ${LIB_CPPREST})
 
