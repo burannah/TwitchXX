@@ -148,7 +148,7 @@ TwitchXX::TwitchFollower TwitchXX::TwitchChannels::GetChannelSubscriptionForUser
 
 TwitchXX::TwitchVideosContainer TwitchXX::TwitchChannels::GetChannelVideos(const utility::string_t& channel_name, options& op) const
 {
-	web::uri_builder builder(U("/channels") + channel_name + U("videos"));
+	web::uri_builder builder(U("/channels/") + channel_name + U("/videos"));
 	AddOption(builder, op, U("limit"));
 	AddOption(builder, op, U("offset"));
 	AddOption(builder, op, U("broadcasts"));

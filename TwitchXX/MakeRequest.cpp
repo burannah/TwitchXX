@@ -117,12 +117,13 @@ namespace TwitchXX
 		if (_client_id.length())request.headers().add(U("Client-ID"), _client_id);
 		if (_token.length() > 6)request.headers().add(U("Authorization"), _token);
 		request.set_request_uri({params.uri});
+        request.headers().set_content_type(U("application/json"));
 		if (!params.body.is_null())
 		{
 			utility::stringstream_t ss;
 			ss << params.body;
 			request.set_body(ss.str());
-			request.headers().set_content_type(U("application/json"));
+			//request.headers().set_content_type(U("application/json"));
 		}
 
 		ucout << "Request: " << request.to_string() << "\n";

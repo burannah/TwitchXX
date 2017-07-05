@@ -696,9 +696,8 @@ TEST(Create, TwitchVideo)
 	EXPECT_EQ(video.Url.Get(), U("http://www.twitch.tv/twitch/c/6055863"));
 	EXPECT_EQ(video.Views.Get(), 318);
 	EXPECT_EQ(video.BroadcastType.Get(), U("highlight"));
-	auto channel = video.Channel;
-	EXPECT_EQ(channel.Name.Get(), U("twitch"));
-	EXPECT_EQ(channel.Display_Name.Get(), U("Twitch"));
+	EXPECT_EQ(video.ChannelName.Get(), U("twitch"));
+	EXPECT_EQ(video.ChannelDisplayName.Get(), U("Twitch"));
 }
 
 TEST(Create, TwitchFollowedChannel)

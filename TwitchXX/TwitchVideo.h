@@ -46,19 +46,22 @@ namespace TwitchXX
 		///Broadcast type
 		Property<utility::string_t> BroadcastType;
 
-		///Channel
-		TwitchChannel Channel;
+		///Channel name
+		Property<utility::string_t> ChannelName;
+
+		///Channel display name
+		Property<utility::string_t> ChannelDisplayName;
 
 		///Less than operator
 		bool operator<(const TwitchVideo& other) const
 		{
-			return BroadcastId.Get() < other.BroadcastId.Get();
+			return Id.Get() < other.Id.Get();
 		}
 
 		///Equals operator
 		bool operator==(const TwitchVideo& other) const
 		{
-			return BroadcastId.Get() == other.BroadcastId.Get();
+			return Id.Get() == other.Id.Get();
 		}
 	};
 	

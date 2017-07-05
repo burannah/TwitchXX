@@ -47,7 +47,10 @@ TwitchXX::TwitchVideo TwitchXX::Create<TwitchXX::TwitchVideo>(const web::json::v
 	video.Url.Set(*w[U("url")]);
 	video.Views.Set(*w[U("views")]);
 	video.BroadcastType.Set(*w[U("broadcast_type")]);
-	video.Channel = Create<TwitchChannel>(value.at(U("channel")));
+
+	JsonWrapper c(value.at(U("channel")));
+	video.ChannelName.Set(*c[U("name")]);
+	video.ChannelDisplayName.Set(*c[U("display_name")]);
 
 	return video;
 }

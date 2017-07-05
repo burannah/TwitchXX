@@ -81,13 +81,15 @@ namespace TwitchXX
 				{
 					break;
 				}
-
 				result.insert(chunk.begin(), chunk.end());
 
 				auto next = value.at(U("_links")).at(U("next"));
-				if (chunk.size() == max_limit && !next.is_null() && next.is_string())
+				if (chunk.size() < max_limit && !next.is_null() && next.is_string())
 				{
-					current_builder = web::uri_builder(next.as_string());
+                    //Need to skip 'https://api.twitch.tv/kraken' at the beginning of the link
+                    utility::string_t link_next = next.as_string();
+					current_builder = web::uri_builder(link_next.erase(0U,28U));
+
 				}
 				else
 				{

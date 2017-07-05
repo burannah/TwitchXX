@@ -11,7 +11,7 @@ TEST_F(VideosTest, GetVideo)
 		video = _api->GetVideo(87775038U);
 	});
 
-	EXPECT_EQ(video.Channel.Name.Get(), U("waveafterwave2ndlife"));
+	EXPECT_EQ(video.ChannelName.Get(), U("waveafterwave2ndlife"));
 }
 
 TEST_F(VideosTest, GetTopVideos)
