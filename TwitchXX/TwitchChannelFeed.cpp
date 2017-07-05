@@ -6,16 +6,13 @@
 
 TwitchXX::TwitchPostsContainer TwitchXX::TwitchChannelFeed::GetPosts(const utility::string_t & channel_name, size_t limit) const
 {
-	web::uri_builder first_builder(U("/feed/") + channel_name + U("/posts"));
-	first_builder.append_query(U("limit"), limit == 0 ? 100 : limit);
-	return GetObjectsArrayByNext<TwitchPost>(first_builder, U("posts"));
+	return GetObjectsArrayByCursor<TwitchPost>(U("/feed/") + channel_name + U("/posts"), U("posts"), limit);
 }
 
-TwitchXX::TwitchPost TwitchXX::TwitchChannelFeed::GetPost(const utility::string_t & channel_name, unsigned long long id) const
+TwitchXX::TwitchPost TwitchXX::TwitchChannelFeed::GetPost(const utility::string_t &channel_name,
+														  const utility::string_t &id) const
 {
-	utility::stringstream_t  ss;
-	ss << id;
-	web::uri_builder builder(U("/feed/") + channel_name + U("/posts/") + ss.str());
+	web::uri_builder builder(U("/feed/") + channel_name + U("/posts/") + id);
 	auto response = _request.get(builder.to_uri());
 	return Create<TwitchPost>(response);
 }
@@ -43,21 +40,18 @@ TwitchXX::TwitchPost TwitchXX::TwitchChannelFeed::Post(const utility::string_t& 
 	return post;
 }
 
-bool TwitchXX::TwitchChannelFeed::DeletePost(const utility::string_t & channel_name, unsigned long long id) const
+bool TwitchXX::TwitchChannelFeed::DeletePost(const utility::string_t & channel_name, const utility::string_t& id) const
 {
-	utility::stringstream_t ss;
-	ss << id;
-	web::uri_builder builder(U("/feed/") + channel_name + U("/posts/") + ss.str());
+	web::uri_builder builder(U("/feed/") + channel_name + U("/posts/") + id);
 	auto response = _request.del(builder.to_uri());
 
 	return _request.status_code() == web::http::status_codes::OK;
 }
 
-bool TwitchXX::TwitchChannelFeed::AddReaction(const utility::string_t& channel_name, unsigned long long id, size_t emote_id) const
+bool TwitchXX::TwitchChannelFeed::AddReaction(const utility::string_t &channel_name, const utility::string_t &id,
+											  size_t emote_id) const
 {
-	utility::stringstream_t ss_id;
-	ss_id << id;
-	web::uri_builder builder(U("/feed/") + channel_name + U("/posts/") + ss_id.str() + U("/reactions"));
+	web::uri_builder builder(U("/feed/") + channel_name + U("/posts/") + id + U("/reactions"));
 	if(emote_id)
 	{
 		builder.append_query(U("emote_id"), emote_id);
@@ -72,7 +66,8 @@ bool TwitchXX::TwitchChannelFeed::AddReaction(const utility::string_t& channel_n
 	return _request.status_code() == web::http::status_codes::OK;
 }
 
-bool TwitchXX::TwitchChannelFeed::RemoveReaction(const utility::string_t& channel_name, unsigned long long id, size_t emote_id) const
+bool TwitchXX::TwitchChannelFeed::RemoveReaction(const utility::string_t &channel_name, const utility::string_t &id,
+												 size_t emote_id) const
 {
 	utility::stringstream_t ss_id;
 	ss_id << id;

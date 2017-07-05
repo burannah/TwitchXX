@@ -508,7 +508,7 @@ TEST(Create,TwitchPost)
 		post = TwitchXX::Create<TwitchXX::TwitchPost>(v);
 	});
 
-	EXPECT_EQ(post.Id, 20);
+	EXPECT_GT(post.Id.Get().size(), 20);
 	EXPECT_EQ(post.Created.Get(), TwitchXX::DateFromString(U("2016-01-29T21:07:23.075611Z")));
 	EXPECT_EQ(post.Created.to_string(), U("2016-01-29T21:07:23Z"));
 	EXPECT_FALSE(post.Deleted);

@@ -100,21 +100,29 @@ namespace TwitchXX
 
 
 		///Request a collection of objects of type T iterationg through cursor field of the response
-		///@param builder uri builder for requet
-		///@param node node for object's collection in the reposbse body
+		///@param uri request
+		///@param node node for object's collection in the response body
+        ///@param limit maximum number of elements to fetch
 		///@return TwitchContainer collection of elements of type T
 		template<typename T>
-		TwitchContainer<T> GetObjectsArrayByCursor(const web::uri_builder& builder, const utility::string_t& node) const
+		TwitchContainer<T> GetObjectsArrayByCursor(const utility::string_t& uri, const utility::string_t& node, size_t limit) const
 		{
-			TwitchContainer<T> result;
-			auto current_builder = builder;
+            web::uri_builder first_builder(uri);
+            if(limit)
+            {
+                first_builder.append_query(U("limit"), limit);
+            }
+            limit = limit == 0 ? std::numeric_limits<decltype(limit)>::max() : limit;
 
-			while (true)
+            TwitchContainer<T> result;
+			auto current_builder = first_builder;
+
+			while (result.size() < limit)
 			{
-				TwitchContainer<T> chunk;
+                TwitchContainer<T> chunk;
 				auto value = _request.get(current_builder.to_uri());
 				auto objects = value.at(node);
-				if (!objects.is_null() && objects.is_array())
+				if (!objects.is_null() && objects.is_array() && objects.as_array().size())
 				{
 					for (const auto& subs : objects.as_array())
 					{
@@ -127,10 +135,11 @@ namespace TwitchXX
 				}
 
 				result.insert(chunk.begin(), chunk.end());
-				if (value.has_field(U("_cursor")) && value.at(U("_cursor")).is_string())
+                if (value.has_field(U("_cursor")) && value.at(U("_cursor")).is_string() && value.at(U("_cursor")).as_string().size())
 				{
-					current_builder = builder;
-					current_builder.append_query(U("cursor"), value.at(U("_cursor")).as_string());
+                    //TODO: For some reason value can indicate that it has a cursor, but it's empty. So empty string check is needed.
+                    current_builder = first_builder;
+                    current_builder.append_query(U("cursor"), value.at(U("_cursor")).as_string());
 				}
 				else
 				{

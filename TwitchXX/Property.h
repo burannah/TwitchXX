@@ -233,6 +233,12 @@ namespace TwitchXX
 		string_type to_string() { return Serializer<T, string_type>::ToString(_value); }
 		void from_string(const string_type str) { _value = Serializer<T, string_type>::FromString(str); }
 	};
+
+    template<typename T, typename string_type>
+    inline bool operator==(const Property<T, string_type>& lhs, const Property<T, string_type>& rhs)
+    {
+        return lhs.Get() == rhs.Get();
+    }
 	/*
 	template<typename Val, typename Key>
 	class PropertyMap

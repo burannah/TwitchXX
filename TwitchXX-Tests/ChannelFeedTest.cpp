@@ -1,5 +1,6 @@
-﻿#include "ChannelFeedTest.h"
-#include <TwitchDef.h>
+﻿#include <chrono>
+#include <thread>
+#include "ChannelFeedTest.h"
 
 
 TEST_F(ChannelFeedTest,GetPosts1)
@@ -11,26 +12,6 @@ TEST_F(ChannelFeedTest,GetPosts1)
 	});
 
 	ASSERT_EQ(posts.size(), 1);
-	auto post = *(posts.begin());
-	EXPECT_EQ(post.Id, 1044472381464051179);
-	EXPECT_EQ(post.Created.Get(), TwitchXX::DateFromString(U("2016-05-24T00:52:59Z")));
-	EXPECT_EQ(post.Created.to_string(), U("2016-05-24T00:52:59Z"));
-	EXPECT_FALSE(post.Deleted);
-	EXPECT_EQ(post.Endorsed_Count, 0);
-	EXPECT_EQ(post.Endorsed_Users.size(), 0);
-	EXPECT_EQ(post.Body.Get(), U("this work?"));
-	
-	auto user = post.Author;
-	EXPECT_EQ(user.Display_Name.Get(), U("bangbangalang"));
-	EXPECT_EQ(user.Id, 104447238);
-	EXPECT_EQ(user.Name.Get(), U("bangbangalang"));
-	EXPECT_EQ(user.Type.Get(), U("user"));
-	EXPECT_EQ(user.Bio.Get(), U("i like turtles and cats"));
-	EXPECT_EQ(user.Created.Get(), TwitchXX::DateFromString(U("2015-10-15T19:52:17Z")));
-	EXPECT_EQ(user.Created.to_string(), U("2015-10-15T19:52:17Z"));
-	EXPECT_EQ(user.Updated.Get(), TwitchXX::DateFromString(U("2016-06-21T06:01:05Z")));
-	EXPECT_EQ(user.Updated.to_string(), U("2016-06-21T06:01:05Z"));
-	EXPECT_EQ(user.Logo.Get(), U(""));
 }
 
 TEST_F(ChannelFeedTest, GetPosts100)
@@ -38,30 +19,10 @@ TEST_F(ChannelFeedTest, GetPosts100)
 	TwitchXX::TwitchPostsContainer posts;
 	EXPECT_NO_THROW(
 	{
-		posts = _api->GetPosts(U("bangbangalang"));
+		posts = _api->GetPosts(U("bangbangalang"), 100);
 	});
 
-	ASSERT_EQ(posts.size(),1);
-	auto post = *(posts.begin());
-	EXPECT_EQ(post.Id, 1044472381464051179);
-	EXPECT_EQ(post.Created.Get(), TwitchXX::DateFromString(U("2016-05-24T00:52:59Z")));
-	EXPECT_EQ(post.Created.to_string(), U("2016-05-24T00:52:59Z"));
-	EXPECT_FALSE(post.Deleted);
-	EXPECT_EQ(post.Endorsed_Count, 0);
-	EXPECT_EQ(post.Endorsed_Users.size(), 0);
-	EXPECT_EQ(post.Body.Get(), U("this work?"));
-
-	auto user = post.Author;
-	EXPECT_EQ(user.Display_Name.Get(), U("bangbangalang"));
-	EXPECT_EQ(user.Id, 104447238);
-	EXPECT_EQ(user.Name.Get(), U("bangbangalang"));
-	EXPECT_EQ(user.Type.Get(), U("user"));
-	EXPECT_EQ(user.Bio.Get(), U("i like turtles and cats"));
-	EXPECT_EQ(user.Created.Get(), TwitchXX::DateFromString(U("2015-10-15T19:52:17Z")));
-	EXPECT_EQ(user.Created.to_string(), U("2015-10-15T19:52:17Z"));
-	EXPECT_EQ(user.Updated.Get(), TwitchXX::DateFromString(U("2016-06-21T06:01:05Z")));
-	EXPECT_EQ(user.Updated.to_string(), U("2016-06-21T06:01:05Z"));
-	EXPECT_EQ(user.Logo.Get(), U(""));
+	ASSERT_GE(posts.size(),2);
 }
 
 TEST_F(ChannelFeedTest,GetPostById)
@@ -69,28 +30,10 @@ TEST_F(ChannelFeedTest,GetPostById)
 	TwitchXX::TwitchPost post;
 	ASSERT_NO_THROW(
 	{
-		post = _api->GetPost(U("bangbangalang"),1044472381464051179);
+		post = _api->GetPost(U("bangbangalang"),U("7288b741-3341-49b1-b35c-ac87a7be7db6"));
 	});
 
-	EXPECT_EQ(post.Id, 1044472381464051179);
-	EXPECT_EQ(post.Created.Get(), TwitchXX::DateFromString(U("2016-05-24T00:52:59Z")));
-	EXPECT_EQ(post.Created.to_string(), U("2016-05-24T00:52:59Z"));
-	EXPECT_FALSE(post.Deleted);
-	EXPECT_EQ(post.Endorsed_Count, 0);
-	EXPECT_EQ(post.Endorsed_Users.size(), 0);
-	EXPECT_EQ(post.Body.Get(), U("this work?"));
-
-	auto user = post.Author;
-	EXPECT_EQ(user.Display_Name.Get(), U("bangbangalang"));
-	EXPECT_EQ(user.Id, 104447238);
-	EXPECT_EQ(user.Name.Get(), U("bangbangalang"));
-	EXPECT_EQ(user.Type.Get(), U("user"));
-	EXPECT_EQ(user.Bio.Get(), U("i like turtles and cats"));
-	EXPECT_EQ(user.Created.Get(), TwitchXX::DateFromString(U("2015-10-15T19:52:17Z")));
-	EXPECT_EQ(user.Created.to_string(), U("2015-10-15T19:52:17Z"));
-	EXPECT_EQ(user.Updated.Get(), TwitchXX::DateFromString(U("2016-06-21T06:01:05Z")));
-	EXPECT_EQ(user.Updated.to_string(), U("2016-06-21T06:01:05Z"));
-	EXPECT_EQ(user.Logo.Get(), U(""));
+	EXPECT_GT(post.Id.Get().size(), 0);
 }
 
 TEST_F(ChannelFeedTest, CreateDeletePost)
@@ -103,7 +46,7 @@ TEST_F(ChannelFeedTest, CreateDeletePost)
 		post = _api->Post(_channel_name,post_body,false);
 	});
 
-	EXPECT_GT(post.Id, 0);
+	EXPECT_GT(post.Id.Get().size(), 0);
 	EXPECT_LT(post.Created.Get(), std::chrono::system_clock::now());
 	EXPECT_FALSE(post.Deleted);
 	EXPECT_EQ(post.Endorsed_Count, 0);
@@ -121,8 +64,9 @@ TEST_F(ChannelFeedTest, CreateDeletePost)
 
 TEST_F(ChannelFeedTest, AddDeleteReaction)
 {
+    std::this_thread::sleep_for(std::chrono::duration<int64_t>(7)); //To prevent 500 error from twitch
 	TwitchXX::TwitchPost post;
-	utility::string_t post_body(U("kappa"));
+	utility::string_t post_body(U("kappa for reaction!"));
 
 	ASSERT_NO_THROW(
 	{

@@ -111,9 +111,7 @@ TwitchXX::TwitchTeamsContainer TwitchXX::TwitchChannels::GetTeams(const utility:
 
 TwitchXX::TwitchFollowersContainer TwitchXX::TwitchChannels::GetChannelFollows(const utility::string_t& channel_name) const
 {
-	web::uri_builder builder(U("/channels/") + channel_name + U("/follows"));
-	builder.append_query(U("limit"), 100);
-	return GetObjectsArrayByCursor<TwitchFollower>(builder, U("follows"));
+	return GetObjectsArrayByCursor<TwitchFollower>(U("/channels/") + channel_name + U("/follows"), U("follows"), 100);
 }
 
 TwitchXX::TwitchFollowersContainer TwitchXX::TwitchChannels::GetChannelSubscriptions(const utility::string_t& channel_name) const

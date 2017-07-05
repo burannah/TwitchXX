@@ -13,7 +13,7 @@ namespace TwitchXX
 	{
 	public:
 		///Post Id
-		Property<unsigned long long> Id{ 0 };
+		Property<utility::string_t> Id;
 		///Post creation date
 		Property<Date> Created;
 		///Deleted flag

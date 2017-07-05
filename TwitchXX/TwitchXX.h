@@ -67,12 +67,12 @@ namespace TwitchXX
 		TwitchVideosContainer GetChannelVideos(const utility::string_t& channel_name, bool broadcasts = false, bool hls = false) const;
 
 		//Channel Feed
-		TwitchPostsContainer GetPosts(const utility::string_t& channel_name, unsigned int count = 0) const;
-		TwitchPost GetPost(const utility::string_t& channel_name, unsigned long long id) const;
+		TwitchPostsContainer GetPosts(const utility::string_t &channel_name, unsigned int limit = 0) const;
+		TwitchPost GetPost(const utility::string_t &channel_name, const utility::string_t &id) const;
 		TwitchPost Post(const utility::string_t& channel_name, const utility::string_t& body, bool share = false) const;
-		bool DeletePost(const utility::string_t& channel_name, unsigned long long id) const;
-		bool AddReaction(const utility::string_t& channel_name, unsigned long long id, unsigned int emote_id) const;
-		bool RemoveReaction(const utility::string_t& channel_name, unsigned long long id, unsigned int emote_id) const;
+		bool DeletePost(const utility::string_t& channel_name, const utility::string_t& id) const;
+		bool AddReaction(const utility::string_t& channel_name, const utility::string_t& id, unsigned int emote_id) const;
+		bool RemoveReaction(const utility::string_t &channel_name, const utility::string_t &id, unsigned int emote_id) const;
 
 		//Chat
 		TwitchEmoticonsContainer GetEmoticons() const;

@@ -26,7 +26,7 @@ namespace TwitchXX
 		///@param channel_name twitch channel name
 		///@param id post's id
 		///@return TwitchPost object
-		TwitchPost GetPost(const utility::string_t& channel_name, unsigned long long id) const;
+		TwitchPost GetPost(const utility::string_t &channel_name, const utility::string_t &id) const;
 
 		///Add new post to channel feed
 		///@param channel_name channel_name
@@ -39,21 +39,21 @@ namespace TwitchXX
 		///@param channel_name channel name
 		///@param id post id
 		///@return true if post was deleted successfully
-		bool DeletePost(const utility::string_t& channel_name, unsigned long long id) const;
+		bool DeletePost(const utility::string_t& channel_name, const utility::string_t& id) const;
 
 		///Add reqction to post
 		///@param channel_name channel name
 		///@param id post id
 		///@param emote_id (see TwitchEmoticon). If id == 0, given post will be "endoresed"
 		///@return true if operation was successfull, false otherwise.
-		bool AddReaction(const utility::string_t& channel_name, unsigned long long id, size_t emote_id) const;
+		bool AddReaction(const utility::string_t &channel_name, const utility::string_t &id, size_t emote_id) const;
 
 		///Remove reqction from post
 		///@param channel_name channel name
 		///@param id post id
 		///@param emote_id emotion id (see TwitchEmoticon). If id == 0 "endorse" will be removed.
 		///@return true if operation was successfull, false otherwise.
-		bool RemoveReaction(const utility::string_t& channel_name, unsigned long long id, size_t emote_id) const;
+		bool RemoveReaction(const utility::string_t &channel_name, const utility::string_t &id, size_t emote_id) const;
 
 
 

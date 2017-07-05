@@ -167,13 +167,13 @@ TwitchXX::TwitchVideosContainer TwitchXX::Api::GetChannelVideos(const utility::s
 	return _channels.GetChannelVideos(channel_name, op);
 }
 
-TwitchXX::TwitchPostsContainer TwitchXX::Api::GetPosts(const utility::string_t& channel_name, unsigned int count) const
+TwitchXX::TwitchPostsContainer TwitchXX::Api::GetPosts(const utility::string_t &channel_name, unsigned int limit) const
 {
     TwitchChannelFeed _channel_feed(*_request);
-	return _channel_feed.GetPosts(channel_name, count);
+	return _channel_feed.GetPosts(channel_name, limit);
 }
 
-TwitchXX::TwitchPost TwitchXX::Api::GetPost(const utility::string_t& channel_name, unsigned long long id) const
+TwitchXX::TwitchPost TwitchXX::Api::GetPost(const utility::string_t &channel_name, const utility::string_t &id) const
 {
     TwitchChannelFeed _channel_feed(*_request);
 	return _channel_feed.GetPost(channel_name, id);
@@ -185,19 +185,20 @@ TwitchXX::TwitchPost TwitchXX::Api::Post(const utility::string_t& channel_name, 
 	return _channel_feed.Post(channel_name, body, share);
 }
 
-bool TwitchXX::Api::DeletePost(const utility::string_t & channel_name, unsigned long long id) const
+bool TwitchXX::Api::DeletePost(const utility::string_t & channel_name, const utility::string_t& id) const
 {
     TwitchChannelFeed _channel_feed(*_request);
 	return _channel_feed.DeletePost(channel_name, id);
 }
 
-bool TwitchXX::Api::AddReaction(const utility::string_t & channel_name, unsigned long long id, unsigned int emote_id) const
+bool TwitchXX::Api::AddReaction(const utility::string_t& channel_name, const utility::string_t& id, unsigned int emote_id) const
 {
     TwitchChannelFeed _channel_feed(*_request);
 	return _channel_feed.AddReaction(channel_name, id, emote_id);
 }
 
-bool TwitchXX::Api::RemoveReaction(const utility::string_t & channel_name, unsigned long long id, unsigned int emote_id) const
+bool TwitchXX::Api::RemoveReaction(const utility::string_t &channel_name, const utility::string_t &id,
+								   unsigned int emote_id) const
 {
     TwitchChannelFeed _channel_feed(*_request);
 	return _channel_feed.RemoveReaction(channel_name, id, emote_id);
