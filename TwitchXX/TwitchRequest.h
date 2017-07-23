@@ -69,10 +69,14 @@ namespace TwitchXX
 			{
 				TwitchContainer<T> chunk;
 				auto value = _request.get(current_builder.to_uri());
-				auto subscriptions = value.at(node);
-				if (!subscriptions.is_null() && subscriptions.is_array())
+				auto target = value.at(node);
+				if (!target.is_null() && target.is_array())
 				{
-					for (const auto& subs : subscriptions.as_array())
+                    if(!target.as_array().size())
+                    {
+                        break;
+                    }
+					for (const auto& subs : target.as_array())
 					{
 						chunk.insert(Create<T>(subs));
 					}
@@ -82,6 +86,11 @@ namespace TwitchXX
 					break;
 				}
 				result.insert(chunk.begin(), chunk.end());
+
+                if(!value.has_field(U("_links")))
+                {
+                    break;
+                }
 
 				auto next = value.at(U("_links")).at(U("next"));
 				if (chunk.size() < max_limit && !next.is_null() && next.is_string())

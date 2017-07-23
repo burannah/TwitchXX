@@ -508,7 +508,7 @@ TEST(Create,TwitchPost)
 		post = TwitchXX::Create<TwitchXX::TwitchPost>(v);
 	});
 
-	EXPECT_GT(post.Id.Get().size(), 20);
+	EXPECT_GT(post.Id.Get().size(), 1);
 	EXPECT_EQ(post.Created.Get(), TwitchXX::DateFromString(U("2016-01-29T21:07:23.075611Z")));
 	EXPECT_EQ(post.Created.to_string(), U("2016-01-29T21:07:23Z"));
 	EXPECT_FALSE(post.Deleted);
@@ -532,7 +532,7 @@ TEST(Create,TwitchPost)
 TEST(Create, TwitchEmoticon)
 {
 	auto s = U(" {\
-		\"regex\": \"\\:-?\\(\",\
+		\"regex\": \"\\\\:-?\\\\(\",\
 		\"images\" : [\
 	{\
 		\"emoticon_set\": null,\
@@ -558,7 +558,7 @@ TEST(Create, TwitchEmoticon)
 		emote = TwitchXX::Create<TwitchXX::TwitchEmoticon>(v);
 	});
 
-	EXPECT_EQ(emote.Regex.Get(), U("\\:-?\\(")); //TODO: Fails but looks like it's JSON parsing error. Postponed
+	EXPECT_EQ(emote.Regex.Get(), U("\\:-?\\("));
 	auto images = emote.Images;
 	EXPECT_EQ(images.size(), 2);
 	auto it = images.begin();
@@ -642,9 +642,9 @@ TEST(Create, TwitchIngest)
 
 	EXPECT_EQ(ingest.Name.Get(), U("EU: Amsterdam, NL"));
 	EXPECT_FALSE(ingest.Default.Get());
-	EXPECT_EQ(ingest.Id.Get(), 24U);
+	EXPECT_EQ(ingest.Id.Get(), 24);
 	EXPECT_EQ(ingest.UrlTemplate.Get(), U("rtmp://live-ams.twitch.tv/app/{stream_key}"));
-	EXPECT_EQ(ingest.Availability.Get(), U("1.0"));
+	EXPECT_EQ(ingest.Availability.Get(), 1.0);
 }
 
 TEST(Create, TwitchVideo)

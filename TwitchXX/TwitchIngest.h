@@ -19,7 +19,7 @@ namespace TwitchXX
 		Property<utility::string_t> UrlTemplate;
 
 		///Supported version information
-		Property<utility::string_t> Availability; //TODO: Introduce version type?
+		Property<double> Availability; //TODO: Introduce version type?
 
 
 		///Less than operator

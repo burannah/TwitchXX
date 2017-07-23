@@ -8,10 +8,10 @@ TEST_F(VideosTest, GetVideo)
 
 	ASSERT_NO_THROW(
 	{
-		video = _api->GetVideo(87775038U);
+		video = _api->GetVideo(158001473U);
 	});
 
-	EXPECT_EQ(video.ChannelName.Get(), U("waveafterwave2ndlife"));
+	EXPECT_EQ(video.ChannelName.Get(), U("starladder1"));
 }
 
 TEST_F(VideosTest, GetTopVideos)

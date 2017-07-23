@@ -26,7 +26,7 @@ namespace TwitchXX
 		///@param user_name self name
 		///@param target_name whom to block
 		///@return blocked user record from server
-		TwitchXX::TwitchBlockedUser BlockUser(const utility::string_t& user_name, const utility::string_t& target_name) const;
+		TwitchUser BlockUser(const utility::string_t &user_name, const utility::string_t &target_name) const;
 
 		///Remove user from blocked list
 		///@param user_name self name
@@ -90,7 +90,7 @@ namespace TwitchXX
 
 	template<> TwitchUser Create<TwitchUser>(const web::json::value& value); ///< Constructs TwitchUser object from json
 	template<> TwitchBlockedUser Create<TwitchBlockedUser>(const web::json::value& value); ///< Create TwitchBlockedUser object from Json
-	template<> TwitchFollowedChannel Create<TwitchFollowedChannel>(const web::json::value& value); ///< Create descriptor on followed channel 
+	template<> TwitchFollowedChannel Create<TwitchFollowedChannel>(const web::json::value& value); ///< Create descriptor on followed channel
 	template<> AuthToken Create<AuthToken>(const web::json::value& value); ///< Create user status object;
 	
 }

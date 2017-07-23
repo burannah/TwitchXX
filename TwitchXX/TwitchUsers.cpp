@@ -37,11 +37,11 @@ TwitchXX::TwitchBlockedUsersContainer TwitchXX::TwitchUsers::GetBlocked(const ut
 	return GetObjectsArrayByNext<TwitchBlockedUser>(builder, U("blocks"));
 }
 
-TwitchXX::TwitchBlockedUser TwitchXX::TwitchUsers::BlockUser(const utility::string_t& user_name, const utility::string_t& target_name) const
+TwitchXX::TwitchUser TwitchXX::TwitchUsers::BlockUser(const utility::string_t &user_name, const utility::string_t &target_name) const
 {
 	web::uri_builder builder{U("/users/") + user_name + U("/blocks/") + target_name};
 	auto response = _request.put(builder.to_uri());
-	return Create<TwitchBlockedUser>(response);
+	return Create<TwitchUser>(response.at(U("user")));
 }
 
 bool TwitchXX::TwitchUsers::UblockUser(const utility::string_t& user_name, const utility::string_t& target_name) const

@@ -228,7 +228,7 @@ TwitchXX::TwitchBlockedUsersContainer TwitchXX::Api::GetBlockedUsers(const utili
 	return _users.GetBlocked(user_name);
 }
 
-TwitchXX::TwitchBlockedUser TwitchXX::Api::BlockUser(const utility::string_t& user_name, const utility::string_t& target_name) const
+TwitchXX::TwitchUser TwitchXX::Api::BlockUser(const utility::string_t &user_name, const utility::string_t &target_name) const
 {
     TwitchUsers _users(*_request);
 	return _users.BlockUser(user_name, target_name);
@@ -336,7 +336,7 @@ TwitchXX::TwitchVideosContainer TwitchXX::Api::GetTopVideo(const utility::string
 TwitchXX::TwitchVideosContainer TwitchXX::Api::GetFollowedVideo(const utility::string_t& broadcast_type) const
 {
 	options op;
-	op[U("limit")] = 100;
+	op[U("limit")] = U("100");
 	if(broadcast_type.size())
 	{
 		op[U("broadcast_type")] = broadcast_type;

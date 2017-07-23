@@ -39,6 +39,7 @@ TwitchXX::TwitchVideo TwitchXX::Create<TwitchXX::TwitchVideo>(const web::json::v
 	video.Description.Set(*w[U("description")]);
 	video.BroadcastId.Set(*w[U("broadcast_id")]);
 	video.Id.Set(*w[U("_id")]);
+	video.Status.Set(*w[U("status")]);
 	video.TagList.Set(*w[U("tag_list")]);
 	video.Recorded.from_string(*w[U("recorded_at")]);
 	video.Game.Set(*w[U("game")]);

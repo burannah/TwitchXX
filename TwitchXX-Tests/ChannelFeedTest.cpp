@@ -64,7 +64,7 @@ TEST_F(ChannelFeedTest, CreateDeletePost)
 
 TEST_F(ChannelFeedTest, AddDeleteReaction)
 {
-    std::this_thread::sleep_for(std::chrono::duration<int64_t>(7)); //To prevent 500 error from twitch
+    std::this_thread::sleep_for(std::chrono::duration<int64_t>(10)); //To prevent 500 error from twitch
 	TwitchXX::TwitchPost post;
 	utility::string_t post_body(U("kappa for reaction!"));
 
