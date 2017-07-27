@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.5)
 project(TwitchSpy)
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
