@@ -49,6 +49,11 @@ add_subdirectory(TwitchXX)
 
 if(BUILD_TESTS)
     message("Building tests!")
+    macro(install)
+    endmacro()
     add_subdirectory(TwitchXX-Tests)
+    macro(install)
+        _install(${ARGN})
+    endmacro()
 endif()
 

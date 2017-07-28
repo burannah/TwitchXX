@@ -6,11 +6,15 @@
 #include "TwitchChannelFeed.h"
 #include "TwitchChat.h"
 #include "TwitchIngests.h"
+#include "TwitchUsers.h"
+#include "TwitchTeams.h"
+#include "TwitchVideos.h"
 
 namespace TwitchXX
 {
 	std::shared_ptr<Logger> Log = std::make_shared<Logger>();
 	extern void trim(utility::string_t& s);
+    std::shared_ptr<MakeRequest> _request;
 }
 TwitchXX::Api::Api(const utility::string_t& client_id, Version version, std::shared_ptr<Logger> log)
 {

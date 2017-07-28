@@ -105,7 +105,7 @@ TEST_F(UsersTest, GetCurrentUserStatus)
 	EXPECT_EQ(status.Name.Get(), U("burannah"));
 	using T = std::underlying_type_t<TwitchXX::AuthScope>;
 	auto token_scopes = status.AuthorizationScopes.Get();
-	for(const auto& scope : TwitchXX::TwitchUsers::Scopes)
+	for(const auto& scope : TwitchXX::TwitchUser::Scopes)
 	{
 		auto has_flag = token_scopes & scope.first;
 		if(!has_flag)

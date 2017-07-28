@@ -9,26 +9,6 @@
 #include <bitset>
 #include "TwitchChat.h"
 
-std::map<TwitchXX::AuthScope, utility::string_t> TwitchXX::TwitchUsers::Scopes = {
-	{AuthScope::USER_READ,U("user_read")},
-	{AuthScope::USER_BLOCKS_EDIT,U("user_blocks_edit")},
-	{AuthScope::USER_BLOCKS_READ,U("user_blocks_read")},
-	{AuthScope::USER_FOLLOWS_EDIT,U("user_follows_edit")},
-	{AuthScope::CHANNEL_READ,U("channel_read")},
-	{AuthScope::CHANNEL_EDITOR,U("channel_editor")},
-	{AuthScope::CHANNEL_COMMERCIAL,U("channel_commercial")},
-	{AuthScope::CHANNEL_STREAM,U("channel_stream")},
-	{AuthScope::CHANNEL_SUBSCRIPTIONS,U("channel_subscriptions")},
-	{AuthScope::USER_SUBSCRIPTIONS,U("user_subscriptions")},
-	{AuthScope::CHANNEL_CHECK_SUBSCRIPTION,U("channel_check_subscription")},
-	{AuthScope::CHAT_LOGIN,U("chat_login")},
-	{AuthScope::CHANNEL_FEED_READ,U("channel_feed_read")},
-	{AuthScope::CHANNEL_FEED_EDIT,U("channel_feed_edit")}
-};
-
-std::map<utility::string_t, TwitchXX::AuthScope> TwitchXX::TwitchUsers::Rscopes = {};
-
-
 TwitchXX::TwitchBlockedUsersContainer TwitchXX::TwitchUsers::GetBlocked(const utility::string_t& user_name) const
 {
 	static const size_t limit = 100;
@@ -269,11 +249,11 @@ TwitchXX::AuthToken TwitchXX::Create<TwitchXX::AuthToken>(const web::json::value
 
 	AuthScope scope = {};
 
-	if(TwitchUsers::Rscopes.size() == 0)
+	if(TwitchUser::Rscopes.size() == 0)
 	{
-		for (const auto& entry : TwitchUsers::Scopes)
+		for (const auto& entry : TwitchUser::Scopes)
 		{
-			TwitchUsers::Rscopes[entry.second] = entry.first;
+			TwitchUser::Rscopes[entry.second] = entry.first;
 		}
 	}
 
@@ -286,7 +266,7 @@ TwitchXX::AuthToken TwitchXX::Create<TwitchXX::AuthToken>(const web::json::value
 			throw TwitchException("Unknown scope!");
 		}
 #endif
-		scope = scope | TwitchUsers::Rscopes[s.as_string()];
+		scope = scope | TwitchUser::Rscopes[s.as_string()];
 	}
 	status.AuthorizationScopes.Set(scope);
 

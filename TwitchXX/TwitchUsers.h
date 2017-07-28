@@ -9,9 +9,6 @@ namespace TwitchXX
 	class TwitchUsers : public TwitchRequest
 	{
 	public:
-		static std::map<AuthScope, utility::string_t> Scopes;
-		static std::map<utility::string_t, AuthScope> Rscopes;
-
 		///Constructor
 		explicit TwitchUsers(MakeRequest request)
 			: TwitchRequest(request)

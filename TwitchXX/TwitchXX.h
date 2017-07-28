@@ -11,11 +11,12 @@
 #include "TwitchStream.h"
 #include "TwitchFeaturedStream.h"
 #include "TwitchPost.h"
-#include "TwitchUsers.h"
+#include "TwitchUser.h"
 #include "TwitchFollower.h"
-#include "TwitchIngests.h"
-#include "TwitchTeams.h"
-#include "TwitchVideos.h"
+#include "TwitchIngest.h"
+#include "TwitchTeam.h"
+#include "TwitchVideo.h"
+#include "AuthToken.h"
 
 namespace TwitchXX
 {
@@ -104,10 +105,6 @@ namespace TwitchXX
 		TwitchVideo GetVideo(unsigned long long id) const;
 		TwitchVideosContainer GetTopVideo(const utility::string_t& game = U(""), const utility::string_t& period = U("week")) const;
 		TwitchVideosContainer GetFollowedVideo(const utility::string_t& broadcast_type) const;
-
-
-	private:
-        std::shared_ptr<MakeRequest> _request;
 	};
 
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "TwitchDef.h"
 #include "Property.h"
+#include "AuthToken.h"
 
 namespace TwitchXX
 {
@@ -9,6 +10,9 @@ namespace TwitchXX
 	class TwitchUser
 	{
 	public:
+		static std::map<AuthScope, utility::string_t> Scopes;
+		static std::map<utility::string_t, AuthScope> Rscopes;
+
 		///User creation date
 		Property<Date> Created;
 		///Name
