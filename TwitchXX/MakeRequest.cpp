@@ -55,7 +55,7 @@ namespace TwitchXX
 	{
         if(options.find(U("api_key")) == options.end() || options.find(U("version")) == options.end() || options.find(U("token")) == options.end())
         {
-            throw std::invalid_argument("Not enough parameters");
+            throw std::invalid_argument("MakeRequest::MakeRequest(): Not enough parameters");
         }
         _client_id = options.at(U("api_key"));
         _api_version = options.at(U("version"));
