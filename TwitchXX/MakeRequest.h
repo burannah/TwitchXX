@@ -2,6 +2,7 @@
 
 #include <string>
 #include <iostream>
+#include <utility>
 #include <cpprest/uri.h>
 #include <cpprest/json.h>
 #include <cpprest/http_client.h>
@@ -13,7 +14,6 @@
 namespace TwitchXX
 {
 
-	class value;
 	using Callback = std::function<void(const web::json::value&)>;
 
 	///Global logger
@@ -30,47 +30,39 @@ namespace TwitchXX
 			std::function<void(const web::json::value&)> callback;	///< Callback function to be executed on request's result 
 
 			RequestParams() :method(web::http::methods::GET) {};
-			RequestParams(const web::uri& uri, web::http::method method, const web::json::value& body, std::function<void(const web::json::value&)> callback) :uri(uri), method(method), body(body), callback(callback) {};
+			RequestParams(web::uri uri, web::http::method method, web::json::value body,
+						  std::function<void(const web::json::value &)> callback) :uri(std::move(uri)), method(
+                    std::move(method)), body(
+                    std::move(body)), callback(std::move(callback)) {};
 		};
 
 		///MakerRequest constructor
 		explicit MakeRequest(const std::map<utility::string_t,utility::string_t>& options /**< [in] Api-version string*/
                                                                                             );
 
-		/// MakeRequest destructor
-		virtual ~MakeRequest() {};
-        /// Default copy constructor
-        MakeRequest(const MakeRequest&) = default;
-		/// Default copy assigment operator.
-		MakeRequest& operator=(const MakeRequest&) = default;
-        /// Default move constructor
-        MakeRequest(MakeRequest&&) = default;
-		/// Default move assigment operator.
-		MakeRequest& operator=(MakeRequest&&) = default;
-
 
 		///Perform get request
 		web::json::value get(const web::uri& uri, Callback callback = Callback()) const
 		{
-			return (*this)({ uri,web::http::methods::GET,web::json::value::null(),callback });
+			return this->operator()({ uri,web::http::methods::GET,web::json::value::null(), std::move(callback)});
 		}
 
 		///Perform put request
 		web::json::value put(const web::uri& uri,const web::json::value& body = web::json::value::null(),Callback callback = Callback() ) const
 		{
-			return (*this)({ uri,web::http::methods::PUT,body,callback });
+			return this->operator()({ uri,web::http::methods::PUT,body, std::move(callback)});
 		}
 
 		///Perform post request
 		web::json::value post(const web::uri& uri, const web::json::value& body = web::json::value::null(), Callback callback = Callback()) const
 		{
-			return (*this)({ uri,web::http::methods::POST,body,callback });
+			return this->operator()({ uri,web::http::methods::POST,body, std::move(callback)});
 		}
 
 		///Perform delete request
 		web::json::value del(const web::uri& uri, Callback callback = Callback()) const
 		{
-			return (*this)({ uri,web::http::methods::DEL,web::json::value::null(),callback });
+            return this->operator()({uri, web::http::methods::DEL, web::json::value::null(), std::move(callback)});
 		}
 
 		///Last request's status code
@@ -88,7 +80,7 @@ namespace TwitchXX
 		///MakeRequest's main method.
 		///@param	params request parameters descriptor
 		///@return	response parsed to web::json::value object. Null json value if HTTP result code != OK.
-		web::json::value operator()(const RequestParams params) const;
+		web::json::value operator()(const RequestParams &params) const;
 		///Deprecated version of the request
 		///@param      uri request parameters
 		///@param      method request method type(GET by default)
@@ -98,7 +90,7 @@ namespace TwitchXX
 			const web::http::method& method = web::http::methods::GET, /**< [in] request method*/
 			web::json::value body = web::json::value()/**< [in] requests body for put and post methods */) const//TODO: By value?!
 		{
-			return (*this)({ uri,method,body,Callback() });;
+            return this->operator()({uri, method, std::move(body), Callback()});
 		}
 	};
 }

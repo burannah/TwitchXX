@@ -31,7 +31,7 @@ namespace TwitchXX
 	public:
 		///Constructor
 		///@param request transport object
-		explicit TwitchRequest(MakeRequest request)
+		explicit TwitchRequest(const MakeRequest& request)
 			:_request(request)
 		{
 
