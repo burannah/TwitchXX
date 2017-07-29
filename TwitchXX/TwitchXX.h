@@ -28,18 +28,17 @@ namespace TwitchXX
 	class TwitchChat;
 	class TwitchGames;
 
-	class Api
+    enum class Version
+    {
+        v2,
+        v3
+    };
+
+
+    class Api3
 	{
 	public:
-		enum class Version
-		{
-			v2,
-			v3
-		};
-		explicit Api(const utility::string_t& clinet_id = {}, Version version = Version::v3, std::shared_ptr<Logger> = std::shared_ptr<Logger>{});
-		Api(const Api&) = default;
-		Api(Api&& ) = default;
-		virtual ~Api();
+		explicit Api3(std::weak_ptr<Logger> log = {},const utility::string_t& client_id = {});
 		//Log
 		static void AddLogger(std::shared_ptr<Logger>log);
 
@@ -107,6 +106,6 @@ namespace TwitchXX
 		TwitchVideosContainer GetFollowedVideo(const utility::string_t& broadcast_type) const;
 	};
 
-
+    using Api = Api3;
 
 }
