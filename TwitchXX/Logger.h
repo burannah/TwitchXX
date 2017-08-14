@@ -4,6 +4,7 @@
 #include <list>
 #include <memory>
 #include <algorithm>
+#include <cpprest/details/basic_types.h>
 
 namespace TwitchXX
 {
