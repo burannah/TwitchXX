@@ -19,10 +19,10 @@ namespace TwitchXX
 	///Template function for creating Twitch objects from JSON
 	/** Default template is a stub */
 	template<typename T>
-	T Create(const web::json::value& json) = delete;
-/*	{
+	T Create(const web::json::value& json)
+	{
 		throw std::runtime_error("Unknonw requet type!");
-	}*/
+	}
 
 
 	///Base template class for other twitch request classes
@@ -31,7 +31,7 @@ namespace TwitchXX
 	public:
 		///Constructor
 		///@param request transport object
-		explicit TwitchRequest(MakeRequest request)
+		explicit TwitchRequest(const MakeRequest& request)
 			:_request(request)
 		{
 

@@ -108,13 +108,13 @@ namespace TwitchXX
 	*			   Updates last status_code field.
 	****************************************************************************************/
 
-	web::json::value MakeRequest::operator()(const RequestParams params) const
+	web::json::value MakeRequest::operator()(const RequestParams &params) const
 	{
 		web::http::client::http_client http_client(U("https://api.twitch.tv/kraken"), _config);
 		web::http::http_request request(params.method);
 
-		if (_api_version.length()) request.headers().add(U("Accept"), _api_version);
-		if (_client_id.length())request.headers().add(U("Client-ID"), _client_id);
+		if (_api_version.length() > 0) request.headers().add(U("Accept"), _api_version);
+		if (_client_id.length() > 0)request.headers().add(U("Client-ID"), _client_id);
 		if (_token.length() > 6)request.headers().add(U("Authorization"), _token);
 		request.set_request_uri({params.uri});
         request.headers().set_content_type(U("application/json"));
@@ -141,10 +141,10 @@ namespace TwitchXX
 				{
 					return response.extract_json(true);
 				}
-				else
-				{
-					return response.extract_json();
-				}
+
+
+				return response.extract_json();
+
 			}
 			else
 			{

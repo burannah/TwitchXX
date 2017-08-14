@@ -9,7 +9,6 @@
 ///Twitch games collection
 namespace TwitchXX
 {
-	extern std::shared_ptr<Logger> Log;
 	///Twitch gamess request class
 	/** This class encapsulates all requests that are related to twitch games operations (request top games basically)*/
 	class TwitchGames : public TwitchRequest
@@ -17,7 +16,7 @@ namespace TwitchXX
 	public:
 		///Constructor
 		///@param equest transport object
-		explicit TwitchGames(MakeRequest equest)
+		explicit TwitchGames(const MakeRequest& equest)
 			: TwitchRequest(equest)
 		{ 
 		};

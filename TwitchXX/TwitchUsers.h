@@ -10,7 +10,7 @@ namespace TwitchXX
 	{
 	public:
 		///Constructor
-		explicit TwitchUsers(MakeRequest request)
+		explicit TwitchUsers(const MakeRequest& request)
 			: TwitchRequest(request)
 		{
 		}

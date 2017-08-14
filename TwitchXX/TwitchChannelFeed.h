@@ -11,7 +11,7 @@ namespace TwitchXX
 	public:
 		///Constructor
 		///@param request transport object
-		explicit TwitchChannelFeed(MakeRequest request)
+		explicit TwitchChannelFeed(const MakeRequest& request)
 			: TwitchRequest(request) {} ;
 		
 		///Get posts from feed.
@@ -48,7 +48,7 @@ namespace TwitchXX
 		///@return true if operation was successfull, false otherwise.
 		bool AddReaction(const utility::string_t &channel_name, const utility::string_t &id, size_t emote_id) const;
 
-		///Remove reqction from post
+		///Remove reaction from post
 		///@param channel_name channel name
 		///@param id post id
 		///@param emote_id emotion id (see TwitchEmoticon). If id == 0 "endorse" will be removed.
