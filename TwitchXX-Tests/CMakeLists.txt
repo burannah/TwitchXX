@@ -1,6 +1,6 @@
 find_package(Boost 1.55 COMPONENTS system)
 find_package(OpenSSL REQUIRED)
-set(GTEST_MSVC_SEARCH MD)
+find_package (Threads)
 find_package(GTest REQUIRED)
 file(GLOB SOURCES *.cpp)
 set (CMAKE_CXX_STANDARD 14)
@@ -16,5 +16,5 @@ foreach(flag_var
 endforeach(flag_var)
 
 add_executable(TwitchXX-Tests ${SOURCES})
-target_link_libraries(TwitchXX-Tests TwitchXX ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES} ${LIB_CPPREST} GTest::GTest GTest::Main)
+target_link_libraries(TwitchXX-Tests TwitchXX ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES} ${LIB_CPPREST} ${GTEST_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} -lcpprest)
 install(TARGETS TwitchXX-Tests DESTINATION bin)
