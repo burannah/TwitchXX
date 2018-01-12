@@ -3,7 +3,6 @@
 #include "MakeRequest.h"
 #include "TwitchException.h"
 #include "Property.h"
-#include "TwitchRequest.h"
 
 namespace TwitchXX
 {
@@ -34,10 +33,6 @@ namespace TwitchXX
 			}
 			_config.set_proxy(proxy);
 		}
-		else
-		{
-			throw std::runtime_error("No proxy has been set");
-		}
 	}
 
 	/**
@@ -53,46 +48,29 @@ namespace TwitchXX
 	****************************************************************************************/
 	MakeRequest::MakeRequest(const std::map<utility::string_t,utility::string_t>& options)
 	{
-        if(options.find(U("api_key")) == options.end() || options.find(U("version")) == options.end() || options.find(U("token")) == options.end())
+        try
         {
-            throw std::invalid_argument("MakeRequest::MakeRequest(): Not enough parameters");
+            _client_id = options.at(U("api_key"));
+            _api_version = options.at(U("version"));
+            _token = options.at(U("token"));
         }
-        _client_id = options.at(U("api_key"));
-        _api_version = options.at(U("version"));
-        _token = options.at(U("token"));
-		try
-		{
-			//Making a "naked" request to check if we need to use proxy
-			auto response = this->operator()(U(""));
-			if (!response.is_null())
-			{
-				//Got resposne from Tiwtch. Nothing to do here anymore
-				return;
-			}
-		}
-		catch (std::exception& e)
-		{
-			utility::stringstream_t s;
-			s << "Direct connection failed with: \"" << e.what() << "\". Trying to connect though proxy" << std::endl;
-			TwitchXX::Log->Log(s.str(), Logger::LogLevel::Warning);
-		}
+        catch (const std::out_of_range&)
+        {
+            utility::stringstream_t ss;
+            ss << __FUNCTION__ << ": Not enough parameters!"
+               << " api_key=" << _client_id
+               << " version=" << _api_version
+               << " token=" << _token;
+            throw std::invalid_argument(ss.str());
+        }
+
         SetupProxy(options);
-		try
-		{
-			auto response = this->operator()(U(""));
-			if (!response.is_null())
-			{
-				//Got resposne from Tiwtch. Nothing to do here anymore
-				return;
-			}
-		}
-		catch (std::exception& e)
-		{
-			utility::stringstream_t s;
-			s << "Connect through proxy has failed either: \"" << e.what() << "\". " << std::endl;
-			Log->Log(s.str(), Logger::LogLevel::Error);
-			throw;
-		}
+
+        auto response = this->operator()(U(""));
+        if (response.is_null())
+        {
+            throw TwitchException("Got empty response");
+        }
 	}
 
 
@@ -117,7 +95,8 @@ namespace TwitchXX
 		if (_client_id.length() > 0)request.headers().add(U("Client-ID"), _client_id);
 		if (_token.length() > 6)request.headers().add(U("Authorization"), _token);
 		request.set_request_uri({params.uri});
-        request.headers().set_content_type(U("application/json"));
+        request.headers().set_content_type(U("applicatio"
+                                                     "n/json"));
 		if (!params.body.is_null())
 		{
 			utility::stringstream_t ss;
