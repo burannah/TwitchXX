@@ -28,6 +28,11 @@ TwitchXX::Api3::Api3(std::weak_ptr<Logger> log,const utility::string_t& client_i
 		utility::string_t name, value;
 		std::getline(iss, name, U('='));
 		std::getline(iss, value);
+        if(name[0] == U('#'))
+        {
+            //Skip comments
+            continue;
+        }
 		trim(name);
 		trim(value);
         options[name] = value;

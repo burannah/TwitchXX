@@ -30,7 +30,7 @@ TEST_F(ChannelFeedTest,GetPostById)
 	TwitchXX::TwitchPost post;
 	ASSERT_NO_THROW(
 	{
-		post = _api->GetPost(U("bangbangalang"),U("7288b741-3341-49b1-b35c-ac87a7be7db6"));
+		post = _api->GetPost(U("burannah"),U("0d733d5d-c192-4b78-b662-bcf3cb4e7951"));
 	});
 
 	EXPECT_GT(post.Id.Get().size(), 0);
