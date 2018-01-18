@@ -20,6 +20,7 @@ class Clip
 {
 public:
 
+    ///Simple structure to reference a clip
     struct Handle
     {
         utility::string_t Id;
@@ -28,6 +29,7 @@ public:
         size_t            Remaining;
     };
 
+    ///Get a link to the clip editing page
     static Handle CreateAndGetHandle(const utility::string_t &broadcaster);
 
     explicit Clip (const utility::string_t& id);

@@ -8,7 +8,7 @@
 #include <cpprest/http_client.h>
 #include <cpprest/details/basic_types.h> //TODO: CPPRESTSDK dependency
 #include "Logger.h"
-
+#include "TwitchDef.h"
 
 
 namespace TwitchXX
@@ -35,6 +35,13 @@ namespace TwitchXX
                     std::move(method)), body(
                     std::move(body)), callback(std::move(callback)) {};
 		};
+
+		///Global request parameters holder
+		static options& getOptions()
+		{
+			static options opt;
+			return opt;
+		}
 
 		///MakerRequest constructor
 		explicit MakeRequest(const std::map<utility::string_t,utility::string_t>& options /**< [in] Api-version string*/
