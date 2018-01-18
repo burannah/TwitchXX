@@ -15,6 +15,6 @@ foreach(flag_var
    endif(${flag_var} MATCHES "/MD")
 endforeach(flag_var)
 
-add_executable(TwitchXX-Tests ${SOURCES})
+add_executable(TwitchXX-Tests ${SOURCES} ClipTest.cpp)
 target_link_libraries(TwitchXX-Tests TwitchXX ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES} ${LIB_CPPREST} ${GTEST_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} -lcpprest)
 install(TARGETS TwitchXX-Tests DESTINATION bin)

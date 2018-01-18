@@ -239,48 +239,4 @@ namespace TwitchXX
     {
         return lhs.Get() == rhs.Get();
     }
-	/*
-	template<typename Val, typename Key>
-	class PropertyMap
-	{
-	private:
-		std::map<Key, Val> _val;
-	public:
-		const Val& Get(const Key& key) const
-		{
-			if (_val.find(key) != _val.end()) 
-			{
-				return _val[key];
-			}
-			else
-			{
-				throw std::out_of_range("Key not found: " + key);
-			}
-		}
-
-		Val& Get(const Key& key)
-		{
-			return _val[key];
-		}
-
-		bool Haskey(const Key& key)
-		{
-			return _val.find(key) != _val.end();
-		}
-
-		auto begin()
-		{
-			return _val.begin();
-		}
-
-		auto end()
-		{
-			return _val.end();
-		}
-
-		void Set(const Key& key, const Val& val)
-		{
-			_val[key] = val;
-		}
-	};*/
 }
