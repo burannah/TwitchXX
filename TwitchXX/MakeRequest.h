@@ -19,9 +19,12 @@ namespace TwitchXX
 	///Global logger
 	extern std::shared_ptr<Logger> Log;
 
+    ///Class to perform a web request.
     class MakeRequest
 	{
 	public:
+
+        ///Request params descriptor
 		struct RequestParams
 		{
 			web::uri uri;										///< Request uri
@@ -42,6 +45,9 @@ namespace TwitchXX
 			static options opt;
 			return opt;
 		}
+
+        ///Init request options by default config
+        static options& initOptionsFromConfig(const std::string& path = std::string());
 
 		///MakerRequest constructor
 		explicit MakeRequest(const std::map<utility::string_t,utility::string_t>& options /**< [in] Api-version string*/
@@ -77,7 +83,6 @@ namespace TwitchXX
 
 	private:
 		utility::string_t _client_id;
-		utility::string_t _api_version;
 		web::http::client::http_client_config _config;
 		mutable web::http::status_code _last_status;
 		utility::string_t _token;

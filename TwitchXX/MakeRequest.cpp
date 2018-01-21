@@ -3,6 +3,7 @@
 #include "MakeRequest.h"
 #include "TwitchException.h"
 #include "Property.h"
+#include "Utility.h"
 
 namespace TwitchXX
 {
@@ -22,13 +23,13 @@ namespace TwitchXX
     void MakeRequest::SetupProxy(const std::map<utility::string_t, utility::string_t> &options)
 	{
 		//Check global Options object for proxy settings;
-		if (options.find(U("proxy")) != options.end())
+		if (options.find("proxy") != options.end())
 		{
-			web::web_proxy proxy(options.at(U("proxy")));
+			web::web_proxy proxy(options.at("proxy"));
 			//Check that both login and password were found in the options.
-			if (options.find(U("proxy_user")) != options.find(U("proxy_password")))
+			if (options.find("proxy_user") != options.find("proxy_password"))
 			{
-				web::credentials creds(options.at(U("proxy_user")), options.at(U("proxy_password")));
+				web::credentials creds(options.at("proxy_user"), options.at("proxy_password"));
 				proxy.set_credentials(creds);
 			}
 			_config.set_proxy(proxy);
@@ -40,7 +41,7 @@ namespace TwitchXX
 	*  @brief      MakeRequest constructor
 	*
 	*  @usage      Creates MakeRequest object. 
-	*
+	*1
 	*  @param      options - string map containing request options. apiString api version string, ex. application/vnd.twitchtv.v3+json
 	*  @param      clientId Client-id value
 	*  @param	   token user's token. Some requests requires auth scope granted by user
@@ -50,23 +51,21 @@ namespace TwitchXX
 	{
         try
         {
-            _client_id = options.at(U("api_key"));
-            _api_version = options.at(U("version"));
-            _token = options.at(U("token"));
+            _client_id = options.at("api_key");
+            _token = options.at("token");
         }
         catch (const std::out_of_range&)
         {
             utility::stringstream_t ss;
             ss << __FUNCTION__ << ": Not enough parameters!"
                << " api_key=" << _client_id
-               << " version=" << _api_version
                << " token=" << _token;
             throw std::invalid_argument(ss.str());
         }
 
         SetupProxy(options);
 
-        auto response = this->operator()(U(""));
+        auto response = this->operator()("games/top");
         if (response.is_null())
         {
             throw TwitchException("Got empty response");
@@ -88,15 +87,13 @@ namespace TwitchXX
 
 	web::json::value MakeRequest::operator()(const RequestParams &params) const
 	{
-		web::http::client::http_client http_client(U("https://api.twitch.tv/kraken"), _config);
+		web::http::client::http_client http_client("https://api.twitch.tv/helix", _config);
 		web::http::http_request request(params.method);
 
-		if (_api_version.length() > 0) request.headers().add(U("Accept"), _api_version);
-		if (_client_id.length() > 0)request.headers().add(U("Client-ID"), _client_id);
-		if (_token.length() > 6)request.headers().add(U("Authorization"), _token);
+		if (_client_id.length() > 0)request.headers().add("Client-ID", _client_id);
+		if (_token.length() > 6)request.headers().add("Authorization", "Bearer " + _token);
 		request.set_request_uri({params.uri});
-        request.headers().set_content_type(U("applicatio"
-                                                     "n/json"));
+        request.headers().set_content_type("application/json");
 		if (!params.body.is_null())
 		{
 			utility::stringstream_t ss;
@@ -116,7 +113,7 @@ namespace TwitchXX
 			this->_last_status = response.status_code();
 			if (response.status_code() == web::http::status_codes::OK)
 			{
-				if (response.headers().content_type().find(U("json")) == std::wstring::npos)
+				if (response.headers().content_type().find("json") == std::wstring::npos)
 				{
 					return response.extract_json(true);
 				}
@@ -131,11 +128,11 @@ namespace TwitchXX
 				Property<utility::string_t, std::string> msg;
 				if (!error.is_null())
 				{
-					msg.Set(error.at(U("error")).as_string() + U(": ") + error.at(U("message")).as_string());
+					msg.Set(error.at("error").as_string() + ": " + error.at("message").as_string());
 				}
 				else
 				{
-					msg.Set(U("")); //No error text in response
+					msg.Set(""); //No error text in response
 				}
 
 				throw TwitchException(msg.to_string(), response.status_code());
@@ -158,4 +155,40 @@ namespace TwitchXX
 		}
 
 	}
+
+    /**
+    ****************************************s*************************************************
+    *  @brief      MakeRequest constructor
+    *
+    *  @usage      Creates MakeRequest object.
+    *1
+    *  @param      options - string map containing request options. apiString api version string, ex. application/vnd.twitchtv.v3+json
+    *  @param      clientId Client-id value
+    *  @param	   token user's token. Some requests requires auth scope granted by user
+    *			   If token is not set such requests will fail.
+    ****************************************************************************************/
+
+    options &MakeRequest::initOptionsFromConfig(const std::string &path)
+    {
+        auto & opt = getOptions();
+
+        utility::ifstream_t options_file(!path.empty() ?  path : "twitchxx.cfg");
+        utility::string_t line;
+        while(std::getline(options_file,line))
+        {
+            utility::stringstream_t iss(line);
+            utility::string_t name, value;
+            std::getline(iss, name, '=');
+            std::getline(iss, value);
+            if(name[0] == '#')
+            {
+                //Skip comments
+                continue;
+            }
+            trim(name);
+            trim(value);
+			opt.insert({name, value});
+        }
+
+    }
 }

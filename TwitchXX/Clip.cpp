@@ -9,17 +9,17 @@ TwitchXX::Clip::Handle TwitchXX::Clip::CreateAndGetHandle(const utility::string_
 {
     TwitchXX::Clip::Handle handle;
     MakeRequest request(MakeRequest::getOptions());
-    web::uri_builder builder(U("/clips"));
-    builder.append_query(U("broadcaster_id"),broadcaster);
+    web::uri_builder builder("/clips");
+    builder.append_query("broadcaster_id",broadcaster);
 
     //TODO: Extract headers from the response
     auto response = request.post(builder.to_uri());
-    if(response.has_field(U("data")) && !response.at(U("data")).is_null() && response.at(U("data")).size())
+    if(response.has_field("data") && !response.at("data").is_null() && response.at("data").size())
     {
-        auto data = response.at(U("data")).as_array();
+        auto data = response.at("data").as_array();
 
-        handle.Id = data.begin()->at(U("id")).as_string();
-        handle.EditUrl = data.begin()->at(U("edit_url")).as_string();
+        handle.Id = data.begin()->at("id").as_string();
+        handle.EditUrl = data.begin()->at("edit_url").as_string();
     }
 
     return handle;

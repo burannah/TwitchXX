@@ -29,18 +29,6 @@ namespace TwitchXX
 	{
 		std::tm t = {};
 		utility::stringstream_t ss(cs);
-		ss >> std::get_time(&t, U("%Y-%m-%dT%H:%M:%S"));
-		if (ss.fail())
-		{
-			throw std::runtime_error("Can't parse channel creation time!");
-		}
-		return std::chrono::system_clock::from_time_t(std::mktime(&t));
-	}
-/*
-	Date DateFromString(const std::string& cs)
-	{
-		std::tm t = {};
-		std::stringstream ss(cs);
 		ss >> std::get_time(&t, "%Y-%m-%dT%H:%M:%S");
 		if (ss.fail())
 		{
@@ -48,7 +36,7 @@ namespace TwitchXX
 		}
 		return std::chrono::system_clock::from_time_t(std::mktime(&t));
 	}
-*/
+
 	utility::string_t DateToString(const Date& tp)
 	{
 		auto t = std::chrono::system_clock::to_time_t(tp);
@@ -59,7 +47,7 @@ namespace TwitchXX
 			t = std::chrono::system_clock::to_time_t(tp - std::chrono::hours(1));
 			tt = localtime(&t);
 		}
-		ss << std::put_time(tt, U("%Y-%m-%dT%H:%M:%SZ"));
+		ss << std::put_time(tt, "%Y-%m-%dT%H:%M:%SZ");
 		return ss.str();
 	}
 }
