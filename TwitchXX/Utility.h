@@ -8,6 +8,8 @@
 namespace TwitchXX
 {
 	extern void trim(utility::string_t& s);
+	Date DateFromString(const utility::string_t& cs);
+    utility::string_t DateToString(const Date& tp);
 }
 
 #endif //TWITCHXX_UTILITY_H
