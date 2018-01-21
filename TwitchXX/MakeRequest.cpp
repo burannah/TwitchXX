@@ -12,7 +12,7 @@ namespace TwitchXX
 	*****************************************************************************************
 	*  @brief      MakreRequest setup proxy. 
 	*
-	*  @usage      SetupProxy() requires options to be defined and filled
+	*  @details      SetupProxy() requires options to be defined and filled
 	*			   with values (proxy & proxy_password).
 	*			   Note: Proxy host must starts with connection scheme (i.e. http,https etc).
 	*  @param      options options dictionary (must contain proxy and/or proxy_password)
@@ -40,7 +40,7 @@ namespace TwitchXX
 	****************************************s*************************************************
 	*  @brief      MakeRequest constructor
 	*
-	*  @usage      Creates MakeRequest object. 
+	*  @details    Creates MakeRequest object.
 	*1
 	*  @param      options - string map containing request options. apiString api version string, ex. application/vnd.twitchtv.v3+json
 	*  @param      clientId Client-id value
@@ -77,7 +77,7 @@ namespace TwitchXX
 	*****************************************************************************************
 	*  @brief      MakreRequest main method
 	*
-	*  @usage      Performs request to Twitch service
+	*  @details      Performs request to Twitch service
 	*
 	*  @param      params MakeRequest::ReqiestParams object - request descriptor
 	*
@@ -160,7 +160,7 @@ namespace TwitchXX
     ****************************************s*************************************************
     *  @brief      MakeRequest constructor
     *
-    *  @usage      Creates MakeRequest object.
+    *  @details      Creates MakeRequest object.
     *1
     *  @param      options - string map containing request options. apiString api version string, ex. application/vnd.twitchtv.v3+json
     *  @param      clientId Client-id value

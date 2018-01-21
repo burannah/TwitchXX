@@ -11,14 +11,25 @@
 
 namespace TwitchXX
 {
+	///Left trim
+	///@details Trim left part of the string
+	///@param s - string to be trimmed
 	void ltrim(utility::string_t& s)
 	{
 		s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int,int>(std::isspace))));
 	}
+
+	///Right trim
+	///@details Trim right part of the string
+	///@param s - string to be trimmed
 	void rtrim(utility::string_t& s)
 	{
 		s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int,int>(std::isspace))).base(),s.end());
 	}
+
+	///Trim string
+	///@details Trim both endings of the string
+	///@param s - string to be trimmed
 	void trim(utility::string_t& s)
 	{
 		ltrim(s);

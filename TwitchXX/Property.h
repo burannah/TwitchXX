@@ -234,6 +234,7 @@ namespace TwitchXX
 		void from_string(const string_type str) { _value = Serializer<T, string_type>::FromString(str); }
 	};
 
+	///Equality operator for Property class instances
     template<typename T, typename string_type>
     inline bool operator==(const Property<T, string_type>& lhs, const Property<T, string_type>& rhs)
     {

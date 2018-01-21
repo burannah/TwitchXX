@@ -23,17 +23,34 @@ public:
     ///Simple structure to reference a clip
     struct Handle
     {
-        utility::string_t Id;
-        utility::string_t EditUrl;
-        size_t            Limit;
-        size_t            Remaining;
+        utility::string_t Id;               ///< Clip id
+        utility::string_t EditUrl;          ///< Url to edit this clip
+        size_t            Limit;            ///< Maximum number of Create Clip requests allowed (per minute)
+        size_t            Remaining;        ///< Number of Create Clip requests remaining for current time interval
     };
 
-    ///Get a link to the clip editing page
+    /**
+    *****************************************************************************************
+    *  @brief      Create a new clip and get its id and URL for editing.
+    *  @details    To create a clip - call this function with broadcaster id. Broadcaster should
+    *              be live, or you'll get 404 error back
+    *  @param      broadcaster - broadcaster id (NOT CHANNEL NAME) - if wrong id provided will
+    *              return 503 error back.
+    *  @return     Handle structure with populated Id and EditUrl fields.
+    ****************************************************************************************/
     static Handle CreateAndGetHandle(const utility::string_t &broadcaster);
 
+    /**
+    *****************************************************************************************
+    *  @brief      Create an instance of TwitchXX::Clip class - representing some clip.
+    *  @details    To get a clip info just call the constructor with id value. If id is wrong
+    *              you'll get 404 error back
+    *  @param      id - clip id - usually five random words
+    ****************************************************************************************/
     explicit Clip (const utility::string_t& id);
 
+    //@{
+    /** Clip properties. */
     Property<utility::string_t> Id;
 
     Property<utility::string_t> Url;
@@ -57,6 +74,7 @@ public:
     Property<Date>              Created;
 
     Property<utility::string_t> Thumb;
+    //@}
 };
 
 }

@@ -14,6 +14,7 @@
 namespace TwitchXX
 {
 
+    ///Callback handler type for all request methods (post,get,del,put)
 	using Callback = std::function<void(const web::json::value&)>;
 
 	///Global logger
