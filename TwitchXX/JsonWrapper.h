@@ -20,7 +20,8 @@ namespace TwitchXX
 		virtual unsigned int as_uint() const = 0;
 		virtual unsigned long long as_ulong() const { return 0; }
 
-
+		///@{
+		/* Type casting method for auto resolving JsonValue */
 		virtual operator utility::string_t() const { return as_string(); };
 		virtual operator int() const { return as_integer(); };
 		virtual operator bool() const { return as_bool(); };
@@ -28,7 +29,7 @@ namespace TwitchXX
 		virtual operator web::json::number() const { return as_number();}
 		virtual operator unsigned int() const { return as_uint(); }
 		virtual operator unsigned long long() const { return as_ulong(); }
-
+		///@}
 
 	};
 	//A web::json::value objects
@@ -46,7 +47,7 @@ namespace TwitchXX
 
 		///@{
 		/** Basic type getters for stub-object.
-		* These methods dosen't get the actual value type of underlying, so it's still can throw. (It's intentional. To prevent implicit type conversions e.t.c).
+		* These methods doesn't get the actual value type of underlying, so it's still can throw. (It's intentional. To prevent implicit type conversions e.t.c).
 		*/
 		utility::string_t as_string() const override
 		{ return _json.as_string(); }
@@ -64,10 +65,10 @@ namespace TwitchXX
 		{ return  _json.as_number(); }
 
 		unsigned int as_uint() const override
-		{ return _json.is_string() ? std::stoul(_json.as_string()) : _json.as_number().to_uint32();	}
+		{ return static_cast<unsigned int>(_json.is_string() ? std::stoul(_json.as_string()) : _json.as_number().to_uint32());	}
 
 		unsigned long long as_ulong() const override
-		{ return _json.is_string()? std::stoll(_json.as_string()) : _json.as_number().to_uint64(); }
+		{ return _json.is_string() ? static_cast<uint64_t>(std::stoll(_json.as_string())) : _json.as_number().to_uint64(); }
 		///@}
 
 	private:
@@ -81,13 +82,16 @@ namespace TwitchXX
 	class JsonNullValueWrapper: public JsonValueWrapper
 	{
 	public:
-		utility::string_t as_string() const override { return utility::string_t(); };
+        ///@{
+        /* For JsonNullValueWrapper these methods always return default values */
+        utility::string_t as_string() const override { return utility::string_t(); };
 		int as_integer() const override { return 0; };
 		bool as_bool() const override { return false; }
 		double as_double() const override { return 0; };
 		web::json::number as_number() const override { return web::json::value(0).as_number(); };
 		unsigned int as_uint() const override { return 0; }
 		unsigned long long as_ulong() const override { return 0; }
+        ///@}
 	};
 
 	/// web::json::value::object wrapper class

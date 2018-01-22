@@ -203,6 +203,7 @@ namespace TwitchXX
 		};
 	}
 
+    ///Serializer/Deserializer helper class for Property
 	template<typename Val, typename string_type>
 	class Serializer
 	{
@@ -212,6 +213,7 @@ namespace TwitchXX
 	};
 
 
+    ///Class for storing object's properties
 	template <typename T, typename string_type = utility::string_t>
 	class Property
 	{
@@ -224,7 +226,18 @@ namespace TwitchXX
 
 		Property<T, string_type>& operator=(const Property<T, string_type>& p) = default;
 		Property<T, string_type>& operator=(Property<T, string_type>&& p) = default;
-		const T& Get() const { return _value; }
+		inline Property<T, string_type>& operator=(const T& t)
+        {
+            _value = T;
+            return *this;
+        };
+
+        inline Property<T, string_type>&operator=(T&& t)
+        {
+            _value = std::move(t);
+        };
+
+        const T& Get() const { return _value; }
 
 		operator T() const { return _value; }
 
