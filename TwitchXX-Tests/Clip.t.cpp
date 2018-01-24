@@ -11,7 +11,7 @@
 
 class ClipTest : public ::testing::Test
 {
-    virtual void SetUp();
+    void SetUp() override;
 };
 
 void ClipTest::SetUp()
@@ -23,7 +23,6 @@ void ClipTest::SetUp()
 TEST_F(ClipTest, GetClip)
 {
     //TODO: Fix with get any live channel first
-    TwitchXX::MakeRequest::initOptionsFromConfig();
     auto handle = TwitchXX::Clip::CreateAndGetHandle("44322889");
 
     EXPECT_GT(handle.Id.size(),0);
@@ -35,7 +34,6 @@ TEST_F(ClipTest, GetClip)
 TEST_F(ClipTest, GetClip_Offline)
 {
     //TODO: Fix with always offline channel id
-    TwitchXX::MakeRequest::initOptionsFromConfig();
     EXPECT_THROW(TwitchXX::Clip::CreateAndGetHandle("44322889"), TwitchXX::TwitchException);
 
 }

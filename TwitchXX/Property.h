@@ -228,7 +228,7 @@ namespace TwitchXX
 		Property<T, string_type>& operator=(Property<T, string_type>&& p) = default;
 		inline Property<T, string_type>& operator=(const T& t)
         {
-            _value = T;
+            _value = t;
             return *this;
         };
 

@@ -6,6 +6,6 @@ find_package(GTest REQUIRED)
 set (CMAKE_CXX_STANDARD 14)
 
 
-add_executable(TwitchXX-Tests ClipTest.cpp TwitchXX-Tests.cpp)
+add_executable(TwitchXX-Tests Clip.t.cpp TwitchXX-Tests.cpp Entitlement.t.cpp)
 target_link_libraries(TwitchXX-Tests TwitchXX ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES} ${LIB_CPPREST} ${GTEST_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} -lcpprest)
 install(TARGETS TwitchXX-Tests DESTINATION bin)

@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include <cpprest/json.h>
 
+#include <utility>
+
 namespace TwitchXX
 {
 	///A virtual base for JsonNotNullValueWrapper and JsonNullValueWrapper
@@ -8,9 +10,7 @@ namespace TwitchXX
 	class JsonValueWrapper
 	{
 	public:
-		virtual ~JsonValueWrapper()
-		{
-		}
+		virtual ~JsonValueWrapper() = default;
 
 		virtual utility::string_t as_string() const = 0;
 		virtual int as_integer() const = 0;
@@ -22,13 +22,13 @@ namespace TwitchXX
 
 		///@{
 		/* Type casting method for auto resolving JsonValue */
-		virtual operator utility::string_t() const { return as_string(); };
-		virtual operator int() const { return as_integer(); };
-		virtual operator bool() const { return as_bool(); };
-		virtual operator double() const { return as_double(); }
-		virtual operator web::json::number() const { return as_number();}
-		virtual operator unsigned int() const { return as_uint(); }
-		virtual operator unsigned long long() const { return as_ulong(); }
+		virtual explicit operator utility::string_t() const { return as_string(); };
+		virtual explicit operator int() const { return as_integer(); };
+		virtual explicit operator bool() const { return as_bool(); };
+		virtual explicit operator double() const { return as_double(); }
+		virtual explicit operator web::json::number() const { return as_number();}
+		virtual explicit operator unsigned int() const { return as_uint(); }
+		virtual explicit operator unsigned long long() const { return as_ulong(); }
 		///@}
 
 	};
@@ -40,7 +40,7 @@ namespace TwitchXX
 	{
 	public:
 		///Wrapping up web::json::value object
-		explicit JsonNotNullValueWrapper(const web::json::value& value) : _json(value) {};
+		explicit JsonNotNullValueWrapper(web::json::value value) : _json(std::move(value)) {};
 		///Must always wrap some existing object
 		JsonNotNullValueWrapper() = delete;
 
@@ -103,7 +103,7 @@ namespace TwitchXX
 	{
 	public:
 		///Constructor.
-		explicit JsonWrapper(const web::json::value& value) : _json(value) {}
+		explicit JsonWrapper(web::json::value value) : _json(std::move(value)) {}
 		///Cannot be empty, must wrap some json object.
 		JsonWrapper() = delete; 
 

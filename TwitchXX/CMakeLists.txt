@@ -22,7 +22,7 @@ else (DOXYGEN_FOUND)
     message("Doxygen need to be installed to generate the doxygen documentation")
 endif (DOXYGEN_FOUND)
 
-add_library(TwitchXX STATIC MakeRequest.h MakeRequest.cpp Clip.cpp Clip.h Utility.h Utility.cpp JsonWrapper.h)
+add_library(TwitchXX STATIC MakeRequest.h MakeRequest.cpp Clip.cpp Clip.h Utility.h Utility.cpp JsonWrapper.h Entitlement.cpp Entitlement.h TwitchException.h)
 target_link_libraries(TwitchXX ${LIB_CPPREST})
 
 install(TARGETS TwitchXX DESTINATION lib)
