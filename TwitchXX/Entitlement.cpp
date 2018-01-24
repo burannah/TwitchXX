@@ -8,7 +8,7 @@
 
 std::string TwitchXX::Entitlement::getEntitlementTypeString(TwitchXX::Entitlement::Type t)
 {
-    static std::map<Type,std::string> mapping = { { Type::bulk_drops_grant, "bulk_drop_grant"} };
+    static std::map<Type,std::string> mapping = { { Type::bulk_drops_grant, "bulk_drops_grant"} };
     if (mapping.find(t) == mapping.end())
     {
         std::stringstream str;

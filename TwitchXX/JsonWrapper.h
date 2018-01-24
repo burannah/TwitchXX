@@ -22,13 +22,13 @@ namespace TwitchXX
 
 		///@{
 		/* Type casting method for auto resolving JsonValue */
-		virtual explicit operator utility::string_t() const { return as_string(); };
-		virtual explicit operator int() const { return as_integer(); };
-		virtual explicit operator bool() const { return as_bool(); };
-		virtual explicit operator double() const { return as_double(); }
-		virtual explicit operator web::json::number() const { return as_number();}
-		virtual explicit operator unsigned int() const { return as_uint(); }
-		virtual explicit operator unsigned long long() const { return as_ulong(); }
+		virtual operator utility::string_t() const { return as_string(); };
+		virtual operator int() const { return as_integer(); };
+		virtual operator bool() const { return as_bool(); };
+		virtual operator double() const { return as_double(); }
+		virtual operator web::json::number() const { return as_number();}
+		virtual operator unsigned int() const { return as_uint(); }
+		virtual operator unsigned long long() const { return as_ulong(); }
 		///@}
 
 	};
