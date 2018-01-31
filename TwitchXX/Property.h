@@ -8,7 +8,7 @@
 #include <codecvt>
 #include <stdexcept>
 
-#include "TwitchDef.h"
+#include <Utility.h>
 
 namespace TwitchXX
 {

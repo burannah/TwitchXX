@@ -65,12 +65,22 @@ namespace TwitchXX
 
         SetupProxy(options);
 
-        auto response = this->operator()("games/top");
-        if (response.is_null())
-        {
-            throw TwitchException("Got empty response");
-        }
 	}
+
+    /**
+    *****************************************************************************************
+    *  @brief      MakreRequest check connection
+    *
+    *  @details    Performs request to Twitch service to ensure that connection is OK
+    *
+    *  @return     true or false
+    ****************************************************************************************/
+    bool MakeRequest::CheckConnection() const
+    {
+        auto response = this->operator()("games/top");
+        return !response.is_null();
+    }
+
 
 
 	/**
@@ -87,11 +97,12 @@ namespace TwitchXX
 
 	web::json::value MakeRequest::operator()(const RequestParams &params) const
 	{
+        //TODO: Somehow parametarize calls to helix and kraken
 		web::http::client::http_client http_client("https://api.twitch.tv/helix", _config);
 		web::http::http_request request(params.method);
 
-		if (_client_id.length() > 0)request.headers().add("Client-ID", _client_id);
-		if (_token.length() > 6)request.headers().add("Authorization", "Bearer " + _token);
+		if(_client_id.length() > 0)request.headers().add("Client-ID", _client_id);
+        if(_authToken) request.headers().add("Authorization", _authToken->get());
 		request.set_request_uri({params.uri});
         request.headers().set_content_type("application/json");
 		if (!params.body.is_null())

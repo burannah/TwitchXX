@@ -34,7 +34,7 @@ namespace TwitchXX
          * @param name - Game name (required)
          * @param url - Box Art image url (optional)
          */
-        explicit Game(const std::string& id, const std::string& name, const std::string& url = "");
+        explicit Game(const std::string& id, const std::string& name, const std::string& url);
 
         Property<std::string> Id;       //< Twitch game Id
         Property<std::string> Name;     //< Game title

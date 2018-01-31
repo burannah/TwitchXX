@@ -3,10 +3,12 @@
 #include <string>
 #include <iostream>
 #include <utility>
+#include <memory>
 #include <cpprest/uri.h>
 #include <cpprest/json.h>
 #include <cpprest/http_client.h>
 #include <cpprest/details/basic_types.h> //TODO: CPPRESTSDK dependency
+#include <Auth/AuthToken.h>
 #include "Logger.h"
 #include "TwitchDef.h"
 
@@ -54,7 +56,6 @@ namespace TwitchXX
 		explicit MakeRequest(const std::map<utility::string_t,utility::string_t>& options /**< [in] Api-version string*/
                                                                                             );
 
-
 		///Perform get request
 		web::json::value get(const web::uri& uri, Callback callback = Callback()) const
 		{
@@ -82,11 +83,15 @@ namespace TwitchXX
 		///Last request's status code
 		web::http::status_code status_code() const { return _last_status; }
 
+        ///Check connection
+        bool CheckConnection() const;
+
 	private:
 		utility::string_t _client_id;
 		web::http::client::http_client_config _config;
 		mutable web::http::status_code _last_status;
 		utility::string_t _token;
+        std::shared_ptr<AuthToken> _authToken;
 
 		void SetupProxy(const std::map<utility::string_t, utility::string_t> &options);
 
@@ -105,6 +110,6 @@ namespace TwitchXX
 		{
             return this->operator()({uri, method, std::move(body), Callback()});
 		}
-	};
+    };
 }
 
