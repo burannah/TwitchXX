@@ -16,7 +16,7 @@ TwitchXX::Game::Game(const std::string &id, const std::string &name)
     }
 
     MakeRequest request(MakeRequest::getOptions());
-    web::uri_builder builder("games");
+    web::uri_builder builder("helix/games");
     if(!id.empty())
     {
         builder.append_query("id",id);

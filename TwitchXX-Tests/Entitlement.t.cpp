@@ -23,7 +23,6 @@ void EntitlementTest::SetUp()
 
 TEST_F(EntitlementTest, Constructor)
 {
-    //TODO: Must provide  valid app token
     std::unique_ptr<TwitchXX::Entitlement> entitlement;
     std::string id = "something_for_testing" + TwitchXX::DateToString(std::chrono::system_clock::now());
     EXPECT_NO_THROW(entitlement = std::make_unique<TwitchXX::Entitlement>(id));

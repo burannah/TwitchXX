@@ -7,6 +7,7 @@
 
 #include <string>
 #include <chrono>
+#include <memory>
 
 #include<TwitchDef.h>
 
@@ -49,8 +50,17 @@ namespace TwitchXX
     {
         return (static_cast<T>(lhs) & static_cast<T>(rhs)) != 0;
     }
+
+    inline bool operator>=(AuthScope lhs, AuthScope rhs)
+    {
+        auto a = static_cast<T>(lhs);
+        auto b = static_cast<T>(rhs);
+        if (a < b) return false;
+        return ((a ^ b) & a) == a;
+    }
     //@}
 
+    ///General base class for auth tokens
     class AuthToken
     {
     public:
@@ -65,8 +75,8 @@ namespace TwitchXX
 
 
         virtual Date                    validTill() const = 0;
-        virtual std::string             get() const = 0;
-        virtual std::shared_ptr<Handle> getHandle() const = 0;
+        virtual std::string             get(AuthScope scope = AuthScope()) const = 0;
+        virtual std::shared_ptr<Handle> getHandle(AuthScope scope = AuthScope()) const = 0;
         virtual bool                    isValid() const = 0;
     };
 }

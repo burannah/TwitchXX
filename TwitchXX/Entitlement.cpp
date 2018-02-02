@@ -2,6 +2,7 @@
 // Created by buran on 23/01/18.
 //
 
+#include <Auth/AppAccessToken.h>
 #include "Entitlement.h"
 #include "TwitchException.h"
 #include "MakeRequest.h"
@@ -23,7 +24,8 @@ TwitchXX::Entitlement::Entitlement(const std::string &id, TwitchXX::Entitlement:
 , EntitlementType(t)
 {
     MakeRequest request(MakeRequest::getOptions());
-    web::uri_builder builder("entitlements/upload");
+    request.setAuthToken(std::make_shared<AppAccessToken>());
+    web::uri_builder builder("helix/entitlements/upload");
     builder.append_query("manifest_id",id);
     builder.append_query("type",getEntitlementTypeString(t));
 

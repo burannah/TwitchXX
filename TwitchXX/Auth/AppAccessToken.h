@@ -7,35 +7,48 @@
 
 #include <Auth/AuthToken.h>
 #include <memory>
+#include <MakeRequest.h>
 
 namespace TwitchXX
 {
+    ///App auth token class
     class AppAccessToken : public AuthToken
     {
+    public:
         explicit AppAccessToken();
 
+        ~AppAccessToken()
+        {
+            revoke();
+        }
+
+        ///Get date until this token is valid
         Date validTill() const override
         {
             return _handle->_validTill;
         };
+
+        ///Does this token is valid?
         bool isValid() const  override
         {
-            return _handle->_validTill < std::chrono::system_clock::now();
+            return _handle && _handle->_validTill > std::chrono::system_clock::now();
         }
 
-        std::string get() const override
+        ///Get the token's auth string
+        std::string get(AuthScope scope = AuthScope()) const override
         {
-            if(!isValid())
+            if(!isValid() || scope >= _handle->_scope)
             {
                 refreshToken();
             }
 
-            return _handle->_token;
+            return "Bearer " + _handle->_token;
         };
 
-        std::shared_ptr<Handle> getHandle() const override
+        ///Get all token information
+        std::shared_ptr<Handle> getHandle(AuthScope scope = AuthScope()) const override
         {
-            if(!isValid())
+            if(!isValid() || scope > _handle->_scope)
             {
                 refreshToken();
             }
@@ -45,8 +58,10 @@ namespace TwitchXX
 
     private:
         std::shared_ptr<Handle> _handle;
+        MakeRequest             _request;
 
         void refreshToken() const;
+        void revoke();
     };
 }
 

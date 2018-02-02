@@ -97,8 +97,7 @@ namespace TwitchXX
 
 	web::json::value MakeRequest::operator()(const RequestParams &params) const
 	{
-        //TODO: Somehow parametarize calls to helix and kraken
-		web::http::client::http_client http_client("https://api.twitch.tv/helix", _config);
+		web::http::client::http_client http_client("https://api.twitch.tv/", _config);
 		web::http::http_request request(params.method);
 
 		if(_client_id.length() > 0)request.headers().add("Client-ID", _client_id);

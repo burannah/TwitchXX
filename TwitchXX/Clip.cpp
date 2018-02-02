@@ -29,7 +29,7 @@ TwitchXX::Clip::Handle TwitchXX::Clip::CreateAndGetHandle(const utility::string_
 TwitchXX::Clip::Clip(const utility::string_t &id)
 {
     MakeRequest request(MakeRequest::getOptions());
-    web::uri_builder builder("/clips");
+    web::uri_builder builder("helix/clips");
     builder.append_query("id",id);
 
     auto response = request.get(builder.to_uri());

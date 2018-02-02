@@ -86,6 +86,11 @@ namespace TwitchXX
         ///Check connection
         bool CheckConnection() const;
 
+        void setAuthToken(std::shared_ptr<AuthToken> token)
+        {
+            _authToken = token;
+        }
+
 	private:
 		utility::string_t _client_id;
 		web::http::client::http_client_config _config;
