@@ -52,3 +52,41 @@ TwitchXX::Game::Game(const std::string &id, const std::string &name, const std::
         throw TwitchException(ss.str().c_str());
     }
 }
+
+std::vector<TwitchXX::Game> TwitchXX::getGames(const std::vector<std::string>& ids,
+                                               const std::vector<std::string>& names)
+{
+    if(ids.size() > 100 || names.size() > 100)
+    {
+        throw TwitchXX::TwitchException("Too many games requested");
+    }
+
+    MakeRequest request(MakeRequest::getOptions());
+    web::uri_builder builder("helix/games");
+    std::for_each(std::begin(ids), std::end(ids), [&](const auto& id)
+    {
+        builder.append_query("id", id);
+    });
+    std::for_each(std::begin(names), std::end(names), [&](const auto& name)
+    {
+        builder.append_query("name", name);
+    });
+
+    auto response = request.get(builder.to_uri());
+    std::vector<Game> result;
+
+    if(response.has_field("data") && !response.at("data").is_null() && response.at("data").size())
+    {
+        auto data = response.at("data").as_array();
+
+        result.reserve(data.size());
+        std::for_each(data.begin(),data.end(),[&](auto&& val)
+        {
+            JsonWrapper w(val);
+            result.emplace_back(*w["id"], *w["name"], *w["box_art_url"]);
+        });
+
+    }
+
+    return result;
+}

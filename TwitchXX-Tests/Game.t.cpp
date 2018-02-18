@@ -7,6 +7,9 @@
 #include <Game.h>
 #include <TwitchException.h>
 
+const std::string DOTA2_ID = "29595";
+const std::string PUBG_ID = "493057";
+
 class GameTest : public ::testing::Test
 {
     void SetUp() override;
@@ -43,4 +46,18 @@ TEST_F(GameTest, Constructor2)
 TEST_F(GameTest, Constructor3)
 {
     EXPECT_THROW(TwitchXX::Game("",""), TwitchXX::TwitchException);
+}
+
+TEST_F(GameTest, MassRequest)
+{
+    EXPECT_NO_THROW(
+            {
+                auto result = TwitchXX::getGames({DOTA2_ID, PUBG_ID});
+                EXPECT_EQ(result.size(),2);
+                for(const auto& game : result)
+                {
+                    EXPECT_EQ(game.Name.Get(), game.Id.Get() == DOTA2_ID ? "Dota 2" : "PLAYERUNKNOWN'S BATTLEGROUNDS");
+                }
+            }
+    );
 }

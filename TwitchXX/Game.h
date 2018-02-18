@@ -18,7 +18,6 @@ namespace TwitchXX
 
     public:
         //TODO:
-        //1. Method to get an array of games by ids
         //2. Method to get top games
         /***
          * Fetch game information from Twitch. Either id or name should be present
@@ -40,6 +39,14 @@ namespace TwitchXX
         Property<std::string> Name;     //< Game title
         Property<std::string> BoxArt;   //< Url template for box art image
     };
+
+    /***
+     * Method to get Game objects by ids and/or name
+     * @param ids - Ids array (100 elements max)
+     * @param names - Game names array (100 element max)
+     * @return vector of Game objects
+     */
+    std::vector<Game> getGames(const std::vector<std::string>& ids, const std::vector<std::string>& names = {});
 }
 
 
