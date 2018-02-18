@@ -30,16 +30,23 @@ namespace TwitchXX
         ///Request params descriptor
 		struct RequestParams
 		{
-			web::uri uri;										///< Request uri
-			web::http::method method = web::http::methods::GET; ///< Method
-			web::json::value body;								///< Request's body. Used for sending form's parameters for example
-			std::function<void(const web::json::value&)> callback;	///< Callback function to be executed on request's result 
+            web::uri                                     uri;		                       ///< Request uri
+			web::http::method                            method = web::http::methods::GET; ///< Method
+			web::json::value                             body;							   ///< Request's body. Used for sending form's parameters for example
+			std::function<void(const web::json::value&)> callback;	                       ///< Callback function to be executed on request's result
+            AuthScope                                    scope;                            ///< Required authentication scope
 
 			RequestParams() :method(web::http::methods::GET) {};
-			RequestParams(web::uri uri, web::http::method method, web::json::value body,
-						  std::function<void(const web::json::value &)> callback) :uri(std::move(uri)), method(
-                    std::move(method)), body(
-                    std::move(body)), callback(std::move(callback)) {};
+			RequestParams(web::uri uri,
+                          web::http::method method,
+                          web::json::value body,
+						  std::function<void(const web::json::value &)> callback,
+                          AuthScope scope)
+                    :uri(std::move(uri))
+                    , method(std::move(method))
+                    , body(std::move(body))
+                    , callback(std::move(callback))
+                    , scope(scope){};
 		};
 
 		///Global request parameters holder
@@ -57,27 +64,27 @@ namespace TwitchXX
                                                                                             );
 
 		///Perform get request
-		web::json::value get(const web::uri& uri, Callback callback = Callback()) const
+		web::json::value get(const web::uri& uri, AuthScope scope = AuthScope::NO_SCOPE, Callback callback = Callback()) const
 		{
-			return this->operator()({ uri,web::http::methods::GET,web::json::value::null(), std::move(callback)});
+			return this->operator()({ uri,web::http::methods::GET,web::json::value::null(), std::move(callback), scope});
 		}
 
 		///Perform put request
-		web::json::value put(const web::uri& uri,const web::json::value& body = web::json::value::null(),Callback callback = Callback() ) const
+		web::json::value put(const web::uri& uri, AuthScope scope = AuthScope::NO_SCOPE, const web::json::value& body = web::json::value::null(),Callback callback = Callback() ) const
 		{
-			return this->operator()({ uri,web::http::methods::PUT,body, std::move(callback)});
+			return this->operator()({ uri,web::http::methods::PUT,body, std::move(callback),scope});
 		}
 
 		///Perform post request
-		web::json::value post(const web::uri& uri, const web::json::value& body = web::json::value::null(), Callback callback = Callback()) const
+		web::json::value post(const web::uri& uri, AuthScope scope = AuthScope::NO_SCOPE, const web::json::value& body = web::json::value::null(), Callback callback = Callback()) const
 		{
-			return this->operator()({ uri,web::http::methods::POST,body, std::move(callback)});
+			return this->operator()({ uri,web::http::methods::POST,body, std::move(callback),scope});
 		}
 
 		///Perform delete request
-		web::json::value del(const web::uri& uri, Callback callback = Callback()) const
+		web::json::value del(const web::uri& uri, AuthScope scope = AuthScope::NO_SCOPE, Callback callback = Callback()) const
 		{
-            return this->operator()({uri, web::http::methods::DEL, web::json::value::null(), std::move(callback)});
+            return this->operator()({uri, web::http::methods::DEL, web::json::value::null(), std::move(callback), scope});
 		}
 
 		///Last request's status code
@@ -104,17 +111,6 @@ namespace TwitchXX
 		///@param	params request parameters descriptor
 		///@return	response parsed to web::json::value object. Null json value if HTTP result code != OK.
 		web::json::value operator()(const RequestParams &params) const;
-		///Deprecated version of the request
-		///@param      uri request parameters
-		///@param      method request method type(GET by default)
-		///@param      body request body for post and put requests
-		///@return     resposne parsed to web::json::value object.Null - json if return code != OK.
-		web::json::value operator()(const web::uri& uri,/**< [in] request's uri (parameters and options)*/
-			const web::http::method& method = web::http::methods::GET, /**< [in] request method*/
-			web::json::value body = web::json::value()/**< [in] requests body for put and post methods */) const//TODO: By value?!
-		{
-            return this->operator()({uri, method, std::move(body), Callback()});
-		}
     };
 }
 

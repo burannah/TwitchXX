@@ -2,6 +2,7 @@
 // Created by buran on 17/01/18.
 //
 
+#include <Auth/UserAccessToken.h>
 #include "Clip.h"
 #include "MakeRequest.h"
 #include "JsonWrapper.h"
@@ -12,9 +13,10 @@ TwitchXX::Clip::Handle TwitchXX::Clip::CreateAndGetHandle(const utility::string_
     MakeRequest request(MakeRequest::getOptions());
     web::uri_builder builder("/clips");
     builder.append_query("broadcaster_id",broadcaster);
+    request.setAuthToken(std::make_shared<UserAccessToken>());
 
     //TODO: Extract headers from the response
-    auto response = request.post(builder.to_uri());
+    auto response = request.post(builder.to_uri(), AuthScope::CLIPS_EDIT);
     if(response.has_field("data") && !response.at("data").is_null() && response.at("data").size())
     {
         auto data = response.at("data").as_array();

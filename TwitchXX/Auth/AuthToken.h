@@ -17,6 +17,10 @@ namespace TwitchXX
     enum class AuthScope : unsigned
     {
         NO_SCOPE = 0,
+        CLIPS_EDIT = 1 << 0,
+        USER_EDIT = 1 << 1,
+        USER_READ_EMAIL = 1 << 2
+        /*
         USER_READ = 1 << 0,
         USER_BLOCKS_EDIT = 1 << 1,
         USER_BLOCKS_READ = 1 << 2,
@@ -30,7 +34,7 @@ namespace TwitchXX
         CHANNEL_CHECK_SUBSCRIPTION = 1 << 10,
         CHAT_LOGIN = 1 << 11,
         CHANNEL_FEED_READ = 1 << 12,
-        CHANNEL_FEED_EDIT = 1 << 13
+        CHANNEL_FEED_EDIT = 1 << 13 */
     };
     //@{
     /** Manipulations with AuthScope */
@@ -49,14 +53,6 @@ namespace TwitchXX
     inline bool operator&(AuthScope lhs, AuthScope rhs)
     {
         return (static_cast<T>(lhs) & static_cast<T>(rhs)) != 0;
-    }
-
-    inline bool operator>=(AuthScope lhs, AuthScope rhs)
-    {
-        auto a = static_cast<T>(lhs);
-        auto b = static_cast<T>(rhs);
-        if (a < b) return false;
-        return ((a ^ b) & a) == a;
     }
     //@}
 

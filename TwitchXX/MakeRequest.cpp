@@ -77,7 +77,7 @@ namespace TwitchXX
     ****************************************************************************************/
     bool MakeRequest::CheckConnection() const
     {
-        auto response = this->operator()("games/top");
+        auto response = this->get("games/top");
         return !response.is_null();
     }
 
