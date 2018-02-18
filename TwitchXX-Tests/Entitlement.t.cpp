@@ -21,7 +21,7 @@ void EntitlementTest::SetUp()
     TwitchXX::MakeRequest::initOptionsFromConfig();
 }
 
-TEST_F(EntitlementTest, Constructor)
+TEST_F(EntitlementTest, DISABLED_Constructor)
 {
     std::unique_ptr<TwitchXX::Entitlement> entitlement;
     std::string id = "something_for_testing" + TwitchXX::DateToString(std::chrono::system_clock::now());
