@@ -54,8 +54,8 @@ namespace TwitchXX
      *                in a multi-page response.
      * @param cursor_before - Cursor for backward pagination: tells the server where to start fetching the next set of
      *                        results, in a multi-page response.
-     * @return vector of Game objects
-     * @throws Twitchxx::TwitchException if any array size is > 100
+     * @return a tuple, first element is a vector of game objects, second - a cursor for pagination.
+     * @throws Twitchxx::TwitchException if requested number of games is > 100
      */
     std::tuple<std::vector<TwitchXX::Game>, std::string>
     getTopGames(int count, const char *cursor = nullptr, const char *cursor_before = nullptr);
