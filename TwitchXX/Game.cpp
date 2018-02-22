@@ -7,8 +7,6 @@
 #include "MakeRequest.h"
 #include "JsonWrapper.h"
 
-#include <cpprest/json.h>
-
 TwitchXX::Game::Game(const std::string &id, const std::string &name)
 
 {
