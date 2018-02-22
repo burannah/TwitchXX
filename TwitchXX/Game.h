@@ -17,8 +17,6 @@ namespace TwitchXX
     {
 
     public:
-        //TODO:
-        //2. Method to get top games
         /***
          * Fetch game information from Twitch. Either id or name should be present
          * @param id - Twitch game id
@@ -45,8 +43,22 @@ namespace TwitchXX
      * @param ids - Ids array (100 elements max)
      * @param names - Game names array (100 element max)
      * @return vector of Game objects
+     * @throws Twitchxx::TwitchException if any array size is > 100
      */
     std::vector<Game> getGames(const std::vector<std::string>& ids, const std::vector<std::string>& names = {});
+
+    /***
+     * Method to get Top Game objects at the moment
+     * @param count  - number of games per request
+     * @param cursor - Cursor for forward pagination: tells the server where to start fetching the next set of results,
+     *                in a multi-page response.
+     * @param cursor_before - Cursor for backward pagination: tells the server where to start fetching the next set of
+     *                        results, in a multi-page response.
+     * @return vector of Game objects
+     * @throws Twitchxx::TwitchException if any array size is > 100
+     */
+    std::tuple<std::vector<TwitchXX::Game>, std::string>
+    getTopGames(int count, const char *cursor = nullptr, const char *cursor_before = nullptr);
 }
 
 

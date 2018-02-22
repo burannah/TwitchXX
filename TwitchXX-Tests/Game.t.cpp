@@ -61,3 +61,40 @@ TEST_F(GameTest, MassRequest)
             }
     );
 }
+
+TEST_F(GameTest, getTopGames_first20)
+{
+    EXPECT_NO_THROW(
+            {
+                auto result = TwitchXX::getTopGames(20);
+
+                EXPECT_EQ(std::get<0>(result).size(),20);
+                EXPECT_GT(std::get<1>(result).size(),5);
+            }
+    );
+}
+
+
+TEST_F(GameTest, getTopGames_exception_to_many)
+{
+    EXPECT_THROW({
+                     TwitchXX::getTopGames(101);
+                 },
+                 TwitchXX::TwitchException);
+}
+
+
+TEST_F(GameTest, getTopGames_cursors)
+{
+    EXPECT_NO_THROW({
+        auto result = TwitchXX::getTopGames(10);
+        auto game = std::get<0>(result)[4];
+        auto cursor = std::get<1>(result);
+
+        auto result2 = TwitchXX::getTopGames(10,cursor.c_str());
+        auto cursor2 = std::get<1>(result2);
+        auto game2 = std::get<0>(TwitchXX::getTopGames(15, nullptr, cursor2.c_str()))[0];
+        /* TODO: topic created
+        EXPECT_EQ(game.Name.Get(), game2.Name.Get());*/
+                    });
+}

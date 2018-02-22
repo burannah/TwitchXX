@@ -7,6 +7,8 @@
 #include "MakeRequest.h"
 #include "JsonWrapper.h"
 
+#include <cpprest/json.h>
+
 TwitchXX::Game::Game(const std::string &id, const std::string &name)
 
 {
@@ -85,8 +87,55 @@ std::vector<TwitchXX::Game> TwitchXX::getGames(const std::vector<std::string>& i
             JsonWrapper w(val);
             result.emplace_back(*w["id"], *w["name"], *w["box_art_url"]);
         });
-
     }
 
     return result;
+}
+
+
+std::tuple<std::vector<TwitchXX::Game>, std::string> TwitchXX::getTopGames(int count, const char *cursor, const char *cursor_before)
+{
+    if (count > 100)
+    {
+        throw TwitchException("getTopGames: count must be less or equal to 100");
+    }
+
+    MakeRequest request(MakeRequest::getOptions());
+    web::uri_builder builder("helix/games/top");
+    builder.append_query("first", count);
+
+    if (cursor)
+    {
+        builder.append_query("after", cursor);
+    } else if (cursor_before)
+    {
+        builder.append_query("before", cursor_before);
+    }
+
+    auto response = request.get(builder.to_uri());
+    std::vector<Game> result;
+
+    if (response.has_field("data") && !response.at("data").is_null() && response.at("data").size())
+    {
+        auto data = response.at("data").as_array();
+
+        result.reserve(data.size());
+        std::for_each(data.begin(), data.end(), [&](auto &&val)
+        {
+            JsonWrapper w(val);
+            result.emplace_back(*w["id"], *w["name"], *w["box_art_url"]);
+        });
+    }
+
+    std::string new_cursor;
+    try
+    {
+        new_cursor = response.at("pagination").at("cursor").as_string();
+    }
+    catch(web::json::json_exception& e)
+    {
+        new_cursor = "Error cursor!";
+    }
+
+    return std::make_tuple(result, new_cursor);
 }
