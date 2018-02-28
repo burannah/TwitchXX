@@ -11,18 +11,20 @@ std::string TwitchXX::StreamType::toString(TwitchXX::StreamType::Value v)
 {
     switch (v)
     {
-        case Value::ALL: return "ALL";
-        case Value::LIVE: return "LIVE";
-        case Value::VODCAST: return "VODCAST";
+        case Value::ALL: return "all";
+        case Value::LIVE: return "live";
+        case Value::VODCAST: return "vodcast";
+        case Value::RERUN: return "rerun";
         default: throw TwitchXX::TwitchException("Unsupported stream type!");
     }
 }
 
 TwitchXX::StreamType::Value TwitchXX::StreamType::fromString(const std::string s)
 {
-    if(s == "ALL") return Value::ALL;
-    if(s == "LIVE") return Value::LIVE;
-    if(s == "VODCAST") return Value::VODCAST;
+    if(s == "all") return Value::ALL;
+    if(s == "live") return Value::LIVE;
+    if(s == "vodcast") return Value::VODCAST;
+    if(s == "rerun") return Value::RERUN;
 
     throw TwitchXX::TwitchException("Unsupported stream type!");
 }
@@ -34,6 +36,7 @@ TwitchXX::StreamType::Value TwitchXX::StreamType::fromInt(int i)
         case 0: return Value::ALL;
         case 1: return Value::LIVE;
         case 2: return Value::VODCAST;
+        case 3: return Value::RERUN;
         default: throw TwitchXX::TwitchException("Unsupported stream type!");
     }
 }
@@ -45,7 +48,7 @@ TwitchXX::getStreams(size_t count, const char *cursor)
     opt.first = count > 100 || count == 0 ? 20 : count;
     if(cursor)
     {
-        opt.after = *cursor;
+        opt.after = std::string(cursor);
     }
 
     opt.type = StreamType::Value::ALL;
@@ -87,10 +90,11 @@ std::tuple<std::vector<TwitchXX::Stream>, std::string> TwitchXX::getStreams(cons
 
     if (opt.after.size())
     {
-        builder.append_query("after", opt.after.size());
-    } else if (opt.before.size())
+        builder.append_query("after", opt.after);
+    }
+    else if (opt.before.size())
     {
-        builder.append_query("before", opt.before.size());
+        builder.append_query("before", opt.before);
     }
 
     addRangeOfParamsToBuilder(builder, "community_id", opt.communitIds);
@@ -133,6 +137,7 @@ std::tuple<std::vector<TwitchXX::Stream>, std::string> TwitchXX::getStreams(cons
                 s.CommunityIds = proxy;
             }
 
+            s.Type = StreamType::fromString(*w["type"]);
             s.Title = *w["title"];
             s.Viewers = *w["viewer_count"];
             s.Started = DateFromString(*w["started_at"]);

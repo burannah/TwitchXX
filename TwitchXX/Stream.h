@@ -23,6 +23,7 @@ namespace TwitchXX
             ALL,
             LIVE,
             VODCAST,
+            RERUN
         };
 
         /// Stream type enum value to string

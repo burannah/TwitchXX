@@ -6,9 +6,8 @@
 #include <MakeRequest.h>
 #include <Game.h>
 #include <TwitchException.h>
+#include <TestConstants.h>
 
-const std::string DOTA2_ID = "29595";
-const std::string PUBG_ID = "493057";
 
 class GameTest : public ::testing::Test
 {
