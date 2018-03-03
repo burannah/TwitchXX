@@ -10,31 +10,6 @@
 
 namespace TwitchXX
 {
-    /***
-     * Stream type enum & helpers
-     */
-    struct StreamType
-    {
-        /***
-         * Stream types
-         */
-        enum class Value
-        {
-            ALL,
-            LIVE,
-            VODCAST,
-            RERUN
-        };
-
-        /// Stream type enum value to string
-        static std::string toString(StreamType::Value v);
-
-        /// Stream type enum value from string
-        static StreamType::Value  fromString(const std::string s);
-
-        /// Stream type enum value from int
-        static StreamType::Value fromInt(int i);
-    };
 
     /***
     * Stream descriptor
@@ -55,31 +30,6 @@ namespace TwitchXX
     };
 
     /***
-     * Get Streams request parameter structure;
-     */
-    struct GetStreamsOptions
-    {
-        std::string after;  ///< Cursor for forward pagination: tells the server where to start fetching
-                            ///< the next set of results, in a multi-page response.
-        std::string before; ///< Cursor for backward pagination: tells the server where to start fetching
-                            ///< the next set of results, in a multi-page response.
-        std::vector<std::string> communitIds; ///< Returns streams in a specified community ID.
-                                             ///< You can specify up to 100 IDs.
-        size_t first; ///< Maximum number of objects to return. Maximum: 100. Default: 20.
-
-        std::vector<std::string> gameIds; ///< Returns streams broadcasting a specified game ID.
-                                         ///< You can specify up to 100 IDs.
-        std::vector<std::string> langs; ///< Returns streams broadcasting a specified game ID.
-                                       ///< You can specify up to 100 IDs.
-        StreamType::Value type; ///< Stream type: "all", "live", "vodcast". Default: "all".
-
-        std::vector<std::string> userIds; ///< Returns streams broadcast by one or more specified
-                                          ///< user IDs. You can specify up to 100 IDs.
-        std::vector<std::string> userLogin; ///< Returns streams broadcast by one or more specified
-                                            ///< user login names. You can specify up to 100 names.
-    };
-
-    /***
     * Fetch Stream objects. Forward-only request
     * @param count - count of objects per batch (Maximum: 100)
     * @param cursor - forward ('after') cursor. Optional
@@ -94,7 +44,6 @@ namespace TwitchXX
     * @return a tuple with vector of Stream objects and a cursor
     * @throw TwitchXX::TwitchException in case some of the parameters are incorrect.
     */
-
     std::tuple<std::vector<Stream>, std::string> getStreams(const GetStreamsOptions& opt);
 }
 

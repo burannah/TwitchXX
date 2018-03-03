@@ -6,45 +6,13 @@
 #include <TwitchException.h>
 #include <MakeRequest.h>
 #include <JsonWrapper.h>
-
-std::string TwitchXX::StreamType::toString(TwitchXX::StreamType::Value v)
-{
-    switch (v)
-    {
-        case Value::ALL: return "all";
-        case Value::LIVE: return "live";
-        case Value::VODCAST: return "vodcast";
-        case Value::RERUN: return "rerun";
-        default: throw TwitchXX::TwitchException("Unsupported stream type!");
-    }
-}
-
-TwitchXX::StreamType::Value TwitchXX::StreamType::fromString(const std::string s)
-{
-    if(s == "all") return Value::ALL;
-    if(s == "live") return Value::LIVE;
-    if(s == "vodcast") return Value::VODCAST;
-    if(s == "rerun") return Value::RERUN;
-
-    throw TwitchXX::TwitchException("Unsupported stream type!");
-}
-
-TwitchXX::StreamType::Value TwitchXX::StreamType::fromInt(int i)
-{
-    switch (i)
-    {
-        case 0: return Value::ALL;
-        case 1: return Value::LIVE;
-        case 2: return Value::VODCAST;
-        case 3: return Value::RERUN;
-        default: throw TwitchXX::TwitchException("Unsupported stream type!");
-    }
-}
+#include "StreamsOptions.h"
+#include "StreamType.h"
 
 std::tuple<std::vector<TwitchXX::Stream>, std::string>
 TwitchXX::getStreams(size_t count, const char *cursor)
 {
-    GetStreamsOptions opt;
+    StreamsOptions opt;
     opt.first = count > 100 || count == 0 ? 20 : count;
     if(cursor)
     {
@@ -64,7 +32,7 @@ void addRangeOfParamsToBuilder(web::uri_builder& builder,const std::string name,
     }
 }
 
-std::tuple<std::vector<TwitchXX::Stream>, std::string> TwitchXX::getStreams(const TwitchXX::GetStreamsOptions &opt)
+std::tuple<std::vector<TwitchXX::Stream>, std::string> TwitchXX::getStreams(const StreamsOptions &opt)
 {
     MakeRequest request(MakeRequest::getOptions());
     web::uri_builder builder("helix/streams");
