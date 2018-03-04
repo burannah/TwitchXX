@@ -7,6 +7,8 @@
 
 #include <string>
 #include <Property.h>
+#include <StreamType.h>
+#include <StreamsOptions.h>
 
 namespace TwitchXX
 {
@@ -44,7 +46,7 @@ namespace TwitchXX
     * @return a tuple with vector of Stream objects and a cursor
     * @throw TwitchXX::TwitchException in case some of the parameters are incorrect.
     */
-    std::tuple<std::vector<Stream>, std::string> getStreams(const GetStreamsOptions& opt);
+    std::tuple<std::vector<Stream>, std::string> getStreams(const StreamsOptions& opt);
 }
 
 

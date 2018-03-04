@@ -71,8 +71,8 @@ namespace TwitchXX
 
 
         virtual Date                    validTill() const = 0;
-        virtual std::string             get(AuthScope scope = AuthScope()) const = 0;
-        virtual std::shared_ptr<Handle> getHandle(AuthScope scope = AuthScope()) const = 0;
+        virtual std::string             get(AuthScope scope = AuthScope()) = 0;
+        virtual std::shared_ptr<Handle> getHandle(AuthScope scope = AuthScope()) = 0;
         virtual bool                    isValid() const = 0;
     };
 }

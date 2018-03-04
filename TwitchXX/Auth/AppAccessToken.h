@@ -35,7 +35,7 @@ namespace TwitchXX
         }
 
         ///Get the token's auth string
-        std::string get(AuthScope scope = AuthScope()) const override
+        std::string get(AuthScope scope = AuthScope()) override
         {
             if(!isValid() || (scope != AuthScope::NO_SCOPE && !(scope & _handle->_scope)))
             {
@@ -47,7 +47,7 @@ namespace TwitchXX
         };
 
         ///Get all token information
-        std::shared_ptr<Handle> getHandle(AuthScope scope = AuthScope()) const override
+        std::shared_ptr<Handle> getHandle(AuthScope scope = AuthScope()) override
         {
             if(!isValid() ||(scope != AuthScope::NO_SCOPE && !(scope & _handle->_scope)))
             {
@@ -62,7 +62,7 @@ namespace TwitchXX
         std::shared_ptr<Handle> _handle;
         MakeRequest             _request;
 
-        void refreshToken() const;
+        void refreshToken();
         void revoke();
     };
 }

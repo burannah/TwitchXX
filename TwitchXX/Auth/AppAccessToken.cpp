@@ -13,7 +13,7 @@ TwitchXX::AppAccessToken::AppAccessToken()
     refreshToken();
 }
 
-void TwitchXX::AppAccessToken::refreshToken() const
+void TwitchXX::AppAccessToken::refreshToken()
 {
 
     auto opt = MakeRequest::getOptions();

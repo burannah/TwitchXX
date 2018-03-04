@@ -49,7 +49,7 @@ TEST_F(StreamTest, getByGameId)
 {
     EXPECT_NO_THROW(
             {
-                ::TwitchXX::GetStreamsOptions opt;
+                TwitchXX::StreamsOptions opt;
                 opt.first = 20;
                 opt.type = ::TwitchXX::StreamType::Value::ALL;
                 opt.gameIds.push_back(DOTA2_ID);
@@ -70,7 +70,7 @@ TEST_F(StreamTest, getByCommunityId)
 {
     EXPECT_NO_THROW(
             {
-                ::TwitchXX::GetStreamsOptions opt;
+                TwitchXX::StreamsOptions opt;
                 opt.first = 20;
                 opt.type = ::TwitchXX::StreamType::Value::ALL;
                 opt.communitIds.emplace_back("848d95be-90b3-44a5-b143-6e373754c382");
@@ -95,7 +95,7 @@ TEST_F(StreamTest, getByLang)
 {
     EXPECT_NO_THROW(
             {
-                ::TwitchXX::GetStreamsOptions opt;
+                TwitchXX::StreamsOptions opt;
                 opt.first = 20;
                 opt.type = ::TwitchXX::StreamType::Value::ALL;
                 opt.langs.emplace_back("ru");
@@ -117,7 +117,7 @@ TEST_F(StreamTest, getByType)
 {
     EXPECT_NO_THROW(
             {
-                ::TwitchXX::GetStreamsOptions opt;
+                TwitchXX::StreamsOptions opt;
                 opt.first = 20;
                 opt.type = ::TwitchXX::StreamType::Value::LIVE;
 
@@ -139,7 +139,7 @@ TEST_F(StreamTest, getByUserId)
     //TODO: Find any user id
     EXPECT_NO_THROW(
             {
-                ::TwitchXX::GetStreamsOptions opt;
+                TwitchXX::StreamsOptions opt;
                 opt.first = 20;
                 opt.type = ::TwitchXX::StreamType::Value::ALL;
                 opt.userIds.emplace_back("burannah");
@@ -161,7 +161,7 @@ TEST_F(StreamTest, getByUserLogin)
 {
     EXPECT_NO_THROW(
             {
-                ::TwitchXX::GetStreamsOptions opt;
+                TwitchXX::StreamsOptions opt;
                 opt.first = 20;
                 opt.type = ::TwitchXX::StreamType::Value::ALL;
                 opt.userLogin.emplace_back("burannah");

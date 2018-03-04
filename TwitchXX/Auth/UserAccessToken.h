@@ -15,8 +15,8 @@ namespace TwitchXX
         explicit UserAccessToken(const std::string& token = std::string());
 
         Date                    validTill() const override;
-        std::string             get(AuthScope scope) const override;
-        std::shared_ptr<Handle> getHandle(AuthScope scope) const override ;
+        std::string             get(AuthScope scope) override;
+        std::shared_ptr<Handle> getHandle(AuthScope scope) override ;
         bool                    isValid() const override;
 
     private:

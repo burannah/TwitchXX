@@ -64,53 +64,92 @@ namespace TwitchXX
                                                                                             );
 
 		///Perform get request
-		web::json::value get(const web::uri& uri, AuthScope scope = AuthScope::NO_SCOPE, Callback callback = Callback()) const
+		web::json::value get(const web::uri& uri,
+							 AuthScope scope = AuthScope::NO_SCOPE,
+							 Callback callback = Callback())
 		{
-			return this->operator()({ uri,web::http::methods::GET,web::json::value::null(), std::move(callback), scope});
+			return this->operator()({ uri,web::http::methods::GET,
+									  web::json::value::null(),
+									  std::move(callback),
+									  scope});
 		}
 
 		///Perform put request
-		web::json::value put(const web::uri& uri, AuthScope scope = AuthScope::NO_SCOPE, const web::json::value& body = web::json::value::null(),Callback callback = Callback() ) const
+		web::json::value put(const web::uri& uri,
+							 AuthScope scope = AuthScope::NO_SCOPE,
+							 const web::json::value& body = web::json::value::null(),
+							 Callback callback = Callback() )
 		{
-			return this->operator()({ uri,web::http::methods::PUT,body, std::move(callback),scope});
+			return this->operator()({ uri,
+									  web::http::methods::PUT,
+									  body,
+									  std::move(callback),
+									  scope});
 		}
 
 		///Perform post request
-		web::json::value post(const web::uri& uri, AuthScope scope = AuthScope::NO_SCOPE, const web::json::value& body = web::json::value::null(), Callback callback = Callback()) const
+		web::json::value post(const web::uri& uri,
+							  AuthScope scope = AuthScope::NO_SCOPE,
+							  const web::json::value& body = web::json::value::null(),
+							  Callback callback = Callback())
 		{
-			return this->operator()({ uri,web::http::methods::POST,body, std::move(callback),scope});
+			return this->operator()({ uri,
+									  web::http::methods::POST,
+									  body,
+									  std::move(callback),
+									  scope});
 		}
 
 		///Perform delete request
-		web::json::value del(const web::uri& uri, AuthScope scope = AuthScope::NO_SCOPE, Callback callback = Callback()) const
+		web::json::value del(const web::uri& uri,
+							 AuthScope scope = AuthScope::NO_SCOPE,
+							 Callback callback = Callback())
 		{
-            return this->operator()({uri, web::http::methods::DEL, web::json::value::null(), std::move(callback), scope});
+            return this->operator()({uri,
+									 web::http::methods::DEL,
+									 web::json::value::null(),
+									 std::move(callback),
+									 scope});
 		}
 
 		///Last request's status code
 		web::http::status_code status_code() const { return _last_status; }
 
         ///Check connection
-        bool CheckConnection() const;
+        bool CheckConnection();
 
         void setAuthToken(std::shared_ptr<AuthToken> token)
         {
             _authToken = token;
         }
 
+		///Add a header param to be extracted from the response
+		void setResponseHeaderParam(const std::string& param)
+		{
+			_response_header_params.insert(std::make_pair(param,""));
+		}
+
+		const auto& getResponseHeaderParams() const
+        {
+            return _response_header_params;
+        }
+
 	private:
 		utility::string_t _client_id;
 		web::http::client::http_client_config _config;
-		mutable web::http::status_code _last_status;
+		web::http::status_code _last_status;
 		utility::string_t _token;
         std::shared_ptr<AuthToken> _authToken;
+		std::map<std::string,std::string> _response_header_params;
 
 		void SetupProxy(const std::map<utility::string_t, utility::string_t> &options);
 
 		///MakeRequest's main method.
 		///@param	params request parameters descriptor
 		///@return	response parsed to web::json::value object. Null json value if HTTP result code != OK.
-		web::json::value operator()(const RequestParams &params) const;
+		web::json::value operator()(const RequestParams &params);
+
+        void fetchHeaderParams(web::http::http_headers &headers);
     };
 }
 

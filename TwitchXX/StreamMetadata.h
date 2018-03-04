@@ -11,26 +11,13 @@
 
 namespace TwitchXX
 {
-    struct Overwatch;
-    struct Harthstone;
-
-    class StreamMetadata
-    {
-    public:
-        Property<std::string> UserId;
-        Property<std::string> GameId;
-
-        std::unique_ptr<Overwatch> Overwatch;
-        std::unique_ptr<Harthstone> Harthstone;
-    };
-
     struct Overwatch
     {
         Property<std::string> Role;
         Property<std::string> Name;
         Property<std::string> Ability;
     };
-    struct Harthstone
+    struct Hearthstone
     {
         struct Hero
         {
@@ -43,6 +30,28 @@ namespace TwitchXX
         Hero Opponent;
     };
 
+    class StreamMetadata
+    {
+    public:
+        struct RateLimits
+        {
+            int Remaining;
+            int Limit;
+        };
+
+        virtual ~StreamMetadata()
+        {
+            if(overwatch) delete overwatch;
+            if(hearthstone) delete hearthstone;
+        }
+
+        Property<std::string> UserId;
+        Property<std::string> GameId;
+
+        Overwatch* overwatch = nullptr;
+        Hearthstone* hearthstone = nullptr;
+    };
+
     /***
     * Fetch Stream metadata objects. Forward-only request
     * @param count - count of objects per batch (Maximum: 100)
@@ -50,7 +59,10 @@ namespace TwitchXX
     * @return a tuple with vector of Strem objects and a cursor
     * @throw TwitchXX::TwitchException in case of count is > 100;
     */
-    std::tuple<std::vector<TwitchXX::StreamMetadata>, std::string> getStreamsMetadata(size_t count, const char *cursor = nullptr);
+    std::tuple<std::vector<TwitchXX::StreamMetadata>, std::string>
+    getStreamsMetadata(size_t count,
+                       StreamMetadata::RateLimits* limits = nullptr,
+                       const char *cursor = nullptr);
 
     /***
     * Fetch Stream metadata objects. More complex way of request.
@@ -58,7 +70,9 @@ namespace TwitchXX
     * @return a tuple with vector of Stream objects and a cursor
     * @throw TwitchXX::TwitchException in case some of the parameters are incorrect.
     */
-    std::tuple<std::vector<StreamMetadata>, std::string> getStreamsMetadata(const StreamsOptions& opt);
+    std::tuple<std::vector<StreamMetadata>, std::string>
+    getStreamsMetadata(const StreamsOptions& opt,
+                       StreamMetadata::RateLimits* limits = nullptr);
 }
 
 

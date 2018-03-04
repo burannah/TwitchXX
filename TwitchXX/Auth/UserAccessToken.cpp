@@ -11,7 +11,7 @@ TwitchXX::Date TwitchXX::UserAccessToken::validTill() const
     return std::chrono::system_clock::now() + std::chrono::hours(24*7);
 }
 
-std::string TwitchXX::UserAccessToken::get(TwitchXX::AuthScope scope) const
+std::string TwitchXX::UserAccessToken::get(TwitchXX::AuthScope scope)
 {
     if(scope != AuthScope::NO_SCOPE && !(scope & _scope))
     {
@@ -25,7 +25,7 @@ bool TwitchXX::UserAccessToken::isValid() const
     return true;
 }
 
-std::shared_ptr<TwitchXX::AuthToken::Handle> TwitchXX::UserAccessToken::getHandle(TwitchXX::AuthScope scope) const
+std::shared_ptr<TwitchXX::AuthToken::Handle> TwitchXX::UserAccessToken::getHandle(TwitchXX::AuthScope scope)
 {
     if(scope != AuthScope::NO_SCOPE && !(scope & _scope))
     {

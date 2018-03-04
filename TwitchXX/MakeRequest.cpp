@@ -1,9 +1,9 @@
 #include <stdexcept>
 
-#include "MakeRequest.h"
-#include "TwitchException.h"
-#include "Property.h"
-#include "Utility.h"
+#include <MakeRequest.h>
+#include <TwitchException.h>
+#include <Property.h>
+#include <Utility.h>
 
 namespace TwitchXX
 {
@@ -75,7 +75,7 @@ namespace TwitchXX
     *
     *  @return     true or false
     ****************************************************************************************/
-    bool MakeRequest::CheckConnection() const
+    bool MakeRequest::CheckConnection()
     {
         auto response = this->get("games/top");
         return !response.is_null();
@@ -95,7 +95,7 @@ namespace TwitchXX
 	*			   Updates last status_code field.
 	****************************************************************************************/
 
-	web::json::value MakeRequest::operator()(const RequestParams &params) const
+	web::json::value MakeRequest::operator()(const RequestParams &params)
 	{
 		web::http::client::http_client http_client("https://api.twitch.tv/", _config);
 		web::http::http_request request(params.method);
@@ -117,10 +117,12 @@ namespace TwitchXX
 		pplx::task<web::json::value> task = http_client.request(request)
 			.then([this](web::http::http_response response) -> pplx::task<web::json::value>
 		{
-#ifdef _DEBUG
+
+            #ifdef _DEBUG
 			ucout << response.to_string() << U("\n");
-#endif
-			this->_last_status = response.status_code();
+            #endif
+            fetchHeaderParams(response.headers());
+            this->_last_status = response.status_code();
 			if (response.status_code() == web::http::status_codes::OK)
 			{
 				if (response.headers().content_type().find("json") == std::wstring::npos)
@@ -166,8 +168,23 @@ namespace TwitchXX
 
 	}
 
+    void MakeRequest::fetchHeaderParams(web::http::http_headers &headers)
+    {
+        std::for_each(_response_header_params.begin(), _response_header_params.end(), [&](auto& p)
+        {
+            if(headers.has(p.first))
+            {
+                p.second = headers[p.first];
+            }
+            else
+            {
+                p.second = "N/A";
+            }
+        });
+    }
+
     /**
-    ****************************************s*************************************************
+    *****************************************************************************************
     *  @brief      MakeRequest constructor
     *
     *  @details      Creates MakeRequest object.

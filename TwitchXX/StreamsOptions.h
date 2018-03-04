@@ -7,6 +7,12 @@
 
 #include <string>
 #include <StreamType.h>
+#include <vector>
+
+namespace web
+{
+    class uri_builder;
+}
 
 /***
  * Get Streams request parameter structure;
@@ -33,6 +39,13 @@ namespace TwitchXX
         ///< user IDs. You can specify up to 100 IDs.
         std::vector<std::string> userLogin; ///< Returns streams broadcast by one or more specified
         ///< user login names. You can specify up to 100 names.
+
+        ///Validate StreamOptions object
+        static void validate(const StreamsOptions& opt);
+
+        ///Fill uri_builder with options values
+        static void fillBuilder(web::uri_builder& builder, const StreamsOptions& opt);
+
     };
 }
 
