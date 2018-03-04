@@ -11,45 +11,47 @@
 
 namespace TwitchXX
 {
+    /// Overwatch stream metadata
     struct Overwatch
     {
-        Property<std::string> Role;
-        Property<std::string> Name;
-        Property<std::string> Ability;
+        Property<std::string> Role;     ///< Broadcaster's current Role
+        Property<std::string> Name;     ///< Broadcaster's name
+        Property<std::string> Ability;  ///< Broadcaster's ability
     };
+
+    ///Hearthstone stream metadata
     struct Hearthstone
     {
+        ///Player's metadata
         struct Hero
         {
-            Property<std::string> Type;
-            Property<std::string> Class;
-            Property<std::string> Name;
+            Property<std::string> Type;     ///< Type
+            Property<std::string> Class;    ///< Class
+            Property<std::string> Name;     ///< Name
         };
 
-        Hero Broadcaster;
-        Hero Opponent;
+        Hero Broadcaster;                   ///< Broadcaster's hero metadata
+        Hero Opponent;                      ///< Opponent's hero metadata
     };
 
+    ///Stream metadata class
     class StreamMetadata
     {
     public:
+        ///Rate limits for stream metadata request
         struct RateLimits
         {
-            int Remaining;
-            int Limit;
+            int Remaining;      ///< Number of remaining request till the end of current time interval (see RequestLimits)
+            int Limit;          ///< Maximum number of stream metadata requests per time interval (see RequestLimits)
         };
 
-        virtual ~StreamMetadata()
-        {
-            if(overwatch) delete overwatch;
-            if(hearthstone) delete hearthstone;
-        }
+        Property<std::string> UserId;   ///< User id
+        Property<std::string> GameId;   ///< Game id (at the moment can be 488552 (Overwatch), 138585 (Hearthstone), or null)
 
-        Property<std::string> UserId;
-        Property<std::string> GameId;
 
-        Overwatch* overwatch = nullptr;
-        Hearthstone* hearthstone = nullptr;
+        //TODO: Should be nullable objects
+        Overwatch overwatch;            ///< Overwatch stream metadata
+        Hearthstone hearthstone;        ///< Hearthstone stream metadata
     };
 
     /***

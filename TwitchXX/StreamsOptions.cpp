@@ -54,7 +54,10 @@ void TwitchXX::StreamsOptions::fillBuilder(web::uri_builder &builder, const Twit
     addRangeOfParamsToBuilder(builder, "language", opt.langs);
     addRangeOfParamsToBuilder(builder, "language", opt.langs);
 
-    builder.append_query("type", StreamType::toString(opt.type));
+    if(opt.type != StreamType::Value::NONE)
+    {
+        builder.append_query("type", StreamType::toString(opt.type));
+    }
 
     addRangeOfParamsToBuilder(builder, "user_id", opt.userIds);
     addRangeOfParamsToBuilder(builder, "user_login", opt.userLogin);

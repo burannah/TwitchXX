@@ -6,6 +6,7 @@
 #include <StreamMetadata.h>
 #include <MakeRequest.h>
 #include <JsonWrapper.h>
+#include <iostream>
 
 const std::string REMAINING_PARAM = "Ratelimit-Helixstreamsmetadata-Remaining";
 const std::string LIMIT_PARAM = "Ratelimit-Helixstreamsmetadata-Limit";
@@ -60,28 +61,24 @@ namespace TwitchXX
                     Overwatch o;
                     JsonWrapper ow(val.at("overwatch").at("broadcaster").at("hero"));
 
-                    o.Name = *ow["name"];
-                    o.Role = *ow["role"];
-                    o.Ability = *ow["ability"];
-
-                    s.overwatch = new Overwatch(o);
+                    s.overwatch.Name = *ow["name"];
+                    s.overwatch.Role = *ow["role"];
+                    s.overwatch.Ability = *ow["ability"];
                 }
                 else if(val.has_field("hearthstone") && !val.at("hearthstone").is_null())
                 {
                     Hearthstone h;
                     JsonWrapper broadcaster(val.at("hearthstone").at("broadcaster").at("hero"));
 
-                    h.Broadcaster.Name = *broadcaster["name"];
-                    h.Broadcaster.Class = *broadcaster["class"];
-                    h.Broadcaster.Type = *broadcaster["type"];
+                    s.hearthstone.Broadcaster.Name = *broadcaster["name"];
+                    s.hearthstone.Broadcaster.Class = *broadcaster["class"];
+                    s.hearthstone.Broadcaster.Type = *broadcaster["type"];
 
                     JsonWrapper opponent(val.at("hearthstone").at("opponent").at("hero"));
 
-                    h.Opponent.Class = *opponent["class"];
-                    h.Opponent.Name = *opponent["name"];
-                    h.Opponent.Type = *opponent["type"];
-
-                    s.hearthstone = new Hearthstone(h);
+                    s.hearthstone.Opponent.Class = *opponent["class"];
+                    s.hearthstone.Opponent.Name = *opponent["name"];
+                    s.hearthstone.Opponent.Type = *opponent["type"];
                 }
 
                 result.push_back(s);

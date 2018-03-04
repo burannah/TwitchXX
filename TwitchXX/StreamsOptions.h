@@ -48,7 +48,4 @@ namespace TwitchXX
 
     };
 }
-
-#include <Property.h>
-
 #endif //TWITCHXX_STREAMSOPTIONS_H

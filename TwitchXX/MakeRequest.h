@@ -9,8 +9,7 @@
 #include <cpprest/http_client.h>
 #include <cpprest/details/basic_types.h> //TODO: CPPRESTSDK dependency
 #include <Auth/AuthToken.h>
-#include "Logger.h"
-#include "TwitchDef.h"
+#include <TwitchDef.h>
 
 
 namespace TwitchXX
@@ -18,9 +17,6 @@ namespace TwitchXX
 
     ///Callback handler type for all request methods (post,get,del,put)
 	using Callback = std::function<void(const web::json::value&)>;
-
-	///Global logger
-	extern std::shared_ptr<Logger> Log;
 
     ///Class to perform a web request.
     class MakeRequest
