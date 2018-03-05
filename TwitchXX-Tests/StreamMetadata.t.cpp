@@ -184,3 +184,4 @@ TEST_F(StreamMetadataTest, limits)
                 EXPECT_GT(limits.Remaining, 0);
             });
 }
+
