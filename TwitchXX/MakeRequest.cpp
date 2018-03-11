@@ -1,3 +1,4 @@
+#include <StreamsOptions.h>
 #include <stdexcept>
 
 #include <MakeRequest.h>

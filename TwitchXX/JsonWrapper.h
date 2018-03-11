@@ -12,23 +12,23 @@ namespace TwitchXX
 	public:
 		virtual ~JsonValueWrapper() = default;
 
-		virtual utility::string_t as_string() const = 0;
+		virtual std::string as_string() const = 0;
 		virtual int as_integer() const = 0;
 		virtual bool as_bool() const = 0;
 		virtual double as_double() const = 0;
 		virtual web::json::number as_number() const = 0;
 		virtual unsigned int as_uint() const = 0;
-		virtual unsigned long long as_ulong() const { return 0; }
+		virtual unsigned long long as_ulong() const = 0;
 
 		///@{
 		/* Type casting method for auto resolving JsonValue */
-		virtual operator utility::string_t() const { return as_string(); };
-		virtual operator int() const { return as_integer(); };
-		virtual operator bool() const { return as_bool(); };
-		virtual operator double() const { return as_double(); }
-		virtual operator web::json::number() const { return as_number();}
-		virtual operator unsigned int() const { return as_uint(); }
-		virtual operator unsigned long long() const { return as_ulong(); }
+		operator std::string() const { return as_string(); };
+		operator int() const { return as_integer(); };
+		operator bool() const { return as_bool(); };
+		operator double() const { return as_double(); }
+		operator web::json::number() const { return as_number();}
+		operator unsigned int() const { return as_uint(); }
+		operator unsigned long long() const { return as_ulong(); }
 		///@}
 
 	};
@@ -44,12 +44,11 @@ namespace TwitchXX
 		///Must always wrap some existing object
 		JsonNotNullValueWrapper() = delete;
 
-
 		///@{
 		/** Basic type getters for stub-object.
 		* These methods doesn't get the actual value type of underlying, so it's still can throw. (It's intentional. To prevent implicit type conversions e.t.c).
 		*/
-		utility::string_t as_string() const override
+		std::string as_string() const override
 		{ return _json.as_string(); }
 
 		int as_integer() const override
@@ -84,12 +83,12 @@ namespace TwitchXX
 	public:
         ///@{
         /* For JsonNullValueWrapper these methods always return default values */
-        utility::string_t as_string() const override { return utility::string_t(); };
-		int as_integer() const override { return 0; };
-		bool as_bool() const override { return false; }
-		double as_double() const override { return 0; };
-		web::json::number as_number() const override { return web::json::value(0).as_number(); };
-		unsigned int as_uint() const override { return 0; }
+        std::string        as_string() const override { return std::string(); };
+		int 			   as_integer() const override { return 0; };
+		bool 			   as_bool() const override { return false; }
+		double 			   as_double() const override { return 0; };
+		web::json::number  as_number() const override { return web::json::value(0).as_number(); };
+		unsigned int 	   as_uint() const override { return 0; }
 		unsigned long long as_ulong() const override { return 0; }
         ///@}
 	};
@@ -109,17 +108,17 @@ namespace TwitchXX
 
 		/// Accessing the values of keys
 		/** If key exist for current json object returns JsonNotNullValueWrapper object, and if it does not - JsonNullVAlueWrapper one.*/
-		std::unique_ptr<JsonValueWrapper> operator[] (const utility::string_t& param)
+		std::unique_ptr<JsonValueWrapper> operator[] (const std::string& param)
 		{
 			if (param_exist(param)) 
-				return std::make_unique<JsonNotNullValueWrapper>(_json[param]); 
+				return std::make_unique<JsonNotNullValueWrapper>(_json[param]);
 			return std::make_unique<JsonNullValueWrapper>();
 		}
 
 	private:
 		web::json::value _json;
 
-		bool param_exist(const utility::string_t & param) { return _json.has_field(param) && !_json[param].is_null(); };
+		bool param_exist(const std::string & param) { return _json.has_field(param) && !_json[param].is_null(); };
 	};
 	
 }

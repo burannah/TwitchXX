@@ -9,6 +9,7 @@
 #include <stdexcept>
 
 #include <Utility.h>
+#include "JsonWrapper.h"
 
 namespace TwitchXX
 {

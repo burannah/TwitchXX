@@ -147,5 +147,14 @@ namespace TwitchXX
 
         void fetchHeaderParams(web::http::http_headers &headers);
     };
+
+	template<typename T>
+	void addRangeOfParamsToBuilder(web::uri_builder& builder, const std::__cxx11::string& name, std::vector<T> c)
+	{
+		for(const auto& element: c)
+		{
+			builder.append_query(name, element);
+		}
+	}
 }
 

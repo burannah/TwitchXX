@@ -4,6 +4,7 @@
 
 #include <StreamsOptions.h>
 #include <TwitchException.h>
+#include "MakeRequest.h"
 
 void TwitchXX::StreamsOptions::validate(const TwitchXX::StreamsOptions& opt)
 {
@@ -23,14 +24,6 @@ void TwitchXX::StreamsOptions::validate(const TwitchXX::StreamsOptions& opt)
            << " UserLogin=" << opt.userLogin.size() << "\n";
 
         throw TwitchException(ss.str().c_str());
-    }
-}
-template<typename T>
-void addRangeOfParamsToBuilder(web::uri_builder& builder,const std::string& name, std::vector<T> c)
-{
-    for(const auto& element: c)
-    {
-        builder.append_query(name, element);
     }
 }
 
