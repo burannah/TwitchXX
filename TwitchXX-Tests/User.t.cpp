@@ -59,5 +59,6 @@ TEST_F(UserTest, getMany)
                 EXPECT_EQ(result.size(),2);
                 EXPECT_NE(std::find_if(result.begin(),result.end(),findByLogin("burannah")),result.end());
                 EXPECT_NE(std::find_if(result.begin(),result.end(),findByLogin("alkali")),result.end());
+                std::cerr<< "Alkali id:"<<std::find_if(result.begin(),result.end(),findByLogin("alkali"))->Id << "\n";
             });
 }

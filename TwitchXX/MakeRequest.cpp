@@ -218,5 +218,7 @@ namespace TwitchXX
 			opt.insert({name, value});
         }
 
+		return opt;
+
     }
 }
