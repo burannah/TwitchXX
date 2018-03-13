@@ -6,6 +6,7 @@
 #include <MakeRequest.h>
 #include <Auth/UserAccessToken.h>
 #include <TwitchException.h>
+#include <Api.h>
 
 namespace TwitchXX
 {
@@ -68,6 +69,35 @@ namespace TwitchXX
             });
             return result;
         }
+    }
+
+    User updateUserDescription(const Api &api, const std::string &newDescription)
+    {
+        web::uri_builder builder("helix/users");
+
+        builder.append_query("description", newDescription);
+
+        auto result = api.Request()->put(builder.to_uri(),AuthScope::USER_EDIT);
+
+        if(result.has_field("data") && !result.at("data").is_null() && result.at("data").size() == 1)
+        {
+            auto data = result.at("data").as_array()[0];
+            JsonWrapper w(data);
+
+            User u;
+            u.Login = static_cast<std::string>(*w["login"]);
+            u.Email = static_cast<std::string>(*w["email"]);
+            u.ViewCount = *w["view_count"];
+            u.OfflineImageUrl = static_cast<std::string>(*w["offline_image_url"]);
+            u.AvatarUrl = static_cast<std::string>(*w["profile_image_url"]);
+            u.Description = static_cast<std::string>(*w["description"]);
+            u.BroadcaterType = BroadcasterType::fromString(*w["broadcaster_type"]);
+            u.Type = UserType::fromString(*w["type"]);
+
+            return u;
+        }
+
+        throw TwitchException("Response parsing error");
     }
 }
 

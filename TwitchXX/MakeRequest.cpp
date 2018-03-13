@@ -102,7 +102,16 @@ namespace TwitchXX
 		web::http::http_request request(params.method);
 
 		if(_client_id.length() > 0)request.headers().add("Client-ID", _client_id);
-        if(_authToken) request.headers().add("Authorization", _authToken->get());
+        if(params.scope != AuthScope::NO_SCOPE)
+        {
+            if(!_authToken)
+            {
+                std::stringstream ss;
+                ss << "No auth token provided for " << params.uri.to_string() << " request";
+                throw TwitchException(ss.str().c_str());
+            }
+            request.headers().add("Authorization", _authToken->get(params.scope));
+        }
 		request.set_request_uri({params.uri});
         request.headers().set_content_type("application/json");
 		if (!params.body.is_null())

@@ -12,13 +12,12 @@
 namespace TwitchXX
 {
     class MakeRequest;
+    class UserAccessToken;
+
     class Api
     {
     public:
-        explicit Api(const options& opt = MakeRequest::initOptionsFromConfig())
-        :_request(std::make_shared<MakeRequest>(opt))
-        {
-        }
+        explicit Api(const options& opt = MakeRequest::initOptionsFromConfig());
 
         std::shared_ptr<MakeRequest> Request() const
         {
@@ -27,6 +26,7 @@ namespace TwitchXX
 
     private:
         std::shared_ptr<MakeRequest> _request;
+        std::shared_ptr<UserAccessToken> _userToken;
 
     };
 }

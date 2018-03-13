@@ -12,6 +12,8 @@
 
 namespace TwitchXX
 {
+    class Api;
+
     ///User description class
     class User
     {
@@ -47,6 +49,15 @@ namespace TwitchXX
     * @throw TwitchXX::TwitchException if ids or logins size is > 100 or both empty;
     */
     std::vector<User> getUsers(std::vector<std::string> ids, std::vector<std::string> logins);
+
+    /***
+    * Update user's description. The user is specified by user access token provided by Api object
+    * @param api - a general Twitch Api object with all required tokens and request object
+    * @param newDescription - new description text
+    * @return updated User object
+    * @throw TwitchXX::TwitchException if something went wrong
+    */
+    User updateUserDescription(const Api& api, const std::string& newDescription);
 }
 
 

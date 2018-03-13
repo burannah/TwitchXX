@@ -5,11 +5,14 @@
 #include <gtest/gtest.h>
 #include <MakeRequest.h>
 #include <User.h>
+#include <Api.h>
 
 
 class UserTest : public ::testing::Test
 {
 protected:
+    TwitchXX::Api _api;
+
     void SetUp() override;
 };
 
@@ -60,4 +63,16 @@ TEST_F(UserTest, getMany)
                 EXPECT_NE(std::find_if(result.begin(),result.end(),findByLogin("burannah")),result.end());
                 EXPECT_NE(std::find_if(result.begin(),result.end(),findByLogin("alkali")),result.end());
             });
+}
+
+TEST_F(UserTest, updateDescription)
+{
+    const std::string desc = "Super puper test";
+    auto burannah = TwitchXX::getUser("","burannah");
+    auto burannah2 = TwitchXX::updateUserDescription(_api, desc);
+    EXPECT_NE(burannah.Description, burannah2.Description);
+    EXPECT_EQ(burannah2.Description, desc);
+    burannah2 = TwitchXX::updateUserDescription(_api, burannah.Description);
+    EXPECT_EQ(burannah.Description, burannah2.Description);
+    EXPECT_NE(burannah2.Description, desc);
 }
