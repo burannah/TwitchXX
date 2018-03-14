@@ -9,6 +9,8 @@
 #include <VideoPeriodType.h>
 #include <VideoSortType.h>
 #include <VideoType.h>
+#include <vector>
+#include "Api.h"
 
 namespace TwitchXX
 {
@@ -22,6 +24,7 @@ namespace TwitchXX
         VideoSortType::Value   Sort;
         VideoType::Value       Type;
     };
+
 }
 
 #endif //TWITCHXX_VIDEOOPTIONS_H
