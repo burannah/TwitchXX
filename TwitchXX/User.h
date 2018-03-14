@@ -8,7 +8,7 @@
 #include <string>
 #include <Property.h>
 #include <UserType.h>
-#include "BroadcasterType.h"
+#include <BroadcasterType.h>
 
 namespace TwitchXX
 {

@@ -6,7 +6,7 @@
 #define TWITCHXX_CLIP_H
 
 #include <cpprest/details/basic_types.h>
-#include "Property.h"
+#include <Property.h>
 
 namespace TwitchXX
 {

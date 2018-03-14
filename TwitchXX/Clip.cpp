@@ -3,9 +3,9 @@
 //
 
 #include <Auth/UserAccessToken.h>
-#include "Clip.h"
-#include "MakeRequest.h"
-#include "JsonWrapper.h"
+#include <Clip.h>
+#include <MakeRequest.h>
+#include <JsonWrapper.h>
 
 TwitchXX::Clip::Handle TwitchXX::Clip::CreateAndGetHandle(const utility::string_t &broadcaster)
 {

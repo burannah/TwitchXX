@@ -2,8 +2,8 @@
 // Created by buran on 05/03/18.
 //
 
-#include "BroadcasterType.h"
-#include "TwitchException.h"
+#include <BroadcasterType.h>
+#include <TwitchException.h>
 
 std::string TwitchXX::BroadcasterType::toString(TwitchXX::BroadcasterType::Value v)
 {

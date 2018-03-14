@@ -2,8 +2,8 @@
 // Created by buran on 05/03/18.
 //
 
-#include "UserType.h"
-#include "TwitchException.h"
+#include <UserType.h>
+#include <TwitchException.h>
 
 std::string TwitchXX::UserType::toString(TwitchXX::UserType::Value v)
 {

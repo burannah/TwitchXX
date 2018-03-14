@@ -6,8 +6,8 @@
 #include <TwitchException.h>
 #include <MakeRequest.h>
 #include <JsonWrapper.h>
-#include "StreamsOptions.h"
-#include "StreamType.h"
+#include <StreamsOptions.h>
+#include <StreamType.h>
 
 std::tuple<std::vector<TwitchXX::Stream>, std::string>
 TwitchXX::getStreams(size_t count, const char *cursor)

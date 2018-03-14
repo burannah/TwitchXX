@@ -2,10 +2,10 @@
 // Created by buran on 29/01/18.
 //
 
-#include "Game.h"
-#include "TwitchException.h"
-#include "MakeRequest.h"
-#include "JsonWrapper.h"
+#include <Game.h>
+#include <TwitchException.h>
+#include <MakeRequest.h>
+#include <JsonWrapper.h>
 
 TwitchXX::Game::Game(const std::string &id, const std::string &name)
 

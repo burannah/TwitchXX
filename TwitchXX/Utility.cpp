@@ -7,7 +7,7 @@
 #include <iomanip>
 #include <chrono>
 #include <cpprest/details/basic_types.h>
-#include "TwitchDef.h"
+#include <TwitchDef.h>
 
 namespace TwitchXX
 {

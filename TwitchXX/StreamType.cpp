@@ -5,7 +5,7 @@
 #include <MakeRequest.h>
 #include <TwitchException.h>
 #include <Stream.h>
-#include "StreamType.h"
+#include <StreamType.h>
 namespace TwitchXX
 {
     std::string StreamType::toString(StreamType::Value v)
