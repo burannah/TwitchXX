@@ -6,6 +6,7 @@
 #include <Clip.h>
 #include <MakeRequest.h>
 #include <JsonWrapper.h>
+#include <Utility.h>
 
 TwitchXX::Clip::Handle TwitchXX::Clip::CreateAndGetHandle(const utility::string_t &broadcaster)
 {
@@ -42,17 +43,17 @@ TwitchXX::Clip::Clip(const utility::string_t &id)
         const auto& clip = *data.begin();
         JsonWrapper w(clip);
 
-        Id.Set(*w["id"]);
-        Url.Set(*w["url"]);
-        EmbedUrl.Set(*w["embed_url"]);
-        BroadcasterId.Set(*w["broadcaster_id"]);
-        CreatorId.Set(*w["creator_id"]);
-        VideoId.Set(*w["video_id"]);
-        GameId.Set(*w["game_id"]);
-        Language.Set(*w["language"]);
-        Title.Set(*w["title"]);
-        ViewCount.Set(*w["view_count"]);
-        Created.from_string(*w["created_at"]);
-        Thumb.Set(*w["thumbnail_url"]);
+        Id = static_cast<std::string>(*w["id"]);
+        Url = static_cast<std::string>(*w["url"]);
+        EmbedUrl = static_cast<std::string>(*w["embed_url"]);
+        BroadcasterId = *w["broadcaster_id"];
+        CreatorId = *w["creator_id"];
+        VideoId = *w["video_id"];
+        GameId = *w["game_id"];
+        Language = static_cast<std::string>(*w["language"]);
+        Title = static_cast<std::string>(*w["title"]);
+        ViewCount = *w["view_count"];
+        Created = DateFromString(*w["created_at"]);
+        Thumb = static_cast<std::string>(*w["thumbnail_url"]);
     }
 }

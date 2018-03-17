@@ -44,16 +44,16 @@ TEST_F(ClipTest, Constructor)
     //Reuqest this clip: https://clips.twitch.tv/ThankfulMotionlessStinkbugCurseLit
     TwitchXX::Clip clip("ThankfulMotionlessStinkbugCurseLit");
 
-    EXPECT_EQ(clip.Id.Get(), "ThankfulMotionlessStinkbugCurseLit");
-    EXPECT_EQ(clip.Url.Get(), "https://clips.twitch.tv/ThankfulMotionlessStinkbugCurseLit");
-    EXPECT_EQ(clip.EmbedUrl.Get(), "https://clips.twitch.tv/embed?clip=ThankfulMotionlessStinkbugCurseLit");
-    EXPECT_EQ(clip.BroadcasterId.Get(), "28633177");
-    EXPECT_EQ(clip.CreatorId.Get(), "181208335");
-    EXPECT_EQ(clip.VideoId.Get(), "217784598");
-    EXPECT_EQ(clip.GameId.Get(), "29595");
-    EXPECT_EQ(clip.Language.Get(), "en");
-    EXPECT_EQ(clip.Title.Get(), "айсайсайсайсайсайсайсайсайсайсайсайсайсайсайсайсайсайс");
-    EXPECT_GE(clip.ViewCount.Get(), 216);
-    EXPECT_EQ(clip.Created.Get(), TwitchXX::DateFromString("2018-01-12T12:46:09Z"));
-    EXPECT_EQ(clip.Thumb.Get(), "https://clips-media-assets.twitch.tv/175389984-preview-480x272.jpg");
+    EXPECT_EQ(clip.Id, "ThankfulMotionlessStinkbugCurseLit");
+    EXPECT_EQ(clip.Url, "https://clips.twitch.tv/ThankfulMotionlessStinkbugCurseLit");
+    EXPECT_EQ(clip.EmbedUrl, "https://clips.twitch.tv/embed?clip=ThankfulMotionlessStinkbugCurseLit");
+    EXPECT_EQ(clip.BroadcasterId, 28633177);
+    EXPECT_EQ(clip.CreatorId, 181208335);
+    EXPECT_EQ(clip.VideoId, 217784598);
+    EXPECT_EQ(clip.GameId, 29595);
+    EXPECT_EQ(clip.Language, "en");
+    EXPECT_EQ(clip.Title, "айсайсайсайсайсайсайсайсайсайсайсайсайсайсайсайсайсайс");
+    EXPECT_GE(clip.ViewCount, 216);
+    EXPECT_EQ(clip.Created, TwitchXX::DateFromString("2018-01-12T12:46:09Z"));
+    EXPECT_EQ(clip.Thumb, "https://clips-media-assets.twitch.tv/175389984-preview-480x272.jpg");
 }

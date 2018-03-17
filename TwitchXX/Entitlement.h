@@ -6,7 +6,6 @@
 #define TWITCHXX_ENTITLEMENT_H
 
 #include <string>
-#include <Property.h>
 
 namespace TwitchXX
 {
@@ -28,9 +27,9 @@ namespace TwitchXX
 
         explicit Entitlement(const std::string& id, Type t = Type::bulk_drops_grant);
 
-        Property<std::string> Url;
-        Property<std::string> Id;
-        Property<Type>        EntitlementType;
+        std::string Url;
+        std::string Id;
+        Type        EntitlementType;
 
     };
 

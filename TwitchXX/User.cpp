@@ -7,6 +7,7 @@
 #include <Auth/UserAccessToken.h>
 #include <TwitchException.h>
 #include <Api.h>
+#include <JsonWrapper.h>
 
 namespace TwitchXX
 {

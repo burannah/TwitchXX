@@ -3,7 +3,6 @@
 
 #include <MakeRequest.h>
 #include <TwitchException.h>
-#include <Property.h>
 #include <Utility.h>
 
 namespace TwitchXX
@@ -147,17 +146,13 @@ namespace TwitchXX
 			else
 			{
 				auto error = response.extract_json().get();
-				Property<utility::string_t, std::string> msg;
+				utility::string_t msg;
 				if (!error.is_null())
 				{
-					msg.Set(error.at("error").as_string() + ": " + error.at("message").as_string());
-				}
-				else
-				{
-					msg.Set(""); //No error text in response
+					msg = error.at("error").as_string() + ": " + error.at("message").as_string();
 				}
 
-				throw TwitchException(msg.to_string(), response.status_code());
+				throw TwitchException(msg, response.status_code());
 			}
 		});
 

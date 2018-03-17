@@ -2,7 +2,6 @@
 // Created by buran on 03/03/18.
 //
 
-#include <Property.h>
 #include <StreamMetadata.h>
 #include <MakeRequest.h>
 #include <JsonWrapper.h>

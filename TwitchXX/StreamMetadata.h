@@ -6,9 +6,8 @@
 #define TWITCHXX_STREAMMETADATA_H
 
 #include <string>
-#include <Property.h>
 #include <StreamsOptions.h>
-#include "Api.h"
+#include <Api.h>
 
 namespace TwitchXX
 {

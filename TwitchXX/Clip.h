@@ -5,8 +5,7 @@
 #ifndef TWITCHXX_CLIP_H
 #define TWITCHXX_CLIP_H
 
-#include <cpprest/details/basic_types.h>
-#include <Property.h>
+#include <TwitchDef.h>
 
 namespace TwitchXX
 {
@@ -23,8 +22,8 @@ public:
     ///Simple structure to reference a clip
     struct Handle
     {
-        utility::string_t Id;               ///< Clip id
-        utility::string_t EditUrl;          ///< Url to edit this clip
+        std::string Id;               ///< Clip id
+        std::string EditUrl;          ///< Url to edit this clip
         size_t            Limit;            ///< Maximum number of Create Clip requests allowed (per minute)
         size_t            Remaining;        ///< Number of Create Clip requests remaining for current time interval
     };
@@ -38,7 +37,7 @@ public:
     *              return 503 error back.
     *  @return     Handle structure with populated Id and EditUrl fields.
     ****************************************************************************************/
-    static Handle CreateAndGetHandle(const utility::string_t &broadcaster);
+    static Handle CreateAndGetHandle(const std::string &broadcaster);
 
     /**
     *****************************************************************************************
@@ -47,33 +46,33 @@ public:
     *              you'll get 404 error back
     *  @param      id - clip id - usually five random words
     ****************************************************************************************/
-    explicit Clip (const utility::string_t& id);
+    explicit Clip (const std::string& id);
 
     //@{
     /** Clip properties. */
-    Property<utility::string_t> Id;
+    std::string        Id;
 
-    Property<utility::string_t> Url;
+    std::string        Url;
 
-    Property<utility::string_t> EmbedUrl;
+    std::string        EmbedUrl;
 
-    Property<utility::string_t> BroadcasterId;
+    unsigned long long BroadcasterId;
 
-    Property<utility::string_t> CreatorId;
+    unsigned long long CreatorId;
 
-    Property<utility::string_t> VideoId;
+    unsigned long long VideoId;
 
-    Property<utility::string_t> GameId;
+    unsigned long long GameId;
 
-    Property<utility::string_t> Language;
+    std::string        Language;
 
-    Property<utility::string_t> Title;
+    std::string        Title;
 
-    Property<unsigned int>      ViewCount;
+    unsigned int       ViewCount;
 
-    Property<Date>              Created;
+    Date               Created;
 
-    Property<utility::string_t> Thumb;
+    std::string        Thumb;
     //@}
 };
 

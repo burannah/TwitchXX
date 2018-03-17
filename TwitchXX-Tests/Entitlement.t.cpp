@@ -27,5 +27,5 @@ TEST_F(EntitlementTest, DISABLED_Constructor)
     std::string id = "something_for_testing" + TwitchXX::DateToString(std::chrono::system_clock::now());
     EXPECT_NO_THROW(entitlement = std::make_unique<TwitchXX::Entitlement>(id));
 
-    EXPECT_GE(entitlement->Url.Get().length(),15);
+    EXPECT_GE(entitlement->Url.length(),15);
 }

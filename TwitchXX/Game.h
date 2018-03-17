@@ -6,7 +6,7 @@
 #define TWITCHXX_GAME_H
 
 #include <string>
-#include <Property.h>
+#include <vector>
 
 namespace TwitchXX
 {

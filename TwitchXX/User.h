@@ -6,7 +6,7 @@
 #define TWITCHXX_USER_H
 
 #include <string>
-#include <Property.h>
+#include <vector>
 #include <UserType.h>
 #include <BroadcasterType.h>
 

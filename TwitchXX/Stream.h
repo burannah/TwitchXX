@@ -6,9 +6,9 @@
 #define TWITCHXX_STREAM_H
 
 #include <string>
-#include <Property.h>
 #include <StreamType.h>
 #include <StreamsOptions.h>
+#include <TwitchDef.h>
 
 namespace TwitchXX
 {
