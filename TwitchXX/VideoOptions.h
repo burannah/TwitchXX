@@ -23,6 +23,7 @@ namespace TwitchXX
         VideoPeriodType::Value Period;
         VideoSortType::Value   Sort;
         VideoType::Value       Type;
+
     };
 
 }

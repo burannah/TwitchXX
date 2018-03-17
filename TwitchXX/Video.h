@@ -7,11 +7,11 @@
 
 #include <string>
 #include <TwitchDef.h>
+#include <VideoOptions.h>
 
 
 namespace TwitchXX
 {
-    class VideoOptions;
     class Api;
 
     class Video
@@ -30,10 +30,10 @@ namespace TwitchXX
     };
 
     std::tuple<std::vector<Video>, std::string> getVideos(const Api& api,
-                                                          const std::vector<u_int64_t>* ids,
-                                                          const u_int64_t* userId = nullptr,
-                                                          const u_int64_t* gameId = nullptr,
-                                                          const VideoOptions* opt = nullptr);
+                                                          const std::vector<uint64_t>& ids,
+                                                          uint64_t userId = 0,
+                                                          uint64_t gameId = 0,
+                                                          const VideoOptions& opt = {});
 
 }
 

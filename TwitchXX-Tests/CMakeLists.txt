@@ -6,6 +6,6 @@ find_package(GTest REQUIRED)
 set (CMAKE_CXX_STANDARD 17)
 
 
-add_executable(TwitchXX-Tests Clip.t.cpp TwitchXX-Tests.cpp Entitlement.t.cpp Game.t.cpp AppAccessToken.t.cpp UserAccessToken.t.cpp Stream.t.cpp TestConstants.h StreamMetadata.t.cpp User.t.cpp UserFollows.t.cpp)
+add_executable(TwitchXX-Tests Clip.t.cpp TwitchXX-Tests.cpp Entitlement.t.cpp Game.t.cpp AppAccessToken.t.cpp UserAccessToken.t.cpp Stream.t.cpp TestConstants.h StreamMetadata.t.cpp User.t.cpp UserFollows.t.cpp Vide.t.cpp)
 target_link_libraries(TwitchXX-Tests TwitchXX ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES} ${LIB_CPPREST} ${GTEST_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} -lcpprest)
 install(TARGETS TwitchXX-Tests DESTINATION bin)
