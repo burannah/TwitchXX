@@ -14,7 +14,8 @@ const std::string LIMIT_PARAM = "Ratelimit-Helixstreamsmetadata-Limit";
 namespace TwitchXX
 {
     std::tuple<std::vector<TwitchXX::StreamMetadata>, std::string>
-    getStreamsMetadata(size_t count,
+    getStreamsMetadata(const Api& api,
+                       size_t count,
                        StreamMetadata::RateLimits* limits,
                        const char *cursor)
     {
@@ -27,11 +28,12 @@ namespace TwitchXX
 
         opt.type = StreamType::Value::ALL;
 
-        return getStreamsMetadata(opt, limits);
+        return getStreamsMetadata(api, opt, limits);
     }
 
     std::tuple<std::vector<StreamMetadata>, std::string>
-    getStreamsMetadata(const StreamsOptions &opt,
+    getStreamsMetadata(const Api& api,
+                       const StreamsOptions &opt,
                        StreamMetadata::RateLimits* limits)
     {
         MakeRequest request(MakeRequest::getOptions());
@@ -61,24 +63,27 @@ namespace TwitchXX
                     Overwatch o;
                     JsonWrapper ow(val.at("overwatch").at("broadcaster").at("hero"));
 
-                    s.overwatch.Name = *ow["name"];
-                    s.overwatch.Role = *ow["role"];
-                    s.overwatch.Ability = *ow["ability"];
+                    s.overwatch = std::make_unique<Overwatch>();
+
+                    s.overwatch->Name = static_cast<std::string>(*ow["name"]);
+                    s.overwatch->Role = static_cast<std::string>(*ow["role"]);
+                    s.overwatch->Ability = static_cast<std::string>(*ow["ability"]);
                 }
                 else if(val.has_field("hearthstone") && !val.at("hearthstone").is_null())
                 {
                     Hearthstone h;
                     JsonWrapper broadcaster(val.at("hearthstone").at("broadcaster").at("hero"));
+                    s.hearthstone = std::make_unique<Hearthstone>();
 
-                    s.hearthstone.Broadcaster.Name = *broadcaster["name"];
-                    s.hearthstone.Broadcaster.Class = *broadcaster["class"];
-                    s.hearthstone.Broadcaster.Type = *broadcaster["type"];
+                    s.hearthstone->Broadcaster.Name = static_cast<std::string>(*broadcaster["name"]);
+                    s.hearthstone->Broadcaster.Class = static_cast<std::string>(*broadcaster["class"]);
+                    s.hearthstone->Broadcaster.Type = static_cast<std::string>(*broadcaster["type"]);
 
                     JsonWrapper opponent(val.at("hearthstone").at("opponent").at("hero"));
 
-                    s.hearthstone.Opponent.Class = *opponent["class"];
-                    s.hearthstone.Opponent.Name = *opponent["name"];
-                    s.hearthstone.Opponent.Type = *opponent["type"];
+                    s.hearthstone->Opponent.Class = static_cast<std::string>(*opponent["class"]);
+                    s.hearthstone->Opponent.Name = static_cast<std::string>(*opponent["name"]);
+                    s.hearthstone->Opponent.Type = static_cast<std::string>(*opponent["type"]);
                 }
 
                 result.push_back(s);

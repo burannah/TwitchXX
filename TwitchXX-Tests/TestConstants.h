@@ -7,7 +7,7 @@
 
 #include <string>
 
-const std::string DOTA2_ID = "29595";
-const std::string PUBG_ID = "493057";
+const unsigned long long DOTA2_ID = 29595;
+const unsigned long long PUBG_ID = 493057;
 
 #endif //TWITCHXX_TESTCONSTANTS_H

@@ -22,7 +22,7 @@ namespace TwitchXX
          * @param id - Twitch game id
          * @param name - Name
          */
-        explicit Game(const std::string& id, const std::string& name = "");
+        explicit Game(unsigned long long int id, const std::string &name = "");
 
         /***
          * Simple constructor to just create a game object. Checks that id and name paramaters
@@ -31,11 +31,11 @@ namespace TwitchXX
          * @param name - Game name (required)
          * @param url - Box Art image url (optional)
          */
-        explicit Game(const std::string& id, const std::string& name, const std::string& url);
+        explicit Game(unsigned long long id, const std::string& name, const std::string& url);
 
-        Property<std::string> Id;       //< Twitch game Id
-        Property<std::string> Name;     //< Game title
-        Property<std::string> BoxArt;   //< Url template for box art image
+        unsigned long long Id;       //< Twitch game Id
+        std::string Name;     //< Game title
+        std::string BoxArt;   //< Url template for box art image
     };
 
     /***
@@ -45,7 +45,7 @@ namespace TwitchXX
      * @return vector of Game objects
      * @throws Twitchxx::TwitchException if any array size is > 100
      */
-    std::vector<Game> getGames(const std::vector<std::string>& ids, const std::vector<std::string>& names = {});
+    std::vector<Game> getGames(const std::vector<unsigned long long> &ids, const std::vector<std::string> &names = {});
 
     /***
      * Method to get Top Game objects at the moment

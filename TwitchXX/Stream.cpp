@@ -54,7 +54,7 @@ std::tuple<std::vector<TwitchXX::Stream>, std::string> TwitchXX::getStreams(cons
                && val.at("community_ids").size())
             {
                 auto communities = val.at("community_ids").as_array();
-                auto proxy = s.CommunityIds.Get(); //I'm too lazy to specify the type
+                auto proxy = s.CommunityIds; //I'm too lazy to specify the type
                 std::for_each(communities.begin(), communities.end(), [&](auto&& c)
                 {
                     proxy.push_back(c.as_string());
@@ -63,11 +63,11 @@ std::tuple<std::vector<TwitchXX::Stream>, std::string> TwitchXX::getStreams(cons
             }
 
             s.Type = StreamType::fromString(*w["type"]);
-            s.Title = *w["title"];
+            s.Title = static_cast<std::string>(*w["title"]);
             s.Viewers = *w["viewer_count"];
             s.Started = DateFromString(*w["started_at"]);
-            s.Language = *w["language"];
-            s.Thumb = *w["thumbnail_url"];
+            s.Language = static_cast<std::string>(*w["language"]);
+            s.Thumb = static_cast<std::string>(*w["thumbnail_url"]);
 
             result.push_back(s);
         });

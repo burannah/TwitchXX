@@ -8,15 +8,16 @@
 #include <string>
 #include <Property.h>
 #include <StreamsOptions.h>
+#include "Api.h"
 
 namespace TwitchXX
 {
     /// Overwatch stream metadata
     struct Overwatch
     {
-        Property<std::string> Role;     ///< Broadcaster's current Role
-        Property<std::string> Name;     ///< Broadcaster's name
-        Property<std::string> Ability;  ///< Broadcaster's ability
+        std::string Role;     ///< Broadcaster's current Role
+        std::string Name;     ///< Broadcaster's name
+        std::string Ability;  ///< Broadcaster's ability
     };
 
     ///Hearthstone stream metadata
@@ -25,9 +26,9 @@ namespace TwitchXX
         ///Player's metadata
         struct Hero
         {
-            Property<std::string> Type;     ///< Type
-            Property<std::string> Class;    ///< Class
-            Property<std::string> Name;     ///< Name
+            std::string Type;     ///< Type
+            std::string Class;    ///< Class
+            std::string Name;     ///< Name
         };
 
         Hero Broadcaster;                   ///< Broadcaster's hero metadata
@@ -45,35 +46,56 @@ namespace TwitchXX
             int Limit;          ///< Maximum number of stream metadata requests per time interval (see RequestLimits)
         };
 
-        Property<std::string> UserId;   ///< User id
-        Property<std::string> GameId;   ///< Game id (at the moment can be 488552 (Overwatch), 138585 (Hearthstone), or null)
+        StreamMetadata() = default;
+
+        StreamMetadata(const StreamMetadata& other)
+        {
+            UserId = other.UserId;
+            GameId = other.GameId;
+
+            if(other.overwatch)
+            {
+                overwatch = std::make_unique<Overwatch>(*other.overwatch);
+            }
+            else if(other.hearthstone)
+            {
+                hearthstone = std::make_unique<Hearthstone>(*other.hearthstone);
+            }
+        }
 
 
-        //TODO: Should be nullable objects
-        Overwatch overwatch;            ///< Overwatch stream metadata
-        Hearthstone hearthstone;        ///< Hearthstone stream metadata
+        unsigned long long UserId;   ///< User id
+        unsigned long long GameId;   ///< Game id (at the moment can be 488552 (Overwatch), 138585 (Hearthstone), or null)
+
+
+        std::unique_ptr<Overwatch> overwatch;            ///< Overwatch stream metadata
+        std::unique_ptr<Hearthstone> hearthstone;        ///< Hearthstone stream metadata
     };
 
     /***
     * Fetch Stream metadata objects. Forward-only request
+    * @param api - api objects containing request and auth objects
     * @param count - count of objects per batch (Maximum: 100)
     * @param cursor - forward ('after') cursor. Optional
     * @return a tuple with vector of Strem objects and a cursor
     * @throw TwitchXX::TwitchException in case of count is > 100;
     */
     std::tuple<std::vector<TwitchXX::StreamMetadata>, std::string>
-    getStreamsMetadata(size_t count,
+    getStreamsMetadata(const Api& api,
+                       size_t count,
                        StreamMetadata::RateLimits* limits = nullptr,
                        const char *cursor = nullptr);
 
     /***
     * Fetch Stream metadata objects. More complex way of request.
+    * @param api - api objects containing request and auth objects
     * @param opt - request options. See GetStreamsOptions for details.
     * @return a tuple with vector of Stream objects and a cursor
     * @throw TwitchXX::TwitchException in case some of the parameters are incorrect.
     */
     std::tuple<std::vector<StreamMetadata>, std::string>
-    getStreamsMetadata(const StreamsOptions& opt,
+    getStreamsMetadata(const Api& api,
+                       const StreamsOptions& opt,
                        StreamMetadata::RateLimits* limits = nullptr);
 }
 

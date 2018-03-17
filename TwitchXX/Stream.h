@@ -19,16 +19,16 @@ namespace TwitchXX
     class Stream
     {
     public:
-        Property<std::string>              Id;
-        Property<std::string>              UserId;
-        Property<std::string>              GameId;
-        Property<std::vector<std::string>> CommunityIds;
-        Property<std::string>              Title;
-        Property<StreamType::Value>        Type;
-        Property<unsigned long long>       Viewers;
-        Property<Date>                     Started;
-        Property<std::string>              Language;
-        Property<std::string>              Thumb;
+        unsigned long long       Id;
+        unsigned long long       UserId;
+        unsigned long long       GameId;
+        std::vector<std::string> CommunityIds;
+        std::string              Title;
+        StreamType::Value        Type;
+        unsigned long long       Viewers;
+        Date                     Started;
+        std::string              Language;
+        std::string              Thumb;
     };
 
     /***

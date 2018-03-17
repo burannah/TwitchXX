@@ -29,13 +29,13 @@ namespace TwitchXX
         ///< You can specify up to 100 IDs.
         unsigned long first; ///< Maximum number of objects to return. Maximum: 100. Default: 20.
 
-        std::vector<std::string> gameIds; ///< Returns streams broadcasting a specified game ID.
+        std::vector<unsigned long long> gameIds; ///< Returns streams broadcasting a specified game ID.
         ///< You can specify up to 100 IDs.
         std::vector<std::string> langs; ///< Returns streams broadcasting a specified game ID.
         ///< You can specify up to 100 IDs.
         StreamType::Value type; ///< Stream type: "all", "live", "vodcast". Default: "all".
 
-        std::vector<std::string> userIds; ///< Returns streams broadcast by one or more specified
+        std::vector<unsigned long long> userIds; ///< Returns streams broadcast by one or more specified
         ///< user IDs. You can specify up to 100 IDs.
         std::vector<std::string> userLogin; ///< Returns streams broadcast by one or more specified
         ///< user login names. You can specify up to 100 names.

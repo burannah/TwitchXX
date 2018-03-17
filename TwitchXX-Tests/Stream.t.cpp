@@ -60,7 +60,7 @@ TEST_F(StreamTest, getByGameId)
                 EXPECT_EQ(streams.size(),opt.first);
                 std::for_each(streams.begin(), streams.end(),[] (const auto& stream)
                 {
-                    EXPECT_EQ(stream.GameId.Get(),DOTA2_ID);
+                    EXPECT_EQ(stream.GameId,DOTA2_ID);
                 });
                 EXPECT_GE(cursor.size(),5);
             });
@@ -82,7 +82,7 @@ TEST_F(StreamTest, getByCommunityId)
                 EXPECT_LE(streams.size(),opt.first);
                 std::for_each(streams.begin(), streams.end(),[] (const auto& stream)
                 {
-                    const auto& cmmtys = stream.CommunityIds.Get();
+                    const auto& cmmtys = stream.CommunityIds;
                     auto it = std::find(cmmtys.begin(), cmmtys.end(),
                                         "848d95be-90b3-44a5-b143-6e373754c382");
                     EXPECT_TRUE( it != cmmtys.end());
@@ -107,7 +107,7 @@ TEST_F(StreamTest, getByLang)
                 EXPECT_LE(streams.size(),opt.first);
                 std::for_each(streams.begin(), streams.end(),[] (const auto& stream)
                 {
-                    EXPECT_EQ( stream.Language.Get(),"ru");
+                    EXPECT_EQ( stream.Language,"ru");
                 });
                 EXPECT_GE(cursor.size(),5);
             });
@@ -128,7 +128,7 @@ TEST_F(StreamTest, getByType)
                 EXPECT_LE(streams.size(),opt.first);
                 std::for_each(streams.begin(), streams.end(),[&] (const auto& stream)
                 {
-                    EXPECT_EQ( stream.Type.Get(),opt.type);
+                    EXPECT_EQ( stream.Type,opt.type);
                 });
                 EXPECT_GE(cursor.size(),5);
             });
@@ -136,22 +136,21 @@ TEST_F(StreamTest, getByType)
 
 TEST_F(StreamTest, getByUserId)
 {
-    //TODO: Find any user id
     EXPECT_NO_THROW(
             {
                 TwitchXX::StreamsOptions opt;
                 opt.first = 20;
                 opt.type = ::TwitchXX::StreamType::Value::ALL;
-                opt.userIds.emplace_back("burannah");
+                opt.userIds.emplace_back(51977856);
 
                 auto result = TwitchXX::getStreams(opt);
                 auto streams = std::get<0>(result);
                 auto cursor = std::get<1>(result);
-                EXPECT_GE(streams.size(),0);
-                EXPECT_LE(streams.size(),opt.first);
+                EXPECT_GE(streams.size(), 0);
+                EXPECT_LE(streams.size(), opt.first);
                 std::for_each(streams.begin(), streams.end(),[&] (const auto& stream)
                 {
-                    EXPECT_EQ( stream.UserId.Get(),opt.userIds[0]);
+                    EXPECT_EQ( stream.UserId, opt.userIds[0]);
                 });
                 EXPECT_GE(cursor.size(),5);
             });
@@ -173,7 +172,7 @@ TEST_F(StreamTest, getByUserLogin)
                 EXPECT_LE(streams.size(),opt.first);
                 std::for_each(streams.begin(), streams.end(),[&] (const auto& stream)
                 {
-                    EXPECT_EQ( stream.UserId.Get(),opt.userIds[0]);
+                    EXPECT_EQ( stream.UserId, opt.userIds[0]);
                 });
                 EXPECT_GE(cursor.size(),5);
             });

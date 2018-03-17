@@ -25,26 +25,26 @@ void GameTest::SetUp()
 
 TEST_F(GameTest, Constructor1)
 {
-    TwitchXX::Game pubg("493057");
+    TwitchXX::Game pubg(493057);
 
-    EXPECT_EQ("493057", pubg.Id.Get());
-    EXPECT_EQ("PLAYERUNKNOWN'S BATTLEGROUNDS", pubg.Name.Get());
+    EXPECT_EQ(493057, pubg.Id);
+    EXPECT_EQ("PLAYERUNKNOWN'S BATTLEGROUNDS", pubg.Name);
     EXPECT_EQ("https://static-cdn.jtvnw.net/ttv-boxart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-{width}x{height}.jpg",
-              pubg.BoxArt.Get());
+              pubg.BoxArt);
 }
 
 TEST_F(GameTest, Constructor2)
 {
-    TwitchXX::Game dota("", "Dota 2");
+    TwitchXX::Game dota(0 , "Dota 2");
 
-    EXPECT_TRUE(dota.Id.Get().size());
-    EXPECT_EQ(dota.Name.Get(), "Dota 2");
+    EXPECT_TRUE(dota.Id);
+    EXPECT_EQ(dota.Name, "Dota 2");
 }
 
 
 TEST_F(GameTest, Constructor3)
 {
-    EXPECT_THROW(TwitchXX::Game("",""), TwitchXX::TwitchException);
+    EXPECT_THROW(TwitchXX::Game(0 ,""), TwitchXX::TwitchException);
 }
 
 TEST_F(GameTest, MassRequest)
@@ -55,7 +55,7 @@ TEST_F(GameTest, MassRequest)
                 EXPECT_EQ(result.size(),2);
                 for(const auto& game : result)
                 {
-                    EXPECT_EQ(game.Name.Get(), game.Id.Get() == DOTA2_ID ? "Dota 2" : "PLAYERUNKNOWN'S BATTLEGROUNDS");
+                    EXPECT_EQ(game.Name, game.Id == DOTA2_ID ? "Dota 2" : "PLAYERUNKNOWN'S BATTLEGROUNDS");
                 }
             }
     );

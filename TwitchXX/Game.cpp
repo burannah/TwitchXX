@@ -7,17 +7,17 @@
 #include <MakeRequest.h>
 #include <JsonWrapper.h>
 
-TwitchXX::Game::Game(const std::string &id, const std::string &name)
+TwitchXX::Game::Game(unsigned long long int id, const std::string &name)
 
 {
-    if(id.empty() && name.empty())
+    if(!id && name.empty())
     {
         throw TwitchException("Either name or id should be provided to get a game.");
     }
 
     MakeRequest request(MakeRequest::getOptions());
     web::uri_builder builder("helix/games");
-    if(!id.empty())
+    if(id)
     {
         builder.append_query("id",id);
     }
@@ -34,27 +34,27 @@ TwitchXX::Game::Game(const std::string &id, const std::string &name)
         JsonWrapper w(*data.begin());
 
         Id = *w["id"];
-        Name = *w["name"];
-        BoxArt = *w["box_art_url"];
+        Name = static_cast<std::string>(*w["name"]);
+        BoxArt = static_cast<std::string>(*w["box_art_url"]);
     }
 }
 
-TwitchXX::Game::Game(const std::string &id, const std::string &name, const std::string &url)
+TwitchXX::Game::Game(unsigned long long id, const std::string &name, const std::string &url)
 : Id(id)
 , Name(name)
 , BoxArt(url)
 {
-    if(Id.Get().empty() || Id.Get().empty())
+    if(!Id || Name.empty())
     {
         std::stringstream ss;
-        ss << "Unable to create a game with Id:" << Id.Get()
-           << " and Title:" << Name.Get();
+        ss << "Unable to create a game with Id:" << Id
+           << " and Title:" << Name;
         throw TwitchException(ss.str().c_str());
     }
 }
 
-std::vector<TwitchXX::Game> TwitchXX::getGames(const std::vector<std::string>& ids,
-                                               const std::vector<std::string>& names)
+std::vector<TwitchXX::Game> TwitchXX::getGames(const std::vector<unsigned long long> &ids,
+                                               const std::vector<std::string> &names)
 {
     if(ids.size() > 100 || names.size() > 100)
     {
