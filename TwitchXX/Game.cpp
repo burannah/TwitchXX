@@ -6,8 +6,9 @@
 #include <TwitchException.h>
 #include <MakeRequest.h>
 #include <JsonWrapper.h>
+#include "Api.h"
 
-TwitchXX::Game::Game(unsigned long long int id, const std::string &name)
+TwitchXX::Game::Game(const Api &api, unsigned long long int id, const std::string &name)
 
 {
     if(!id && name.empty())
@@ -15,7 +16,6 @@ TwitchXX::Game::Game(unsigned long long int id, const std::string &name)
         throw TwitchException("Either name or id should be provided to get a game.");
     }
 
-    MakeRequest request(MakeRequest::getOptions());
     web::uri_builder builder("helix/games");
     if(id)
     {
@@ -26,7 +26,7 @@ TwitchXX::Game::Game(unsigned long long int id, const std::string &name)
         builder.append_query("name",name);
     }
 
-    auto response = request.get(builder.to_uri());
+    auto response = api.Request()->get(builder.to_uri());
 
     if(response.has_field("data") && !response.at("data").is_null() && response.at("data").size())
     {
@@ -53,15 +53,14 @@ TwitchXX::Game::Game(unsigned long long id, const std::string &name, const std::
     }
 }
 
-std::vector<TwitchXX::Game> TwitchXX::getGames(const std::vector<unsigned long long> &ids,
-                                               const std::vector<std::string> &names)
+std::vector<TwitchXX::Game>
+TwitchXX::getGames(const Api &api, const std::vector<unsigned long long> &ids, const std::vector<std::string> &names)
 {
     if(ids.size() > 100 || names.size() > 100)
     {
         throw TwitchXX::TwitchException("Too many games requested");
     }
 
-    MakeRequest request(MakeRequest::getOptions());
     web::uri_builder builder("helix/games");
     std::for_each(std::begin(ids), std::end(ids), [&](const auto& id)
     {
@@ -72,7 +71,7 @@ std::vector<TwitchXX::Game> TwitchXX::getGames(const std::vector<unsigned long l
         builder.append_query("name", name);
     });
 
-    auto response = request.get(builder.to_uri());
+    auto response = api.Request()->get(builder.to_uri());
     std::vector<Game> result;
 
     if(response.has_field("data") && !response.at("data").is_null() && response.at("data").size())
@@ -91,14 +90,14 @@ std::vector<TwitchXX::Game> TwitchXX::getGames(const std::vector<unsigned long l
 }
 
 
-std::tuple<std::vector<TwitchXX::Game>, std::string> TwitchXX::getTopGames(int count, const char *cursor, const char *cursor_before)
+std::tuple<std::vector<TwitchXX::Game>, std::string>
+TwitchXX::getTopGames(const Api &api, int count, const char *cursor, const char *cursor_before)
 {
     if (count > 100)
     {
         throw TwitchException("getTopGames: count must be less or equal to 100");
     }
 
-    MakeRequest request(MakeRequest::getOptions());
     web::uri_builder builder("helix/games/top");
     builder.append_query("first", count);
 
@@ -110,7 +109,7 @@ std::tuple<std::vector<TwitchXX::Game>, std::string> TwitchXX::getTopGames(int c
         builder.append_query("before", cursor_before);
     }
 
-    auto response = request.get(builder.to_uri());
+    auto response = api.Request()->get(builder.to_uri());
     std::vector<Game> result;
 
     if (response.has_field("data") && !response.at("data").is_null() && response.at("data").size())
