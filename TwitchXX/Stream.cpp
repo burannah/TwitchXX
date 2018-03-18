@@ -9,9 +9,10 @@
 #include <StreamsOptions.h>
 #include <StreamType.h>
 #include <Utility.h>
+#include <Api.h>
 
 std::tuple<std::vector<TwitchXX::Stream>, std::string>
-TwitchXX::getStreams(size_t count, const char *cursor)
+TwitchXX::getStreams(const Api &api, size_t count, const char *cursor)
 {
     StreamsOptions opt;
     opt.first = count > 100 || count == 0 ? 20 : count;
@@ -22,18 +23,18 @@ TwitchXX::getStreams(size_t count, const char *cursor)
 
     opt.type = StreamType::Value::ALL;
 
-    return getStreams(opt);
+    return getStreams(api, opt);
 }
 
 
-std::tuple<std::vector<TwitchXX::Stream>, std::string> TwitchXX::getStreams(const StreamsOptions &opt)
+std::tuple<std::vector<TwitchXX::Stream>, std::string>
+TwitchXX::getStreams(const Api &api, const StreamsOptions &opt)
 {
-    MakeRequest request(MakeRequest::getOptions());
     web::uri_builder builder("helix/streams");
 
     StreamsOptions::fillBuilder(builder,opt);
 
-    auto response = request.get(builder.to_uri());
+    auto response = api.Request()->get(builder.to_uri());
     std::vector<Stream> result;
 
     if (response.has_field("data") && !response.at("data").is_null() && response.at("data").size())
