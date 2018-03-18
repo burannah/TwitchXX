@@ -6,6 +6,7 @@
 #include <Entitlement.h>
 #include <TwitchException.h>
 #include <MakeRequest.h>
+#include "Api.h"
 
 std::string TwitchXX::Entitlement::getEntitlementTypeString(TwitchXX::Entitlement::Type t)
 {
@@ -19,17 +20,17 @@ std::string TwitchXX::Entitlement::getEntitlementTypeString(TwitchXX::Entitlemen
     return mapping[t];
 }
 
-TwitchXX::Entitlement::Entitlement(const std::string &id, TwitchXX::Entitlement::Type t)
+TwitchXX::Entitlement::Entitlement(const Api &api, const std::string &id, TwitchXX::Entitlement::Type t)
 : Id(id)
 , EntitlementType(t)
 {
-    MakeRequest request(MakeRequest::getOptions());
-    request.setAuthToken(std::make_shared<AppAccessToken>());
     web::uri_builder builder("helix/entitlements/upload");
     builder.append_query("manifest_id",id);
     builder.append_query("type",getEntitlementTypeString(t));
 
-    auto response = request.post(builder.to_uri());
+    api.Request()->setAuthToken(std::make_shared<AppAccessToken>());
+
+    auto response = api.Request()->post(builder.to_uri());
 
     if(response.has_field("data") && !response.at("data").is_null() && response.at("data").size())
     {

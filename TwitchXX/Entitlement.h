@@ -9,6 +9,7 @@
 
 namespace TwitchXX
 {
+    class Api;
     /***
      * Creates a URL where you can upload a manifest file and notify users that they have an entitlement.
      * Entitlements are digital items that users are entitled to use.
@@ -25,7 +26,7 @@ namespace TwitchXX
 
         static std::string getEntitlementTypeString(Type t);
 
-        explicit Entitlement(const std::string& id, Type t = Type::bulk_drops_grant);
+        explicit Entitlement(const Api &api, const std::string &id, TwitchXX::Entitlement::Type t);
 
         std::string Url;
         std::string Id;
