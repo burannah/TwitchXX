@@ -128,11 +128,12 @@ namespace TwitchXX
 		{
 
             #ifdef _DEBUG
-			ucout << response.to_string() << U("\n");
+			ucout << response.to_string() << "\n";
             #endif
             fetchHeaderParams(response.headers());
             this->_last_status = response.status_code();
-			if (response.status_code() == web::http::status_codes::OK)
+			if (response.status_code() == web::http::status_codes::OK
+				|| response.status_code() == web::http::status_codes::Accepted)
 			{
 				if (response.headers().content_type().find("json") == std::wstring::npos)
 				{

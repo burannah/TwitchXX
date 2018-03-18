@@ -7,23 +7,19 @@
 #include <MakeRequest.h>
 #include <TwitchException.h>
 #include <Utility.h>
+#include <TestConstants.h>
+#include <Api.h>
 
 
 class ClipTest : public ::testing::Test
 {
-    void SetUp() override;
+protected:
+    TwitchXX::Api _api;
 };
-
-void ClipTest::SetUp()
-{
-    //Init default parameters
-    TwitchXX::MakeRequest::initOptionsFromConfig();
-}
 
 TEST_F(ClipTest, GetClip)
 {
-    //TODO: Fix with get any live channel first
-    auto handle = TwitchXX::Clip::CreateAndGetHandle("44322889");
+    auto handle = TwitchXX::Clip::CreateAndGetHandle(_api, phoenix_id);
 
     EXPECT_GT(handle.Id.size(),0);
     EXPECT_GT(handle.EditUrl.size(),0);
@@ -33,8 +29,7 @@ TEST_F(ClipTest, GetClip)
 
 TEST_F(ClipTest, GetClip_Offline)
 {
-    //TODO: Fix with always offline channel id
-    EXPECT_THROW(TwitchXX::Clip::CreateAndGetHandle("44322889"), TwitchXX::TwitchException);
+    EXPECT_THROW(TwitchXX::Clip::CreateAndGetHandle(_api, buran_id), TwitchXX::TwitchException);
 
 }
 
@@ -42,7 +37,7 @@ TEST_F(ClipTest, GetClip_Offline)
 TEST_F(ClipTest, Constructor)
 {
     //Reuqest this clip: https://clips.twitch.tv/ThankfulMotionlessStinkbugCurseLit
-    TwitchXX::Clip clip("ThankfulMotionlessStinkbugCurseLit");
+    TwitchXX::Clip clip(_api, "ThankfulMotionlessStinkbugCurseLit");
 
     EXPECT_EQ(clip.Id, "ThankfulMotionlessStinkbugCurseLit");
     EXPECT_EQ(clip.Url, "https://clips.twitch.tv/ThankfulMotionlessStinkbugCurseLit");

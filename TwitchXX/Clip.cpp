@@ -7,17 +7,15 @@
 #include <MakeRequest.h>
 #include <JsonWrapper.h>
 #include <Utility.h>
+#include <Api.h>
 
-TwitchXX::Clip::Handle TwitchXX::Clip::CreateAndGetHandle(const utility::string_t &broadcaster)
+TwitchXX::Clip::Handle TwitchXX::Clip::CreateAndGetHandle(const Api &api, unsigned long long int broadcaster)
 {
     TwitchXX::Clip::Handle handle;
-    MakeRequest request(MakeRequest::getOptions());
-    web::uri_builder builder("/clips");
+    web::uri_builder builder("helix/clips");
     builder.append_query("broadcaster_id",broadcaster);
-    request.setAuthToken(std::make_shared<UserAccessToken>());
 
-    //TODO: Extract headers from the response
-    auto response = request.post(builder.to_uri(), AuthScope::CLIPS_EDIT);
+    auto response = api.Request()->post(builder.to_uri(), AuthScope::CLIPS_EDIT);
     if(response.has_field("data") && !response.at("data").is_null() && response.at("data").size())
     {
         auto data = response.at("data").as_array();
@@ -29,13 +27,12 @@ TwitchXX::Clip::Handle TwitchXX::Clip::CreateAndGetHandle(const utility::string_
     return handle;
 }
 
-TwitchXX::Clip::Clip(const utility::string_t &id)
+TwitchXX::Clip::Clip(const Api &api, const std::string &id)
 {
-    MakeRequest request(MakeRequest::getOptions());
     web::uri_builder builder("helix/clips");
     builder.append_query("id",id);
 
-    auto response = request.get(builder.to_uri());
+    auto response = api.Request()->get(builder.to_uri());
 
     if(response.has_field("data") && !response.at("data").is_null() && response.at("data").size())
     {

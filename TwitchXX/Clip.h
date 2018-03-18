@@ -10,6 +10,8 @@
 namespace TwitchXX
 {
 
+    class Api;
+
 ///Create and access existing clip object
 /** This class encapsulates two Twitch API requests:
  * Create clip: https://dev.twitch.tv/docs/api/reference#create-clip
@@ -33,11 +35,12 @@ public:
     *  @brief      Create a new clip and get its id and URL for editing.
     *  @details    To create a clip - call this function with broadcaster id. Broadcaster should
     *              be live, or you'll get 404 error back
+    *  @param      api - API object  providing request and auth objects
     *  @param      broadcaster - broadcaster id (NOT CHANNEL NAME) - if wrong id provided will
     *              return 503 error back.
     *  @return     Handle structure with populated Id and EditUrl fields.
     ****************************************************************************************/
-    static Handle CreateAndGetHandle(const std::string &broadcaster);
+    static Handle CreateAndGetHandle(const Api &api, unsigned long long int broadcaster);
 
     /**
     *****************************************************************************************
@@ -46,7 +49,7 @@ public:
     *              you'll get 404 error back
     *  @param      id - clip id - usually five random words
     ****************************************************************************************/
-    explicit Clip (const std::string& id);
+    explicit Clip(const Api &api, const std::string &id);
 
     //@{
     /** Clip properties. */

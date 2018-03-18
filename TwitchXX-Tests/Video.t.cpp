@@ -5,8 +5,7 @@
 #include <gtest/gtest.h>
 #include <Api.h>
 #include <Video.h>
-
-uint64_t phoenix_id = 72972103;
+#include <TestConstants.h>
 
 class VideoTest : public ::testing::Test
 {
