@@ -4,6 +4,7 @@
 #include <MakeRequest.h>
 #include <TwitchException.h>
 #include <Utility.h>
+#include <Log.h>
 
 namespace TwitchXX
 {
@@ -121,12 +122,14 @@ namespace TwitchXX
 			//request.headers().set_content_type(U("application/json"));
 		}
 
+		Log::Debug("Request: " + request.to_string());
 		ucout << "Request: " << request.to_string() << "\n";
 
 		pplx::task<web::json::value> task = http_client.request(request)
 			.then([this](web::http::http_response response) -> pplx::task<web::json::value>
 		{
-
+            Log::Debug("Response: " + response.to_string());
+            Log::Info("Response status: " + response.status_code());
             #ifdef _DEBUG
 			ucout << response.to_string() << "\n";
             #endif
@@ -168,6 +171,7 @@ namespace TwitchXX
 		}
 		catch (const std::exception& e)
 		{
+		    Log::Error(std::string("Unknown exception: ") + e.what());
 			printf("Error exception:%s\n", e.what());
 			throw;
 		}

@@ -24,7 +24,16 @@ else (DOXYGEN_FOUND)
     message("Doxygen need to be installed to generate the doxygen documentation")
 endif (DOXYGEN_FOUND)
 
-add_library(TwitchXX STATIC TwitchDef.h MakeRequest.h MakeRequest.cpp Clip.cpp Clip.h Utility.h Utility.cpp JsonWrapper.h Entitlement.cpp Entitlement.h TwitchException.h Game.cpp Game.h Auth/AuthToken.h Auth/AppAccessToken.cpp Auth/AppAccessToken.h Auth/UserAccessToken.cpp Auth/UserAccessToken.h Stream.cpp Stream.h StreamMetadata.cpp StreamMetadata.h StreamsOptions.h StreamsOptions.cpp StreamType.h StreamType.cpp User.cpp User.h UserType.cpp UserType.h BroadcasterType.cpp BroadcasterType.h UserFollows.cpp UserFollows.h Api.cpp Api.h Video.cpp Video.h VideoOptions.cpp VideoOptions.h VideoPeriodType.cpp VideoPeriodType.h VideoSortType.cpp VideoSortType.h VideoType.cpp VideoType.h)
+add_library(TwitchXX STATIC TwitchDef.h MakeRequest.h MakeRequest.cpp Clip.cpp Clip.h
+                            Utility.h Utility.cpp JsonWrapper.h Entitlement.cpp Entitlement.h
+                            TwitchException.h Game.cpp Game.h Auth/AuthToken.h Auth/AppAccessToken.cpp
+                            Auth/AppAccessToken.h Auth/UserAccessToken.cpp Auth/UserAccessToken.h
+                            Stream.cpp Stream.h StreamMetadata.cpp StreamMetadata.h StreamsOptions.h
+                            StreamsOptions.cpp StreamType.h StreamType.cpp User.cpp User.h UserType.cpp
+                            UserType.h BroadcasterType.cpp BroadcasterType.h UserFollows.cpp UserFollows.h
+                            Api.cpp Api.h Video.cpp Video.h VideoOptions.cpp VideoOptions.h VideoPeriodType.cpp
+                            VideoPeriodType.h VideoSortType.cpp VideoSortType.h VideoType.cpp VideoType.h
+                            Logger.cpp Logger.h Log.cpp Logger.h)
 target_link_libraries(TwitchXX ${LIB_CPPREST})
 
 install(TARGETS TwitchXX DESTINATION lib)
