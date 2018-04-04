@@ -143,7 +143,7 @@ namespace TwitchXX
 		///MakeRequest's main method.
 		///@param	params request parameters descriptor
 		///@return	response parsed to web::json::value object. Null json value if HTTP result code != OK.
-		web::json::value operator()(const RequestParams &params);
+		virtual web::json::value operator()(const RequestParams &params);
 
         void fetchHeaderParams(web::http::http_headers &headers);
     };

@@ -11,7 +11,7 @@ namespace TwitchXX
 
 	/**
 	*****************************************************************************************
-	*  @brief      MakreRequest setup proxy. 
+	*  @brief      MakeRequest setup proxy.
 	*
 	*  @details      SetupProxy() requires options to be defined and filled
 	*			   with values (proxy & proxy_password).
@@ -209,7 +209,7 @@ namespace TwitchXX
     {
         auto & opt = getOptions();
 
-        utility::ifstream_t options_file(!path.empty() ?  path : "twitchxx.cfg");
+        utility::ifstream_t options_file(!path.empty() ?  path.c_str() : "twitchxx.cfg");
         utility::string_t line;
         while(std::getline(options_file,line))
         {
