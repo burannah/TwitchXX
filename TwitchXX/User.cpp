@@ -78,7 +78,7 @@ namespace TwitchXX
 
         builder.append_query("description", newDescription);
 
-        auto result = api.Request()->put(builder.to_uri(),AuthScope::USER_EDIT);
+        auto result = api.Request().put(builder.to_uri(),AuthScope::USER_EDIT);
 
         if(result.has_field("data") && !result.at("data").is_null() && result.at("data").size() == 1)
         {

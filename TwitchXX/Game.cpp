@@ -26,7 +26,7 @@ TwitchXX::Game::Game(const Api &api, unsigned long long int id, const std::strin
         builder.append_query("name",name);
     }
 
-    auto response = api.Request()->get(builder.to_uri());
+    auto response = api.Request().get(builder.to_uri());
 
     if(response.has_field("data") && !response.at("data").is_null() && response.at("data").size())
     {
@@ -71,7 +71,7 @@ TwitchXX::getGames(const Api &api, const std::vector<unsigned long long> &ids, c
         builder.append_query("name", name);
     });
 
-    auto response = api.Request()->get(builder.to_uri());
+    auto response = api.Request().get(builder.to_uri());
     std::vector<Game> result;
 
     if(response.has_field("data") && !response.at("data").is_null() && response.at("data").size())
@@ -109,7 +109,7 @@ TwitchXX::getTopGames(const Api &api, int count, const char *cursor, const char 
         builder.append_query("before", cursor_before);
     }
 
-    auto response = api.Request()->get(builder.to_uri());
+    auto response = api.Request().get(builder.to_uri());
     std::vector<Game> result;
 
     if (response.has_field("data") && !response.at("data").is_null() && response.at("data").size())

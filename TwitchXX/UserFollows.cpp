@@ -42,7 +42,7 @@ namespace TwitchXX
             builder.append_query("to_id", options.to);
         }
 
-        auto response = api.Request()->get(builder.to_string());
+        auto response = api.Request().get(builder.to_string());
         auto total = response.at("total").as_number().to_uint64();
         std::vector<UserFollow> result;
 

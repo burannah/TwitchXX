@@ -19,13 +19,13 @@ namespace TwitchXX
     public:
         explicit Api(const options& opt = MakeRequest::initOptionsFromConfig());
 
-        std::shared_ptr<MakeRequest> Request() const
+        MakeRequest Request() const
         {
-            return _request;
+            return *_request.get();
         };
 
     private:
-        std::shared_ptr<MakeRequest> _request;
+        std::unique_ptr<MakeRequest> _request;
         std::shared_ptr<UserAccessToken> _userToken;
 
     };

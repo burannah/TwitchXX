@@ -60,7 +60,7 @@ TwitchXX::getVideos(const Api &api, const std::vector<uint64_t>& ids, uint64_t u
 
     builder.append_query("type", VideoType::toString(opt.Type));
 
-    auto response = api.Request()->get(builder.to_uri());
+    auto response = api.Request().get(builder.to_uri());
     std::vector<Video> result;
 
 
