@@ -3,7 +3,6 @@
 //
 
 #include <gtest/gtest.h>
-#include <MakeRequest.h>
 #include <Entitlement.h>
 #include <Utility.h>
 #include <memory>

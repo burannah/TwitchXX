@@ -3,7 +3,6 @@
 //
 
 #include <gtest/gtest.h>
-#include <MakeRequest.h>
 #include <User.h>
 #include <Api.h>
 
@@ -29,7 +28,7 @@ TEST_F(UserTest, getOneByName)
 {
     EXPECT_NO_THROW(
             {
-                auto burannah = TwitchXX::getUser("", "burannah");
+                auto burannah = TwitchXX::getUser(_api, "", "burannah");
                 EXPECT_EQ(burannah.Id, "51977856");
             });
 }
@@ -39,7 +38,7 @@ TEST_F(UserTest, getOneById)
 {
     EXPECT_NO_THROW(
             {
-                auto burannah = TwitchXX::getUser("51977856");
+                auto burannah = TwitchXX::getUser(_api, "51977856", std::__cxx11::string());
                 EXPECT_EQ(burannah.Login, "burannah");
             });
 
@@ -50,7 +49,7 @@ TEST_F(UserTest, getMany)
 {
     EXPECT_NO_THROW(
             {
-                auto result = TwitchXX::getUsers({},{"burannah", "alkali"});
+                auto result = TwitchXX::getUsers(_api, {}, {"burannah", "alkali"});
 
                 auto findByLogin = [](const auto& login)
                 {
@@ -68,7 +67,7 @@ TEST_F(UserTest, getMany)
 TEST_F(UserTest, updateDescription)
 {
     const std::string desc = "Super puper test";
-    auto burannah = TwitchXX::getUser("","burannah");
+    auto burannah = TwitchXX::getUser(_api, "", "burannah");
     auto burannah2 = TwitchXX::updateUserDescription(_api, desc);
     EXPECT_NE(burannah.Description, burannah2.Description);
     EXPECT_EQ(burannah2.Description, desc);

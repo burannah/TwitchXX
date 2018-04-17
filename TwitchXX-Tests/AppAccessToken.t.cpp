@@ -3,7 +3,6 @@
 //
 
 #include <gtest/gtest.h>
-#include <MakeRequest.h>
 #include <Auth/AppAccessToken.h>
 #include <Utility.h>
 

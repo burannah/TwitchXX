@@ -3,7 +3,6 @@
 //
 
 #include <User.h>
-#include <MakeRequest.h>
 #include <Auth/UserAccessToken.h>
 #include <TwitchException.h>
 #include <Api.h>
@@ -11,15 +10,15 @@
 
 namespace TwitchXX
 {
-    User getUser(std::string id, std::string login)
+    User getUser(const Api &api, std::string id, std::string login)
     {
         if(!id.empty())
         {
-            return getUsers({id}, {})[0];
+            return getUsers(api, {id}, {})[0];
         }
         else if(!login.empty())
         {
-            return getUsers({}, {login})[0];
+            return getUsers(api, {}, {login})[0];
         }
         else
         {
@@ -27,22 +26,19 @@ namespace TwitchXX
         }
     }
 
-    std::vector<User> getUsers(std::vector<std::string> ids, std::vector<std::string> logins)
+    std::vector<User> getUsers(const Api &api, std::vector<std::string> ids, std::vector<std::string> logins)
     {
         if(ids.empty() && logins.empty())
         {
             throw TwitchXX::TwitchException("Either login or user id should be specified!");
         }
 
-        auto options = MakeRequest::getOptions();
-        MakeRequest request(options);
-        request.setAuthToken(std::make_shared<UserAccessToken>(options.at("token")));
         web::uri_builder builder("helix/users");
 
         addRangeOfParamsToBuilder(builder, "id", ids);
         addRangeOfParamsToBuilder(builder, "login", logins);
 
-        auto response = request.get(builder.to_string());
+        auto response = api.Request().get(builder.to_string());
 
         std::vector<User> result;
 

@@ -33,7 +33,7 @@ add_library(TwitchXX STATIC TwitchDef.h MakeRequest.h MakeRequest.cpp Clip.cpp C
                             UserType.h BroadcasterType.cpp BroadcasterType.h UserFollows.cpp UserFollows.h
                             Api.cpp Api.h Video.cpp Video.h VideoOptions.cpp VideoOptions.h VideoPeriodType.cpp
                             VideoPeriodType.h VideoSortType.cpp VideoSortType.h VideoType.cpp VideoType.h
-                            Logger.cpp Logger.h Log.cpp Logger.h)
+                            Logger.cpp Logger.h Log.cpp Logger.h WaitRequest_Impl.cpp WaitRequest_Impl.h MakeRequest_Impl.cpp MakeRequest_Impl.h RequestParams.cpp RequestParams.h)
 target_link_libraries(TwitchXX ${LIB_CPPREST})
 
 install(TARGETS TwitchXX DESTINATION lib)

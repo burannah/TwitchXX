@@ -3,7 +3,6 @@
 //
 
 #include <gtest/gtest.h>
-#include <MakeRequest.h>
 #include <Game.h>
 #include <TwitchException.h>
 #include <TestConstants.h>

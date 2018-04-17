@@ -6,8 +6,9 @@
 #define TWITCHXX_API_H
 
 #include <memory>
-#include <MakeRequest.h>
+
 #include <UserFollows.h>
+#include <MakeRequest.h>
 
 namespace TwitchXX
 {

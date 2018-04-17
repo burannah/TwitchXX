@@ -2,8 +2,8 @@
 // Created by buran on 04/02/18.
 //
 
-#include <TwitchException.h>
 #include <MakeRequest.h>
+#include <TwitchException.h>
 #include <Auth/UserAccessToken.h>
 
 TwitchXX::Date TwitchXX::UserAccessToken::validTill() const

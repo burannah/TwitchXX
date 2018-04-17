@@ -4,7 +4,6 @@
 
 #include <Game.h>
 #include <TwitchException.h>
-#include <MakeRequest.h>
 #include <JsonWrapper.h>
 #include "Api.h"
 

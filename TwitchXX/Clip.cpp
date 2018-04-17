@@ -4,7 +4,6 @@
 
 #include <Auth/UserAccessToken.h>
 #include <Clip.h>
-#include <MakeRequest.h>
 #include <JsonWrapper.h>
 #include <Utility.h>
 #include <Api.h>

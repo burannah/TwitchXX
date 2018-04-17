@@ -3,7 +3,6 @@
 //
 
 #include <gtest/gtest.h>
-#include <MakeRequest.h>
 #include <Stream.h>
 #include <TestConstants.h>
 #include <Api.h>

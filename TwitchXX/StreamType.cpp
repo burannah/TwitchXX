@@ -2,7 +2,6 @@
 // Created by buran on 03/03/18.
 //
 
-#include <MakeRequest.h>
 #include <TwitchException.h>
 #include <Stream.h>
 #include <StreamType.h>

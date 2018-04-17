@@ -4,7 +4,6 @@
 
 #include <Stream.h>
 #include <TwitchException.h>
-#include <MakeRequest.h>
 #include <JsonWrapper.h>
 #include <StreamsOptions.h>
 #include <StreamType.h>

@@ -5,8 +5,7 @@
 #include <Auth/AppAccessToken.h>
 #include <Entitlement.h>
 #include <TwitchException.h>
-#include <MakeRequest.h>
-#include "Api.h"
+#include <Api.h>
 
 std::string TwitchXX::Entitlement::getEntitlementTypeString(TwitchXX::Entitlement::Type t)
 {

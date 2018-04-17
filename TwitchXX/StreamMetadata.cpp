@@ -3,7 +3,6 @@
 //
 
 #include <StreamMetadata.h>
-#include <MakeRequest.h>
 #include <JsonWrapper.h>
 #include <iostream>
 
@@ -35,15 +34,14 @@ namespace TwitchXX
                        const StreamsOptions &opt,
                        StreamMetadata::RateLimits* limits)
     {
-        MakeRequest request(MakeRequest::getOptions());
-        request.setResponseHeaderParam(REMAINING_PARAM);
-        request.setResponseHeaderParam(LIMIT_PARAM);
+        api.Request().setResponseHeaderParam(REMAINING_PARAM);
+        api.Request().setResponseHeaderParam(LIMIT_PARAM);
 
         web::uri_builder builder("helix/streams/metadata");
 
         StreamsOptions::fillBuilder(builder,opt);
 
-        auto response = request.get(builder.to_uri());
+        auto response = api.Request().get(builder.to_uri());
         std::vector<StreamMetadata> result;
         if (response.has_field("data") && !response.at("data").is_null() && response.at("data").size())
         {
@@ -101,7 +99,7 @@ namespace TwitchXX
 
         if(limits)
         {
-            auto headers = request.getResponseHeaderParams();
+            auto headers = api.Request().getResponseHeaderParams();
             limits->Remaining = std::atoi(headers[REMAINING_PARAM].c_str());
             limits->Limit = std::atoi(headers[LIMIT_PARAM].c_str());
         }

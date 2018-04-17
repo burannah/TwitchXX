@@ -4,7 +4,6 @@
 
 #include <Clip.h>
 #include <gtest/gtest.h>
-#include <MakeRequest.h>
 #include <TwitchException.h>
 #include <Utility.h>
 #include <TestConstants.h>

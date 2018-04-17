@@ -3,8 +3,8 @@
 //
 
 #include <gtest/gtest.h>
-#include <MakeRequest.h>
 #include <Auth/UserAccessToken.h>
+#include <MakeRequest.h>
 
 class UserAccessTokenTest : public ::testing::Test
 {
