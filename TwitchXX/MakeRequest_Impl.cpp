@@ -5,6 +5,8 @@
 #include <MakeRequest_Impl.h>
 
 #include <RequestParams.h>
+#include <TwitchException.h>
+#include <Log.h>
 
 namespace TwitchXX
 {
@@ -99,4 +101,68 @@ namespace TwitchXX
             throw;
         }
     }
+
+    MakeRequest_Impl::MakeRequest_Impl(const options &opt)
+    {
+        try
+        {
+            _client_id = opt.at("api_key");
+        }
+        catch (const std::out_of_range&)
+        {
+            utility::stringstream_t ss;
+            ss << __FUNCTION__ << ": Not enough parameters!"
+               << " api_key=" << _client_id;
+            Log::Error(ss.str());
+            throw std::invalid_argument(ss.str());
+        }
+
+        SetupProxy(opt);
+    }
+
+    void MakeRequest_Impl::fetchHeaderParams(web::http::http_headers &headers)
+    {
+        std::for_each(_response_header_params.begin(), _response_header_params.end(), [&](auto& p)
+        {
+            if(headers.has(p.first))
+            {
+                p.second = headers[p.first];
+            } else
+            {
+                p.second = {};
+            }
+        });
+    }
+
+    /**
+*****************************************************************************************
+*  @brief      Setup proxy.
+*
+*  @details    SetupProxy() requires options to be defined and filled
+*			   with values (proxy & proxy_password).
+*			   Note: Proxy host must starts with connection scheme (i.e. http,https etc).
+*  @param      options options dictionary (must contain proxy and/or proxy_password)
+*              proxy hostname shoudl start with a scheme - http, https etc.
+*
+*  @return     throws std::runtime_error if proxy settings not present in Options
+****************************************************************************************/
+    void MakeRequest_Impl::SetupProxy(const std::map<utility::string_t, utility::string_t> &options)
+    {
+        //Check global Options object for proxy settings;
+        if (options.find("proxy") != options.end())
+        {
+            web::web_proxy proxy(options.at("proxy"));
+            //Check that both login and password were found in the options.
+            if (options.find("proxy_user") != options.end()
+                && options.find("proxy_password") != options.end())
+            {
+                web::credentials credentials(options.at("proxy_user"),
+                                             options.at("proxy_password"));
+                proxy.set_credentials(credentials);
+            }
+            _config.set_proxy(proxy);
+        }
+    }
+
+
 }

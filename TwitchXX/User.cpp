@@ -38,7 +38,7 @@ namespace TwitchXX
         addRangeOfParamsToBuilder(builder, "id", ids);
         addRangeOfParamsToBuilder(builder, "login", logins);
 
-        auto response = api.Request().get(builder.to_string());
+        auto response = api.reqWait().get(builder.to_string());
 
         std::vector<User> result;
 
@@ -74,7 +74,7 @@ namespace TwitchXX
 
         builder.append_query("description", newDescription);
 
-        auto result = api.Request().put(builder.to_uri(),AuthScope::USER_EDIT);
+        auto result = api.reqWait().put(builder.to_uri(),AuthScope::USER_EDIT);
 
         if(result.has_field("data") && !result.at("data").is_null() && result.at("data").size() == 1)
         {

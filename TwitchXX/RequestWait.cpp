@@ -2,12 +2,14 @@
 // Created by buran on 17/04/18.
 //
 
-#include <WaitRequest_Impl.h>
+#include <RequestWait.h>
 
 #include <thread>
 
 #include <TwitchException.h>
 #include <Log.h>
+#include <MakeRequest_Impl.h>
+#include <RequestParams.h>
 
 namespace TwitchXX
 {
@@ -33,21 +35,20 @@ namespace TwitchXX
         }
     }
 
-    web::json::value WaitRequest_Impl::performRequest(const RequestParams &params)
+    web::json::value RequestWait::performRequest(const RequestParams &params) const
     {
-        auto impl = std::make_unique<MakeRequest_Impl>();
         while(true)
         {
             try
             {
-                return impl->performRequest(params);
+                return _request->performRequest(params);
             }
             catch(const TwitchXX::TwitchException& e)
             {
                 if(e.code() == 429) //Too many request
                 {
                     Log::Debug("Request to: " + params.uri.to_string() + " has hit the rate limit.");
-                    sleepForNextWindow(impl->getResponseHeaderParams());
+                    sleepForNextWindow(getResponseHeaderParams());
                     continue;
                 }
                 throw;
@@ -55,5 +56,10 @@ namespace TwitchXX
 
         }
     }
+
+    RequestWait::RequestWait(const std::map<utility::string_t, utility::string_t> &options,
+                             const std::shared_ptr<MakeRequest_Impl> &impl)
+    : Request(options, impl)
+    {}
 }
 

@@ -3,12 +3,17 @@
 //
 
 #include <Api.h>
-#include <WaitRequest_Impl.h>
 #include <Auth/UserAccessToken.h>
+#include <MakeRequest_Impl.h>
 
-TwitchXX::Api::Api(const TwitchXX::options &opt)
-        :_request(std::make_unique<WaitRequest_Impl>(opt))
-        ,_userToken(std::make_shared<UserAccessToken>(opt.at("token")))
+namespace TwitchXX
 {
-    _request->setAuthToken(static_cast<std::shared_ptr<AuthToken>>(_userToken));
+    Api::Api(const TwitchXX::options &opt)
+    :_requestImpl(std::make_shared<MakeRequest_Impl>(opt))
+    ,_userToken(std::make_shared<UserAccessToken>(opt.at("token")))
+    ,_requestOnce(opt, _requestImpl)
+    ,_requestWait(opt, _requestImpl)
+    {
+        _requestImpl->setAuthToken(static_cast<std::shared_ptr<AuthToken>>(_userToken));
+    }
 }

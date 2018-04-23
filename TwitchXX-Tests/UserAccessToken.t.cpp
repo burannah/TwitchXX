@@ -4,7 +4,7 @@
 
 #include <gtest/gtest.h>
 #include <Auth/UserAccessToken.h>
-#include <MakeRequest.h>
+#include <RequestOnce.h>
 
 class UserAccessTokenTest : public ::testing::Test
 {
@@ -15,7 +15,7 @@ void UserAccessTokenTest::SetUp()
 {
     ::testing::Test::SetUp();
 
-    TwitchXX::MakeRequest::initOptionsFromConfig();
+    TwitchXX::RequestOnce::initOptionsFromConfig();
 }
 
 
@@ -45,6 +45,6 @@ TEST_F(UserAccessTokenTest, get)
 {
     EXPECT_NO_THROW({
         TwitchXX::UserAccessToken token;
-        EXPECT_EQ(token.get(TwitchXX::AuthScope::USER_EDIT), "Bearer " + TwitchXX::MakeRequest::getOptions()["token"]);
+        EXPECT_EQ(token.get(TwitchXX::AuthScope::USER_EDIT), "Bearer " + TwitchXX::RequestOnce::getOptions()["token"]);
                     });
 }

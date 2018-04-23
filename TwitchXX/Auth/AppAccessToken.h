@@ -7,7 +7,7 @@
 
 #include <Auth/AuthToken.h>
 #include <memory>
-#include <MakeRequest.h>
+#include <RequestOnce.h>
 
 namespace TwitchXX
 {
@@ -60,7 +60,7 @@ namespace TwitchXX
 
     private:
         std::shared_ptr<Handle> _handle;
-        MakeRequest             _request;
+        RequestOnce             _request;
 
         void refreshToken();
         void revoke();

@@ -33,7 +33,7 @@ TwitchXX::getStreams(const Api &api, const StreamsOptions &opt)
 
     StreamsOptions::fillBuilder(builder,opt);
 
-    auto response = api.Request().get(builder.to_uri());
+    auto response = api.reqWait().get(builder.to_uri());
     std::vector<Stream> result;
 
     if (response.has_field("data") && !response.at("data").is_null() && response.at("data").size())

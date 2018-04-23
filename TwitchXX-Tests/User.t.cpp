@@ -20,7 +20,7 @@ void UserTest::SetUp()
     Test::SetUp();
 
     //Init default parameters
-    TwitchXX::MakeRequest::initOptionsFromConfig();
+    TwitchXX::RequestOnce::initOptionsFromConfig();
 }
 
 

@@ -34,14 +34,15 @@ namespace TwitchXX
                        const StreamsOptions &opt,
                        StreamMetadata::RateLimits* limits)
     {
-        api.Request().setResponseHeaderParam(REMAINING_PARAM);
-        api.Request().setResponseHeaderParam(LIMIT_PARAM);
+        auto& request = api.reqWait();
+        request.setResponseHeaderParam(REMAINING_PARAM);
+        request.setResponseHeaderParam(LIMIT_PARAM);
 
         web::uri_builder builder("helix/streams/metadata");
 
         StreamsOptions::fillBuilder(builder,opt);
 
-        auto response = api.Request().get(builder.to_uri());
+        auto response = request.get(builder.to_uri());
         std::vector<StreamMetadata> result;
         if (response.has_field("data") && !response.at("data").is_null() && response.at("data").size())
         {
@@ -99,9 +100,9 @@ namespace TwitchXX
 
         if(limits)
         {
-            auto headers = api.Request().getResponseHeaderParams();
-            limits->Remaining = std::atoi(headers[REMAINING_PARAM].c_str());
-            limits->Limit = std::atoi(headers[LIMIT_PARAM].c_str());
+            const auto& headers = api.reqWait().getResponseHeaderParams();
+            limits->Remaining = std::atoi(headers.at(REMAINING_PARAM).c_str());
+            limits->Limit = std::atoi(headers.at(LIMIT_PARAM).c_str());
         }
 
         return std::make_tuple(result, new_cursor);

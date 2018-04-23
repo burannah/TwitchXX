@@ -4,7 +4,7 @@
 
 #include <StreamsOptions.h>
 #include <TwitchException.h>
-#include <MakeRequest.h>
+#include <RequestOnce.h>
 
 void TwitchXX::StreamsOptions::validate(const TwitchXX::StreamsOptions& opt)
 {

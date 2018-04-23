@@ -5,7 +5,10 @@
 #include <Auth/AppAccessToken.h>
 #include <Entitlement.h>
 #include <TwitchException.h>
+#include <RequestWait.h>
+#include <RequestOnce.h>
 #include <Api.h>
+#include <Log.h>
 
 std::string TwitchXX::Entitlement::getEntitlementTypeString(TwitchXX::Entitlement::Type t)
 {
@@ -14,6 +17,7 @@ std::string TwitchXX::Entitlement::getEntitlementTypeString(TwitchXX::Entitlemen
     {
         std::stringstream str;
         str << __FUNCTION__ << ":" << __LINE__ << "Unsupported entitlement type";
+        Log::Error(str.str());
         throw TwitchXX::TwitchException(str.str().c_str());
     }
     return mapping[t];
@@ -27,9 +31,9 @@ TwitchXX::Entitlement::Entitlement(const Api &api, const std::string &id, Twitch
     builder.append_query("manifest_id",id);
     builder.append_query("type",getEntitlementTypeString(t));
 
-    api.Request().setAuthToken(std::make_shared<AppAccessToken>());
+    api.reqWait().setAuthToken(std::make_shared<AppAccessToken>());
 
-    auto response = api.Request().post(builder.to_uri());
+    auto response = api.reqWait().post(builder.to_uri());
 
     if(response.has_field("data") && !response.at("data").is_null() && response.at("data").size())
     {

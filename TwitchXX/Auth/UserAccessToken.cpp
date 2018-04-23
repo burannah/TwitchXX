@@ -2,7 +2,7 @@
 // Created by buran on 04/02/18.
 //
 
-#include <MakeRequest.h>
+#include <RequestOnce.h>
 #include <TwitchException.h>
 #include <Auth/UserAccessToken.h>
 
@@ -47,7 +47,7 @@ TwitchXX::UserAccessToken::UserAccessToken(const std::string &token)
     }
     else
     {
-        _token = (MakeRequest::getOptions())["token"];
+        _token = (RequestOnce::getOptions())["token"];
     }
 
     //TODO: Make it real parameter from config

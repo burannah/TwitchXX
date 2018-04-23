@@ -2,13 +2,15 @@
 // Created by buran on 30/01/18.
 //
 
-#include <MakeRequest.h>
 #include <Auth/AppAccessToken.h>
 #include <TwitchException.h>
+#include <Request.h>
+#include <MakeRequest_Impl.h>
 
 TwitchXX::AppAccessToken::AppAccessToken()
 :_handle(std::make_shared<Handle>())
-,_request(MakeRequest::getOptions())
+, _request(Request::getOptions(),
+           std::make_shared<MakeRequest_Impl>(Request::getOptions()))
 {
     refreshToken();
 }
@@ -16,7 +18,7 @@ TwitchXX::AppAccessToken::AppAccessToken()
 void TwitchXX::AppAccessToken::refreshToken()
 {
 
-    auto opt = MakeRequest::getOptions();
+    auto opt = RequestOnce::getOptions();
     web::uri_builder builder("kraken/oauth2/token");
     builder.append_query("client_id",opt["api_key"]);
     builder.append_query("client_secret", opt["client_secret"]);
@@ -33,7 +35,7 @@ void TwitchXX::AppAccessToken::refreshToken()
 
 void TwitchXX::AppAccessToken::revoke()
 {
-    auto opt = MakeRequest::getOptions();
+    auto opt = RequestOnce::getOptions();
     web::uri_builder builder("kraken/oauth2/revoke");
     builder.append_query("client_id",opt["api_key"]);
     builder.append_query("token", _handle->_token);

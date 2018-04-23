@@ -4,6 +4,7 @@
 
 #include <gtest/gtest.h>
 #include <Api.h>
+#include <UserFollows.h>
 
 class UserFollowsTest : public ::testing::Test
 {

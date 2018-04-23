@@ -7,28 +7,35 @@
 
 #include <memory>
 
-#include <UserFollows.h>
-#include <MakeRequest.h>
+#include <RequestOnce.h>
+#include <RequestWait.h>
 
 namespace TwitchXX
 {
-    class MakeRequest;
+    class UserAccessToken;
+    class MakeRequest_Impl;
     class UserAccessToken;
 
     class Api
     {
     public:
-        explicit Api(const options& opt = MakeRequest::initOptionsFromConfig());
+        explicit Api(const options& opt = Request::initOptionsFromConfig());
 
-        MakeRequest Request() const
+        const Request& reqOnce() const
         {
-            return *_request.get();
+            return _requestOnce;
         };
 
-    private:
-        std::unique_ptr<MakeRequest> _request;
-        std::shared_ptr<UserAccessToken> _userToken;
+        const Request& reqWait() const
+        {
+            return _requestWait;
+        }
 
+    private:
+        std::shared_ptr<MakeRequest_Impl> _requestImpl;
+        std::shared_ptr<UserAccessToken> _userToken;
+        RequestOnce _requestOnce;
+        RequestWait _requestWait;
     };
 }
 

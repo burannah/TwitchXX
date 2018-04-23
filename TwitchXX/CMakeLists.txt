@@ -24,7 +24,7 @@ else (DOXYGEN_FOUND)
     message("Doxygen need to be installed to generate the doxygen documentation")
 endif (DOXYGEN_FOUND)
 
-add_library(TwitchXX STATIC TwitchDef.h MakeRequest.h MakeRequest.cpp Clip.cpp Clip.h
+add_library(TwitchXX STATIC TwitchDef.h RequestOnce.h RequestOnce.cpp Clip.cpp Clip.h
                             Utility.h Utility.cpp JsonWrapper.h Entitlement.cpp Entitlement.h
                             TwitchException.h Game.cpp Game.h Auth/AuthToken.h Auth/AppAccessToken.cpp
                             Auth/AppAccessToken.h Auth/UserAccessToken.cpp Auth/UserAccessToken.h
@@ -33,7 +33,7 @@ add_library(TwitchXX STATIC TwitchDef.h MakeRequest.h MakeRequest.cpp Clip.cpp C
                             UserType.h BroadcasterType.cpp BroadcasterType.h UserFollows.cpp UserFollows.h
                             Api.cpp Api.h Video.cpp Video.h VideoOptions.cpp VideoOptions.h VideoPeriodType.cpp
                             VideoPeriodType.h VideoSortType.cpp VideoSortType.h VideoType.cpp VideoType.h
-                            Logger.cpp Logger.h Log.cpp Logger.h WaitRequest_Impl.cpp WaitRequest_Impl.h MakeRequest_Impl.cpp MakeRequest_Impl.h RequestParams.cpp RequestParams.h)
+                            Logger.cpp Logger.h Log.cpp Logger.h RequestWait.cpp RequestWait.h MakeRequest_Impl.cpp MakeRequest_Impl.h RequestParams.cpp RequestParams.h Request.cpp Request.h)
 target_link_libraries(TwitchXX ${LIB_CPPREST})
 
 install(TARGETS TwitchXX DESTINATION lib)

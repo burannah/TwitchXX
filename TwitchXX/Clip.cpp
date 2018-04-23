@@ -14,7 +14,7 @@ TwitchXX::Clip::Handle TwitchXX::Clip::CreateAndGetHandle(const Api &api, unsign
     web::uri_builder builder("helix/clips");
     builder.append_query("broadcaster_id",broadcaster);
 
-    auto response = api.Request().post(builder.to_uri(), AuthScope::CLIPS_EDIT);
+    auto response = api.reqWait().post(builder.to_uri(), AuthScope::CLIPS_EDIT);
     if(response.has_field("data") && !response.at("data").is_null() && response.at("data").size())
     {
         auto data = response.at("data").as_array();
@@ -31,7 +31,7 @@ TwitchXX::Clip::Clip(const Api &api, const std::string &id)
     web::uri_builder builder("helix/clips");
     builder.append_query("id",id);
 
-    auto response = api.Request().get(builder.to_uri());
+    auto response = api.reqWait().get(builder.to_uri());
 
     if(response.has_field("data") && !response.at("data").is_null() && response.at("data").size())
     {
