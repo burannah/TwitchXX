@@ -60,6 +60,8 @@ namespace TwitchXX
     RequestWait::RequestWait(const std::map<utility::string_t, utility::string_t> &options,
                              const std::shared_ptr<MakeRequest_Impl> &impl)
     : Request(options, impl)
-    {}
+    {
+        _request->setResponseHeaderParam(RATE_LIMIT_RESET);
+    }
 }
 
