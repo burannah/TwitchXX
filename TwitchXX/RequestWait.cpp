@@ -61,7 +61,7 @@ namespace TwitchXX
                              const std::shared_ptr<MakeRequest_Impl> &impl)
     : Request(options, impl)
     {
-        _request->setResponseHeaderParam(RATE_LIMIT_RESET);
+        _response_headers_params.insert(RATE_LIMIT_RESET);
     }
 }
 

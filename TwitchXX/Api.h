@@ -26,7 +26,17 @@ namespace TwitchXX
             return _requestOnce;
         };
 
+        Request& reqOnce()
+        {
+            return _requestOnce;
+        }
+
         const Request& reqWait() const
+        {
+            return _requestWait;
+        }
+
+        Request& reqWait()
         {
             return _requestWait;
         }

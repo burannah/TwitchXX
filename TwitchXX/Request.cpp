@@ -55,10 +55,12 @@ namespace TwitchXX
                                   AuthScope scope,
                                   Callback callback) const
     {
+        Log::Debug("Get request for: " + uri.to_string());
         RequestParams params { uri,web::http::methods::GET,
                                web::json::value::null(),
                                std::move(callback),
-                               scope};
+                               scope,
+                               _response_headers_params};
         return performRequest(params);
     }
 
@@ -68,11 +70,13 @@ namespace TwitchXX
                  const web::json::value &body,
                  Callback callback) const
     {
+        Log::Debug("Put request for: " + uri.to_string());
         return performRequest({ uri,
                                 web::http::methods::PUT,
                                 body,
                                 std::move(callback),
-                                scope});
+                                scope,
+                                _response_headers_params});
     }
 
     web::json::value
@@ -81,22 +85,26 @@ namespace TwitchXX
                   const web::json::value &body,
                   Callback callback) const
     {
+        Log::Debug("Post request for: " + uri.to_string());
         return performRequest({ uri,
                                 web::http::methods::POST,
                                 body,
                                 std::move(callback),
-                                scope});
+                                scope,
+                                _response_headers_params});
     }
 
     web::json::value Request::del(const web::uri &uri,
                                   AuthScope scope,
                                   Callback callback) const
     {
+        Log::Debug("Del request for: " + uri.to_string());
         return performRequest({ uri,
                                 web::http::methods::DEL,
                                 web::json::value::null(),
                                 std::move(callback),
-                                scope});
+                                scope,
+                                _response_headers_params});
     }
 
     void Request::setAuthToken(std::shared_ptr<AuthToken> token) const
@@ -104,9 +112,9 @@ namespace TwitchXX
         _request->setAuthToken(token);
     }
 
-    void Request::setResponseHeaderParam(const std::string &param) const
+    void Request::setResponseHeaderParam(const std::string &param)
     {
-        _request->setResponseHeaderParam(param);
+        _response_headers_params.insert(param);
     }
 
     const std::map<std::string, std::string>& Request::getResponseHeaderParams() const
@@ -117,6 +125,12 @@ namespace TwitchXX
     web::http::status_code Request::status_code() const
     {
         return _request->status_code();
+    }
+
+    void Request::clearResponseHeadersParams()
+    {
+        _response_headers_params.clear();
+        Log::Debug("Response params cleared");
     }
 }
 

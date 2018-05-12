@@ -33,6 +33,7 @@ namespace TwitchXX
             {
                 std::stringstream ss;
                 ss << "No auth token provided for " << params.uri.to_string() << " request";
+                Log::Error(ss.str());
                 throw TwitchException(ss.str().c_str());
             }
             request.headers().add("Authorization", _authToken->get(params.scope));
@@ -47,17 +48,24 @@ namespace TwitchXX
             //request.headers().set_content_type(U("application/json"));
         }
 
+        _response_header_params.clear();
+        if(params.responseHeadersParams.size())
+        {
+            std::for_each(params.responseHeadersParams.begin(),
+                          params.responseHeadersParams.end(),
+            [&](const std::string& key)
+                          {
+                              _response_header_params.insert({key, std::string()});
+                          });
+        }
+
         Log::Debug("Request: " + request.to_string());
-        ucout << "Request: " << request.to_string() << "\n";
 
         pplx::task<web::json::value> task = http_client.request(request)
                 .then([this](web::http::http_response response) -> pplx::task<web::json::value>
                       {
                           Log::Debug("Response: " + response.to_string());
                           Log::Info("Response status: " + response.status_code());
-#ifdef _DEBUG
-                          ucout << response.to_string() << "\n";
-#endif
                           fetchHeaderParams(response.headers());
                           this->_last_status = response.status_code();
                           if (response.status_code() == web::http::status_codes::OK
@@ -80,6 +88,7 @@ namespace TwitchXX
                               {
                                   msg = error.at("error").as_string() + ": " + error.at("message").as_string();
                               }
+                              Log::Error("Request returned an error: " + msg);
 
                               throw TwitchException(msg, response.status_code());
                           }
@@ -90,6 +99,7 @@ namespace TwitchXX
             auto result = task.get();
             if (params.callback != nullptr)
             {
+                Log::Debug("Calling a callback");
                 params.callback(result);
             }
             return result;
@@ -97,7 +107,6 @@ namespace TwitchXX
         catch (const std::exception& e)
         {
             Log::Error(std::string("Unknown exception: ") + e.what());
-            printf("Error exception:%s\n", e.what());
             throw;
         }
     }
@@ -117,7 +126,7 @@ namespace TwitchXX
             throw std::invalid_argument(ss.str());
         }
 
-        SetupProxy(opt);
+        setupProxy(opt);
     }
 
     void MakeRequest_Impl::fetchHeaderParams(web::http::http_headers &headers)
@@ -146,11 +155,12 @@ namespace TwitchXX
 *
 *  @return     throws std::runtime_error if proxy settings not present in Options
 ****************************************************************************************/
-    void MakeRequest_Impl::SetupProxy(const std::map<utility::string_t, utility::string_t> &options)
+    void MakeRequest_Impl::setupProxy(const std::map<utility::string_t, utility::string_t> &options)
     {
         //Check global Options object for proxy settings;
         if (options.find("proxy") != options.end())
         {
+            Log::Debug("Proxy settings found!");
             web::web_proxy proxy(options.at("proxy"));
             //Check that both login and password were found in the options.
             if (options.find("proxy_user") != options.end()
@@ -162,6 +172,12 @@ namespace TwitchXX
             }
             _config.set_proxy(proxy);
         }
+    }
+
+    void MakeRequest_Impl::setAuthToken(const std::shared_ptr<AuthToken> &token)
+    {
+        Log::Debug("Setting an auth token: " + token->tokenType());
+        _authToken = token;
     }
 
 

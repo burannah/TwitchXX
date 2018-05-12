@@ -21,18 +21,22 @@ namespace TwitchXX
         web::json::value                             body;							   ///< Request's body. Used for sending form's parameters for example
         std::function<void(const web::json::value&)> callback;	                       ///< Callback function to be executed on request's result
         AuthScope                                    scope = AuthScope::NO_SCOPE;      ///< Required authentication scope
+        std::set<std::string>                        responseHeadersParams;            ///< Response headers params to fetch
 
         RequestParams() = default;
         RequestParams(web::uri uri,
                       web::http::method method,
                       web::json::value body,
                       std::function<void(const web::json::value &)> callback,
-                      AuthScope scope)
+                      AuthScope scope,
+                      std::set<std::string> headersParams)
                 :uri(std::move(uri))
                 , method(std::move(method))
                 , body(std::move(body))
                 , callback(std::move(callback))
-                , scope(scope){};
+                , scope(scope)
+                , responseHeadersParams(headersParams)
+        {};
     };
 }
 

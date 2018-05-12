@@ -58,6 +58,11 @@ namespace TwitchXX
             return _handle;
         }
 
+        ///Return token type as string
+        std::string tokenType() const override
+        {
+            return "AppAccessToken";
+        }
     private:
         std::shared_ptr<Handle> _handle;
         RequestOnce             _request;

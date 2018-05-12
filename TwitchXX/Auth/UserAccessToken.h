@@ -18,6 +18,10 @@ namespace TwitchXX
         std::string             get(AuthScope scope) override;
         std::shared_ptr<Handle> getHandle(AuthScope scope) override ;
         bool                    isValid() const override;
+        std::string             tokenType() const override
+        {
+            return "UserAccessToken";
+        }
 
     private:
         AuthScope   _scope{};

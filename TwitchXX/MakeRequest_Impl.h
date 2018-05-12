@@ -8,7 +8,7 @@
 #include <cpprest/json.h>
 #include <cpprest/http_client.h>
 #include <TwitchDef.h>
-
+#include <Log.h>
 namespace TwitchXX
 {
 
@@ -22,23 +22,13 @@ namespace TwitchXX
 
             explicit MakeRequest_Impl(const options& opt);
 
-            void setAuthToken(const std::shared_ptr<AuthToken>& token)
-            {
-                _authToken = token;
-            }
+            void setAuthToken(const std::shared_ptr<AuthToken>& token);
 
 
         ///MakeRequest's main method.
             ///@param	params request parameters descriptor
             ///@return	response parsed to web::json::value object. Null json value if HTTP result code != OK.
             virtual web::json::value performRequest(const RequestParams &params);
-
-
-        ///Add a header param to be extracted from the response
-        void setResponseHeaderParam(const std::string& param)
-        {
-            _response_header_params.insert(std::make_pair(param,""));
-        }
 
         const auto& getResponseHeaderParams() const
         {
@@ -56,7 +46,7 @@ namespace TwitchXX
         web::http::status_code _last_status;
 
         void fetchHeaderParams(web::http::http_headers &headers);
-        void SetupProxy(const std::map<utility::string_t, utility::string_t> &options);
+        void setupProxy(const std::map<utility::string_t, utility::string_t> &options);
     };
 }
 

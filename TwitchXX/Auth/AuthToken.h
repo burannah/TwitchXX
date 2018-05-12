@@ -74,6 +74,7 @@ namespace TwitchXX
         virtual std::string             get(AuthScope scope = AuthScope()) = 0;
         virtual std::shared_ptr<Handle> getHandle(AuthScope scope = AuthScope()) = 0;
         virtual bool                    isValid() const = 0;
+        virtual std::string             tokenType() const = 0;
     };
 }
 

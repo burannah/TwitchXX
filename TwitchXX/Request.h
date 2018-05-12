@@ -61,9 +61,13 @@ namespace TwitchXX
 
 
         ///Add a header param to be extracted from the response
-        void setResponseHeaderParam(const std::string& param) const;
+        void setResponseHeaderParam(const std::string &param);
 
+        ///Get response headers params
         const std::map<std::string, std::string> & getResponseHeaderParams() const;
+
+        ///Clear all response header params
+        void clearResponseHeadersParams();
 
         ///Last request's status code
         web::http::status_code status_code() const;
@@ -72,6 +76,7 @@ namespace TwitchXX
 
     protected:
         std::shared_ptr<MakeRequest_Impl> _request;
+        std::set<std::string>             _response_headers_params;
 
         /// Protected constructor. This object should not be called directly
         explicit Request(const std::map<utility::string_t, utility::string_t> &options,
