@@ -29,7 +29,7 @@ void TestLogger::Msg(TwitchXX::LogLevel level, std::chrono::system_clock::time_p
             break;
         case TwitchXX::LogLevel::ERROR:
             ss << "[ERROR]:";
-        default:к
+        default:
             ss << "[UNKNOWN!("<< static_cast<int>(level) << ")]:";
     }
 

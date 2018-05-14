@@ -37,7 +37,10 @@ add_library(TwitchXX STATIC TwitchDef.h RequestOnce.h RequestOnce.cpp Clip.cpp C
 target_link_libraries(TwitchXX ${LIB_CPPREST})
 
 install(TARGETS TwitchXX DESTINATION lib)
-install(FILES Clip.h
+install(FILES Clip.h Api.h Entitlement.h Game.h Logger.h Request.h RequestOnce.h RequestWait.h Stream.h
+              StreamMetadata.h StreamsOptions.h StreamType.h TwitchDef.h TwitchException.h User.h
+              UserFollows.h UserType.h Utility.h Video.h VideoOptions.h VideoPeriodType.h VideoSortType.h
+              VideoType.h
         DESTINATION include/TwitchXX)
 
 
