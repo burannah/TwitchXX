@@ -38,7 +38,7 @@ namespace TwitchXX
         addRangeOfParamsToBuilder(builder, "id", ids);
         addRangeOfParamsToBuilder(builder, "login", logins);
 
-        auto response = api.reqWait().get(builder.to_string());
+        auto response = api.reqWait().get(builder.to_uri());
 
         std::vector<User> result;
 
