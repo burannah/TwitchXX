@@ -8,11 +8,13 @@ addons:
     - ubuntu-toolchain-r-test
     packages:
     # install toolchains
-    - gcc-5
-    - g++-5
+    - gcc
+    - g++
+    - cmake-data
+    - cmake
 
 before_install:
- - sudo apt-get install libboost-regex-dev libboost-system-dev libboost-thread-dev libboost-test-dev libboost-random-dev -y
+ - sudo apt-get install libboost-regex-dev libboost-system-dev libboost-thread-dev libboost-test-dev libboost-random-dev libcpprest-dev -y
 env:
   global:
     - BOOST_INCLUDES=/usr/include
