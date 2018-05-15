@@ -22,10 +22,7 @@ namespace TwitchXX
 
             explicit MakeRequest_Impl(const options& opt);
 
-            void setAuthToken(const std::shared_ptr<AuthToken>& token);
-
-
-        ///MakeRequest's main method.
+            ///MakeRequest's main method.
             ///@param	params request parameters descriptor
             ///@return	response parsed to web::json::value object. Null json value if HTTP result code != OK.
             virtual web::json::value performRequest(const RequestParams &params);
@@ -36,10 +33,9 @@ namespace TwitchXX
         }
 
         ///Last request's status code
-        web::http::status_code status_code() const { return _last_status; }
+        web::http::status_code statusCode() const { return _last_status; }
 
     private:
-        std::shared_ptr<AuthToken> _authToken;
         web::http::client::http_client_config _config;
         std::map<std::string,std::string> _response_header_params;
         std::string _client_id;

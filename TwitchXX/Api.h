@@ -21,22 +21,12 @@ namespace TwitchXX
     public:
         explicit Api(const options& opt = Request::initOptionsFromConfig());
 
-        const Request& reqOnce() const
-        {
-            return _requestOnce;
-        };
-
-        Request& reqOnce()
+        RequestOnce reqOnce() const
         {
             return _requestOnce;
         }
 
-        const Request& reqWait() const
-        {
-            return _requestWait;
-        }
-
-        Request& reqWait()
+        RequestWait reqWait() const
         {
             return _requestWait;
         }

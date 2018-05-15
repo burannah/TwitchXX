@@ -17,7 +17,8 @@ namespace TwitchXX
         RequestWait(const std::map<utility::string_t, utility::string_t> &options,
                     const std::shared_ptr<MakeRequest_Impl> &impl);
 
-        web::json::value performRequest(const RequestParams &params) const override;
+    protected:
+        web::json::value performRequest(const RequestParams &params) override;
     };
 }
 

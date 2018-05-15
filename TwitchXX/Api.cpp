@@ -14,6 +14,7 @@ namespace TwitchXX
     ,_requestOnce(opt, _requestImpl)
     ,_requestWait(opt, _requestImpl)
     {
-        _requestImpl->setAuthToken(static_cast<std::shared_ptr<AuthToken>>(_userToken));
+        _requestOnce.setAuthToken(_userToken);
+        _requestWait.setAuthToken(_userToken);
     }
 }

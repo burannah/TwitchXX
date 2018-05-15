@@ -53,14 +53,15 @@ namespace TwitchXX
 
     web::json::value Request::get(const web::uri &uri,
                                   AuthScope scope,
-                                  Callback callback) const
+                                  Callback callback)
     {
         Log::Debug("Get request for: " + uri.to_string());
         RequestParams params { uri,web::http::methods::GET,
                                web::json::value::null(),
                                std::move(callback),
                                scope,
-                               _response_headers_params};
+                               _response_headers_params,
+                               _auth_token};
         return performRequest(params);
     }
 
@@ -68,48 +69,51 @@ namespace TwitchXX
     Request::put(const web::uri &uri,
                  AuthScope scope,
                  const web::json::value &body,
-                 Callback callback) const
+                 Callback callback)
     {
         Log::Debug("Put request for: " + uri.to_string());
-        return performRequest({ uri,
-                                web::http::methods::PUT,
-                                body,
-                                std::move(callback),
-                                scope,
-                                _response_headers_params});
+        return performRequest({uri,
+                               web::http::methods::PUT,
+                               body,
+                               std::move(callback),
+                               scope,
+                               _response_headers_params,
+                               _auth_token});
     }
 
     web::json::value
     Request::post(const web::uri &uri,
                   AuthScope scope,
                   const web::json::value &body,
-                  Callback callback) const
+                  Callback callback)
     {
         Log::Debug("Post request for: " + uri.to_string());
-        return performRequest({ uri,
-                                web::http::methods::POST,
-                                body,
-                                std::move(callback),
-                                scope,
-                                _response_headers_params});
+        return performRequest({uri,
+                               web::http::methods::POST,
+                               body,
+                               std::move(callback),
+                               scope,
+                               _response_headers_params,
+                               _auth_token});
     }
 
     web::json::value Request::del(const web::uri &uri,
                                   AuthScope scope,
-                                  Callback callback) const
+                                  Callback callback)
     {
         Log::Debug("Del request for: " + uri.to_string());
-        return performRequest({ uri,
-                                web::http::methods::DEL,
-                                web::json::value::null(),
-                                std::move(callback),
-                                scope,
-                                _response_headers_params});
+        return performRequest({uri,
+                               web::http::methods::DEL,
+                               web::json::value::null(),
+                               std::move(callback),
+                               scope,
+                               _response_headers_params,
+                               _auth_token});
     }
 
-    void Request::setAuthToken(std::shared_ptr<AuthToken> token) const
+    void Request::setAuthToken(const std::shared_ptr<AuthToken> &token)
     {
-        _request->setAuthToken(token);
+        _auth_token = token;
     }
 
     void Request::setResponseHeaderParam(const std::string &param)
@@ -119,18 +123,24 @@ namespace TwitchXX
 
     const std::map<std::string, std::string>& Request::getResponseHeaderParams() const
     {
-        return _request->getResponseHeaderParams();
+        return _response_headers;
     }
 
-    web::http::status_code Request::status_code() const
+    web::http::status_code Request::statusCode() const
     {
-        return _request->status_code();
+        return _response_status_code;
     }
 
     void Request::clearResponseHeadersParams()
     {
         _response_headers_params.clear();
         Log::Debug("Response params cleared");
+    }
+
+    void Request::saveRequestResponse()
+    {
+        _response_headers  = _request->getResponseHeaderParams();
+        _response_status_code = _request->statusCode();
     }
 }
 

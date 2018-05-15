@@ -35,19 +35,26 @@ namespace TwitchXX
         }
     }
 
-    web::json::value RequestWait::performRequest(const RequestParams &params) const
+    web::json::value RequestWait::performRequest(const RequestParams &params)
     {
+        std::lock_guard<std::mutex> lock(_request->_lock);
         while(true)
         {
             try
             {
-                return _request->performRequest(params);
+                auto params_copy{params};
+                params_copy.responseHeadersParams.insert(_response_headers_params.begin(),
+                                                         _response_headers_params.end());
+                auto response = _request->performRequest(params_copy);
+                saveRequestResponse();
+                return response;
             }
             catch(const TwitchXX::TwitchException& e)
             {
                 if(e.code() == 429) //Too many request
                 {
                     Log::Debug("Request to: " + params.uri.to_string() + " has hit the rate limit.");
+                    saveRequestResponse();
                     sleepForNextWindow(getResponseHeaderParams());
                     continue;
                 }

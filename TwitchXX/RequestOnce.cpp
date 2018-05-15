@@ -13,10 +13,13 @@
 
 namespace TwitchXX
 {
-    web::json::value RequestOnce::performRequest(const RequestParams &params) const
+    web::json::value RequestOnce::performRequest(const RequestParams &params)
     {
         std::lock_guard<std::mutex> lock(_request->_lock);
 
-        return _request->performRequest(params);
+        auto response = _request->performRequest(params);
+        saveRequestResponse();
+
+        return response;
     }
 }

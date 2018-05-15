@@ -22,6 +22,7 @@ namespace TwitchXX
         std::function<void(const web::json::value&)> callback;	                       ///< Callback function to be executed on request's result
         AuthScope                                    scope = AuthScope::NO_SCOPE;      ///< Required authentication scope
         std::set<std::string>                        responseHeadersParams;            ///< Response headers params to fetch
+        std::shared_ptr<AuthToken>                   authToken;                        ///< Auth token to use for current request
 
         RequestParams() = default;
         RequestParams(web::uri uri,
@@ -29,13 +30,15 @@ namespace TwitchXX
                       web::json::value body,
                       std::function<void(const web::json::value &)> callback,
                       AuthScope scope,
-                      std::set<std::string> headersParams)
+                      const std::set<std::string>& headersParams,
+                      const std::shared_ptr<AuthToken>& authToken)
                 :uri(std::move(uri))
                 , method(std::move(method))
                 , body(std::move(body))
                 , callback(std::move(callback))
                 , scope(scope)
                 , responseHeadersParams(headersParams)
+                , authToken(authToken)
         {};
     };
 }

@@ -29,14 +29,14 @@ namespace TwitchXX
         if(_client_id.length() > 0)request.headers().add("Client-ID", _client_id);
         if(params.scope != AuthScope::NO_SCOPE)
         {
-            if(!_authToken)
+            if(!params.authToken)
             {
                 std::stringstream ss;
                 ss << "No auth token provided for " << params.uri.to_string() << " request";
                 Log::Error(ss.str());
                 throw TwitchException(ss.str().c_str());
             }
-            request.headers().add("Authorization", _authToken->get(params.scope));
+            request.headers().add("Authorization", params.authToken->get(params.scope));
         }
         request.set_request_uri({params.uri});
         request.headers().set_content_type("application/json");
@@ -173,12 +173,4 @@ namespace TwitchXX
             _config.set_proxy(proxy);
         }
     }
-
-    void MakeRequest_Impl::setAuthToken(const std::shared_ptr<AuthToken> &token)
-    {
-        Log::Debug("Setting an auth token: " + token->tokenType());
-        _authToken = token;
-    }
-
-
 }

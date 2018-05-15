@@ -35,7 +35,7 @@ namespace TwitchXX
         {}
 
     protected:
-        virtual web::json::value performRequest(const RequestParams &params) const override;
+        web::json::value performRequest(const RequestParams &params) override;
     };
 
 }

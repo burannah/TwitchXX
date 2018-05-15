@@ -9,16 +9,18 @@
 #include <memory>
 
 #include <TwitchDef.h>
-#include <cpprest/uri.h>
-#include <cpprest/http_msg.h>
-#include <cpprest/http_client.h>
 #include <Auth/AuthToken.h>
 
+#include <cpprest/http_msg.h>
+#include <cpprest/http_client.h>
+
+namespace web { class uri; }
 
 namespace TwitchXX
 {
     class RequestParams;
     class MakeRequest_Impl;
+    class AuthToken;
 
     class Request
     {
@@ -40,24 +42,24 @@ namespace TwitchXX
         ///Perform get request
         web::json::value get(const web::uri& uri,
                              AuthScope scope = AuthScope::NO_SCOPE,
-                             Callback callback = Callback()) const;
+                             Callback callback = Callback());
 
         ///Perform put request
         web::json::value put(const web::uri& uri,
                              AuthScope scope = AuthScope::NO_SCOPE,
                              const web::json::value& body = web::json::value::null(),
-                             Callback callback = Callback() ) const;
+                             Callback callback = Callback() );
 
         ///Perform post request
         web::json::value post(const web::uri& uri,
                               AuthScope scope = AuthScope::NO_SCOPE,
                               const web::json::value& body = web::json::value::null(),
-                              Callback callback = Callback()) const;
+                              Callback callback = Callback());
 
         ///Perform delete request
         web::json::value del(const web::uri& uri,
                              AuthScope scope = AuthScope::NO_SCOPE,
-                             Callback callback = Callback()) const;
+                             Callback callback = Callback());
 
 
         ///Add a header param to be extracted from the response
@@ -70,13 +72,16 @@ namespace TwitchXX
         void clearResponseHeadersParams();
 
         ///Last request's status code
-        web::http::status_code status_code() const;
+        web::http::status_code statusCode() const;
 
-        void setAuthToken(std::shared_ptr<AuthToken> token)const;
+        void setAuthToken(const std::shared_ptr<AuthToken> &token);
 
     protected:
-        std::shared_ptr<MakeRequest_Impl> _request;
-        std::set<std::string>             _response_headers_params;
+        std::shared_ptr<MakeRequest_Impl>  _request;
+        std::set<std::string>              _response_headers_params;
+        std::map<std::string, std::string> _response_headers;
+        web::http::status_code             _response_status_code;
+        std::shared_ptr<AuthToken>         _auth_token;
 
         /// Protected constructor. This object should not be called directly
         explicit Request(const std::map<utility::string_t, utility::string_t> &options,
@@ -85,7 +90,9 @@ namespace TwitchXX
         ///MakeRequest's main method.
         ///@param	params request parameters descriptor
         ///@return	response parsed to web::json::value object. Null json value if HTTP result code != OK.
-        virtual web::json::value performRequest(const RequestParams &params) const = 0;
+        virtual web::json::value performRequest(const RequestParams &params) = 0;
+
+        void saveRequestResponse();
     };
 
     template<typename T>
