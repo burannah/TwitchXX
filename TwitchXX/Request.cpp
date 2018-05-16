@@ -55,7 +55,6 @@ namespace TwitchXX
                                   AuthScope scope,
                                   Callback callback)
     {
-        Log::Debug("Get request for: " + uri.to_string());
         RequestParams params { uri,web::http::methods::GET,
                                web::json::value::null(),
                                std::move(callback),
@@ -71,7 +70,6 @@ namespace TwitchXX
                  const web::json::value &body,
                  Callback callback)
     {
-        Log::Debug("Put request for: " + uri.to_string());
         return performRequest({uri,
                                web::http::methods::PUT,
                                body,
@@ -87,7 +85,6 @@ namespace TwitchXX
                   const web::json::value &body,
                   Callback callback)
     {
-        Log::Debug("Post request for: " + uri.to_string());
         return performRequest({uri,
                                web::http::methods::POST,
                                body,
@@ -101,7 +98,6 @@ namespace TwitchXX
                                   AuthScope scope,
                                   Callback callback)
     {
-        Log::Debug("Del request for: " + uri.to_string());
         return performRequest({uri,
                                web::http::methods::DEL,
                                web::json::value::null(),

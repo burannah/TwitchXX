@@ -65,7 +65,6 @@ namespace TwitchXX
         }
     private:
         std::shared_ptr<Handle> _handle;
-        RequestOnce             _request;
 
         void refreshToken();
         void revoke();

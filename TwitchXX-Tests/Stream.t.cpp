@@ -86,24 +86,21 @@ TEST_F(StreamTest, getByCommunityId)
 
 TEST_F(StreamTest, getByLang)
 {
-    EXPECT_NO_THROW(
-            {
-                TwitchXX::StreamsOptions opt;
-                opt.first = 20;
-                opt.type = ::TwitchXX::StreamType::Value::ALL;
-                opt.langs.emplace_back("ru");
+    TwitchXX::StreamsOptions opt;
+    opt.first = 20;
+    opt.type = ::TwitchXX::StreamType::Value::ALL;
+    opt.langs.emplace_back("ru");
 
-                auto result = TwitchXX::getStreams(_api, opt);
-                auto streams = std::get<0>(result);
-                auto cursor = std::get<1>(result);
-                EXPECT_GT(streams.size(),0);
-                EXPECT_LE(streams.size(),opt.first);
-                std::for_each(streams.begin(), streams.end(),[] (const auto& stream)
-                {
-                    EXPECT_EQ( stream.Language,"ru");
-                });
-                EXPECT_GE(cursor.size(),5);
-            });
+    auto result = TwitchXX::getStreams(_api, opt);
+    auto streams = std::get<0>(result);
+    auto cursor = std::get<1>(result);
+    EXPECT_GT(streams.size(),0);
+    EXPECT_LE(streams.size(),opt.first);
+    std::for_each(streams.begin(), streams.end(),[] (const auto& stream)
+    {
+        EXPECT_EQ( stream.Language,"ru");
+    });
+    EXPECT_GE(cursor.size(),5);
 }
 
 TEST_F(StreamTest, getByType)

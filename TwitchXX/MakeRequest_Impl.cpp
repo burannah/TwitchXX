@@ -23,11 +23,15 @@ namespace TwitchXX
 ****************************************************************************************/
     web::json::value MakeRequest_Impl::performRequest(const RequestParams &params)
     {
-        web::http::client::http_client http_client("https://api.twitch.tv/", _config);
+        //Base url&config
+        web::http::client::http_client http_client(_base_url, _config);
+        //Method
         web::http::http_request request(params.method);
 
+        //Client-ID
         if(_client_id.length() > 0)request.headers().add("Client-ID", _client_id);
 
+        //Authrization
         if(params.authToken)
         {
             request.headers().add("Authorization", params.authToken->get(params.scope));
@@ -40,16 +44,19 @@ namespace TwitchXX
             throw TwitchException(ss.str().c_str());
         }
 
+        //URI
         request.set_request_uri({params.uri});
-        request.headers().set_content_type("application/json");
+        //Request body
         if (!params.body.is_null())
         {
             utility::stringstream_t ss;
             ss << params.body;
             request.set_body(ss.str());
-            //request.headers().set_content_type(U("application/json"));
+            //Content type
+            request.headers().set_content_type("application/json");
         }
 
+        //Set response headers params to fetch
         _response_header_params.clear();
         if(params.responseHeadersParams.size())
         {
@@ -61,22 +68,24 @@ namespace TwitchXX
                           });
         }
 
+        Log::Debug("Base url: " + _base_url);
         Log::Debug("Request: " + request.to_string());
 
         pplx::task<web::json::value> task = http_client.request(request)
                 .then([this](web::http::http_response response) -> pplx::task<web::json::value>
                       {
                           Log::Debug("Response: " + response.to_string());
-                          Log::Info("Response status: " + response.status_code());
+                          Log::Info("Response status: " + std::to_string(response.status_code()));
                           fetchHeaderParams(response.headers());
-                          this->_last_status = response.status_code();
+                          _last_status = response.status_code();
                           if (response.status_code() == web::http::status_codes::OK
                               || response.status_code() == web::http::status_codes::Accepted)
                           {
+                              /*
                               if (response.headers().content_type().find("json") == std::wstring::npos)
                               {
-                                  return response.extract_json(true);
-                              }
+                                  return {};
+                              }*/
 
 
                               return response.extract_json();
@@ -114,19 +123,9 @@ namespace TwitchXX
     }
 
     MakeRequest_Impl::MakeRequest_Impl(const options &opt)
+    : _client_id(opt.at("api_key"))
+    , _base_url(opt.at("base_url"))
     {
-        try
-        {
-            _client_id = opt.at("api_key");
-        }
-        catch (const std::out_of_range&)
-        {
-            utility::stringstream_t ss;
-            ss << __FUNCTION__ << ": Not enough parameters!"
-               << " api_key=" << _client_id;
-            Log::Error(ss.str());
-            throw std::invalid_argument(ss.str());
-        }
 
         setupProxy(opt);
     }

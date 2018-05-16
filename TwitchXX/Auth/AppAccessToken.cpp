@@ -7,10 +7,13 @@
 #include <Request.h>
 #include <MakeRequest_Impl.h>
 
+namespace
+{
+    const std::string AUTH_BASE_URL="https://id.twitch.tv/";
+}
+
 TwitchXX::AppAccessToken::AppAccessToken()
 :_handle(std::make_shared<Handle>())
-, _request(Request::getOptions(),
-           std::make_shared<MakeRequest_Impl>(Request::getOptions()))
 {
     refreshToken();
 }
@@ -19,32 +22,63 @@ void TwitchXX::AppAccessToken::refreshToken()
 {
 
     auto opt = RequestOnce::getOptions();
-    web::uri_builder builder("kraken/oauth2/token");
+    opt["base_url"] = AUTH_BASE_URL;
+    auto request_impl = std::make_shared<MakeRequest_Impl>(opt);
+    RequestOnce request(opt,request_impl);
+    web::uri_builder builder("oauth2/token");
     builder.append_query("client_id",opt["api_key"]);
     builder.append_query("client_secret", opt["client_secret"]);
     builder.append_query("grant_type", "client_credentials");
 
-    auto response = _request.post(builder.to_uri());
+    auto response = request.post(builder.to_uri());
 
     _handle->_token = response.at("access_token").as_string();
     _handle->_validTill = std::chrono::system_clock::now()
                           + std::chrono::seconds(response.at("expires_in").as_integer());
-    //TODO: Fix scope parsing
-    //_handle->_scope = response.at("scope").as_string();
+    if(response.has_field("scope")
+       && !response.at("scope").is_null()
+       && response.at("scope").size())
+    {
+        auto scopes = response.at("scope").as_array();
+        std::for_each(scopes.begin(), scopes.end(), [&](web::json::value& js_scope)
+        {
+            auto scope = js_scope.as_string();
+
+            if(scope == "clips_edit")
+            {
+                _handle->_scope |= AuthScope::CLIPS_EDIT;
+            }
+            else if(scope == "user_edit")
+            {
+                _handle->_scope |= AuthScope::USER_EDIT;
+            }
+            else if(scope == "user_read_email")
+            {
+                _handle->_scope |= AuthScope::USER_READ_EMAIL;
+            }
+            else
+            {
+                Log::Warn("Unknown auth scope!: " + scope);
+            }
+        });
+    }
+
 }
 
 void TwitchXX::AppAccessToken::revoke()
 {
     auto opt = RequestOnce::getOptions();
-    web::uri_builder builder("kraken/oauth2/revoke");
+    opt["base_url"] = AUTH_BASE_URL;
+    auto request_impl = std::make_shared<MakeRequest_Impl>(opt);
+    RequestOnce request(opt,request_impl);
+    web::uri_builder builder("oauth2/revoke");
     builder.append_query("client_id",opt["api_key"]);
     builder.append_query("token", _handle->_token);
 
-    auto response = _request.post(builder.to_uri());
+    auto response = request.post(builder.to_uri());
 
-    if(response.at("status").as_string() != "ok" )
+    if(request.statusCode() != web::http::status_codes::OK )
     {
-        //TODO: Log?
-        std::cerr << "Can not revoke token: " << response.at("status").as_string() << "\n";
+        Log::Warn("Can not revoke token: " + response.at("status").as_string());
     }
 }

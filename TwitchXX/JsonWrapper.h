@@ -64,10 +64,21 @@ namespace TwitchXX
 		{ return  _json.as_number(); }
 
 		unsigned int as_uint() const override
-		{ return static_cast<unsigned int>(_json.is_string() ? std::stoul(_json.as_string()) : _json.as_number().to_uint32());	}
+		{
+			return _json.is_string() ?
+				  		_json.as_string().empty() ?
+							0
+						: static_cast<unsigned int>(std::stoul(_json.as_string()))
+				   : _json.as_number().to_uint32();
+		}
 
 		unsigned long long as_ulong() const override
-		{ return _json.is_string() ? static_cast<uint64_t>(std::stoll(_json.as_string())) : _json.as_number().to_uint64(); }
+		{
+			return _json.is_string() ?
+				 	_json.as_string().empty() ?
+					 0 : static_cast<uint64_t>(std::stoll(_json.as_string()))
+				   : _json.as_number().to_uint64();
+		}
 		///@}
 
 	private:
