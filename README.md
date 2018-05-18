@@ -1,4 +1,5 @@
-![Build status](https://travis-ci.org/burannah/TwitchXX.svg?branch=master "Build Status")
+[![Build Status](https://travis-ci.org/burannah/TwitchXX.svg?branch=master)](https://travis-ci.org/burannah/TwitchXX)
+
 # TwitchXX
 C++ library for interaction with Twitch REST API.
 Note: Only V3 REST API is currently supported.

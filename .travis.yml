@@ -1,33 +1,12 @@
-language: cpp
-dist: trusty
-sudo: required
-compiler:
-  - gcc
-addons:
-  apt:
-    packages:
-    # install toolchains
-    - gcc
-    - g++
-    - cmake-data
-    - cmake
-
+language: c
+services:
+  - docker
 before_install:
- - sudo apt-get install libboost-regex-dev libboost-system-dev libboost-thread-dev libboost-test-dev libboost-random-dev libcpprest-dev -y
-env:
-  global:
-    - BOOST_INCLUDES=/usr/include
-    - BOOST_LIBS=/usr/lib
-before_script:
-   - mkdir bin
-   - cd bin
-   - cmake ..
-
-script: make
-
-branches:
-  only:
-    - master
+  - docker pull alexignatyev/twitchxx:latest
+  - docker run -v $PWD:/repo -itd --name build alexignatyev/twitchxx
+script:
+  - docker exec build cmake -H/repo -B/build
+  - docker exec build cmake --build /build
 notifications:
   recipients:
     - burannah@gmail.com
