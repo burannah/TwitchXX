@@ -11,6 +11,7 @@ namespace TwitchXX
 {
 
     class Api;
+    class ClipOptions;
 
 ///Create and access existing clip object
 /** This class encapsulates two Twitch API requests:
@@ -26,8 +27,8 @@ public:
     {
         std::string Id;               ///< Clip id
         std::string EditUrl;          ///< Url to edit this clip
-        size_t            Limit;            ///< Maximum number of Create Clip requests allowed (per minute)
-        size_t            Remaining;        ///< Number of Create Clip requests remaining for current time interval
+        size_t      Limit;            ///< Maximum number of Create Clip requests allowed (per minute)
+        size_t      Remaining;        ///< Number of Create Clip requests remaining for current time interval
     };
 
     /**
@@ -50,6 +51,7 @@ public:
     *  @param      id - clip id - usually five random words
     ****************************************************************************************/
     explicit Clip(const Api &api, const std::string &id);
+    explicit Clip() = default;
 
     //@{
     /** Clip properties. */
@@ -77,8 +79,19 @@ public:
 
     std::string        Thumb;
     //@}
+
+    bool operator==(const Clip& other) const;
 };
 
+    /**
+    *****************************************************************************************
+    *  @brief      Request a number of clips.
+    *  @details    Get a number (up to 100) of clips by providing a parameters object.
+    *  @param      api - API object  providing request and auth objects
+    *  @param      params - request parameters
+    *  @return     a vector of TwitchXX::Clip objects (if any were found).
+    ****************************************************************************************/
+    std::tuple<std::vector<Clip>, std::string> getClips(const Api &api, const ClipOptions& params);
 }
 
 

@@ -8,6 +8,7 @@
 #include <Utility.h>
 #include <TestConstants.h>
 #include <Api.h>
+#include <ClipOptions.h>
 
 
 class ClipTest : public ::testing::Test
@@ -32,7 +33,6 @@ TEST_F(ClipTest, GetClip_Offline)
 
 }
 
-
 TEST_F(ClipTest, Constructor)
 {
     //Reuqest this clip: https://clips.twitch.tv/ThankfulMotionlessStinkbugCurseLit
@@ -49,5 +49,49 @@ TEST_F(ClipTest, Constructor)
     EXPECT_EQ(clip.Title, "айсайсайсайсайсайсайсайсайсайсайсайсайсайсайсайсайсайс");
     EXPECT_GE(clip.ViewCount, 216);
     EXPECT_EQ(clip.Created, TwitchXX::DateFromString("2018-01-12T12:46:09Z"));
-    EXPECT_EQ(clip.Thumb, "https://clips-media-assets.twitch.tv/175389984-preview-480x272.jpg");
+    EXPECT_NE(clip.Thumb.find("175389984-preview-480x272.jpg"),std::string::npos);
 }
+
+TEST_F(ClipTest, get20)
+{
+    TwitchXX::ClipOptions opt;
+    opt.gameId = DOTA2_ID;
+
+    auto [clips, next] = TwitchXX::getClips(_api, opt);
+
+    EXPECT_EQ(clips.size(), 20);
+}
+
+TEST_F(ClipTest, get100)
+{
+    TwitchXX::ClipOptions opt;
+    opt.gameId = DOTA2_ID;
+    opt.first = 100;
+
+    auto [clips, next] = TwitchXX::getClips(_api, opt);
+
+    EXPECT_EQ(clips.size(), 100);
+}
+
+
+TEST_F(ClipTest, getNext20)
+{
+    TwitchXX::ClipOptions opt;
+    opt.gameId = DOTA2_ID;
+
+    auto [clips, next] = TwitchXX::getClips(_api, opt);
+    EXPECT_EQ(clips.size(), 20);
+    opt.after = next;
+
+    auto [clips2, next2] = TwitchXX::getClips(_api, opt);
+    EXPECT_EQ(clips2.size(), 20);
+
+    for(auto it = clips.begin(); it != clips.end(); ++it)
+    {
+        EXPECT_EQ(std::find(std::begin(clips2), std::end(clips2),*it), clips2.end());
+    }
+}
+
+
+
+
