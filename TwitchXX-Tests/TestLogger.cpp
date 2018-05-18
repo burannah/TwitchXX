@@ -9,6 +9,7 @@
 
 void TestLogger::Msg(TwitchXX::LogLevel level, std::chrono::system_clock::time_point tm, const std::string &msg)
 {
+    std::lock_guard<std::mutex> lock(_lock);
     std::stringstream ss;
 
     std::time_t ttp = std::chrono::system_clock::to_time_t(tm);

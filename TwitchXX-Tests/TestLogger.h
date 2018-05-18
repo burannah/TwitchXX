@@ -6,10 +6,12 @@
 #define TWITCHXX_TESTLOGGER_H
 
 #include <Logger.h>
+#include <mutex>
 
 
 class TestLogger : public TwitchXX::Logger
 {
+    std::mutex _lock;
 public:
     void Msg(TwitchXX::LogLevel level,
              std::chrono::system_clock::time_point tm,
