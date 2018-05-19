@@ -53,5 +53,6 @@ TwitchXX::UserAccessToken::UserAccessToken(const std::string &token)
     //TODO: Make it real parameter from config
     _scope = AuthScope::CLIPS_EDIT
             | AuthScope::USER_EDIT
-            | AuthScope::USER_READ_EMAIL;
+            | AuthScope::USER_READ_EMAIL
+            | AuthScope::BITS_READ;
 }

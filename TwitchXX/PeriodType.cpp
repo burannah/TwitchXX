@@ -2,10 +2,10 @@
 // Created by buran on 14/03/18.
 //
 
-#include <VideoPeriodType.h>
+#include <PeriodType.h>
 #include <TwitchException.h>
 
-std::string TwitchXX::VideoPeriodType::toString(TwitchXX::VideoPeriodType::Value v)
+std::string TwitchXX::PeriodType::toString(TwitchXX::PeriodType::Value v)
 {
     static const std::map<Value, std::string> strs{{Value::ALL, "all"}, {Value::DAY, "day"}, {Value::WEEK, "week"}, {Value::MONTH, "month"}};
     try
@@ -18,7 +18,7 @@ std::string TwitchXX::VideoPeriodType::toString(TwitchXX::VideoPeriodType::Value
     }
 }
 
-TwitchXX::VideoPeriodType::Value TwitchXX::VideoPeriodType::fromString(const std::string &s)
+TwitchXX::PeriodType::Value TwitchXX::PeriodType::fromString(const std::string &s)
 {
     static const std::map<std::string,Value> strs{{"all", Value::ALL}, {"day", Value::DAY}, {"week", Value::WEEK}, {"month", Value::MONTH}};
     try
@@ -31,11 +31,11 @@ TwitchXX::VideoPeriodType::Value TwitchXX::VideoPeriodType::fromString(const std
     }
 }
 
-TwitchXX::VideoPeriodType::Value TwitchXX::VideoPeriodType::fromInt(int i)
+TwitchXX::PeriodType::Value TwitchXX::PeriodType::fromInt(int i)
 {
     if(static_cast<int>(Value::ALL) > i || static_cast<int>(Value::MONTH) < i)
     {
-        throw TwitchException("Value is not within VideoPeriodType range");
+        throw TwitchException("Value is not within PeriodType range");
     }
     return static_cast<Value>(i);
 }

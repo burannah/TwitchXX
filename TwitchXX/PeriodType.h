@@ -10,7 +10,7 @@
 namespace TwitchXX
 {
     ///Period type helper class
-    class VideoPeriodType
+    class PeriodType
     {
     public:
 
@@ -24,13 +24,13 @@ namespace TwitchXX
         };
 
         /// Period type enum value to string
-        static std::string toString(VideoPeriodType::Value v);
+        static std::string toString(PeriodType::Value v);
 
         /// Period type enum value from string
-        static VideoPeriodType::Value  fromString(const std::string& s);
+        static PeriodType::Value  fromString(const std::string& s);
 
         /// Period type enum value from int
-        static VideoPeriodType::Value fromInt(int i);
+        static PeriodType::Value fromInt(int i);
     };
 }
 

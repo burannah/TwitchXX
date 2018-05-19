@@ -54,7 +54,7 @@ TwitchXX::getVideos(const Api &api, const std::vector<uint64_t>& ids, uint64_t u
         builder.append_query("language", opt.Language);
     }
 
-    builder.append_query("period", VideoPeriodType::toString(opt.Period));
+    builder.append_query("period", PeriodType::toString(opt.Period));
 
     builder.append_query("sort", VideoSortType::toString(opt.Sort));
 

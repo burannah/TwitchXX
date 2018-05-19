@@ -19,7 +19,8 @@ namespace TwitchXX
         NO_SCOPE = 0,
         CLIPS_EDIT = 1 << 0,
         USER_EDIT = 1 << 1,
-        USER_READ_EMAIL = 1 << 2
+        USER_READ_EMAIL = 1 << 2,
+        BITS_READ = 1 << 3
         /*
         USER_READ = 1 << 0,
         USER_BLOCKS_EDIT = 1 << 1,

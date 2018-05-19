@@ -6,7 +6,7 @@
 #define TWITCHXX_VIDEOOPTIONS_H
 
 #include <string>
-#include <VideoPeriodType.h>
+#include <PeriodType.h>
 #include <VideoSortType.h>
 #include <VideoType.h>
 #include <vector>
@@ -20,7 +20,7 @@ namespace TwitchXX
         std::string            Before;
         size_t                 Count;
         std::string            Language;
-        VideoPeriodType::Value Period;
+        PeriodType::Value Period;
         VideoSortType::Value   Sort;
         VideoType::Value       Type;
 

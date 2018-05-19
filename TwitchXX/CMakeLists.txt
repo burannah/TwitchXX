@@ -31,16 +31,16 @@ add_library(TwitchXX STATIC TwitchDef.h RequestOnce.h RequestOnce.cpp Clip.cpp C
                             Stream.cpp Stream.h StreamMetadata.cpp StreamMetadata.h StreamsOptions.h
                             StreamsOptions.cpp StreamType.h StreamType.cpp User.cpp User.h UserType.cpp
                             UserType.h BroadcasterType.cpp BroadcasterType.h UserFollows.cpp UserFollows.h
-                            Api.cpp Api.h Video.cpp Video.h VideoOptions.cpp VideoOptions.h VideoPeriodType.cpp
-                            VideoPeriodType.h VideoSortType.cpp VideoSortType.h VideoType.cpp VideoType.h
-                            Logger.cpp Logger.h Log.cpp Logger.h RequestWait.cpp RequestWait.h MakeRequest_Impl.cpp MakeRequest_Impl.h RequestParams.cpp RequestParams.h Request.cpp Request.h ClipOptions.cpp ClipOptions.h)
+                            Api.cpp Api.h Video.cpp Video.h VideoOptions.cpp VideoOptions.h PeriodType.cpp
+        PeriodType.h VideoSortType.cpp VideoSortType.h VideoType.cpp VideoType.h
+                            Logger.cpp Logger.h Log.cpp Logger.h RequestWait.cpp RequestWait.h MakeRequest_Impl.cpp MakeRequest_Impl.h RequestParams.cpp RequestParams.h Request.cpp Request.h ClipOptions.cpp ClipOptions.h BitsLeaderboardEntry.cpp BitsLeaderboardEntry.h BitsLeaderboardOptions.cpp BitsLeaderboardOptions.h)
 target_link_libraries(TwitchXX ${LIB_CPPREST})
 
 install(TARGETS TwitchXX DESTINATION lib)
 install(FILES Clip.h Api.h Entitlement.h Game.h Logger.h Request.h RequestOnce.h RequestWait.h Stream.h
               StreamMetadata.h StreamsOptions.h StreamType.h TwitchDef.h TwitchException.h User.h
-              UserFollows.h UserType.h Utility.h Video.h VideoOptions.h VideoPeriodType.h VideoSortType.h
-              VideoType.h ClipOptions.h
+              UserFollows.h UserType.h Utility.h Video.h VideoOptions.h PeriodType.h VideoSortType.h
+              VideoType.h ClipOptions.h BitsLeaderboardEntry.h BitsLeaderboardOptions.h
         DESTINATION include/TwitchXX)
 
 
