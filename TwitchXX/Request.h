@@ -22,6 +22,8 @@ namespace TwitchXX
     class MakeRequest_Impl;
     class AuthToken;
 
+
+    /// Abstract request class. Contains general logic
     class Request
     {
     public:
@@ -74,6 +76,7 @@ namespace TwitchXX
         ///Last request's status code
         web::http::status_code statusCode() const;
 
+        /// Set authorization token to use by this request instance
         void setAuthToken(const std::shared_ptr<AuthToken> &token);
 
     protected:
@@ -87,9 +90,8 @@ namespace TwitchXX
         explicit Request(const std::map<utility::string_t, utility::string_t> &options,
                          const std::shared_ptr<MakeRequest_Impl> &impl);
 
-        ///MakeRequest's main method.
-        ///@param	params request parameters descriptor
-        ///@return	response parsed to web::json::value object. Null json value if HTTP result code != OK.
+        /// Abstract function to be called from all request type methods: GET, POST, PUT, DEL
+        /// Should be implemented by derived class for pre processing of RequestParams object
         virtual web::json::value performRequest(const RequestParams &params) = 0;
 
         void saveRequestResponse();

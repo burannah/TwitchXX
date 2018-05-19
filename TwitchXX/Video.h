@@ -14,19 +14,20 @@ namespace TwitchXX
 {
     class Api;
 
+    /// Video desriptor class
     class Video
     {
     public:
-        unsigned long long Id;
-        unsigned long long UserId;
-        std::string        Title;
-        std::string        Description;
-        Date               Created;
-        Date               Published;
-        std::string        ThumbnailUrl;
-        unsigned long long ViewCount;
-        std::string        Language;
-        std::string        Duration;
+        unsigned long long Id;              ///< Id
+        unsigned long long UserId;          ///< Video's user id
+        std::string        Title;           ///< Title
+        std::string        Description;     ///< Description
+        Date               Created;         ///< Created
+        Date               Published;       ///< Published
+        std::string        ThumbnailUrl;    ///< Video's thumbnail URL
+        unsigned long long ViewCount;       ///< View count
+        std::string        Language;        ///< Language
+        std::string        Duration;        ///< Duration
     };
 
     std::tuple<std::vector<Video>, std::string> getVideos(const Api& api,

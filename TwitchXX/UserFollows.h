@@ -12,26 +12,23 @@
 namespace TwitchXX
 {
     class Api;
-    /***
-     * Get user follows request options
-     */
+
+    /// Get user follows request options
     struct UserFollowsOptions
     {
-        std::string after;      //< 'next' - cursor
-        std::string before;     //< 'prev' - cursor
-        size_t      count = 20; //< maximum number of objects per response (Max - 100)
-        std::string from;       //< get the information about which are followed by 'from` user id
-        std::string to;         //< get the information about which users are following 'to' user id
+        std::string after;      ///< 'next' - cursor
+        std::string before;     ///< 'prev' - cursor
+        size_t      count = 20; ///< maximum number of objects per response (Max - 100)
+        std::string from;       ///< get the information about which are followed by 'from` user id
+        std::string to;         ///< get the information about which users are following 'to' user id
     };
 
-    /***
-     * User follow information
-     */
+    /// User follow information
     struct UserFollow
     {
-        unsigned long long from;
-        unsigned long long to;
-        Date               since;
+        unsigned long long from = 0; ///< Following from user
+        unsigned long long to = 0;   ///< Following to user
+        Date               since;    ///< Date of following
 
     };
 

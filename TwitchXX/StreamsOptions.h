@@ -19,6 +19,7 @@ namespace web
  */
 namespace TwitchXX
 {
+    /// Class to descrube getStreams request options
     struct StreamsOptions
     {
         std::string after;  ///< Cursor for forward pagination: tells the server where to start fetching

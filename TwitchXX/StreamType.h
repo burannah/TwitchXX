@@ -7,12 +7,12 @@
 
 namespace TwitchXX
 {
-/***
- * Stream type enum & helpers
- */
+    /**
+     * Stream type enum & helpers
+     */
     struct StreamType
     {
-        /***
+        /**
          * Stream types
          */
         enum class Value

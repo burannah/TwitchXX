@@ -12,14 +12,14 @@ namespace TwitchXX
 {
     class Api;
 
-    /***
+    /**
     * Gets game information by game ID or name.
     */
     class Game
     {
 
     public:
-        /***
+        /**
          * Fetch game information from Twitch. Either id or name should be present
          * @param api - API object
          * @param id - Twitch game id
@@ -36,12 +36,12 @@ namespace TwitchXX
          */
         explicit Game(unsigned long long id, const std::string& name, const std::string& url);
 
-        unsigned long long Id;       //< Twitch game Id
-        std::string Name;     //< Game title
-        std::string BoxArt;   //< Url template for box art image
+        unsigned long long Id;       ///< Twitch game Id
+        std::string Name;            ///< Game title
+        std::string BoxArt;          ///< Url template for box art image
     };
 
-    /***
+    /**
      * Method to get Game objects by ids and/or name
      * @param api - API object
      * @param ids - Ids array (100 elements max)
@@ -52,7 +52,7 @@ namespace TwitchXX
     std::vector<Game>
     getGames(const Api &api, const std::vector<unsigned long long> &ids, const std::vector<std::string> &names = {});
 
-    /***
+    /**
      * Method to get Top Game objects at the moment
      * @param api - API object
      * @param count  - number of games per request
@@ -66,7 +66,5 @@ namespace TwitchXX
     std::tuple<std::vector<TwitchXX::Game>, std::string>
     getTopGames(const Api &api, int count, const char *cursor, const char *cursor_before);
 }
-
-
 
 #endif //TWITCHXX_GAME_H

@@ -22,25 +22,21 @@ namespace TwitchXX
 
     void Log::Debug(const std::string &msg)
     {
-        if(log._level > LogLevel::DEBUG) return;
         Message(LogLevel::DEBUG, msg);
     }
 
     void Log::Info(const std::string &msg)
     {
-        if(log._level > LogLevel::INFO) return;
         Message(LogLevel::INFO, msg);
     }
 
     void Log::Warn(const std::string &msg)
     {
-        if(log._level > LogLevel::WARN) return;
         Message(LogLevel::WARN, msg);
     }
 
     void Log::Error(const std::string &msg)
     {
-        if(log._level > LogLevel::ERROR) return;
         Message(LogLevel::WARN, msg);
     }
 

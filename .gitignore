@@ -252,3 +252,5 @@ ModelManifest.xml
 TwitchSpy/twitchxx.cfg
 /TwitchXX/docs/html
 *.smproj
+.idea/
+cmake-build-debug/

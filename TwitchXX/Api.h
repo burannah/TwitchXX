@@ -16,16 +16,20 @@ namespace TwitchXX
     class MakeRequest_Impl;
     class UserAccessToken;
 
+    /// Main API class incapsulating access tokens and requests
     class Api
     {
     public:
+        /// Construct Api object out of options map
         explicit Api(const options& opt = Request::initOptionsFromConfig());
 
+        /// Get non-waitng request object (will throw TwitchException with CODE=429 - TOO MANY REQUESTS)
         RequestOnce reqOnce() const
         {
             return _requestOnce;
         }
 
+        /// Get waiting request object (will wait for next time frame upon reaching the threshold)
         RequestWait reqWait() const
         {
             return _requestWait;

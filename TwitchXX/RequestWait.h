@@ -11,13 +11,18 @@
 
 namespace TwitchXX
 {
+    /// Request object which is aware of requests per minute threshold.
+    /// Will wait for next window upon getting CODE=429 - TOO MANY REQUESTS
     class RequestWait : public Request
     {
     public:
+        /// Constructor
         RequestWait(const std::map<utility::string_t, utility::string_t> &options,
                     const std::shared_ptr<MakeRequest_Impl> &impl);
 
     protected:
+        /// virtual function defined in Request::performRequest.
+        /// This method will be invoked for all request types: GET, PUT, POST, DEL
         web::json::value performRequest(const RequestParams &params) override;
     };
 }

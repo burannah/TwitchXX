@@ -15,11 +15,14 @@ namespace TwitchXX
     class RequestParams;
     class AuthToken;
 
+    /// Make request implementation class
+    /// This is where real HTTP request happens
     class MakeRequest_Impl
     {
         public:
-            std::mutex _lock;
+            std::mutex _lock; ///< Request sync mutex
 
+            ///Constructor
             explicit MakeRequest_Impl(const options& opt);
 
             ///MakeRequest's main method.
@@ -27,13 +30,15 @@ namespace TwitchXX
             ///@return	response parsed to web::json::value object. Null json value if HTTP result code != OK.
             virtual web::json::value performRequest(const RequestParams &params);
 
-        const auto& getResponseHeaderParams() const
-        {
-            return _response_header_params;
-        }
 
-        ///Last request's status code
-        web::http::status_code statusCode() const { return _last_status; }
+            ///Get headers values for last performed request
+            const auto& getResponseHeaderParams() const
+            {
+                return _response_header_params;
+            }
+
+            ///Last request's status code
+            web::http::status_code statusCode() const { return _last_status; }
 
     private:
         web::http::client::http_client_config _config;
