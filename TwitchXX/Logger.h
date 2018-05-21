@@ -1,50 +1,40 @@
-#pragma once
+//
+// Created by buran on 02/04/18.
+//
 
+#ifndef TWITCHXX_LOGGER_H
+#define TWITCHXX_LOGGER_H
+
+#include <chrono>
 #include <string>
-#include <list>
 #include <memory>
-#include <algorithm>
-#include <cpprest/details/basic_types.h>
 
 namespace TwitchXX
 {
-	///Class and interface for this library's loggers.
-	/**
-	* You can derive from this class, implement your own logger and add it to the api object (TwitchXX::Api::AddLogger()).
-	* These loggers will be "chained" - so you can get twitch api logs in multiple plces simultaniously.
-	*/
-	class Logger
-	{
-	public:
-		///Log level enum.
-		/**
-		* In future Debug messages will only be showed if library compiled with DEBUG flag (to be decided).
-		*/
-		enum class LogLevel
-		{
-			Message, ///< Message
-			Warning, ///< Warning
-			Error, ///< Error
-			Debug ///< Debug
-		};
+    enum class LogLevel
+    {
+        DEBUG,
+        INFO,
+        WARN,
+        ERROR
+    };
 
-		///Send messages to all subscribed loggers
-		/**
-		* Doesn't do any actual logging. Just check that all objects are alive and broadcast incoming message to them.
-		*/
-		virtual void Log(utility::string_t msg, LogLevel level = LogLevel::Message)
-		{
-			_subscribers.remove_if([](const auto& log) { return log.expired(); });
-			std::for_each(_subscribers.begin(), _subscribers.end(), [&](const auto& log) {if (auto sp = log.lock()) { sp->Log(msg, level); } });
-		}
+    /// Logger interface for TwitchXX libary users to implement.
+    /// Derive your logging class from this and use Log::AddLogger to add it.
+    /// Logger::Msg will be invoked in multiple threads.
+    class Logger
+    {
+    public:
+        /// This method will be invoked by the Log dispatcher of TwitchXX library upon a log event
+        virtual void Msg(LogLevel level,
+                         std::chrono::system_clock::time_point tm,
+                         const std::string& msg) = 0;
+    };
 
-		///Subscribe a logger.
-		void Subscribe(std::weak_ptr<Logger> log)
-		{
-			_subscribers.push_back(log);
-		};
+    /// Add logger object to Log dispatcher of TwitchXX library
+    void AddLogger(std::weak_ptr<Logger> logger);
 
-	private:
-		std::list<std::weak_ptr<Logger>> _subscribers;
-	};
 }
+
+
+#endif //TWITCHXX_LOGGER_H

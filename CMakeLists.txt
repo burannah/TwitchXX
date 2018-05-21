@@ -17,6 +17,7 @@ set(OpenSSL_ssleay_LIBRARY ${OPENSSL_LIBRARIES})
 
 option(BUILD_TESTS "Build tests." ON)
 
+add_definitions(-D_TURN_OFF_PLATFORM_STRING)
 include_directories(${Boost_INCLUDE_DIR} ${OPENSSL_INCLUDE_DIR} "${CPP_REST_INCLUDE_DIR}/..")
 link_directories(${Boost_LIBRARY_DIRS})
 		
