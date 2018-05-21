@@ -47,6 +47,8 @@ namespace TwitchXX
 
         StreamMetadata() = default;
 
+        /// Stream metadata object. Contains information about current ingame parameters (selected hero, opponent, etc.)
+        /// At the moment supported only by Hearthstone and Overwatch (and has many bugs!!!)s
         StreamMetadata(const StreamMetadata& other)
         {
             UserId = other.UserId;

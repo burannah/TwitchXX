@@ -16,14 +16,15 @@ namespace TwitchXX
     /// Bits leaderboard entry record
     struct BitsLeaderboardEntry
     {
+        /// Constructor
         BitsLeaderboardEntry(unsigned long long user, unsigned long long rnk,  unsigned long long scr)
         : userId(user)
         , rank(rnk)
         , score(scr)
         {}
-        unsigned long long userId;
-        unsigned long long rank;
-        unsigned long long score;
+        unsigned long long userId;      ///< User Id
+        unsigned long long rank;        ///< Rank
+        unsigned long long score;       ///< Score
     };
 
     /**

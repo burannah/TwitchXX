@@ -12,13 +12,13 @@ namespace TwitchXX
 	public:
 		virtual ~JsonValueWrapper() = default;
 
-		virtual std::string as_string() const = 0;
-		virtual int as_integer() const = 0;
-		virtual bool as_bool() const = 0;
-		virtual double as_double() const = 0;
-		virtual web::json::number as_number() const = 0;
-		virtual unsigned int as_uint() const = 0;
-		virtual unsigned long long as_ulong() const = 0;
+		virtual std::string as_string() const = 0;          ///< String representation
+		virtual int as_integer() const = 0;                 ///< Integer representation
+		virtual bool as_bool() const = 0;                   ///< Booleam representation                                          representation
+		virtual double as_double() const = 0;               ///< Double representation
+		virtual web::json::number as_number() const = 0;    ///< web::Json::number representation
+		virtual unsigned int as_uint() const = 0;           ///< Unsigned int representation
+		virtual unsigned long long as_ulong() const = 0;    ///< Unsigned long long representation
 
 		///@{
 		/* Type casting method for auto resolving JsonValue */

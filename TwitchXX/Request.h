@@ -80,13 +80,15 @@ namespace TwitchXX
         void setAuthToken(const std::shared_ptr<AuthToken> &token);
 
     protected:
-        std::shared_ptr<MakeRequest_Impl>  _request;
-        std::set<std::string>              _response_headers_params;
-        std::map<std::string, std::string> _response_headers;
-        web::http::status_code             _response_status_code;
-        std::shared_ptr<AuthToken>         _auth_token;
+        std::shared_ptr<MakeRequest_Impl>  _request;                    ///< Request implementation instance
+        std::set<std::string>              _response_headers_params;    ///< Response header params to fetch
+        std::map<std::string, std::string> _response_headers;           ///< Fetched response header params
+        web::http::status_code             _response_status_code;       ///< Last response status code
+        std::shared_ptr<AuthToken>         _auth_token;                 ///< Auth token
 
         /// Protected constructor. This object should not be called directly
+        /// @param options - options map to initialize Request object
+        /// @param impl    - request implementation objkect (private implementation)
         explicit Request(const std::map<utility::string_t, utility::string_t> &options,
                          const std::shared_ptr<MakeRequest_Impl> &impl);
 
@@ -94,6 +96,8 @@ namespace TwitchXX
         /// Should be implemented by derived class for pre processing of RequestParams object
         virtual web::json::value performRequest(const RequestParams &params) = 0;
 
+        /// Fetch all request results (i.e headers, status code etc.)
+        /// from implementation object to this request instance
         void saveRequestResponse();
     };
 

@@ -27,7 +27,7 @@ namespace TwitchXX
          */
         explicit Game(const Api &api, unsigned long long int id, const std::string &name);
 
-        /***
+        /**
          * Simple constructor to just create a game object. Checks that id and name paramaters
          * are not empty
          * @param id - Twitch game id (required)

@@ -18,17 +18,17 @@ namespace TwitchXX
     class User
     {
     public:
-        std::string            Id;                //< User id
-        std::string            Login;             //< User login
-        std::string            DisplayName;       //< Display name
-        UserType::Value        Type;              //< User type (see UserType)
-        BroadcasterType::Value BroadcaterType;    //< Broadcaster type (see BroadcasterType)
-        std::string            Description;       //< User's channel description
-        std::string            AvatarUrl;         //< URL to the user's profile image
-        std::string            OfflineImageUrl;   //< URL to the user's offline image
-        long long unsigned     ViewCount;         //< Total number of views of the user's channel
-        std::string            Email;             //< User’s email address. Returned if the request includes
-                                                  //< the user:read:edit scope.
+        std::string            Id;                ///< User id
+        std::string            Login;             ///< User login
+        std::string            DisplayName;       ///< Display name
+        UserType::Value        Type;              ///< User type (see UserType)
+        BroadcasterType::Value BroadcaterType;    ///< Broadcaster type (see BroadcasterType)
+        std::string            Description;       ///< User's channel description
+        std::string            AvatarUrl;         ///< URL to the user's profile image
+        std::string            OfflineImageUrl;   ///< URL to the user's offline image
+        long long unsigned     ViewCount;         ///< Total number of views of the user's channel
+        std::string            Email;             ///< User’s email address. Returned if the request includes
+                                                  ///< the user:read:edit scope.
 
     };
 

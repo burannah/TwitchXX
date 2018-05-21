@@ -10,6 +10,7 @@
 #include <cpprest/http_client.h>
 #include <cpprest/details/basic_types.h> //TODO: CPPRESTSDK dependency
 #include <Auth/AuthToken.h>
+#include <utility>
 
 namespace TwitchXX
 {
@@ -24,22 +25,30 @@ namespace TwitchXX
         std::set<std::string>                        responseHeadersParams;            ///< Response headers params to fetch
         std::shared_ptr<AuthToken>                   authToken;                        ///< Auth token to use for current request
 
-        RequestParams() = default;
+        /// Constructor
+        /// @param uri - request uri
+        /// @param method - request method
+        /// @param body   - request body
+        /// @param callback - do a callback with response object when done
+        /// @param scope - auth scope required to perform a request
+        /// @param headersParams - headers to fetch upon finishing a request
+        /// @param authToken - authToken provided for this request
         RequestParams(web::uri uri,
                       web::http::method method,
                       web::json::value body,
                       std::function<void(const web::json::value &)> callback,
                       AuthScope scope,
-                      const std::set<std::string>& headersParams,
-                      const std::shared_ptr<AuthToken>& authToken)
+                      std::set<std::string> headersParams,
+                      std::shared_ptr<AuthToken> authToken)
                 :uri(std::move(uri))
                 , method(std::move(method))
                 , body(std::move(body))
                 , callback(std::move(callback))
                 , scope(scope)
-                , responseHeadersParams(headersParams)
-                , authToken(authToken)
+                , responseHeadersParams(std::move(headersParams))
+                , authToken(std::move(authToken))
         {};
+        RequestParams() = default;
     };
 }
 

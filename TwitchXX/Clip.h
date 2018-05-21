@@ -48,6 +48,7 @@ public:
     *  @brief      Create an instance of TwitchXX::Clip class - representing some clip.
     *  @details    To get a clip info just call the constructor with id value. If id is wrong
     *              you'll get 404 error back
+    *  @param      api - API object which contains auth tokens and request objects
     *  @param      id - clip id - usually five random words
     ****************************************************************************************/
     explicit Clip(const Api &api, const std::string &id);
@@ -80,6 +81,7 @@ public:
     std::string        Thumb;
     //@}
 
+    ///Compare two Clip objects
     bool operator==(const Clip& other) const;
 };
 

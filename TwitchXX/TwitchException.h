@@ -35,6 +35,7 @@ namespace TwitchXX
 			return _msg.c_str();
 		}
 
+		/// Exception status code (if thrown from Request object)
 		web::http::status_code code() const { return _code; }
 	private:
 		web::http::status_code _code;
