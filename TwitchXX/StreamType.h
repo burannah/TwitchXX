@@ -21,7 +21,8 @@ namespace TwitchXX
             ALL,
             LIVE,
             VODCAST,
-            RERUN
+            RERUN,
+            ERROR
         };
 
         /// Stream type enum value to string

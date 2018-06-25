@@ -15,6 +15,7 @@ namespace TwitchXX
             case Value::LIVE: return "live";
             case Value::VODCAST: return "vodcast";
             case Value::RERUN: return "rerun";
+            case Value::ERROR: return "";
             default:
                 std::string msg = "Unsupported stream type! [" +
                                   std::to_string(static_cast<int>(v)) + "]";
@@ -28,6 +29,7 @@ namespace TwitchXX
         if(s == "live") return Value::LIVE;
         if(s == "vodcast") return Value::VODCAST;
         if(s == "rerun") return Value::RERUN;
+        if(s.empty()) return Value::ERROR;
 
         std::string msg = "Unsupported stream type! [" + s + "]";
         throw TwitchXX::TwitchException(msg.c_str());
@@ -41,6 +43,7 @@ namespace TwitchXX
             case 1: return Value::LIVE;
             case 2: return Value::VODCAST;
             case 3: return Value::RERUN;
+            case 4: return Value::ERROR;
             default:
                 std::string msg = "Unsupported stream type! [" + std::to_string(i) + "]";
                 throw TwitchXX::TwitchException(msg.c_str());
