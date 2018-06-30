@@ -64,9 +64,9 @@ namespace TwitchXX
         }
     }
 
-    RequestWait::RequestWait(const std::map<utility::string_t, utility::string_t> &options,
-                             const std::shared_ptr<MakeRequest_Impl> &impl)
-    : Request(options, impl)
+    RequestWait::RequestWait(const std::shared_ptr<MakeRequest_Impl> &impl,
+                             const std::shared_ptr<AuthToken> &token)
+    : Request(impl, token)
     {
         _response_headers_params.insert(RATE_LIMIT_RESET);
     }

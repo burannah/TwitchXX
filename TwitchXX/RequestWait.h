@@ -17,8 +17,8 @@ namespace TwitchXX
     {
     public:
         /// Constructor
-        RequestWait(const std::map<utility::string_t, utility::string_t> &options,
-                    const std::shared_ptr<MakeRequest_Impl> &impl);
+        RequestWait(const std::shared_ptr<MakeRequest_Impl> &impl,
+                    const std::shared_ptr<AuthToken> &token);
 
     protected:
         /// virtual function defined in Request::performRequest.

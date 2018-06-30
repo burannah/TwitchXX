@@ -76,10 +76,9 @@ namespace TwitchXX
         std::shared_ptr<AuthToken>         _auth_token;                 ///< Auth token
 
         /// Protected constructor. This object should not be called directly
-        /// @param options - options map to initialize Request object
-        /// @param impl    - request implementation objkect (private implementation)
-        explicit Request(const std::map<utility::string_t, utility::string_t> &options,
-                         const std::shared_ptr<MakeRequest_Impl> &impl);
+        /// @param impl    - request implementation object (private implementation)
+        /// @param token   - default authorization token
+        explicit Request(const std::shared_ptr<MakeRequest_Impl> &impl, const std::shared_ptr<AuthToken> &token);
 
         /// Abstract function to be called from all request type methods: GET, POST, PUT, DEL
         /// Should be implemented by derived class for pre processing of RequestParams object

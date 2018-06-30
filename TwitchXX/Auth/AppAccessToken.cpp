@@ -24,7 +24,8 @@ TwitchXX::AppAccessToken::AppAccessToken(const std::string &apiKey,
 void TwitchXX::AppAccessToken::refreshToken()
 {
 
-    RequestOnce request(_opt,_request_impl);
+    auto empty = std::shared_ptr<AuthToken>{};
+    RequestOnce request(_request_impl, empty);
     web::uri_builder builder("oauth2/token");
     builder.append_query("client_id",_opt["api_key"]);
     builder.append_query("client_secret", _opt["client_secret"]);
@@ -67,7 +68,8 @@ void TwitchXX::AppAccessToken::refreshToken()
 
 void TwitchXX::AppAccessToken::revoke()
 {
-    RequestOnce request(_opt,_request_impl);
+    auto empty = std::shared_ptr<AuthToken>{};
+    RequestOnce request(_request_impl, empty);
     web::uri_builder builder("oauth2/revoke");
     builder.append_query("client_id",_opt["api_key"]);
     builder.append_query("token", _handle->_token);

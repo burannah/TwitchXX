@@ -23,15 +23,16 @@ namespace web
 namespace TwitchXX
 {
     class MakeRequest_Impl;
+    class UserAccessToken;
 
     ///Class to perform a web request.
     class RequestOnce : public Request
     {
     public:
-		///MakerRequest constructor
-		explicit RequestOnce(const std::map<utility::string_t, utility::string_t> &options,
-                             const std::shared_ptr<MakeRequest_Impl> &rImpl)
-        :Request(options, rImpl)
+        /// Constructor
+        RequestOnce(const std::shared_ptr<MakeRequest_Impl>& impl,
+                    const std::shared_ptr<AuthToken>& token)
+        :Request(impl, token)
         {}
 
     protected:

@@ -18,9 +18,10 @@ namespace TwitchXX
     *1
     *  @param      options - string map containing request options. apiString api version string, ex. application/vnd.twitchtv.v3+json
     ****************************************************************************************/
-    Request::Request(const std::map<utility::string_t, utility::string_t> &options,
-                     const std::shared_ptr<MakeRequest_Impl> &impl)
+    Request::Request(const std::shared_ptr<MakeRequest_Impl> &impl,
+                     const std::shared_ptr<AuthToken> &token)
     :_request(impl)
+    ,_auth_token(token)
     {
 
     }
