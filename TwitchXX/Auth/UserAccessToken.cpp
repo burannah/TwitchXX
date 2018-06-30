@@ -5,6 +5,7 @@
 #include <RequestOnce.h>
 #include <TwitchException.h>
 #include <Auth/UserAccessToken.h>
+#include <Log.h>
 
 TwitchXX::Date TwitchXX::UserAccessToken::validTill() const
 {
@@ -40,14 +41,13 @@ std::shared_ptr<TwitchXX::AuthToken::Handle> TwitchXX::UserAccessToken::getHandl
 }
 
 TwitchXX::UserAccessToken::UserAccessToken(const std::string &token)
+:_token(token)
 {
-    if(token.size())
+    if(token.empty())
     {
-        _token = token;
-    }
-    else
-    {
-        _token = (RequestOnce::getOptions())["token"];
+        const std::string error = "User access token can not be empty";
+        Log::Warn(error);
+        throw TwitchException(error.c_str());
     }
 
     //TODO: Make it real parameter from config

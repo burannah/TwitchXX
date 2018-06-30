@@ -9,12 +9,13 @@
 #include <TestConstants.h>
 #include <Api.h>
 #include <ClipOptions.h>
+#include <TestUtils.h>
 
 
 class ClipTest : public ::testing::Test
 {
 protected:
-    TwitchXX::Api _api;
+    TwitchXX::Api _api {TestUtils::initOptionsFromConfig()};
 };
 
 TEST_F(ClipTest, GetClip)

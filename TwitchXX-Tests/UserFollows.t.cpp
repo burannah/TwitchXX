@@ -5,11 +5,12 @@
 #include <gtest/gtest.h>
 #include <Api.h>
 #include <UserFollows.h>
+#include "TestUtils.h"
 
 class UserFollowsTest : public ::testing::Test
 {
 protected:
-    TwitchXX::Api _api;
+    TwitchXX::Api _api{TestUtils::initOptionsFromConfig()};
 };
 
 TEST_F(UserFollowsTest, to)

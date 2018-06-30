@@ -5,6 +5,7 @@
 #include <gtest/gtest.h>
 #include <StreamMetadata.h>
 #include <Api.h>
+#include "TestUtils.h"
 
 const unsigned long long OVERWATCH_ID=488552;
 const unsigned long long HEARTHSTONE_ID=138585;
@@ -12,7 +13,7 @@ const unsigned long long HEARTHSTONE_ID=138585;
 class StreamMetadataTest : public ::testing::Test
 {
 protected:
-    TwitchXX::Api _api;
+    TwitchXX::Api _api{TestUtils::initOptionsFromConfig()};
     TwitchXX::StreamsOptions _opt;
 };
 

@@ -6,11 +6,12 @@
 #include <Api.h>
 #include <Video.h>
 #include <TestConstants.h>
+#include "TestUtils.h"
 
 class VideoTest : public ::testing::Test
 {
 protected:
-    TwitchXX::Api _api;
+    TwitchXX::Api _api{TestUtils::initOptionsFromConfig()};
 };
 
 

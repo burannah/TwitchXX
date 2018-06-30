@@ -13,6 +13,8 @@ namespace TwitchXX
     ,_userToken(std::make_shared<UserAccessToken>(opt.at("token")))
     ,_requestOnce(opt, _requestImpl)
     ,_requestWait(opt, _requestImpl)
+    ,_api_key(opt.at("api_key"))
+    ,_client_secret(opt.at("client_secret"))
     {
         _requestOnce.setAuthToken(_userToken);
         _requestWait.setAuthToken(_userToken);

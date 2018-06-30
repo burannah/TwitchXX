@@ -5,24 +5,27 @@
 #include <gtest/gtest.h>
 #include <Auth/UserAccessToken.h>
 #include <RequestOnce.h>
+#include "TestUtils.h"
 
 class UserAccessTokenTest : public ::testing::Test
 {
+public:
     void SetUp() override;
+    TwitchXX::options _opt;
 };
 
 void UserAccessTokenTest::SetUp()
 {
     ::testing::Test::SetUp();
 
-    TwitchXX::RequestOnce::initOptionsFromConfig();
+    _opt = TestUtils::initOptionsFromConfig();
 }
 
 
 TEST_F(UserAccessTokenTest, isValid)
 {
     EXPECT_NO_THROW({
-        TwitchXX::UserAccessToken token;
+        TwitchXX::UserAccessToken token{_opt.at("token")};
         EXPECT_TRUE(token.isValid());
                     });
 }
@@ -31,7 +34,7 @@ TEST_F(UserAccessTokenTest, isValid)
 TEST_F(UserAccessTokenTest, validTill)
 {
     EXPECT_NO_THROW({
-        TwitchXX::UserAccessToken token;
+        TwitchXX::UserAccessToken token{_opt.at("token")};
         auto expected_till = std::chrono::system_clock::now() + std::chrono::hours(24*7) - std::chrono::seconds(1);
         auto valid_till = token.validTill();
         auto delta = std::chrono::minutes(1);
@@ -44,7 +47,7 @@ TEST_F(UserAccessTokenTest, validTill)
 TEST_F(UserAccessTokenTest, get)
 {
     EXPECT_NO_THROW({
-        TwitchXX::UserAccessToken token;
-        EXPECT_EQ(token.get(TwitchXX::AuthScope::USER_EDIT), "Bearer " + TwitchXX::RequestOnce::getOptions()["token"]);
+        TwitchXX::UserAccessToken token{_opt.at("token")};
+        EXPECT_EQ(token.get(TwitchXX::AuthScope::USER_EDIT), "Bearer " + _opt["token"]);
                     });
 }

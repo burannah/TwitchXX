@@ -11,11 +11,13 @@
 
 namespace TwitchXX
 {
+    class MakeRequest_Impl;
+
     ///App auth token class
     class AppAccessToken : public AuthToken
     {
     public:
-        explicit AppAccessToken();
+        explicit AppAccessToken(const std::string &apiKey, const std::string &clientSecret);
 
         ~AppAccessToken()
         {
@@ -64,7 +66,9 @@ namespace TwitchXX
             return "AppAccessToken";
         }
     private:
-        std::shared_ptr<Handle> _handle;
+        std::shared_ptr<Handle>           _handle;
+        options                           _opt;
+        std::shared_ptr<MakeRequest_Impl> _request_impl;
 
         void refreshToken();
         void revoke();

@@ -31,7 +31,8 @@ TwitchXX::Entitlement::Entitlement(const Api &api, const std::string &id, Twitch
     builder.append_query("manifest_id",id);
     builder.append_query("type",getEntitlementTypeString(t));
 
-    api.reqWait().setAuthToken(std::make_shared<AppAccessToken>());
+    api.reqWait().setAuthToken(std::make_shared<AppAccessToken>(api.getApiKey(),
+                                                                api.getClientSecret()));
 
     auto response = api.reqWait().post(builder.to_uri());
 

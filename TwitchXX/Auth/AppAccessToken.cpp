@@ -12,8 +12,11 @@ namespace
     const std::string AUTH_BASE_URL="https://id.twitch.tv/";
 }
 
-TwitchXX::AppAccessToken::AppAccessToken()
-:_handle(std::make_shared<Handle>())
+TwitchXX::AppAccessToken::AppAccessToken(const std::string &apiKey,
+                                         const std::string &clientSecret)
+:_handle{std::make_shared<Handle>()}
+,_opt{{"base_url", AUTH_BASE_URL}, {"api_key", apiKey}, {"client_secret", clientSecret}}
+,_request_impl{std::make_shared<MakeRequest_Impl>(_opt)}
 {
     refreshToken();
 }
@@ -21,13 +24,10 @@ TwitchXX::AppAccessToken::AppAccessToken()
 void TwitchXX::AppAccessToken::refreshToken()
 {
 
-    auto opt = RequestOnce::getOptions();
-    opt["base_url"] = AUTH_BASE_URL;
-    auto request_impl = std::make_shared<MakeRequest_Impl>(opt);
-    RequestOnce request(opt,request_impl);
+    RequestOnce request(_opt,_request_impl);
     web::uri_builder builder("oauth2/token");
-    builder.append_query("client_id",opt["api_key"]);
-    builder.append_query("client_secret", opt["client_secret"]);
+    builder.append_query("client_id",_opt["api_key"]);
+    builder.append_query("client_secret", _opt["client_secret"]);
     builder.append_query("grant_type", "client_credentials");
 
     auto response = request.post(builder.to_uri());
@@ -67,12 +67,9 @@ void TwitchXX::AppAccessToken::refreshToken()
 
 void TwitchXX::AppAccessToken::revoke()
 {
-    auto opt = RequestOnce::getOptions();
-    opt["base_url"] = AUTH_BASE_URL;
-    auto request_impl = std::make_shared<MakeRequest_Impl>(opt);
-    RequestOnce request(opt,request_impl);
+    RequestOnce request(_opt,_request_impl);
     web::uri_builder builder("oauth2/revoke");
-    builder.append_query("client_id",opt["api_key"]);
+    builder.append_query("client_id",_opt["api_key"]);
     builder.append_query("token", _handle->_token);
 
     auto response = request.post(builder.to_uri());

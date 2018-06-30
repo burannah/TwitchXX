@@ -7,11 +7,12 @@
 #include <Utility.h>
 #include <memory>
 #include <Api.h>
+#include "TestUtils.h"
 
 class EntitlementTest : public ::testing::Test
 {
 protected:
-    TwitchXX::Api _api;
+    TwitchXX::Api _api{TestUtils::initOptionsFromConfig()};
 };
 
 TEST_F(EntitlementTest, DISABLED_Constructor)

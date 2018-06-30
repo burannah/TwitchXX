@@ -7,12 +7,13 @@
 #include <TwitchException.h>
 #include <TestConstants.h>
 #include <Api.h>
+#include "TestUtils.h"
 
 
 class GameTest : public ::testing::Test
 {
 protected:
-    TwitchXX::Api _api;
+    TwitchXX::Api _api{TestUtils::initOptionsFromConfig()};
 };
 
 TEST_F(GameTest, Constructor1)

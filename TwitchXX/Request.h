@@ -30,17 +30,6 @@ namespace TwitchXX
         ///Callback handler type for all request methods (post,get,del,put)
         using Callback = std::function<void(const web::json::value&)>;
 
-        ///Global request parameters holder
-        static options& getOptions()
-        {
-            static options opt;
-            return opt;
-        }
-
-        ///Init request options by default config
-        static options& initOptionsFromConfig(const std::string& path = std::string());
-
-
         ///Perform get request
         web::json::value get(const web::uri& uri,
                              AuthScope scope = AuthScope::NO_SCOPE,

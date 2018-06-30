@@ -6,11 +6,12 @@
 #include <Api.h>
 #include <BitsLeaderboardOptions.h>
 #include <BitsLeaderboardEntry.h>
+#include "TestUtils.h"
 
 class BitsLeaderboardTest : public ::testing::Test
 {
 protected:
-    TwitchXX::Api _api;
+    TwitchXX::Api _api{TestUtils::initOptionsFromConfig()};
 };
 
 

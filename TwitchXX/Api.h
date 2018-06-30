@@ -21,7 +21,7 @@ namespace TwitchXX
     {
     public:
         /// Construct Api object out of options map
-        explicit Api(const options& opt = Request::initOptionsFromConfig());
+        explicit Api(const options& opt);
 
         /// Get non-waitng request object (will throw TwitchException with CODE=429 - TOO MANY REQUESTS)
         RequestOnce reqOnce() const
@@ -35,11 +35,25 @@ namespace TwitchXX
             return _requestWait;
         }
 
+        /// Get application token
+        const std::string& getApiKey() const
+        {
+            return _api_key;
+        }
+
+        /// Get client secret
+        const std::string& getClientSecret() const
+        {
+            return _client_secret;
+        }
+
     private:
         std::shared_ptr<MakeRequest_Impl> _requestImpl;
         std::shared_ptr<UserAccessToken> _userToken;
         RequestOnce _requestOnce;
         RequestWait _requestWait;
+        std::string _api_key;
+        std::string _client_secret;
     };
 }
 

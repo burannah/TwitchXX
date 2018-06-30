@@ -5,25 +5,20 @@
 #include <gtest/gtest.h>
 #include <Auth/AppAccessToken.h>
 #include <Utility.h>
+#include "TestUtils.h"
 
 class AppAccessTokenTest : public ::testing::Test
 {
-    void SetUp() override;
+public:
+    TwitchXX::options _opt = TestUtils::initOptionsFromConfig();
 };
-
-void AppAccessTokenTest::SetUp()
-{
-    Test::SetUp();
-
-    //Init default parameters
-    TwitchXX::RequestOnce::initOptionsFromConfig();
-}
 
 
 TEST_F(AppAccessTokenTest, Authorize)
 {
     EXPECT_NO_THROW({
-                        TwitchXX::AppAccessToken token;
+                        TwitchXX::AppAccessToken token(_opt.at("api_key"),
+                                                       _opt.at("client_secret"));
                         EXPECT_TRUE(token.isValid());
                         EXPECT_GT(token.validTill(), std::chrono::system_clock::now());
                     });

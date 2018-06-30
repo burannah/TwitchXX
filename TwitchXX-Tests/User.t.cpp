@@ -5,24 +5,14 @@
 #include <gtest/gtest.h>
 #include <User.h>
 #include <Api.h>
+#include "TestUtils.h"
 
 
 class UserTest : public ::testing::Test
 {
 protected:
-    TwitchXX::Api _api;
-
-    void SetUp() override;
+    TwitchXX::Api _api{TestUtils::initOptionsFromConfig()};
 };
-
-void UserTest::SetUp()
-{
-    Test::SetUp();
-
-    //Init default parameters
-    TwitchXX::RequestOnce::initOptionsFromConfig();
-}
-
 
 TEST_F(UserTest, getOneByName)
 {
