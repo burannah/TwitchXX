@@ -12,13 +12,14 @@ namespace TwitchXX
 	public:
 		virtual ~JsonValueWrapper() = default;
 
-		virtual std::string as_string() const = 0;          ///< String representation
-		virtual int as_integer() const = 0;                 ///< Integer representation
-		virtual bool as_bool() const = 0;                   ///< Booleam representation                                          representation
-		virtual double as_double() const = 0;               ///< Double representation
-		virtual web::json::number as_number() const = 0;    ///< web::Json::number representation
-		virtual unsigned int as_uint() const = 0;           ///< Unsigned int representation
-		virtual unsigned long long as_ulong() const = 0;    ///< Unsigned long long representation
+		virtual std::string as_string() const = 0;          	///< String representation
+		virtual int as_integer() const = 0;                 	///< Integer representation
+		virtual bool as_bool() const = 0;                   	///< Booleam representation                                          representation
+		virtual double as_double() const = 0;               	///< Double representation
+		virtual web::json::number as_number() const = 0;    	///< web::Json::number representation
+		virtual unsigned int as_uint() const = 0;           	///< Unsigned int representation
+		virtual unsigned long long as_ulong() const = 0;    	///< Unsigned long long representation
+		virtual std::vector<std::string> as_vector() const = 0; ///< As vector of strings
 
 		///@{
 		/* Type casting method for auto resolving JsonValue */
@@ -79,6 +80,21 @@ namespace TwitchXX
 					 0 : static_cast<uint64_t>(std::stoll(_json.as_string()))
 				   : _json.as_number().to_uint64();
 		}
+
+		std::vector<std::string> as_vector() const override
+		{
+			std::vector<std::string> result;
+			if(_json.is_array() && _json.as_array().size())
+            {
+			    auto ar = _json.as_array();
+			    std::for_each(std::begin(ar), std::end(ar), [&](const auto& a)
+                {
+                    result.push_back(a.as_string());
+                });
+            }
+
+            return result;
+		}
 		///@}
 
 	private:
@@ -101,6 +117,7 @@ namespace TwitchXX
 		web::json::number  as_number() const override { return web::json::value(0).as_number(); };
 		unsigned int 	   as_uint() const override { return 0; }
 		unsigned long long as_ulong() const override { return 0; }
+		std::vector<std::string> as_vector() const override { return std::vector<std::string>(); }
         ///@}
 	};
 
