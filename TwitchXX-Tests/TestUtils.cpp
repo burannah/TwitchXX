@@ -3,7 +3,7 @@
 //
 
 #include "TestUtils.h"
-
+#include <TestConstants.h>
 #include <Utility.h>
 
 TwitchXX::options& TestUtils::initOptionsFromConfig(const std::string &path)
@@ -30,5 +30,12 @@ TwitchXX::options& TestUtils::initOptionsFromConfig(const std::string &path)
 
     return opt;
 
+}
+
+TwitchXX::options &TestUtils::initOptionsFromConfigV5(const std::string &path)
+{
+    auto& opt  =  initOptionsFromConfig(path);
+    opt["version"] = v5;
+    return opt;
 }
 

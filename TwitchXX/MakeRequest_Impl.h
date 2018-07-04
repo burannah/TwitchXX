@@ -46,6 +46,7 @@ namespace TwitchXX
         std::string _client_id;
         web::http::status_code _last_status;
         std::string _base_url;
+        std::string _version;
 
         void fetchHeaderParams(web::http::http_headers &headers);
         void setupProxy(const std::map<utility::string_t, utility::string_t> &options);

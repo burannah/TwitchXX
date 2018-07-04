@@ -21,6 +21,9 @@ public:
     ///Init request options by default config
     static TwitchXX::options& initOptionsFromConfig(const std::string& path = std::string());
 
+    ///Init request options by default config and set version to v5
+    static TwitchXX::options& initOptionsFromConfigV5(const std::string& path = std::string());
+
 };
 
 

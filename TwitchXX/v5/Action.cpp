@@ -18,7 +18,7 @@ namespace TwitchXX
             }
             std::vector<Action> result;
 
-            auto response = api.reqWait().post(builder.to_uri());
+            auto response = api.reqWait().get(builder.to_uri());
             if(response.has_field("actions") && !response.at("actions").is_null() && response.at("actions").is_array())
             {
                 auto actions = response.at("actions").as_array();

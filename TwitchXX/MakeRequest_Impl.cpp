@@ -29,7 +29,8 @@ namespace TwitchXX
         web::http::http_request request(params.method);
 
         //Client-ID
-        if(_client_id.length() > 0)request.headers().add("Client-ID", _client_id);
+        if(!_client_id.empty()) request.headers().add("Client-ID", _client_id);
+        if(!_version.empty()) request.headers().add("Accept", _version);
 
         //Authrization
         if(params.authToken)
@@ -126,7 +127,10 @@ namespace TwitchXX
     : _client_id(opt.at("api_key"))
     , _base_url(opt.at("base_url"))
     {
-
+        if(opt.find("version") != opt.end())
+        {
+            _version = opt.at("version");
+        }
         setupProxy(opt);
     }
 

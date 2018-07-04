@@ -42,6 +42,8 @@ install(FILES Clip.h Api.h Entitlement.h Game.h Logger.h Request.h RequestOnce.h
               UserFollows.h UserType.h Utility.h Video.h VideoOptions.h PeriodType.h VideoSortType.h
               VideoType.h ClipOptions.h BitsLeaderboardEntry.h BitsLeaderboardOptions.h
         DESTINATION include/TwitchXX)
+install(FILES v5/Action.h
+        DESTINATION include/TwitchXX/v5)
 
 install(FILES Auth/AuthToken.h Auth/AppAccessToken.h Auth/UserAccessToken.h DESTINATION include/TwitchXX/Auth)
 

@@ -37,7 +37,11 @@ namespace TwitchXX
             std::vector<Tier>        Tiers;
         };
 
-        std::vector<Action> getBits(const Api &api, const std::string &channelId);
+        /// Fetch the cheermotes
+        /// @param api - api object for request
+        /// @param channelId - (optional) channel to retrieve cheermotes for
+        /// @returns - vector of Action objects.
+        std::vector<Action> getBits(const Api &api, const std::string &channelId = std::string());
     }
 }
 
