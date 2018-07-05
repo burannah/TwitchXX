@@ -37,7 +37,7 @@ namespace TwitchXX
 
     void Log::Error(const std::string &msg)
     {
-        Message(LogLevel::WARN, msg);
+        Message(LogLevel::ERROR, msg);
     }
 
     void Log::Message(LogLevel level, const std::string &msg)
