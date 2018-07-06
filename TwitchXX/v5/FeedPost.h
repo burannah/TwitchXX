@@ -19,24 +19,29 @@ namespace TwitchXX
             NONE = 0,
             CAN_DELETE = 1,
             CAN_MODERATE = 2,
-            CAN_REPLY = 4
+            CAN_REPLY = 4,
+            CAN_SHARE = 8
         };
 
         Permission fromString(const std::string& s);
 
+        Permission  operator|(const Permission& lhs, const Permission& rhs);
+        Permission& operator|=(Permission& lhs, const Permission& rhs);
+
         class Emote
         {
-            int64_t End;
-            int64_t In;
-            int64_t Set;
-            int64_t Start;
+        public:
+            unsigned long long End;
+            unsigned long long Id;
+            unsigned long long Set;
+            unsigned long long Start;
         };
 
         class Reaction
         {
         public:
             std::string Set;
-            int64_t     Count;
+            unsigned long long     Count;
             std::string Emote;
             std::vector<std::string> Users;
         };
@@ -51,20 +56,21 @@ namespace TwitchXX
             std::string           Id;
             Permission            Permissions;
             std::vector<Reaction> Reactions;
-            User                Author
+            User                  Author;
         };
         class FeedPost
         {
         public:
-            std::string Body;
+            std::string              Body;
             std::vector<FeedComment> Comments;
-            Date        Created;
-            bool        Deleted;
-            //std::vector<??> Embeds;
-            std::vector<Emote> Emotes;
-            std::string Id;
-            Permission  Permissions;
-            User        Author;
+            Date                     Created;
+            bool                     Deleted;
+            //std::vector<??>        Embeds;
+            std::vector<Emote>       Emotes;
+            std::string              Id;
+            Permission               Permissions;
+            std::vector<Reaction>    Reactions;
+            User                     Author;
         };
 
         FeedPost getPost(const Api &api, std::string channelId, std::string postId, int count = 0);
