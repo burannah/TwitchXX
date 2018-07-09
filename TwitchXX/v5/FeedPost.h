@@ -6,6 +6,7 @@
 #define TWITCHXX_FEEDPOST_H
 
 #include <string>
+#include <optional>
 #include <TwitchDef.h>
 #include <Api.h>
 #include "User.h"
@@ -74,6 +75,13 @@ namespace TwitchXX
         };
 
         FeedPost getPost(const Api &api, std::string channelId, std::string postId, int count = 0);
+
+        std::tuple<std::vector<FeedPost>, std::string>
+        getPosts(const Api &api,
+                 const std::string &channelId,
+                 int limit = 100,
+                 const std::optional<std::string> &cursor = std::nullopt,
+                 int comments = 5);
     }
 }
 

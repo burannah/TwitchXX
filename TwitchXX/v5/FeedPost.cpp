@@ -11,7 +11,7 @@
 
 #include <cpprest/json.h>
 #include <iterator>
-#include "FeedPost.h"
+#include <optional>
 
 
 namespace TwitchXX
@@ -216,6 +216,47 @@ namespace TwitchXX
             return static_cast<Permission>(
                     static_cast<std::underlying_type_t<Permission>>(lhs)
                     | static_cast<std::underlying_type_t<Permission>>(rhs));
+        }
+
+        std::tuple<std::vector<FeedPost>, std::string>
+        getPosts(const Api &api,
+                 const std::string &channelId,
+                 int limit,
+                 const std::optional<std::string> &cursor,
+                 int comments)
+        {
+            web::uri_builder builder("kraken/feed");
+            builder.append_path(channelId);
+            builder.append_path("posts");
+            builder.append_query("limit", limit);
+            builder.append_query("comments", comments);
+            if(cursor)
+            {
+                builder.append_query("cursor", cursor.value());
+            }
+
+            auto response = api.reqOnce().get(builder.to_uri());
+
+            JsonWrapper w(response);
+
+            if(w["_disabled"]->as_bool())
+            {
+                return std::tuple<std::vector<FeedPost>, std::string>();
+            }
+
+            std::string resultCursor = w["_cursor"]->as_string();
+            std::vector<FeedPost> result;
+            if(response.has_field("posts") && response.at("posts").is_array() && response.at("posts").as_array().size())
+            {
+                auto posts = response.at("posts").as_array();
+
+                std::for_each(std::begin(posts), std::end(posts),[&](const auto& rawPost)
+                {
+                    result.push_back(createPost(rawPost));
+                });
+            }
+
+            return std::make_tuple(result, resultCursor);
         }
     }
 }

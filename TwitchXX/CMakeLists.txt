@@ -1,6 +1,6 @@
 #file(GLOB SOURCES *.cpp)
 
-set (CMAKE_CXX_STANDARD 14)
+set (CMAKE_CXX_STANDARD 17)
 option(BUILD_DOC "Build documentation" ON)
 find_package(Doxygen)
 if (DOXYGEN_FOUND)

@@ -23,3 +23,33 @@ TEST_F(ChannelFeedTest, getPost)
 
     EXPECT_EQ(post.Body, "Test");
 }
+
+TEST_F(ChannelFeedTest,getPosts)
+{
+    int limit = 100;
+    auto [posts, cursor] = TwitchXX::v5::getPosts(_api, "44322889", limit);
+
+    EXPECT_GE(posts.size(), 2);
+    if(limit > posts.size())
+    {
+        EXPECT_TRUE(cursor.empty());
+    }
+    else
+    {
+        EXPECT_FALSE(cursor.empty());
+    }
+}
+
+
+TEST_F(ChannelFeedTest, getPostsCursor)
+{
+    int limit = 1;
+    auto [posts, cursor] = TwitchXX::v5::getPosts(_api, "44322889", limit);
+
+    EXPECT_EQ(posts.size(), 1);
+    EXPECT_FALSE(cursor.empty());
+
+    auto [posts2, cursor2] = TwitchXX::v5::getPosts(_api, "44322889", ++limit, cursor);
+
+    EXPECT_EQ(posts2.size(), 1);
+}
