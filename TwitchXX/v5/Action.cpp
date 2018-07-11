@@ -27,18 +27,18 @@ namespace TwitchXX
                 {
                     JsonWrapper w(action);
                     Action a;
-                    a.Backgrounds = w["backgrounds"]->as_vector();
-                    a.Prefix = w["prefix"]->as_string();
-                    a.Scales = w["scales"]->as_vector();
-                    a.States = w["states"]->as_vector();
+                    a.Backgrounds = w["backgrounds"].as_vector();
+                    a.Prefix = w["prefix"].as_string();
+                    a.Scales = w["scales"].as_vector();
+                    a.States = w["states"].as_vector();
 
                     auto tiers = action.at("tiers").as_array();
                     std::for_each(std::begin(tiers), std::end(tiers),[&](const auto& tier)
                     {
                         Action::Tier t;
                         JsonWrapper ww(tier);
-                        t.Colour = w["color"]->as_string();
-                        t.Id = *w["id"];
+                        t.Colour = ww["color"].as_string();
+                        t.Id = ww["id"];
                         auto images = tier.at("images");
                         Action::Tier::_BackgroundedImg b;
                         std::for_each(std::begin(a.Backgrounds), std::end(a.Backgrounds), [&](const std::string& back)

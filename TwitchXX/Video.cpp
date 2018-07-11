@@ -75,16 +75,16 @@ TwitchXX::getVideos(const Api &api, const std::vector<uint64_t>& ids, uint64_t u
             auto& u = result.back();
             JsonWrapper w(val);
 
-            u.Id = *w["id"];
-            u.UserId = *w["user_id"];
-            u.Title = static_cast<std::string>(*w["title"]);
-            u.Description = static_cast<std::string>(*w["description"]);
-            u.Created = DateFromString(*w["created_at"]);
-            u.Published = DateFromString(*w["published_at"]);
-            u.ThumbnailUrl = static_cast<std::string>(*w["thumbnail_url"]);
-            u.ViewCount = *w["view_count"];
-            u.Language = static_cast<std::string>(*w["language"]);
-            u.Duration = static_cast<std::string>(*w["duration"]);
+            u.Id = w["id"];
+            u.UserId = w["user_id"];
+            u.Title = w["title"].as_string();
+            u.Description = w["description"].as_string();
+            u.Created = w["created_at"];
+            u.Published = w["published_at"];
+            u.ThumbnailUrl = w["thumbnail_url"].as_string();
+            u.ViewCount = w["view_count"];
+            u.Language = w["language"].as_string();
+            u.Duration = w["duration"].as_string();
         });
 
     }

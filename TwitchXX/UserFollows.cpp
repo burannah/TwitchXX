@@ -57,9 +57,9 @@ namespace TwitchXX
                 auto& u = result.back();
                 JsonWrapper w(val);
 
-                u.from = *w["from_id"];
-                u.to = *w["to_id"];
-                u.since = DateFromString(*w["followed_at"]);
+                u.from = w["from_id"];
+                u.to = w["to_id"];
+                u.since = DateFromString(w["followed_at"]);
             });
 
         }

@@ -20,13 +20,14 @@ namespace TwitchXX
         CLIPS_EDIT = 1 << 0,
         USER_EDIT = 1 << 1,
         USER_READ_EMAIL = 1 << 2,
-        BITS_READ = 1 << 3
+        BITS_READ = 1 << 3,
+        CHANNEL_READ = 1 << 4
         /*
         USER_READ = 1 << 0,
         USER_BLOCKS_EDIT = 1 << 1,
         USER_BLOCKS_READ = 1 << 2,
         USER_FOLLOWS_EDIT = 1 << 3,
-        CHANNEL_READ = 1 << 4,
+,
         CHANNEL_EDITOR = 1 << 5,
         CHANNEL_COMMERCIAL = 1 << 6,
         CHANNEL_STREAM = 1 << 7,

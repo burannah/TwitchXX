@@ -48,21 +48,21 @@ namespace TwitchXX
 
             result.reserve(data.size());
 
-            std::for_each(std::begin(data), std::end(data), [&](auto &&val)
+            std::for_each(std::begin(data), std::end(data), [&](const auto &val)
             {
                 JsonWrapper w(val);
                 result.emplace_back();
                 auto& u = result.back();
-                u.Id = static_cast<std::string>(*w["id"]);
-                u.Login = static_cast<std::string>(*w["login"]);
-                u.DisplayName = static_cast<std::string>(*w["display_name"]);
-                u.Type = UserType::fromString(*w["type"]);
-                u.BroadcaterType = BroadcasterType::fromString(*w["broadcaster_type"]);
-                u.Description = static_cast<std::string>(*w["description"]);
-                u.AvatarUrl = static_cast<std::string>(*w["profile_image_url"]);
-                u.OfflineImageUrl = static_cast<std::string>(*w["offline_image_url"]);
-                u.ViewCount = *w["view_count"];
-                u.Email = static_cast<std::string>(*w["email"]);
+                u.Id = w["id"].as_string();
+                u.Login = w["login"].as_string();
+                u.DisplayName = w["display_name"].as_string();
+                u.Type = UserType::fromString(w["type"].as_string());
+                u.BroadcaterType = BroadcasterType::fromString(w["broadcaster_type"].as_string());
+                u.Description = w["description"].as_string();
+                u.AvatarUrl = w["profile_image_url"].as_string();
+                u.OfflineImageUrl = w["offline_image_url"].as_string();
+                u.ViewCount = w["view_count"];
+                u.Email = w["email"].as_string();
             });
             return result;
         }
@@ -82,14 +82,14 @@ namespace TwitchXX
             JsonWrapper w(data);
 
             User u;
-            u.Login = static_cast<std::string>(*w["login"]);
-            u.Email = static_cast<std::string>(*w["email"]);
-            u.ViewCount = *w["view_count"];
-            u.OfflineImageUrl = static_cast<std::string>(*w["offline_image_url"]);
-            u.AvatarUrl = static_cast<std::string>(*w["profile_image_url"]);
-            u.Description = static_cast<std::string>(*w["description"]);
-            u.BroadcaterType = BroadcasterType::fromString(*w["broadcaster_type"]);
-            u.Type = UserType::fromString(*w["type"]);
+            u.Login = w["login"].as_string();
+            u.Email = w["email"].as_string();
+            u.ViewCount = w["view_count"];
+            u.OfflineImageUrl = w["offline_image_url"].as_string();
+            u.AvatarUrl = w["profile_image_url"].as_string();
+            u.Description = w["description"].as_string();
+            u.BroadcaterType = BroadcasterType::fromString(w["broadcaster_type"].as_string());
+            u.Type = UserType::fromString(w["type"].as_string());
 
             return u;
         }

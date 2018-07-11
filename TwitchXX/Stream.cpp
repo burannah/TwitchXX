@@ -45,9 +45,9 @@ TwitchXX::getStreams(const Api &api, const StreamsOptions &opt)
         {
             JsonWrapper w(val);
             Stream s;
-            s.Id = *w["id"];
-            s.UserId = *w["user_id"];
-            s.GameId = *w["game_id"];
+            s.Id = w["id"];
+            s.UserId = w["user_id"];
+            s.GameId = w["game_id"];
 
             //TODO: Support array fields in Property class
             if(val.has_field("community_ids")
@@ -63,12 +63,12 @@ TwitchXX::getStreams(const Api &api, const StreamsOptions &opt)
                 s.CommunityIds = proxy;
             }
 
-            s.Type = StreamType::fromString(*w["type"]);
-            s.Title = static_cast<std::string>(*w["title"]);
-            s.Viewers = *w["viewer_count"];
-            s.Started = DateFromString(*w["started_at"]);
-            s.Language = static_cast<std::string>(*w["language"]);
-            s.Thumb = static_cast<std::string>(*w["thumbnail_url"]);
+            s.Type = StreamType::fromString(w["type"].as_string());
+            s.Title = w["title"].as_string();
+            s.Viewers = w["viewer_count"];
+            s.Started = w["started_at"];
+            s.Language = w["language"].as_string();
+            s.Thumb = w["thumbnail_url"].as_string();
 
             result.push_back(s);
         });

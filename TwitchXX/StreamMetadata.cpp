@@ -53,8 +53,8 @@ namespace TwitchXX
             {
                 JsonWrapper w(val);
                 StreamMetadata s;
-                s.UserId = *w["user_id"];
-                s.GameId = *w["game_id"];
+                s.UserId = w["user_id"];
+                s.GameId = w["game_id"];
 
                 if(val.has_field("overwatch") && !val.at("overwatch").is_null())
                 {
@@ -63,9 +63,9 @@ namespace TwitchXX
 
                     s.overwatch = std::make_unique<Overwatch>();
 
-                    s.overwatch->Name = static_cast<std::string>(*ow["name"]);
-                    s.overwatch->Role = static_cast<std::string>(*ow["role"]);
-                    s.overwatch->Ability = static_cast<std::string>(*ow["ability"]);
+                    s.overwatch->Name = ow["name"].as_string();
+                    s.overwatch->Role = ow["role"].as_string();
+                    s.overwatch->Ability = ow["ability"].as_string();
                 }
                 else if(val.has_field("hearthstone") && !val.at("hearthstone").is_null())
                 {
@@ -73,15 +73,15 @@ namespace TwitchXX
                     JsonWrapper broadcaster(val.at("hearthstone").at("broadcaster").at("hero"));
                     s.hearthstone = std::make_unique<Hearthstone>();
 
-                    s.hearthstone->Broadcaster.Name = static_cast<std::string>(*broadcaster["name"]);
-                    s.hearthstone->Broadcaster.Class = static_cast<std::string>(*broadcaster["class"]);
-                    s.hearthstone->Broadcaster.Type = static_cast<std::string>(*broadcaster["type"]);
+                    s.hearthstone->Broadcaster.Name = broadcaster["name"].as_string();
+                    s.hearthstone->Broadcaster.Class = broadcaster["class"].as_string();
+                    s.hearthstone->Broadcaster.Type = broadcaster["type"].as_string();
 
                     JsonWrapper opponent(val.at("hearthstone").at("opponent").at("hero"));
 
-                    s.hearthstone->Opponent.Class = static_cast<std::string>(*opponent["class"]);
-                    s.hearthstone->Opponent.Name = static_cast<std::string>(*opponent["name"]);
-                    s.hearthstone->Opponent.Type = static_cast<std::string>(*opponent["type"]);
+                    s.hearthstone->Opponent.Class = opponent["class"].as_string();
+                    s.hearthstone->Opponent.Name = opponent["name"].as_string();
+                    s.hearthstone->Opponent.Type = opponent["type"].as_string();
                 }
 
                 result.push_back(s);

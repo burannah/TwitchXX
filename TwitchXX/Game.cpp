@@ -32,9 +32,9 @@ TwitchXX::Game::Game(const Api &api, unsigned long long int id, const std::strin
         auto data = response.at("data").as_array();
         JsonWrapper w(*data.begin());
 
-        Id = *w["id"];
-        Name = static_cast<std::string>(*w["name"]);
-        BoxArt = static_cast<std::string>(*w["box_art_url"]);
+        Id = w["id"];
+        Name = w["name"].as_string();
+        BoxArt = w["box_art_url"].as_string();
     }
 }
 
@@ -81,7 +81,7 @@ TwitchXX::getGames(const Api &api, const std::vector<unsigned long long> &ids, c
         std::for_each(data.begin(),data.end(),[&](auto&& val)
         {
             JsonWrapper w(val);
-            result.emplace_back(*w["id"], *w["name"], *w["box_art_url"]);
+            result.emplace_back(w["id"], w["name"].as_string(), w["box_art_url"].as_string());
         });
     }
 
@@ -119,7 +119,7 @@ TwitchXX::getTopGames(const Api &api, int count, const char *cursor, const char 
         std::for_each(data.begin(), data.end(), [&](auto &&val)
         {
             JsonWrapper w(val);
-            result.emplace_back(*w["id"], *w["name"], *w["box_art_url"]);
+            result.emplace_back(w["id"], w["name"], w["box_art_url"]);
         });
     }
 

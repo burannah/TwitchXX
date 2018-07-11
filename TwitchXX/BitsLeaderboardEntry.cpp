@@ -47,7 +47,7 @@ namespace TwitchXX
             {
                 JsonWrapper w(val);
 
-                result.emplace_back(*w["user_id"], *w["rank"],  *w["score"]);
+                result.emplace_back(w["user_id"], w["rank"],  w["score"]);
             });
         }
 
