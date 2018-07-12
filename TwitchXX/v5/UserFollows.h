@@ -1,3 +1,5 @@
+#include <utility>
+
 //
 // Created by buran on 12/07/18.
 //
@@ -36,46 +38,25 @@ namespace TwitchXX
             std::vector<UserFollow> _users;
             Api _api;
         public:
-            UserFollows(const Api& api,
-                        const std::string& channelId)
-            :_channelId{channelId}
-            ,_api{api}
+            UserFollows(Api api,
+                        std::string channelId)
+            :_channelId{std::move(channelId)}
+            ,_api{std::move(api)}
             {};
-
 
             uint64_t size()
             {
-                std::tie(std::ignore, _size, std::ignore) = getChannelFollowers(_api, _channelId);
+                if(!_size)
+                {
+                    fetch(100);
+                }
+
                 return _size;
             }
 
-            uint64_t fetch(const std::optional<int> &limit)
-            {
-                std::vector<UserFollow> newFollows;
-                if(_cursor.empty())
-                {
-                    std::tie(newFollows, _size, _cursor) = getChannelFollowers(_api,_channelId, limit.value_or(_limit));
-                }
-                else if(limit)
-                {
-                    auto newLimit = limit.value() > 100 ? 100 : limit.value();
-                    newLimit = std::max(_limit, newLimit);
-                    if(newLimit <= _limit)
-                    {
-                        return _size;
-                    }
-                    _limit = newLimit;
+            uint64_t fetch(const std::optional<int> &limit);
 
-                    std::tie(newFollows, _size, _cursor) = getChannelFollowers(_api, _channelId, _limit, _cursor);
-                }
-                else
-                {
-                    std::tie(newFollows, _size, _cursor) = getChannelFollowers(_api, _channelId, std::nullopt, _cursor);
-                    _limit = std::min(100, _limit*2);
-                }
-
-                std::copy(std::begin(newFollows), std::end(newFollows), std::back_inserter(_users));
-            }
+            UserFollow& at(size_t index);
         };
 
 

@@ -16,7 +16,7 @@ namespace TwitchXX
         class User
         {
         public:
-            std::string Id;
+            unsigned long long Id;
             std::string Bio;
             Date        Created;
             std::string DisplayName;
