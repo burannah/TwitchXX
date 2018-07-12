@@ -7,6 +7,7 @@
 #include <RequestParams.h>
 #include <TwitchException.h>
 #include <Log.h>
+#include <thread>
 
 namespace TwitchXX
 {
@@ -104,17 +105,22 @@ namespace TwitchXX
 
                               throw TwitchException(msg, response.status_code());
                           }
-                      });
+                      })
+                      .then([this, params](web::json::value response)
+                            {
+                                if(params.callback != nullptr)
+                                {
+                                    Log::Debug("Calling a callback");
+                                    std::thread t(params.callback, response);
+                                    t.detach();
+                                }
+
+                                return response;
+                            });
 
         try
         {
-            auto result = task.get();
-            if (params.callback != nullptr)
-            {
-                Log::Debug("Calling a callback");
-                params.callback(result);
-            }
-            return result;
+            return task.get();
         }
         catch (const std::exception& e)
         {
