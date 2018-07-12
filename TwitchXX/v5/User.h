@@ -7,6 +7,7 @@
 
 #include <string>
 #include <TwitchDef.h>
+#include <UserType.h>
 
 namespace TwitchXX
 {
@@ -21,7 +22,7 @@ namespace TwitchXX
             std::string DisplayName;
             std::string Logo;
             std::string Name;
-            std::string Type;
+            UserType::Value Type;
             Date        Updated;
         };
     }

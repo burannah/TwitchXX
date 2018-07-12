@@ -12,6 +12,7 @@ std::string TwitchXX::UserType::toString(TwitchXX::UserType::Value v)
         case Value::ADMIN : return "admin";
         case Value::STAFF : return "staff";
         case Value::GLOBAL_MOD : return "global_mod";
+        case Value::USER : return "user";
         case Value::NONE : return "";
         default:
             throw TwitchXX::TwitchException("Unsupported user type");
@@ -24,6 +25,7 @@ TwitchXX::UserType::Value TwitchXX::UserType::fromString(const std::string &s)
     if(s == "global_mod") return Value::GLOBAL_MOD;
     if(s == "admin") return Value::ADMIN;
     if(s == "staff") return Value::STAFF;
+    if(s == "user") return Value::USER;
 
     throw TwitchXX::TwitchException("Unsupported user type");
 }

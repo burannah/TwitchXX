@@ -63,5 +63,93 @@ namespace TwitchXX
 
             return createChannel(response);
         }
+
+        Channel updateChannel(const Api &api,
+                              const std::string &channelId,
+                              const std::optional<std::string> &status,
+                              const std::optional<std::string> &game,
+                              const std::optional<int> &delay)
+        {
+            web::uri_builder builder("kraken/channels");
+            builder.append_path(channelId);
+
+            web::json::value channel;
+            channel["channel"] = web::json::value::object();
+
+            if(status)
+            {
+                channel.at("channel")["status"] = web::json::value::string(status.value());
+            }
+
+            if(game)
+            {
+                channel.at("channel")["game"] = web::json::value::string(game.value());
+            }
+
+            if(delay)
+            {
+                channel.at("channel")["delay"] = web::json::value::number(delay.value());
+            }
+
+            if(channel.at("channel").size())
+            {
+                auto response = api.reqOnce().put(builder.to_uri(), AuthScope::CHANNEL_EDITOR, channel);
+                return createChannel(response);
+            }
+            else
+            {
+                return getChannel(api, channelId);
+            }
+
+        }
+
+        Channel updateChannelGame(const Api &api, const std::string &channelId, const std::string &game)
+        {
+            return updateChannel(api, channelId, std::nullopt, game, std::nullopt);
+        }
+
+        Channel updateChannelDelay(const Api &api, const std::string &channelId, int delay)
+        {
+            return updateChannel(api, channelId, std::nullopt, std::nullopt, delay);
+        }
+
+        Channel updateChannelStatus(const Api &api, const std::string &channelId, const std::string &status)
+        {
+            return updateChannel(api, channelId, status, std::nullopt, std::nullopt);
+        }
+
+        User createUser(const web::json::value &rawUser)
+        {
+            JsonWrapper w{rawUser};
+            User u;
+            u.Id = w["_id"].as_string();
+            u.Bio = w["bio"].as_string();
+            u.Created = w["created_at"];
+            u.Updated = w["updated_at"];
+            u.DisplayName = w["display_name"].as_string();
+            u.Logo = w["logo"].as_string();
+            u.Name = w["name"].as_string();
+            u.Type = UserType::fromString(w["type"].as_string());
+
+        }
+
+        std::vector<User> getChannelEditors(const Api &api, const std::string &channelId)
+        {
+            web::uri_builder builder("kraken/channels/" + channelId + "/editors");
+            auto response = api.reqOnce().get(builder.to_uri(), AuthScope::CHANNEL_READ);
+
+            std::vector<User> result;
+
+            if(response.has_field("users") && response.at("users").is_array())
+            {
+                auto users = response.at("users").as_array();
+                std::for_each(std::begin(users), std::end(users),[&](const auto& user)
+                {
+                    result.push_back(createUser(user));
+                });
+            }
+
+            return result;
+        }
     }
 }

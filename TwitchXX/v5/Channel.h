@@ -10,6 +10,7 @@
 #include <TwitchDef.h>
 #include <Api.h>
 #include <BroadcasterType.h>
+#include "User.h"
 
 namespace TwitchXX
 {
@@ -43,6 +44,22 @@ namespace TwitchXX
 
         Channel getSelfChannel(const Api& api);
         Channel getChannel(const Api& api, const std::string& id);
+        Channel updateChannelStatus(const Api& api,
+                                    const std::string& channelId,
+                                    const std::string& status);
+        Channel updateChannelDelay(const Api& api,
+                                   const std::string& channelId,
+                                   int delay);
+        Channel updateChannelGame(const Api& api,
+                                  const std::string& channelId,
+                                  const std::string& game);
+        Channel updateChannel(const Api& api,
+                              const std::string& channelId,
+                              const std::optional<std::string>& status,
+                              const std::optional<std::string>& game,
+                              const std::optional<int>& delay);
+
+        std::vector<User> getChannelEditors(const Api& api, const std::string& channelId);
     }
 }
 

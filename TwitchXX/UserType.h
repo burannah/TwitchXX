@@ -17,6 +17,7 @@ namespace TwitchXX
         enum class Value
         {
             NONE,
+            USER,
             STAFF,
             ADMIN,
             GLOBAL_MOD
