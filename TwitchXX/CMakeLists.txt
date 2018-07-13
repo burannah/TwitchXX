@@ -37,7 +37,7 @@ add_library(TwitchXX STATIC TwitchDef.h RequestOnce.h RequestOnce.cpp Clip.cpp C
                             MakeRequest_Impl.h RequestParams.cpp RequestParams.h Request.cpp Request.h ClipOptions.cpp
                             ClipOptions.h BitsLeaderboardEntry.cpp BitsLeaderboardEntry.h BitsLeaderboardOptions.cpp
                             BitsLeaderboardOptions.h v5/Action.cpp v5/Action.h v5/User.cpp v5/User.h v5/Channel.cpp
-                            v5/Channel.h v5/UserFollows.cpp v5/UserFollows.h v5/Create.h)
+                            v5/Channel.h v5/UserFollows.cpp v5/UserFollows.h v5/Create.h v5/Team.cpp v5/Team.h)
 target_link_libraries(TwitchXX ${LIB_CPPREST})
 
 install(TARGETS TwitchXX DESTINATION lib)
@@ -46,7 +46,7 @@ install(FILES Clip.h Api.h Entitlement.h Game.h Logger.h Request.h RequestOnce.h
               UserFollows.h UserType.h Utility.h Video.h VideoOptions.h PeriodType.h VideoSortType.h
               VideoType.h ClipOptions.h BitsLeaderboardEntry.h BitsLeaderboardOptions.h
         DESTINATION include/TwitchXX)
-install(FILES v5/Action.h
+install(FILES v5/Action.h v5/Channel.h v5/User.h v5/UserFollows.h
         DESTINATION include/TwitchXX/v5)
 
 install(FILES Auth/AuthToken.h Auth/AppAccessToken.h Auth/UserAccessToken.h DESTINATION include/TwitchXX/Auth)

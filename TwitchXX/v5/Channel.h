@@ -11,6 +11,7 @@
 #include <Api.h>
 #include <BroadcasterType.h>
 #include "User.h"
+#include "Team.h"
 
 namespace TwitchXX
 {
@@ -60,6 +61,8 @@ namespace TwitchXX
                               const std::optional<int>& delay);
 
         std::vector<User> getChannelEditors(const Api& api, const std::string& channelId);
+
+        std::vector<Team> getChannelTeams(const Api& api, const std::string& channelId);
     }
 }
 

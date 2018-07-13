@@ -48,6 +48,15 @@ TEST_F(ChannelTest, getEditors)
     EXPECT_TRUE(editors.empty());
 }
 
+TEST_F(ChannelTest, getTeams)
+{
+    auto teams = TwitchXX::v5::getChannelTeams(_api, std::to_string(welovegames_id));
+
+    EXPECT_EQ(teams.size(), 2);
+    EXPECT_EQ(teams[0].Name, "pubgpartners");
+    EXPECT_EQ(teams[1].Name, "zekeonia");
+}
+
 TEST_F(ChannelTest, getFollowers)
 {
     

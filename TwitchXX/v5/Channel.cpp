@@ -150,5 +150,41 @@ namespace TwitchXX
 
             return result;
         }
+
+        Team createTeam(const web::json::value &rawTeam)
+        {
+            Team t;
+            JsonWrapper j{rawTeam};
+
+            t.Id = j["_id"];
+            t.Background = j["background"].as_string();
+            t.Banner = j["logo"].as_string();
+            t.Created = j["created_at"];
+            t.DisplayName = j["display_name"].as_string();
+            t.Info = j["info"].as_string();
+            t.Logo = j["logo"].as_string();
+            t.Name = j["name"].as_string();
+            t.Updated = j["updated_at"];
+            return t;
+        }
+
+        std::vector<Team> getChannelTeams(const Api &api, const std::string &channelId)
+        {
+            web::uri_builder builder("kraken/channels/" + channelId + "/teams");
+
+            auto response = api.reqOnce().get(builder.to_uri());
+
+            std::vector<Team> result;
+
+            if(response.has_field("teams") && response.at("teams").is_array())
+            {
+                for(auto&& rawTeam: response.at("teams").as_array())
+                {
+                    result.push_back(createTeam(rawTeam));
+                }
+            }
+
+            return result;
+        }
     }
 }
