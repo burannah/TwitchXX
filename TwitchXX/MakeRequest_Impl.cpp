@@ -60,14 +60,10 @@ namespace TwitchXX
 
         //Set response headers params to fetch
         _response_header_params.clear();
-        if(params.responseHeadersParams.size())
+
+        for(const auto& requestedParam: params.responseHeadersParams)
         {
-            std::for_each(params.responseHeadersParams.begin(),
-                          params.responseHeadersParams.end(),
-            [&](const std::string& key)
-                          {
-                              _response_header_params.insert({key, std::string()});
-                          });
+            _response_header_params.insert({requestedParam, std::string{}});
         }
 
         Log::Debug("Base url: " + _base_url);
@@ -142,16 +138,13 @@ namespace TwitchXX
 
     void MakeRequest_Impl::fetchHeaderParams(web::http::http_headers &headers)
     {
-        std::for_each(_response_header_params.begin(), _response_header_params.end(), [&](auto& p)
+        for(auto& requestedHeader: _response_header_params)
         {
-            if(headers.has(p.first))
+            if(headers.has(requestedHeader.first))
             {
-                p.second = headers[p.first];
-            } else
-            {
-                p.second = {};
+                requestedHeader.second = headers[requestedHeader.first];
             }
-        });
+        }
     }
 
     /**

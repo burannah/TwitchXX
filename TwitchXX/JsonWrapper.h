@@ -150,7 +150,7 @@ namespace TwitchXX
 		virtual web::json::number as_number() const { return _impl->as_number(); };    	///< web::Json::number representation
 		virtual unsigned int as_uint() const { return _impl->as_uint(); };           	///< Unsigned int representation
 		virtual unsigned long long as_ulong() const { return _impl->as_ulong(); };    	///< Unsigned long long representation
-		virtual std::vector<std::string> as_vector() const { _impl->as_vector(); }; ///< As vector of strings
+		virtual std::vector<std::string> as_vector() const { return _impl->as_vector(); }; ///< As vector of strings
 		virtual Date as_date() const { return _impl->as_date(); };                       ///< As a date
 
 		///@{

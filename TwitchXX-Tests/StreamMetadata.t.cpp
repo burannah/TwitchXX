@@ -47,6 +47,7 @@ TEST_F(StreamMetadataTest, getByGameId)
 {
     _opt.first = 20;
     _opt.gameIds = {OVERWATCH_ID, HEARTHSTONE_ID};
+    _opt.type = TwitchXX::StreamType::Value::ALL;
 
     auto result = TwitchXX::getStreamsMetadata(_api, _opt);
     auto streams = std::get<0>(result);
@@ -132,18 +133,15 @@ TEST_F(StreamMetadataTest, getByUserId)
 
 TEST_F(StreamMetadataTest, limits)
 {
-    EXPECT_NO_THROW(
-            {
-                _opt.first = 20;
+    _opt.first = 20;
 
-                TwitchXX::StreamMetadata::RateLimits limits;
+    TwitchXX::StreamMetadata::RateLimits limits;
 
-                auto result = TwitchXX::getStreamsMetadata(_api, _opt, &limits);
-                auto streams = std::get<0>(result);
-                auto cursor = std::get<1>(result);
-                EXPECT_GT(limits.Limit, limits.Remaining);
-                EXPECT_GT(limits.Limit, 0);
-                EXPECT_GT(limits.Remaining, 0);
-            });
+    auto result = TwitchXX::getStreamsMetadata(_api, _opt, &limits);
+    auto streams = std::get<0>(result);
+    auto cursor = std::get<1>(result);
+    EXPECT_GT(limits.Limit, limits.Remaining);
+    EXPECT_GT(limits.Limit, 0);
+    EXPECT_GT(limits.Remaining, 0);
 }
 

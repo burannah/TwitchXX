@@ -30,6 +30,7 @@ namespace TwitchXX
                 unsigned long long Id;
                 _BackgroundedImg   Images;
             };
+
             std::vector<std::string> Backgrounds;
             std::string              Prefix;
             std::vector<std::string> Scales;

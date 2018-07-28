@@ -34,7 +34,8 @@ namespace TwitchXX
                        const StreamsOptions &opt,
                        StreamMetadata::RateLimits* limits)
     {
-        RequestWait request(dynamic_cast<const RequestWait&>(api.reqWait())); //Intended copy;
+
+        auto request = api.reqWait();
         request.setResponseHeaderParam(REMAINING_PARAM);
         request.setResponseHeaderParam(LIMIT_PARAM);
 
@@ -100,7 +101,7 @@ namespace TwitchXX
 
         if(limits)
         {
-            const auto& headers = api.reqWait().getResponseHeaderParams();
+            const auto& headers = request.getResponseHeaderParams();
             limits->Remaining = std::atoi(headers.at(REMAINING_PARAM).c_str());
             limits->Limit = std::atoi(headers.at(LIMIT_PARAM).c_str());
         }
