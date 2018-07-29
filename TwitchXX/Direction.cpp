@@ -4,6 +4,10 @@
 
 #include "Direction.h"
 
+#include <sstream>
+#include <Log.h>
+#include <TwitchException.h>
+
 
 namespace TwitchXX
 {
@@ -19,9 +23,9 @@ namespace TwitchXX
             case Value::ASC : return "asc";
             case Value::DESC : return "desc";
             default:
-                std::stringstream ss();
+                std::stringstream ss;
                 ss << "Unknown direction value " << static_cast<int>(v);
-                Log::Error(ss.str())
+                Log::Error(ss.str());
                 throw TwitchException(ss.str().c_str());
         }
     }

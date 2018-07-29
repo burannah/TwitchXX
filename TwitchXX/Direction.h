@@ -5,10 +5,13 @@
 #ifndef TWITCHXX_DIRECTION_H
 #define TWITCHXX_DIRECTION_H
 
+#include <string>
+
 namespace TwitchXX
 {
     class Direction
     {
+    public:
         enum class Value
         {
             ASC,

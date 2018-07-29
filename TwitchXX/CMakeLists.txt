@@ -24,20 +24,9 @@ else (DOXYGEN_FOUND)
     message("Doxygen need to be installed to generate the doxygen documentation")
 endif (DOXYGEN_FOUND)
 
-add_library(TwitchXX STATIC TwitchDef.h RequestOnce.h RequestOnce.cpp Clip.cpp Clip.h
-                            Utility.h Utility.cpp JsonWrapper.h Entitlement.cpp Entitlement.h
-                            TwitchException.h Game.cpp Game.h Auth/AuthToken.h Auth/AppAccessToken.cpp
-                            Auth/AppAccessToken.h Auth/UserAccessToken.cpp Auth/UserAccessToken.h
-                            Stream.cpp Stream.h StreamMetadata.cpp StreamMetadata.h StreamsOptions.h
-                            StreamsOptions.cpp StreamType.h StreamType.cpp User.cpp User.h UserType.cpp
-                            UserType.h BroadcasterType.cpp BroadcasterType.h UserFollows.cpp UserFollows.h
-                            Api.cpp Api.h Video.cpp Video.h VideoOptions.cpp VideoOptions.h PeriodType.cpp
-                            PeriodType.h VideoSortType.cpp VideoSortType.h VideoType.cpp VideoType.h
-                            Logger.cpp Logger.h Log.cpp Logger.h RequestWait.cpp RequestWait.h MakeRequest_Impl.cpp
-                            MakeRequest_Impl.h RequestParams.cpp RequestParams.h Request.cpp Request.h ClipOptions.cpp
-                            ClipOptions.h BitsLeaderboardEntry.cpp BitsLeaderboardEntry.h BitsLeaderboardOptions.cpp
-                            BitsLeaderboardOptions.h v5/Action.cpp v5/Action.h v5/User.cpp v5/User.h v5/Channel.cpp
-                            v5/Channel.h v5/UserFollows.cpp v5/UserFollows.h v5/Create.h v5/Team.cpp v5/Team.h v5/Subscription.cpp v5/Subscription.h Direction.cpp Direction.h)
+file(GLOB_RECURSE SOURCES *.cpp *.h)
+
+add_library(TwitchXX STATIC ${SOURCES})
 target_link_libraries(TwitchXX ${LIB_CPPREST})
 
 install(TARGETS TwitchXX DESTINATION lib)

@@ -5,8 +5,15 @@
 #ifndef TWITCHXX_SUBSCRIPTION_H
 #define TWITCHXX_SUBSCRIPTION_H
 
+#include <string>
+#include <Direction.h>
+#include <TwitchDef.h>
+#include <v5/User.h>
+
 namespace TwitchXX
 {
+    class Api;
+
     namespace v5
     {
         class Subscription
@@ -22,7 +29,7 @@ namespace TwitchXX
         std::vector<Subscription> getChannelSubscribers(const Api& api,
                                                         const std::string& channelId,
                                                         int limit = 25,
-                                                        Direction dir = Direction::Value::ASC);
+                                                        Direction::Value dir = Direction::Value::ASC);
     }
 };
 
