@@ -71,3 +71,10 @@ TEST_F(ChannelTest, getSubscribers)
         EXPECT_EQ(e.what(), std::string("Bad Request: burannah does not have a subscription program. Status code: 400"));
     }
 }
+
+TEST_F(ChannelTest, checkUserSubscribed)
+{
+    auto sub = TwitchXX::v5::checkChannelSubscriptionByUser(_api, std::to_string(welovegames_id), std::to_string(buran_id));
+
+    EXPECT_TRUE(sub.Id.empty());
+}

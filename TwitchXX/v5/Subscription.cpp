@@ -61,5 +61,24 @@ namespace TwitchXX
 
             return result;
         }
+
+        Subscription checkChannelSubscriptionByUser(const Api& api,
+                                                    const std::string& channelId,
+                                                    const std::string& userId)
+        {
+            web::uri_builder builder("kraken/channels/" + channelId + "/subscriptions/" + userId);
+
+            auto response = api.reqOnce().get(builder.to_uri(), AuthScope::CHANNEL_CHECK_SUBSCRIPTION);
+
+            Subscription result{};
+
+            if(!response.is_null() && response.has_field("user"))
+            {
+                result = createSubscription(response);
+            }
+
+            return result;
+
+        }
     }
 }
