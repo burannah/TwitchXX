@@ -8,6 +8,7 @@
 #include <v5/Channel.h>
 #include <TestConstants.h>
 #include <string>
+#include <v5/Subscription.h>
 
 class ChannelTest : public ::testing::Test
 {
@@ -57,7 +58,9 @@ TEST_F(ChannelTest, getTeams)
     EXPECT_EQ(teams[1].Name, "zekeonia");
 }
 
-TEST_F(ChannelTest, getFollowers)
+TEST_F(ChannelTest, getSubscribers)
 {
-    
+    auto subs = TwitchXX::v5::getChannelSubscribers(_api, std::to_string(buran_id));
+
+    EXPECT_EQ(subs.size(), 0);
 }

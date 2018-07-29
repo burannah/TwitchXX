@@ -33,9 +33,9 @@ install(TARGETS TwitchXX DESTINATION lib)
 install(FILES Clip.h Api.h Entitlement.h Game.h Logger.h Request.h RequestOnce.h RequestWait.h Stream.h
               StreamMetadata.h StreamsOptions.h StreamType.h TwitchDef.h TwitchException.h User.h
               UserFollows.h UserType.h Utility.h Video.h VideoOptions.h PeriodType.h VideoSortType.h
-              VideoType.h ClipOptions.h BitsLeaderboardEntry.h BitsLeaderboardOptions.h
+              VideoType.h ClipOptions.h BitsLeaderboardEntry.h BitsLeaderboardOptions.h Direction.h
         DESTINATION include/TwitchXX)
-install(FILES v5/Action.h v5/Channel.h v5/User.h v5/UserFollows.h
+install(FILES v5/Action.h v5/Channel.h v5/User.h v5/UserFollows.h v5/Subscription.h v5/Team.h
         DESTINATION include/TwitchXX/v5)
 
 install(FILES Auth/AuthToken.h Auth/AppAccessToken.h Auth/UserAccessToken.h DESTINATION include/TwitchXX/Auth)

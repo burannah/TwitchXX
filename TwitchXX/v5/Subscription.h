@@ -28,7 +28,7 @@ namespace TwitchXX
 
         std::vector<Subscription> getChannelSubscribers(const Api& api,
                                                         const std::string& channelId,
-                                                        int limit = 25,
+                                                        std::optional<int> limit = std::nullopt,
                                                         Direction::Value dir = Direction::Value::ASC);
     }
 };
