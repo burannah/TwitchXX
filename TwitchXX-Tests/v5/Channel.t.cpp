@@ -9,6 +9,7 @@
 #include <TestConstants.h>
 #include <string>
 #include <v5/Subscription.h>
+#include <TwitchException.h>
 
 class ChannelTest : public ::testing::Test
 {
@@ -60,7 +61,13 @@ TEST_F(ChannelTest, getTeams)
 
 TEST_F(ChannelTest, getSubscribers)
 {
-    auto subs = TwitchXX::v5::getChannelSubscribers(_api, std::to_string(buran_id));
-
-    EXPECT_EQ(subs.size(), 0);
+    try
+    {
+        auto subs = TwitchXX::v5::getChannelSubscribers(_api, std::to_string(buran_id));
+    }
+    catch(const TwitchXX::TwitchException& e)
+    {
+        EXPECT_EQ(e.code(), 400);
+        EXPECT_EQ(e.what(), std::string("Bad Request: burannah does not have a subscription program. Status code: 400"));
+    }
 }

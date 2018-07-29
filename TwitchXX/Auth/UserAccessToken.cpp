@@ -19,7 +19,7 @@ std::string TwitchXX::UserAccessToken::get(TwitchXX::AuthScope scope)
         throw TwitchXX::TwitchException("UserAccessToken has no such scope");
     }
 
-    if(scope == AuthScope::CHANNEL_READ || scope == AuthScope::CHANNEL_EDITOR)
+    if(scope == AuthScope::CHANNEL_READ || scope == AuthScope::CHANNEL_EDITOR || scope == AuthScope::CHANNEL_SUBSCRIPTIONS)
     {
         return "OAuth " + _token;
     }

@@ -42,7 +42,7 @@ TEST_F(UserTest, getMany)
                 auto result = TwitchXX::getUsers(_api, {}, {"burannah", "alkali"});
 
                 auto findByLogin = [](const auto& login)
-                {
+                { 
                     return [&](const auto& val)
                     {
                         return val.Login == login;
