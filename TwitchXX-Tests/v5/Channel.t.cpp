@@ -74,7 +74,12 @@ TEST_F(ChannelTest, getSubscribers)
 
 TEST_F(ChannelTest, checkUserSubscribed)
 {
-    auto sub = TwitchXX::v5::checkChannelSubscriptionByUser(_api, std::to_string(welovegames_id), std::to_string(buran_id));
-
-    EXPECT_TRUE(sub.Id.empty());
+    try
+    {
+        auto sub = TwitchXX::v5::checkChannelSubscriptionByUser(_api, std::to_string(welovegames_id), std::to_string(buran_id));
+    }
+    catch(const TwitchXX::TwitchException& e)
+    {
+        EXPECT_EQ(e.code(), 403);
+    }
 }
