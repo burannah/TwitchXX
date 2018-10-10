@@ -26,9 +26,9 @@ namespace TwitchXX
             v5::User    User;
         };
 
-        std::vector<Subscription> getChannelSubscribers(const Api& api,
-                                                        const std::string& channelId,
-                                                        std::optional<int> limit = std::nullopt,
+        std::vector<Subscription> getChannelSubscribers(const Api &api,
+                                                        const std::string &channelId,
+                                                        const std::optional<int> &limit = std::nullopt,
                                                         Direction::Value dir = Direction::Value::ASC);
 
         Subscription checkChannelSubscriptionByUser(const Api& api,

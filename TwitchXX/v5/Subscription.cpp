@@ -14,6 +14,25 @@ namespace TwitchXX
 {
     namespace v5
     {
+        namespace
+        {
+            web::uri_builder createGetChannelSubscribersBuilder(const std::string& channelId,
+                                                                const std::optional<int>& limit,
+                                                                Direction::Value dir)
+            {
+                web::uri_builder builder("kraken/channels/" + channelId + "/subscriptions");
+
+                if(limit)
+                {
+                    builder.append_query("limit", limit.value());
+                }
+
+                builder.append_query("direction", Direction::toString(dir));
+
+                return builder;
+            }
+        }
+        
         Subscription createSubscription(const web::json::value& rawSub)
         {
             if(rawSub.is_null())
@@ -33,21 +52,13 @@ namespace TwitchXX
 
             return s;
         }
-        std::vector<Subscription> getChannelSubscribers(const Api& api,
-                                                        const std::string& channelId,
-                                                        std::optional<int> limit,
+        std::vector<Subscription> getChannelSubscribers(const Api &api,
+                                                        const std::string &channelId,
+                                                        const std::optional<int> &limit,
                                                         Direction::Value dir)
         {
-            web::uri_builder builder("kraken/channels/" + channelId + "/subscriptions");
-
-            if(limit)
-            {
-                builder.append_query("limit", limit.value());
-            }
-
-            builder.append_query("direction", Direction::toString(dir));
-
-            auto response = api.reqOnce().get(builder.to_uri(), AuthScope::CHANNEL_SUBSCRIPTIONS);
+            auto response = api.reqOnce().get(createGetChannelSubscribersBuilder(channelId, limit,  dir).to_uri(),
+                                              AuthScope::CHANNEL_SUBSCRIPTIONS);
 
             std::vector<Subscription> result;
 
