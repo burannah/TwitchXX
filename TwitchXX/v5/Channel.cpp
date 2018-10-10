@@ -61,15 +61,11 @@ namespace TwitchXX
             return createChannel(response);
         }
 
-        Channel updateChannel(const Api &api,
-                              const std::string &channelId,
-                              const std::optional<std::string> &status,
-                              const std::optional<std::string> &game,
-                              const std::optional<int> &delay)
+        web::json::value buildUpdateChannelParams(const std::string &channelId,
+                                                  const std::optional<std::string> &status,
+                                                  const std::optional<std::string> &game,
+                                                  const std::optional<int> &delay)
         {
-            web::uri_builder builder("kraken/channels");
-            builder.append_path(channelId);
-
             web::json::value channel;
             channel["channel"] = web::json::value::object();
 
@@ -87,6 +83,20 @@ namespace TwitchXX
             {
                 channel.at("channel")["delay"] = web::json::value::number(delay.value());
             }
+
+            return channel;
+        }
+
+        Channel updateChannel(const Api &api,
+                              const std::string &channelId,
+                              const std::optional<std::string> &status,
+                              const std::optional<std::string> &game,
+                              const std::optional<int> &delay)
+        {
+            web::uri_builder builder("kraken/channels");
+            builder.append_path(channelId);
+
+            web::json::value channel = buildUpdateChannelParams(channelId, status, game, delay);
 
             if(channel.at("channel").size())
             {
