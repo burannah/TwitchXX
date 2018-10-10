@@ -24,8 +24,8 @@ namespace TwitchXX
         };
 
         std::tuple<std::vector<UserFollow>, uint64_t, std::string> getChannelFollowers(const Api &api,
-                                                                                       std::string channelId,
-                                                                                       std::optional<int> limit = std::nullopt,
+                                                                                       const std::string& channelId,
+                                                                                       const std::optional<int>& limit = std::nullopt,
                                                                                        const std::optional<std::string> &_cursor = std::nullopt);
 
         class UserFollows

@@ -10,6 +10,30 @@ namespace TwitchXX
 {
     namespace v5
     {
+        namespace
+        {
+            web::uri_builder createGetChannelFollowersBuilder(const std::string& channelId,
+                                                              const std::optional<int> limit,
+                                                              const std::optional<std::string>& cursor)
+            {
+                web::uri_builder builder("kraken/channels");
+                builder.append_path(channelId);
+                builder.append_path("follows");
+
+                if(limit)
+                {
+                    builder.append_query("limit",limit.value());
+                }
+
+                if(cursor)
+                {
+                    builder.append_query("cursor", cursor.value());
+                }
+
+                return builder;
+            }
+        }
+
         UserFollow createUserFollow(const web::json::value &value)
         {
             UserFollow u;
@@ -24,25 +48,11 @@ namespace TwitchXX
 
         std::tuple<std::vector<UserFollow>, uint64_t, std::string>
         getChannelFollowers(const Api &api,
-                            std::string channelId,
-                            std::optional<int> limit,
+                            const std::string& channelId,
+                            const std::optional<int>& limit,
                             const std::optional<std::string> &cursor)
         {
-            web::uri_builder builder("kraken/channels");
-            builder.append_path(channelId);
-            builder.append_path("follows");
-
-            if(limit)
-            {
-                builder.append_query("limit",limit.value());
-            }
-
-            if(cursor)
-            {
-                builder.append_query("cursor", cursor.value());
-            }
-
-            auto response = api.reqOnce().get(builder.to_uri());
+            auto response = api.reqOnce().get(createGetChannelFollowersBuilder(channelId, limit, cursor).to_uri());
 
             std::string newCursor = response.at("_cursor").as_string();
             uint64_t size = response.at("_total").as_number().to_uint64();
