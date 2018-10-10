@@ -32,7 +32,7 @@ namespace TwitchXX
                 return builder;
             }
         }
-        
+
         Subscription createSubscription(const web::json::value& rawSub)
         {
             if(rawSub.is_null())
