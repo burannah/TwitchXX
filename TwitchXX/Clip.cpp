@@ -110,41 +110,43 @@ namespace TwitchXX
     }
 
 
+    Clip createClip(const web::json::value &clip)
+    {
+        JsonWrapper w(clip);
+
+        Clip result;
+
+        result.Id = w["id"].as_string();
+        result.Url = w["url"].as_string();
+        result.EmbedUrl = w["embed_url"].as_string();
+        result.BroadcasterId = w["broadcaster_id"];
+        result.CreatorId = w["creator_id"];
+        result.VideoId = w["video_id"];
+        result.GameId = w["game_id"];
+        result.Language = w["language"].as_string();
+        result.Title = w["title"].as_string();
+        result.ViewCount = w["view_count"];
+        result.Created = w["created_at"];
+        result.Thumb = w["thumbnail_url"].as_string();
+
+        return result;
+    }
+
     std::tuple<std::vector<Clip>, std::string>
     getClips(const Api &api, const ClipOptions& params)
     {
-
-
         auto response = api.reqWait().get(createGetClipsBuilder(params).to_uri());
         std::vector<Clip> result;
 
-        if (response.has_field("data") && !response.at("data").is_null() && response.at("data").size())
+        if (response.has_array_field("data"))
         {
             auto data = response.at("data").as_array();
 
             result.reserve(data.size());
-            std::for_each(data.begin(), data.end(), [&](auto &&val)
+            for(const auto& clip: data)
             {
-                JsonWrapper w(val);
-
-                result.emplace_back();
-                Clip& clip = result.back();
-
-                clip.Id = w["id"].as_string();
-                clip.Url = w["url"].as_string();
-                clip.EmbedUrl = w["embed_url"].as_string();
-                clip.BroadcasterId = w["broadcaster_id"];
-                clip.CreatorId = w["creator_id"];
-                clip.VideoId = w["video_id"];
-                clip.GameId = w["game_id"];
-                clip.Language = w["language"].as_string();
-                clip.Title = w["title"].as_string();
-                clip.ViewCount = w["view_count"];
-                clip.Created = w["created_at"];
-                clip.Thumb = w["thumbnail_url"].as_string();
-
-
-            });
+                result.push_back(createClip(clip));
+            };
         }
 
         std::string new_cursor;

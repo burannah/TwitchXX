@@ -62,19 +62,19 @@ public:
 
     std::string        EmbedUrl;
 
-    unsigned long long BroadcasterId;
+    unsigned long long BroadcasterId{};
 
-    unsigned long long CreatorId;
+    unsigned long long CreatorId{};
 
-    unsigned long long VideoId;
+    unsigned long long VideoId{};
 
-    unsigned long long GameId;
+    unsigned long long GameId{};
 
     std::string        Language;
 
     std::string        Title;
 
-    unsigned int       ViewCount;
+    unsigned int       ViewCount{};
 
     Date               Created;
 
