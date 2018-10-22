@@ -45,32 +45,12 @@ namespace TwitchXX
             int Limit;          ///< Maximum number of stream metadata requests per time interval (see RequestLimits)
         };
 
-        StreamMetadata() = default;
-
-        /// Stream metadata object. Contains information about current ingame parameters (selected hero, opponent, etc.)
-        /// At the moment supported only by Hearthstone and Overwatch (and has many bugs!!!)s
-        StreamMetadata(const StreamMetadata& other)
-        {
-            UserId = other.UserId;
-            GameId = other.GameId;
-
-            if(other.overwatch)
-            {
-                overwatch = std::make_unique<Overwatch>(*other.overwatch);
-            }
-            else if(other.hearthstone)
-            {
-                hearthstone = std::make_unique<Hearthstone>(*other.hearthstone);
-            }
-        }
+        unsigned long long UserId{};   ///< User id
+        unsigned long long GameId{};   ///< Game id (at the moment can be 488552 (Overwatch), 138585 (Hearthstone), or null)
 
 
-        unsigned long long UserId;   ///< User id
-        unsigned long long GameId;   ///< Game id (at the moment can be 488552 (Overwatch), 138585 (Hearthstone), or null)
-
-
-        std::unique_ptr<Overwatch> overwatch;            ///< Overwatch stream metadata
-        std::unique_ptr<Hearthstone> hearthstone;        ///< Hearthstone stream metadata
+        std::optional<Overwatch> overwatch;            ///< Overwatch stream metadata
+        std::optional<Hearthstone> hearthstone;        ///< Hearthstone stream metadata
     };
 
     /***

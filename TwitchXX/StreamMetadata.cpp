@@ -11,6 +11,56 @@ const std::string LIMIT_PARAM = "Ratelimit-Helixstreamsmetadata-Limit";
 
 namespace TwitchXX
 {
+    namespace
+    {
+        Overwatch createOverwatch(const web::json::value &metadata)
+        {
+            Overwatch o;
+            JsonWrapper ow(metadata.at("overwatch").at("broadcaster").at("hero"));
+
+            o.Name = ow["name"].as_string();
+            o.Role = ow["role"].as_string();
+            o.Ability = ow["ability"].as_string();
+            return o;
+        }
+
+        Hearthstone createHearthstone(const web::json::value &metadata)
+        {
+            Hearthstone h;
+            JsonWrapper broadcaster(metadata.at("hearthstone").at("broadcaster").at("hero"));
+
+            h.Broadcaster.Name = broadcaster["name"].as_string();
+            h.Broadcaster.Class = broadcaster["class"].as_string();
+            h.Broadcaster.Type = broadcaster["type"].as_string();
+
+            JsonWrapper opponent(metadata.at("hearthstone").at("opponent").at("hero"));
+
+            h.Opponent.Class = opponent["class"].as_string();
+            h.Opponent.Name = opponent["name"].as_string();
+            h.Opponent.Type = opponent["type"].as_string();
+            return h;
+        }
+
+        StreamMetadata createMetadata(const web::json::value &metadata)
+        {
+            JsonWrapper w(metadata);
+            StreamMetadata s;
+            s.UserId = w["user_id"];
+            s.GameId = w["game_id"];
+
+            if(metadata.has_object_field("overwatch"))
+            {
+                s.overwatch = createOverwatch(metadata);
+
+            }
+            else if(metadata.has_object_field("hearthstone"))
+            {
+                s.hearthstone = createHearthstone(metadata);
+
+            }
+            return s;
+        }
+    }
     std::tuple<std::vector<TwitchXX::StreamMetadata>, std::string>
     getStreamsMetadata(const Api& api,
                        size_t count,
@@ -45,48 +95,15 @@ namespace TwitchXX
 
         auto response = request.get(builder.to_uri());
         std::vector<StreamMetadata> result;
-        if (response.has_field("data") && !response.at("data").is_null() && response.at("data").size())
+        if (response.has_array_field("data"))
         {
             auto data = response.at("data").as_array();
 
             result.reserve(data.size());
-            std::for_each(data.begin(), data.end(), [&](auto &&val)
+            for(const auto& metadata: data)
             {
-                JsonWrapper w(val);
-                StreamMetadata s;
-                s.UserId = w["user_id"];
-                s.GameId = w["game_id"];
-
-                if(val.has_field("overwatch") && !val.at("overwatch").is_null())
-                {
-                    Overwatch o;
-                    JsonWrapper ow(val.at("overwatch").at("broadcaster").at("hero"));
-
-                    s.overwatch = std::make_unique<Overwatch>();
-
-                    s.overwatch->Name = ow["name"].as_string();
-                    s.overwatch->Role = ow["role"].as_string();
-                    s.overwatch->Ability = ow["ability"].as_string();
-                }
-                else if(val.has_field("hearthstone") && !val.at("hearthstone").is_null())
-                {
-                    Hearthstone h;
-                    JsonWrapper broadcaster(val.at("hearthstone").at("broadcaster").at("hero"));
-                    s.hearthstone = std::make_unique<Hearthstone>();
-
-                    s.hearthstone->Broadcaster.Name = broadcaster["name"].as_string();
-                    s.hearthstone->Broadcaster.Class = broadcaster["class"].as_string();
-                    s.hearthstone->Broadcaster.Type = broadcaster["type"].as_string();
-
-                    JsonWrapper opponent(val.at("hearthstone").at("opponent").at("hero"));
-
-                    s.hearthstone->Opponent.Class = opponent["class"].as_string();
-                    s.hearthstone->Opponent.Name = opponent["name"].as_string();
-                    s.hearthstone->Opponent.Type = opponent["type"].as_string();
-                }
-
-                result.push_back(s);
-            });
+                result.push_back(createMetadata(metadata));
+            }
         }
 
         std::string new_cursor;
