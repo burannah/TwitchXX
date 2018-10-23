@@ -9,71 +9,67 @@
 #include <JsonWrapper.h>
 #include <Utility.h>
 
-std::tuple<std::vector<TwitchXX::Video>, std::string>
-TwitchXX::getVideos(const Api &api, const std::vector<uint64_t>& ids, uint64_t userId,
-                    uint64_t gameId, const VideoOptions& opt)
+namespace TwitchXX
 {
-    if(ids.size() > 100)
+    namespace
     {
-        throw TwitchException("Too many video ids");
-    }
-
-    web::uri_builder builder("helix/videos");
-
-    if(ids.size())
-    {
-        addRangeOfParamsToBuilder(builder, "id", ids);
-    }
-    else if(userId)
-    {
-        builder.append_query("user_id", userId);
-    }
-    else if(gameId)
-    {
-        builder.append_query("game_id", gameId);
-    }
-    else
-    {
-        throw TwitchException("Video id(s), user id or game id should be specified");
-    }
-
-    if(opt.After.size())
-    {
-        builder.append_query("after",opt.After);
-    }
-    else if(opt.Before.size())
-    {
-        builder.append_query("before", opt.Before);
-    }
-
-
-    builder.append_query("first", opt.Count > 100 || opt.Count < 1 ? 20 : opt.Count );
-
-    if(opt.Language.size())
-    {
-        builder.append_query("language", opt.Language);
-    }
-
-    builder.append_query("period", PeriodType::toString(opt.Period));
-
-    builder.append_query("sort", VideoSortType::toString(opt.Sort));
-
-    builder.append_query("type", VideoType::toString(opt.Type));
-
-    auto response = api.reqWait().get(builder.to_uri());
-    std::vector<Video> result;
-
-
-    if(response.has_field("data") && !response.at("data").is_null() && response.at("data").size())
-    {
-        auto data = response.at("data").as_array();
-
-        result.reserve(data.size());
-        std::for_each(std::begin(data), std::end(data), [&](auto&& val)
+        web::uri getVideosUri(const std::vector<uint64_t>& ids,
+                              uint64_t userId,
+                              uint64_t gameId,
+                              const VideoOptions& opt)
         {
-            result.emplace_back();
-            auto& u = result.back();
-            JsonWrapper w(val);
+            if(ids.size() > 100)
+            {
+                throw TwitchException("Too many video ids");
+            }
+
+            web::uri_builder builder("helix/videos");
+
+            if(!ids.empty())
+            {
+                addRangeOfParamsToBuilder(builder, "id", ids);
+            }
+            else if(userId)
+            {
+                builder.append_query("user_id", userId);
+            }
+            else if(gameId)
+            {
+                builder.append_query("game_id", gameId);
+            }
+            else
+            {
+                throw TwitchException("Video id(s), user id or game id should be specified");
+            }
+
+            if(!opt.After.empty())
+            {
+                builder.append_query("after",opt.After);
+            }
+            else if(!opt.Before.empty())
+            {
+                builder.append_query("before", opt.Before);
+            }
+
+
+            builder.append_query("first", opt.Count > 100 || opt.Count < 1 ? 20 : opt.Count );
+
+            if(!opt.Language.empty())
+            {
+                builder.append_query("language", opt.Language);
+            }
+
+            builder.append_query("period", PeriodType::toString(opt.Period));
+            builder.append_query("sort", VideoSortType::toString(opt.Sort));
+            builder.append_query("type", VideoType::toString(opt.Type));
+
+            return builder.to_uri();
+        }
+
+        Video createVideo(const web::json::value& video)
+        {
+            Video u;
+            JsonWrapper w(video);
 
             u.Id = w["id"];
             u.UserId = w["user_id"];
@@ -85,23 +81,41 @@ TwitchXX::getVideos(const Api &api, const std::vector<uint64_t>& ids, uint64_t u
             u.ViewCount = w["view_count"];
             u.Language = w["language"].as_string();
             u.Duration = w["duration"].as_string();
-        });
 
+            return u;
+        }
     }
 
-    std::string new_cursor;
-    try
+    std::tuple<std::vector<Video>, std::string>
+    getVideos(const Api &api, const std::vector<uint64_t>& ids, uint64_t userId,
+              uint64_t gameId, const VideoOptions& opt)
     {
-        new_cursor = response.at("pagination").at("cursor").as_string();
+
+        auto response = api.reqWait().get(getVideosUri(ids, userId, gameId, opt));
+        std::vector<Video> result;
+
+
+        if(response.has_array_field("data"))
+        {
+            auto data = response.at("data").as_array();
+
+            result.reserve(data.size());
+            for(const auto& video: data)
+            {
+                result.push_back(createVideo(video));
+            }
+        }
+
+        std::string new_cursor;
+        try
+        {
+            new_cursor = response.at("pagination").at("cursor").as_string();
+        }
+        catch(web::json::json_exception& e)
+        {
+            new_cursor = "Error cursor!";
+        }
+
+        return std::make_tuple(result, new_cursor);
     }
-    catch(web::json::json_exception& e)
-    {
-        new_cursor = "Error cursor!";
-    }
-
-    return std::make_tuple(result, new_cursor);
-
-
-
-    return std::tuple<std::vector<TwitchXX::Video>, std::string>();
 }
