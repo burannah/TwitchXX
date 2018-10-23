@@ -52,10 +52,10 @@ TEST_F(StreamTest, getByGameId)
                 auto streams = std::get<0>(result);
                 auto cursor = std::get<1>(result);
                 EXPECT_EQ(streams.size(),opt.first);
-                std::for_each(streams.begin(), streams.end(),[] (const auto& stream)
+                for(const auto& stream: streams)
                 {
                     EXPECT_EQ(stream.GameId,DOTA2_ID);
-                });
+                }
                 EXPECT_GE(cursor.size(),5);
             });
 }
@@ -74,13 +74,13 @@ TEST_F(StreamTest, getByCommunityId)
                 auto cursor = std::get<1>(result);
                 EXPECT_GT(streams.size(),0);
                 EXPECT_LE(streams.size(),opt.first);
-                std::for_each(streams.begin(), streams.end(),[] (const auto& stream)
+                for(const auto& stream: streams)
                 {
                     const auto& cmmtys = stream.CommunityIds;
                     auto it = std::find(cmmtys.begin(), cmmtys.end(),
                                         "848d95be-90b3-44a5-b143-6e373754c382");
                     EXPECT_TRUE( it != cmmtys.end());
-                });
+                }
                 EXPECT_GE(cursor.size(),5);
             });
 }
@@ -97,10 +97,10 @@ TEST_F(StreamTest, getByLang)
     auto cursor = std::get<1>(result);
     EXPECT_GT(streams.size(),0);
     EXPECT_LE(streams.size(),opt.first);
-    std::for_each(streams.begin(), streams.end(),[] (const auto& stream)
+    for(const auto& stream: streams)
     {
         EXPECT_EQ( stream.Language,"ru");
-    });
+    }
     EXPECT_GE(cursor.size(),5);
 }
 
@@ -117,10 +117,10 @@ TEST_F(StreamTest, getByType)
                 auto cursor = std::get<1>(result);
                 EXPECT_GT(streams.size(),0);
                 EXPECT_LE(streams.size(),opt.first);
-                std::for_each(streams.begin(), streams.end(),[&] (const auto& stream)
+                for(const auto& stream: streams)
                 {
                     EXPECT_EQ( stream.Type,opt.type);
-                });
+                }
                 EXPECT_GE(cursor.size(),5);
             });
 }
@@ -139,10 +139,10 @@ TEST_F(StreamTest, getByUserId)
                 auto cursor = std::get<1>(result);
                 EXPECT_GE(streams.size(), 0);
                 EXPECT_LE(streams.size(), opt.first);
-                std::for_each(streams.begin(), streams.end(),[&] (const auto& stream)
+                for(const auto& stream: streams)
                 {
                     EXPECT_EQ( stream.UserId, opt.userIds[0]);
-                });
+                }
                 EXPECT_GE(cursor.size(),5);
             });
 }
@@ -161,10 +161,10 @@ TEST_F(StreamTest, getByUserLogin)
                 auto cursor = std::get<1>(result);
                 EXPECT_GE(streams.size(),0);
                 EXPECT_LE(streams.size(),opt.first);
-                std::for_each(streams.begin(), streams.end(),[&] (const auto& stream)
+                for(const auto& stream: streams)
                 {
                     EXPECT_EQ( stream.UserId, opt.userIds[0]);
-                });
+                }
                 EXPECT_GE(cursor.size(),5);
             });
 }

@@ -62,7 +62,7 @@ namespace TwitchXX
 
             std::vector<Subscription> result;
 
-            if(response.has_field("subscription") && response.at("subscription").is_array())
+            if(response.has_array_field("subscription") )
             {
                 for(auto&& rawSub: response.at("subscription").as_array())
                 {

@@ -20,10 +20,10 @@ TEST_F(VideoTest, byUserId)
     auto [result, cursor] = TwitchXX::getVideos(_api, {}, phoenix_id);
     EXPECT_GT(result.size(), 1);
     EXPECT_GT(cursor.size(),5);
-    std::for_each(std::begin(result), std::end(result), [](auto&& v)
+    for(const auto& v: result)
     {
         EXPECT_EQ(v.UserId,phoenix_id);
-    });
+    }
 }
 
 TEST_F(VideoTest, byGameId)

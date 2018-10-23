@@ -26,7 +26,7 @@ endif (DOXYGEN_FOUND)
 
 file(GLOB_RECURSE SOURCES *.cpp *.h)
 
-add_library(TwitchXX STATIC ${SOURCES})
+add_library(TwitchXX STATIC ${SOURCES} UtilsInternal.cpp UtilsInternal.h)
 target_link_libraries(TwitchXX ${LIB_CPPREST})
 
 install(TARGETS TwitchXX DESTINATION lib)

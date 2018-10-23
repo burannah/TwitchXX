@@ -58,7 +58,7 @@ namespace TwitchXX
             uint64_t size = response.at("_total").as_number().to_uint64();
             std::vector<UserFollow> result;
 
-            if(response.has_field("follows") && response.at("follows").is_array())
+            if(response.has_array_field("follows"))
             {
                 auto rawFollows = response.at("follows").as_array();
 

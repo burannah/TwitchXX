@@ -8,6 +8,7 @@
 #include <TwitchException.h>
 #include <JsonWrapper.h>
 #include <Utility.h>
+#include "UtilsInternal.h"
 
 namespace TwitchXX
 {
@@ -106,16 +107,6 @@ namespace TwitchXX
             }
         }
 
-        std::string new_cursor;
-        try
-        {
-            new_cursor = response.at("pagination").at("cursor").as_string();
-        }
-        catch(web::json::json_exception& e)
-        {
-            new_cursor = "Error cursor!";
-        }
-
-        return std::make_tuple(result, new_cursor);
+        return std::make_tuple(result, UtilsInternal::getCursor(response));
     }
 }

@@ -91,10 +91,10 @@ namespace TwitchXX
             if(_json.is_array() && _json.as_array().size())
             {
                 auto ar = _json.as_array();
-                std::for_each(std::begin(ar), std::end(ar), [&](const auto& a)
+                for(const auto& a: ar)
                 {
                     result.push_back(a.as_string());
-                });
+                }
             }
 
             return result;

@@ -53,10 +53,10 @@ TEST_F(StreamMetadataTest, getByGameId)
     auto streams = std::get<0>(result);
     auto cursor = std::get<1>(result);
     EXPECT_EQ(streams.size(),_opt.first);
-    std::for_each(streams.begin(), streams.end(),[] (const auto& stream)
+    for(const auto& stream: streams)
     {
         EXPECT_TRUE(stream.GameId == OVERWATCH_ID || stream.GameId == HEARTHSTONE_ID);
-    });
+    }
     EXPECT_GE(cursor.size(),5);
 }
 
@@ -123,10 +123,10 @@ TEST_F(StreamMetadataTest, getByUserId)
                 auto cursor = std::get<1>(result);
                 EXPECT_GE(streams.size(),0);
                 EXPECT_LE(streams.size(),_opt.first);
-                std::for_each(streams.begin(), streams.end(),[&] (const auto& stream)
+                for(const auto& stream: streams)
                 {
                     EXPECT_EQ(stream.UserId, _opt.userIds[0]);
-                });
+                }
                 EXPECT_GE(cursor.size(),5);
             });
 }

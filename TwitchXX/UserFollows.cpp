@@ -7,6 +7,7 @@
 #include <Api.h>
 #include <JsonWrapper.h>
 #include <Utility.h>
+#include "UtilsInternal.h"
 
 namespace TwitchXX
 {
@@ -81,16 +82,6 @@ namespace TwitchXX
 
         }
 
-        std::string new_cursor;
-        try
-        {
-            new_cursor = response.at("pagination").at("cursor").as_string();
-        }
-        catch(web::json::json_exception& e)
-        {
-            new_cursor = "Error cursor!";
-        }
-
-        return std::make_tuple(result, total, new_cursor);
+        return std::make_tuple(result, total, UtilsInternal::getCursor(response));
     };
 }

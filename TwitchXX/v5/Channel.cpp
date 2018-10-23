@@ -149,13 +149,13 @@ namespace TwitchXX
 
             std::vector<User> result;
 
-            if(response.has_field("users") && response.at("users").is_array())
+            if(response.has_array_field("users"))
             {
                 auto users = response.at("users").as_array();
-                std::for_each(std::begin(users), std::end(users),[&](const auto& user)
+                for(const auto& user: users)
                 {
                     result.push_back(createUser(user));
-                });
+                }
             }
 
             return result;
@@ -186,7 +186,7 @@ namespace TwitchXX
 
             std::vector<Team> result;
 
-            if(response.has_field("teams") && response.at("teams").is_array())
+            if(response.has_array_field("teams"))
             {
                 for(auto&& rawTeam: response.at("teams").as_array())
                 {

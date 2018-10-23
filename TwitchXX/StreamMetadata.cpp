@@ -5,6 +5,7 @@
 #include <StreamMetadata.h>
 #include <JsonWrapper.h>
 #include <iostream>
+#include "UtilsInternal.h"
 
 const std::string REMAINING_PARAM = "Ratelimit-Helixstreamsmetadata-Remaining";
 const std::string LIMIT_PARAM = "Ratelimit-Helixstreamsmetadata-Limit";
@@ -106,16 +107,6 @@ namespace TwitchXX
             }
         }
 
-        std::string new_cursor;
-        try
-        {
-            new_cursor = response.at("pagination").at("cursor").as_string();
-        }
-        catch(web::json::json_exception& e)
-        {
-            new_cursor = "Error cursor!";
-        }
-
         if(limits)
         {
             const auto& headers = request.getResponseHeaderParams();
@@ -123,7 +114,7 @@ namespace TwitchXX
             limits->Limit = std::atoi(headers.at(LIMIT_PARAM).c_str());
         }
 
-        return std::make_tuple(result, new_cursor);
+        return std::make_tuple(result, UtilsInternal::getCursor(response));
     }
 
 }

@@ -44,16 +44,14 @@ namespace TwitchXX
     {
         auto tp = std::chrono::system_clock::now();
         std::thread log_thread([tp, level, msg](){
-            std::for_each(std::begin(log._loggers), std::end(log._loggers),
-                          [&](std::weak_ptr<Logger> logger)
-                          {
-                              auto sp = logger.lock();
-                              if(sp)
-                              {
-                                  sp->Msg(level, tp, msg);
-                              }
-                          }
-            );
+            for(const auto& logger: log._loggers)
+            {
+                auto sp = logger.lock();
+                if(sp)
+                {
+                  sp->Msg(level, tp, msg);
+                }
+            }
         });
         log_thread.detach();
     }

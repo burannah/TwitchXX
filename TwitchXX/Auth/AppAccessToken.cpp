@@ -41,7 +41,7 @@ void TwitchXX::AppAccessToken::refreshToken()
        && response.at("scope").size())
     {
         auto scopes = response.at("scope").as_array();
-        std::for_each(scopes.begin(), scopes.end(), [&](web::json::value& js_scope)
+        for(const auto& js_scope: scopes)
         {
             auto scope = js_scope.as_string();
 
@@ -61,7 +61,7 @@ void TwitchXX::AppAccessToken::refreshToken()
             {
                 Log::Warn("Unknown auth scope!: " + scope);
             }
-        });
+        }
     }
 
 }
