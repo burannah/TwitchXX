@@ -48,7 +48,8 @@ namespace TwitchXX
     * @return a tuple with vector of Strem objects and a cursor
     * @throw TwitchXX::TwitchException if ids or logins size is > 100 or both empty;
     */
-    std::vector<User> getUsers(const Api &api, std::vector<std::string> ids, std::vector<std::string> logins);
+    std::vector<User> getUsers(const Api &api, const std::vector<std::string> &ids,
+                               const std::vector<std::string> &logins);
 
     /***
     * Update user's description. The user is specified by user access token provided by Api object
