@@ -14,7 +14,7 @@ namespace TwitchXX
 {
     namespace
     {
-        web::uri_builder createGetClipsBuilder(const ClipOptions& params)
+        web::uri createGetClipsUri(const ClipOptions &params)
         {
             if (params.first > 100 || params.first < 1)
             {
@@ -54,7 +54,7 @@ namespace TwitchXX
 
             builder.append_query("first", params.first);
 
-            return builder;
+            return builder.to_uri();
         }
 
     }
@@ -65,7 +65,7 @@ namespace TwitchXX
         builder.append_query("broadcaster_id",broadcaster);
 
         auto response = api.reqWait().post(builder.to_uri(), AuthScope::CLIPS_EDIT);
-        if(response.has_field("data") && !response.at("data").is_null() && response.at("data").size())
+        if(response.has_array_field("data"))
         {
             auto data = response.at("data").as_array();
 
@@ -135,7 +135,7 @@ namespace TwitchXX
     std::tuple<std::vector<Clip>, std::string>
     getClips(const Api &api, const ClipOptions& params)
     {
-        auto response = api.reqWait().get(createGetClipsBuilder(params).to_uri());
+        auto response = api.reqWait().get(createGetClipsUri(params));
         std::vector<Clip> result;
 
         if (response.has_array_field("data"))

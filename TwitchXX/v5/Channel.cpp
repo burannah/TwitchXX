@@ -14,7 +14,7 @@ namespace TwitchXX
         {
             Channel c;
 
-            if(raw.has_field("name") && raw.at("name").is_string())
+            if(raw.has_string_field("name"))
             {
                 JsonWrapper w(raw);
                 c.Mature = w["mature"];

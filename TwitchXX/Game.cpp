@@ -16,15 +16,8 @@ namespace TwitchXX
         {
 
             web::uri_builder builder("helix/games");
-            for(const auto& id: ids)
-            {
-                builder.append_query("id", id);
-            }
-
-            for(const auto& name: names)
-            {
-                builder.append_query("name", name);
-            }
+            addRangeOfParamsToBuilder(builder, "id", ids);
+            addRangeOfParamsToBuilder(builder, "name", names);
 
             return builder.to_uri();
         }

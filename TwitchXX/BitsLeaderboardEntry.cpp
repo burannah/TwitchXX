@@ -38,17 +38,17 @@ namespace TwitchXX
         auto response = api.reqWait().get(builder.to_uri(), AuthScope::BITS_READ);
         std::vector<BitsLeaderboardEntry> result;
 
-        if (response.has_field("data") && !response.at("data").is_null() && response.at("data").size())
+        if (response.has_array_field("data"))
         {
             auto data = response.at("data").as_array();
 
             result.reserve(data.size());
-            std::for_each(data.begin(), data.end(), [&](auto &&val)
+            for(const auto& entry: data)
             {
-                JsonWrapper w(val);
+                JsonWrapper w(entry);
 
                 result.emplace_back(w["user_id"], w["rank"],  w["score"]);
-            });
+            }
         }
 
         return result;

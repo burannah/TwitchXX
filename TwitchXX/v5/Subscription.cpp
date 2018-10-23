@@ -16,9 +16,9 @@ namespace TwitchXX
     {
         namespace
         {
-            web::uri_builder createGetChannelSubscribersBuilder(const std::string& channelId,
-                                                                const std::optional<int>& limit,
-                                                                Direction::Value dir)
+            web::uri createGetChannelSubscribersUri(const std::string &channelId,
+                                                    const std::optional<int> &limit,
+                                                    Direction::Value dir)
             {
                 web::uri_builder builder("kraken/channels/" + channelId + "/subscriptions");
 
@@ -29,7 +29,7 @@ namespace TwitchXX
 
                 builder.append_query("direction", Direction::toString(dir));
 
-                return builder;
+                return builder.to_uri();
             }
         }
 
@@ -57,7 +57,7 @@ namespace TwitchXX
                                                         const std::optional<int> &limit,
                                                         Direction::Value dir)
         {
-            auto response = api.reqOnce().get(createGetChannelSubscribersBuilder(channelId, limit,  dir).to_uri(),
+            auto response = api.reqOnce().get(createGetChannelSubscribersUri(channelId, limit, dir),
                                               AuthScope::CHANNEL_SUBSCRIPTIONS);
 
             std::vector<Subscription> result;

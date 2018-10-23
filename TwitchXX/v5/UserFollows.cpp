@@ -12,9 +12,9 @@ namespace TwitchXX
     {
         namespace
         {
-            web::uri_builder createGetChannelFollowersBuilder(const std::string& channelId,
-                                                              const std::optional<int> limit,
-                                                              const std::optional<std::string>& cursor)
+            web::uri createGetChannelFollowersUri(const std::string &channelId,
+                                                  const std::optional<int> &limit,
+                                                  const std::optional<std::string> &cursor)
             {
                 web::uri_builder builder("kraken/channels");
                 builder.append_path(channelId);
@@ -30,7 +30,7 @@ namespace TwitchXX
                     builder.append_query("cursor", cursor.value());
                 }
 
-                return builder;
+                return builder.to_uri();
             }
         }
 
@@ -52,7 +52,7 @@ namespace TwitchXX
                             const std::optional<int>& limit,
                             const std::optional<std::string> &cursor)
         {
-            auto response = api.reqOnce().get(createGetChannelFollowersBuilder(channelId, limit, cursor).to_uri());
+            auto response = api.reqOnce().get(createGetChannelFollowersUri(channelId, limit, cursor));
 
             std::string newCursor = response.at("_cursor").as_string();
             uint64_t size = response.at("_total").as_number().to_uint64();
