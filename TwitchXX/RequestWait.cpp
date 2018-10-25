@@ -51,7 +51,7 @@ namespace TwitchXX
             }
             catch(const TwitchXX::TwitchException& e)
             {
-                if(e.code() == 429) //Too many request
+                if(e.code() == web::http::status_codes::TooManyRequests) //Too many request
                 {
                     Log::Debug("Request to: " + params.uri.to_string() + " has hit the rate limit.");
                     saveRequestResponse();
