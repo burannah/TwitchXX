@@ -5,14 +5,23 @@
 #ifndef TWITCHXX_CREATE_H
 #define TWITCHXX_CREATE_H
 
-#include <cpprest/json.h>
-#include <v5/User.h>
+namespace web
+{
+    namespace json
+    {
+        class value;
+    }
+}
 
 namespace TwitchXX
 {
     namespace v5
     {
+        class Subscription;
+        class User;
+
         User createUser(const web::json::value &rawUser);
+        Subscription createSubscription(const web::json::value& rawSub);
     }
 }
 
