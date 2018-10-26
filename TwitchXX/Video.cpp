@@ -62,7 +62,10 @@ namespace TwitchXX
 
             builder.append_query("period", PeriodType::toString(opt.Period));
             builder.append_query("sort", VideoSortType::toString(opt.Sort));
-            builder.append_query("type", VideoType::toString(opt.Type));
+            if(!opt.Type.empty())
+            {
+                builder.append_query("type", VideoType::toString(opt.Type[0]));
+            }
 
             return builder.to_uri();
         }

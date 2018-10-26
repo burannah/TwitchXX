@@ -17,13 +17,14 @@ namespace TwitchXX
     /// Options class for getVideos request
     struct VideoOptions
     {
-        std::string            After;       ///< After (forward) cursor
-        std::string            Before;      ///< Before (backward) cursor
-        size_t                 Count;       ///< Maximum number of fetched videos per request
-        std::string            Language;    ///< Video's language
-        PeriodType::Value      Period;      ///< Period to search
-        VideoSortType::Value   Sort;        ///< Sort type
-        VideoType::Value       Type;        ///< Video type
+        std::string                   After;       ///< After (forward) cursor
+        std::string                   Before;      ///< Before (backward) cursor
+        size_t                        Count;       ///< Maximum number of fetched videos per request
+        std::string                   Language;    ///< Video's language
+        PeriodType::Value             Period;      ///< Period to search
+        VideoSortType::Value          Sort;        ///< Sort type
+        std::vector<VideoType::Value> Type;        ///< Video type
+        int                           Offset;      ///< Object offset for pagination of result (only v5)
     };
 }
 

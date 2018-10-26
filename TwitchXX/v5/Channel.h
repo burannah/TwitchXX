@@ -12,11 +12,16 @@
 #include <BroadcasterType.h>
 #include "User.h"
 #include "Team.h"
+#include "Subscription.h"
 
 namespace TwitchXX
 {
+    class VideoOptions;
+
     namespace v5
     {
+        class Video;
+
         class Channel
         {
         public:
@@ -63,6 +68,17 @@ namespace TwitchXX
         std::vector<User> getChannelEditors(const Api& api, const std::string& channelId);
 
         std::vector<Team> getChannelTeams(const Api& api, const std::string& channelId);
+
+        std::vector<Subscription> getChannelSubscription(const Api& api,
+                                                         const std::string& channelId,
+                                                         int limit = 100,
+                                                         int offset = 0,
+                                                         Direction::Value direction = Direction::Value::ASC);
+
+        std::vector<v5::Video> getChannelVideos(const Api& api,
+                                                const std::string& channelId,
+                                                const VideoOptions* opt = nullptr);
+
     }
 }
 
