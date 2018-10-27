@@ -75,9 +75,10 @@ namespace TwitchXX
                                                          int offset = 0,
                                                          Direction::Value direction = Direction::Value::ASC);
 
-        std::vector<v5::Video> getChannelVideos(const Api& api,
-                                                const std::string& channelId,
-                                                const VideoOptions* opt = nullptr);
+        std::tuple<unsigned long long, std::vector<v5::Video>>
+        getChannelVideos(const Api& api,
+                         const std::string& channelId,
+                         const VideoOptions* opt = nullptr);
 
     }
 }

@@ -146,6 +146,83 @@ namespace TwitchXX
 
             }
 
+            FPS createFps(const web::json::value& rawFps)
+            {
+                FPS f;
+                JsonWrapper w(rawFps);
+
+                f.Chunked = w["chunked"].as_string();
+                f.High = w["high"].as_string();
+                f.Medium = w["medium"].as_string();
+                f.Mobile = w["mobile"].as_string();
+            }
+
+            VideoPreview createPreview(const web::json::value& rawPreview)
+            {
+                VideoPreview v;
+                JsonWrapper w(rawPreview);
+
+                v.Medium = w["medium"].as_string();
+                v.Large = w["large"].as_string();
+                v.Small = w["small"].as_string();
+                v.Temlate = w["template"].as_string();
+
+                return v;
+            }
+
+            VideoThumb::Thumbnail createThumb(const std::string& name, const web::json::value& rawThumb)
+            {
+                VideoThumb::Thumbnail t;
+                JsonWrapper w(rawThumb.at(name));
+
+                t.Type = w["type"].as_string();
+                t.Url = w["url"].as_string();
+
+                return t;
+            }
+            VideoThumb createThumbnails(const web::json::value& rawThumb)
+            {
+                VideoThumb t;
+
+                t.Small = createThumb("small", rawThumb);
+                t.Large = createThumb("large", rawThumb);
+                t.Medium = createThumb("medium", rawThumb);
+                t.Template = createThumb("template", rawThumb);
+
+                return t;
+            }
+
+            Video createVideo(const web::json::value& rawVideo)
+            {
+                Video v;
+                JsonWrapper w(rawVideo);
+
+                v.Id = w["_id"].as_string();
+                v.BroadcasterId = w["broadcast_id"].as_string();
+                v.BroadcastType = VideoType::fromString(w["broadcast_type"]);
+                v.ChannelId = rawVideo.at("channel").at("_id").as_string();
+                v.Created = w["crated_at"];
+                v.Description = w["description"].as_string();
+                v.DescriptionHtml = w["description_html"].as_string();
+                v.Fps = createFps(rawVideo.at("fps"));
+                v.Game = w["game"].as_string();
+                v.Language = w["language"].as_string();
+                v.Length = w["length"];
+                v.Preview = createPreview(rawVideo.at("preview"));
+                v.Published = w["published_at"];
+                v.Resolution = createFps(rawVideo.at("resolution"));
+                v.Status = w["status"].as_string();
+                v.TagList = w["tag_list"].as_string();
+                v.Thumbnails = createThumbnails(rawVideo.at("thumbnails"));
+                v.Title = w["title"].as_string();
+                v.Url = w["url"].as_string();
+                v.Viewable = w["viewable"].as_string();
+                v.ViewedAt = w["viewed_at"];
+                v.Views = w["views"];
+
+                return v;
+            }
+
         }
 
         Channel getSelfChannel(const Api &api)
@@ -307,9 +384,10 @@ namespace TwitchXX
             return std::vector<Subscription>();
         }
 
-        std::vector<v5::Video> getChannelVideos(const Api &api, const std::string &channelId, const VideoOptions *opt)
+        std::tuple<unsigned long long, std::vector<v5::Video>>
+        getChannelVideos(const Api &api, const std::string &channelId, const VideoOptions *opt)
         {
-            return std::vector<Video>();
+            return std::tuple<unsigned long long, std::vector<v5::Video>>();
         }
     }
 }
