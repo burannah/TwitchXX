@@ -10,6 +10,7 @@
 #include <string>
 #include <v5/Subscription.h>
 #include <TwitchException.h>
+#include <v5/Video.h>
 
 class ChannelTest : public ::testing::Test
 {
@@ -63,12 +64,12 @@ TEST_F(ChannelTest, getSubscribers)
 {
     try
     {
-        auto subs = TwitchXX::v5::getChannelSubscribers(_api, std::to_string(buran_id));
+        auto [totlal, subsc] = TwitchXX::v5::getChannelSubscriptions(_api, std::to_string(buran_id));
     }
     catch(const TwitchXX::TwitchException& e)
     {
-        EXPECT_EQ(e.code(), 400);
-        EXPECT_EQ(e.what(), std::string("Bad Request: burannah does not have a subscription program. Status code: 400"));
+        EXPECT_EQ(e.code(), 401);
+        EXPECT_EQ(e.what(), std::string("Unauthorized: authentication failed. Status code: 401"));
     }
 }
 
@@ -82,4 +83,12 @@ TEST_F(ChannelTest, checkUserSubscribed)
     {
         EXPECT_EQ(e.code(), 403);
     }
+}
+
+TEST_F(ChannelTest, getChannelVideos)
+{
+    auto [total, videos] = TwitchXX::v5::getChannelVideos(_api, std::to_string(buran_id));
+
+    EXPECT_EQ(total, 0);
+    EXPECT_EQ(videos.size(), 0);
 }

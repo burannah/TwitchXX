@@ -30,10 +30,6 @@ namespace TwitchXX
                                                         const std::string &channelId,
                                                         const std::optional<int> &limit = std::nullopt,
                                                         Direction::Value dir = Direction::Value::ASC);
-
-        Subscription checkChannelSubscriptionByUser(const Api& api,
-                                                    const std::string& channelId,
-                                                    const std::string& userId);
     }
 };
 

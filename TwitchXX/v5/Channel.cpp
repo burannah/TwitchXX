@@ -139,11 +139,9 @@ namespace TwitchXX
                     {
                         builder.append_query("sort", VideoSortType::toString(opt->Sort));
                     }
-
-                    return builder.to_uri();
-
                 }
 
+                return builder.to_uri();
             }
 
             FPS createFps(const web::json::value& rawFps)
@@ -223,6 +221,51 @@ namespace TwitchXX
                 return v;
             }
 
+            Subscription createSubscription(const web::json::value &rawSub)
+            {
+                if (rawSub.is_null()) {
+                    throw TwitchException("Invalid subscription object");
+                }
+
+                JsonWrapper w(rawSub);
+
+                Subscription s;
+
+                s.Created = w["created_at"];
+                s.Id = w["_id"].as_string();
+                s.SubPlan = w["sub_plan"].as_string();
+                s.SubPlanName = w["sub_plan_name"].as_string();
+                s.User = createUser(rawSub.at("user"));
+
+                return s;
+            }
+
+            web::json::value buildUpdateChannelParams(const std::string &channelId,
+                                                      const std::optional<std::string> &status,
+                                                      const std::optional<std::string> &game,
+                                                      const std::optional<int> &delay)
+            {
+                web::json::value channel;
+                channel["channel"] = web::json::value::object();
+
+                if(status)
+                {
+                    channel.at("channel")["status"] = web::json::value::string(status.value());
+                }
+
+                if(game)
+                {
+                    channel.at("channel")["game"] = web::json::value::string(game.value());
+                }
+
+                if(delay)
+                {
+                    channel.at("channel")["delay"] = web::json::value::number(delay.value());
+                }
+
+                return channel;
+            }
+
         }
 
         Channel getSelfChannel(const Api &api)
@@ -242,32 +285,6 @@ namespace TwitchXX
             auto response = api.reqOnce().get(builder.to_uri());
 
             return createChannel(response);
-        }
-
-        web::json::value buildUpdateChannelParams(const std::string &channelId,
-                                                  const std::optional<std::string> &status,
-                                                  const std::optional<std::string> &game,
-                                                  const std::optional<int> &delay)
-        {
-            web::json::value channel;
-            channel["channel"] = web::json::value::object();
-
-            if(status)
-            {
-                channel.at("channel")["status"] = web::json::value::string(status.value());
-            }
-
-            if(game)
-            {
-                channel.at("channel")["game"] = web::json::value::string(game.value());
-            }
-
-            if(delay)
-            {
-                channel.at("channel")["delay"] = web::json::value::number(delay.value());
-            }
-
-            return channel;
         }
 
         Channel updateChannel(const Api &api,
@@ -363,31 +380,67 @@ namespace TwitchXX
             return result;
         }
 
-        std::vector<Subscription>
-        getChannelSubscription(const Api &api,
-                               const std::string &channelId,
-                               int limit,
-                               int offset,
-                               Direction::Value direction)
+        std::tuple<unsigned long long, std::vector<Subscription> >
+        getChannelSubscriptions(const Api &api,
+                                const std::string &channelId,
+                                int limit,
+                                int offset,
+                                Direction::Value direction)
         {
             auto response = api.reqOnce().get(getChannelSubscriptionsUri(channelId, limit, offset, direction));
 
             std::vector<Subscription> result;
+            unsigned long long total = response.at("_total").as_number().to_uint64();
 
-            if(response.has_array_field("data"))
+            if(response.has_array_field("subscriptions"))
             {
-                for(const auto& rawSubscription: response.at("data").as_array())
+                const auto& subscriptions = response.at("subscriptions").as_array();
+                result.reserve(subscriptions.size());
+                for(const auto& rawSubscription: subscriptions)
                 {
                     result.push_back(createSubscription(rawSubscription));
                 }
             }
-            return std::vector<Subscription>();
+            return std::make_tuple(total,result);
+        }
+
+        Subscription checkChannelSubscriptionByUser(const Api &api,
+                                                    const std::string &channelId,
+                                                    const std::string &userId)
+        {
+            web::uri_builder builder("kraken/channels/" + channelId + "/subscriptions/" + userId);
+
+            auto response = api.reqOnce().get(builder.to_uri(), AuthScope::CHANNEL_CHECK_SUBSCRIPTION);
+
+            Subscription result{};
+
+            if (!response.is_null() && response.has_field("user")) {
+                result = createSubscription(response);
+            }
+
+            return result;
+
         }
 
         std::tuple<unsigned long long, std::vector<v5::Video>>
         getChannelVideos(const Api &api, const std::string &channelId, const VideoOptions *opt)
         {
-            return std::tuple<unsigned long long, std::vector<v5::Video>>();
+
+            auto response = api.reqOnce().get(getChannelVideosUri(channelId,opt));
+
+            unsigned long long total = response.at("_total").as_number().to_uint64();
+            std::vector<Video> result;
+            if(response.has_array_field("videos"))
+            {
+                const auto& videos = response.at("videos").as_array();
+                result.reserve(videos.size());
+                for(const auto& rawVideo: videos)
+                {
+                    result.push_back(createVideo(rawVideo));
+                }
+            }
+
+            return std::make_tuple(total, result);
         }
     }
 }

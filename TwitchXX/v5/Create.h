@@ -17,11 +17,9 @@ namespace TwitchXX
 {
     namespace v5
     {
-        class Subscription;
         class User;
 
         User createUser(const web::json::value &rawUser);
-        Subscription createSubscription(const web::json::value& rawSub);
     }
 }
 

@@ -69,11 +69,16 @@ namespace TwitchXX
 
         std::vector<Team> getChannelTeams(const Api& api, const std::string& channelId);
 
-        std::vector<Subscription> getChannelSubscription(const Api& api,
-                                                         const std::string& channelId,
-                                                         int limit = 100,
-                                                         int offset = 0,
-                                                         Direction::Value direction = Direction::Value::ASC);
+        std::tuple<unsigned long long, std::vector<Subscription> >
+        getChannelSubscriptions(const Api& api,
+                                const std::string& channelId,
+                                int limit = 100,
+                                int offset = 0,
+                                Direction::Value direction = Direction::Value::ASC);
+
+        Subscription checkChannelSubscriptionByUser(const Api& api,
+                                                    const std::string& channelId,
+                                                    const std::string& userId);
 
         std::tuple<unsigned long long, std::vector<v5::Video>>
         getChannelVideos(const Api& api,
