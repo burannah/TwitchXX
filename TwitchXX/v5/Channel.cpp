@@ -149,10 +149,27 @@ namespace TwitchXX
                 FPS f;
                 JsonWrapper w(rawFps);
 
-                f.Chunked = w["chunked"].as_string();
-                f.High = w["high"].as_string();
-                f.Medium = w["medium"].as_string();
-                f.Mobile = w["mobile"].as_string();
+                f.Chunked = w["chunked"].as_number().to_double();
+                f.High = w["720p60"];
+                f.Medium = w["480p30"];
+                f.Low = w["360p30"];
+                f.Mobile = w["160p30"];
+
+                return f;
+            }
+
+            VideoResolution createResolution(const web::json::value& rawFps)
+            {
+                VideoResolution r;
+                JsonWrapper w(rawFps);
+
+                r.Chunked = w["chunked"].as_string();
+                r.High = w["720p60"].as_string();
+                r.Medium = w["480p30"].as_string();
+                r.Low = w["360p30"].as_string();
+                r.Mobile = w["160p30"].as_string();
+
+                return r;
             }
 
             VideoPreview createPreview(const web::json::value& rawPreview)
@@ -168,15 +185,21 @@ namespace TwitchXX
                 return v;
             }
 
-            VideoThumb::Thumbnail createThumb(const std::string& name, const web::json::value& rawThumb)
+            std::vector<VideoThumb::Thumbnail> createThumb(const std::string& name, const web::json::value& rawThumb)
             {
-                VideoThumb::Thumbnail t;
-                JsonWrapper w(rawThumb.at(name));
-
-                t.Type = w["type"].as_string();
-                t.Url = w["url"].as_string();
-
-                return t;
+                std::vector<VideoThumb::Thumbnail> result;
+                if(rawThumb.has_array_field(name))
+                {
+                    const auto& arr = rawThumb.at(name).as_array();
+                    result.reserve(arr.size());
+                    for(const auto& thumb: arr)
+                    {
+                        auto& t = result.emplace_back();
+                        t.Type = thumb.at("type").as_string();
+                        t.Url = thumb.at("url").as_string();
+                    }
+                }
+                return result;
             }
             VideoThumb createThumbnails(const web::json::value& rawThumb)
             {
@@ -196,9 +219,9 @@ namespace TwitchXX
                 JsonWrapper w(rawVideo);
 
                 v.Id = w["_id"].as_string();
-                v.BroadcasterId = w["broadcast_id"].as_string();
+                v.BroadcasterId = w["broadcast_id"];
                 v.BroadcastType = VideoType::fromString(w["broadcast_type"]);
-                v.ChannelId = rawVideo.at("channel").at("_id").as_string();
+                v.ChannelId = rawVideo.at("channel").at("_id").as_number().to_uint64(); //TODO: report bug to Twitch
                 v.Created = w["crated_at"];
                 v.Description = w["description"].as_string();
                 v.DescriptionHtml = w["description_html"].as_string();
@@ -208,7 +231,7 @@ namespace TwitchXX
                 v.Length = w["length"];
                 v.Preview = createPreview(rawVideo.at("preview"));
                 v.Published = w["published_at"];
-                v.Resolution = createFps(rawVideo.at("resolution"));
+                v.Resolution = createResolution(rawVideo.at("resolutions"));
                 v.Status = w["status"].as_string();
                 v.TagList = w["tag_list"].as_string();
                 v.Thumbnails = createThumbnails(rawVideo.at("thumbnails"));
@@ -217,6 +240,10 @@ namespace TwitchXX
                 v.Viewable = w["viewable"].as_string();
                 v.ViewedAt = w["viewed_at"];
                 v.Views = w["views"];
+                v.Restriction = w["restriction"].as_string();
+                v.AnimatedPreviewUrl = w["animated_preview_url"].as_string();
+                v.SeekServiceUrl = w["seek_previews_url"].as_string();
+                v.IncrementViewCountUrl = w["increment_view_count_url"].as_string();
 
                 return v;
             }

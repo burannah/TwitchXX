@@ -16,6 +16,16 @@ namespace TwitchXX
     {
         struct FPS
         {
+            double Chunked;
+            double High;
+            double Medium;
+            double Low;
+            double Mobile;
+
+        };
+
+        struct VideoResolution
+        {
             std::string Chunked;
             std::string High;
             std::string Medium;
@@ -40,18 +50,18 @@ namespace TwitchXX
                 std::string Url;
             };
 
-            Thumbnail Large;
-            Thumbnail Medium;
-            Thumbnail Small;
-            Thumbnail Template;
+            std::vector<Thumbnail> Large;
+            std::vector<Thumbnail> Medium;
+            std::vector<Thumbnail> Small;
+            std::vector<Thumbnail> Template;
         };
         class Video
         {
         public:
             std::string      Id;
-            std::string      BroadcasterId;
+            unsigned long long BroadcasterId;
             VideoType::Value BroadcastType;
-            std::string      ChannelId;
+            unsigned long long ChannelId;
             Date             Created;
             std::string      Description;
             std::string      DescriptionHtml;
@@ -61,7 +71,7 @@ namespace TwitchXX
             int              Length;
             VideoPreview     Preview;
             Date             Published;
-            FPS              Resolution;
+            VideoResolution  Resolution;
             std::string      Status;
             std::string      TagList;
             VideoThumb       Thumbnails;
@@ -70,6 +80,13 @@ namespace TwitchXX
             std::string      Viewable;
             Date             ViewedAt;
             unsigned long long Views;
+            Date             Recorded;
+            //Communities      Cmnty;  //TODO: Implement Communitites
+            std::string      AnimatedPreviewUrl;
+            std::string      SeekServiceUrl;
+            std::string      IncrementViewCountUrl;
+            std::string      Restriction;
+
         };
     }
 }

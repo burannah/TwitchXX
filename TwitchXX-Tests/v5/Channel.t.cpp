@@ -87,8 +87,8 @@ TEST_F(ChannelTest, checkUserSubscribed)
 
 TEST_F(ChannelTest, getChannelVideos)
 {
-    auto [total, videos] = TwitchXX::v5::getChannelVideos(_api, std::to_string(buran_id));
+    auto [total, videos] = TwitchXX::v5::getChannelVideos(_api, std::to_string(phoenix_id));
 
-    EXPECT_EQ(total, 0);
-    EXPECT_EQ(videos.size(), 0);
+    EXPECT_GE(total, 50);
+    EXPECT_EQ(videos.size(), 10);
 }
