@@ -495,5 +495,15 @@ namespace TwitchXX
 
             return createCommercial(response);
         }
+
+        Channel resetStreamKey(const Api& api,
+                               const std::string& channelId)
+        {
+            web::uri_builder builder("kraken/channels/" + channelId + "/stream_key");
+
+            auto response = api.reqOnce().del(builder.to_uri(), AuthScope::CHANNEL_STREAM);
+
+            return createChannel(response);
+        }
     }
 }

@@ -90,6 +90,9 @@ namespace TwitchXX
                                    const std::string& channelId,
                                    CommercialLength length);
 
+
+        Channel resetStreamKey(const Api& api,
+                               const std::string& channelId);
     }
 }
 

@@ -105,3 +105,16 @@ TEST_F(ChannelTest, startCommercial)
         EXPECT_EQ(e.code(), 401);
     }
 }
+
+TEST_F(ChannelTest, deleteStreamKey)
+{
+    try
+    {
+        auto channel = TwitchXX::v5::resetStreamKey(_api, std::to_string(buran_id));
+    }
+    catch(const TwitchXX::TwitchException& e)
+    {
+        EXPECT_EQ(e.code(), 401);
+    }
+
+}

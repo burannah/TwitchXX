@@ -25,7 +25,8 @@ namespace TwitchXX
         CHANNEL_EDITOR = 1 << 5,
         CHANNEL_SUBSCRIPTIONS = 1 << 6,
         CHANNEL_CHECK_SUBSCRIPTION = 1 << 7,
-        CHANNEL_COMMERCIAL = 1 << 8
+        CHANNEL_COMMERCIAL = 1 << 8,
+        CHANNEL_STREAM = 1 << 9
         /*
         USER_READ = 1 << 0,
         USER_BLOCKS_EDIT = 1 << 1,
@@ -34,7 +35,7 @@ namespace TwitchXX
 ,
 
 
-        CHANNEL_STREAM = 1 << 7,
+        ,
         ,
         USER_SUBSCRIPTIONS = 1 << 9,
 
