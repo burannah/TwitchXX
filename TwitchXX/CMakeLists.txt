@@ -116,6 +116,12 @@ set(SOURCES
 add_library(TwitchXX STATIC ${SOURCES})
 target_link_libraries(TwitchXX ${LIB_CPPREST})
 
+target_include_directories(TwitchXX PUBLIC
+        .
+        v5
+        Auth
+        )
+
 install(TARGETS TwitchXX DESTINATION lib)
 install(FILES Clip.h Api.h Entitlement.h Game.h Logger.h Request.h RequestOnce.h RequestWait.h Stream.h
               StreamMetadata.h StreamsOptions.h StreamType.h TwitchDef.h TwitchException.h User.h
