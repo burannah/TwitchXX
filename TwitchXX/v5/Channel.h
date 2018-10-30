@@ -13,6 +13,7 @@
 #include "User.h"
 #include "Team.h"
 #include "Subscription.h"
+#include "Commercial.h"
 
 namespace TwitchXX
 {
@@ -84,6 +85,10 @@ namespace TwitchXX
         getChannelVideos(const Api& api,
                          const std::string& channelId,
                          const VideoOptions* opt = nullptr);
+
+        Commercial startCommercial(const Api& api,
+                                   const std::string& channelId,
+                                   CommercialLength length);
 
     }
 }

@@ -64,5 +64,6 @@ TwitchXX::UserAccessToken::UserAccessToken(const std::string &token)
             | AuthScope::CHANNEL_READ
             | AuthScope::CHANNEL_EDITOR
             | AuthScope::CHANNEL_SUBSCRIPTIONS
-            | AuthScope::CHANNEL_CHECK_SUBSCRIPTION;
+            | AuthScope::CHANNEL_CHECK_SUBSCRIPTION
+            | AuthScope::CHANNEL_COMMERCIAL;
 }

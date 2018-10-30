@@ -11,6 +11,7 @@
 #include <v5/Subscription.h>
 #include <TwitchException.h>
 #include <v5/Video.h>
+#include <v5/Commercial.h>
 
 class ChannelTest : public ::testing::Test
 {
@@ -91,4 +92,16 @@ TEST_F(ChannelTest, getChannelVideos)
 
     EXPECT_GE(total, 50);
     EXPECT_EQ(videos.size(), 10);
+}
+
+TEST_F(ChannelTest, startCommercial)
+{
+    try
+    {
+        auto commercial = TwitchXX::v5::startCommercial(_api, std::to_string(buran_id), TwitchXX::v5::CommercialLength::COMMERCIAL_30);
+    }
+    catch(const TwitchXX::TwitchException& e)
+    {
+        EXPECT_EQ(e.code(), 401);
+    }
 }

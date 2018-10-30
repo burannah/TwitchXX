@@ -293,6 +293,18 @@ namespace TwitchXX
                 return channel;
             }
 
+            Commercial createCommercial(const web::json::value& rawCommercial)
+            {
+                Commercial c;
+                JsonWrapper w(rawCommercial);
+
+                c.Length = w["Length"];
+                c.Retry = w["RetryAfter"];
+                c.Message = w["Message"].as_string();
+
+                return c;
+            }
+
         }
 
         Channel getSelfChannel(const Api &api)
@@ -468,6 +480,20 @@ namespace TwitchXX
             }
 
             return std::make_tuple(total, result);
+        }
+
+        Commercial startCommercial(const Api& api,
+                                   const std::string& channelId,
+                                   CommercialLength length)
+        {
+            web::uri_builder builder("kraken/channels/" + channelId + "/commercial");
+
+            web::json::value body;
+            body["length"] = static_cast<int>(length);
+
+            auto response = api.reqOnce().post(builder.to_uri(), AuthScope::CHANNEL_COMMERCIAL, body);
+
+            return createCommercial(response);
         }
     }
 }

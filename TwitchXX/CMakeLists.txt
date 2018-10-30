@@ -24,9 +24,96 @@ else (DOXYGEN_FOUND)
     message("Doxygen need to be installed to generate the doxygen documentation")
 endif (DOXYGEN_FOUND)
 
-file(GLOB_RECURSE SOURCES *.cpp *.h)
+set(SOURCES
+        Api.cpp
+        Api.h
+        BitsLeaderboardEntry.cpp
+        BitsLeaderboardEntry.h
+        BitsLeaderboardOptions.cpp
+        BitsLeaderboardOptions.h
+        BroadcasterType.cpp
+        BroadcasterType.h
+        Clip.cpp
+        Clip.h
+        ClipOptions.cpp
+        ClipOptions.h
+        CMakeLists.txt
+        Direction.cpp
+        Direction.h
+        Doxyfile
+        Entitlement.cpp
+        Entitlement.h
+        Game.cpp
+        Game.h
+        JsonWrapper.h
+        Log.cpp
+        Log.h
+        Logger.cpp
+        Logger.h
+        MakeRequest_Impl.cpp
+        MakeRequest_Impl.h
+        PeriodType.cpp
+        PeriodType.h
+        Request.cpp
+        Request.h
+        RequestOnce.cpp
+        RequestOnce.h
+        RequestParams.cpp
+        RequestParams.h
+        RequestWait.cpp
+        RequestWait.h
+        Stream.cpp
+        Stream.h
+        StreamMetadata.cpp
+        StreamMetadata.h
+        StreamsOptions.cpp
+        StreamsOptions.h
+        StreamType.cpp
+        StreamType.h
+        TwitchDef.h
+        TwitchException.h
+        User.cpp
+        User.h
+        UserFollows.cpp
+        UserFollows.h
+        UserType.cpp
+        UserType.h
+        Utility.cpp
+        Utility.h
+        UtilsInternal.cpp
+        UtilsInternal.h
+        Video.cpp
+        Video.h
+        VideoOptions.cpp
+        VideoOptions.h
+        VideoSortType.cpp
+        VideoSortType.h
+        VideoType.cpp
+        VideoType.h
+        v5/Action.cpp
+        v5/Action.h
+        v5/Channel.cpp
+        v5/Channel.h
+        v5/Commercial.cpp
+        v5/Commercial.h
+        v5/Create.h
+        v5/Subscription.cpp
+        v5/Subscription.h
+        v5/Team.cpp
+        v5/Team.h
+        v5/User.cpp
+        v5/User.h
+        v5/UserFollows.cpp
+        v5/UserFollows.h
+        v5/Video.cpp
+        v5/Video.h
+        Auth/AppAccessToken.cpp
+        Auth/AppAccessToken.h
+        Auth/AuthToken.h
+        Auth/UserAccessToken.cpp
+        Auth/UserAccessToken.h)
 
-add_library(TwitchXX STATIC ${SOURCES} UtilsInternal.cpp UtilsInternal.h v5/Video.cpp v5/Video.h)
+add_library(TwitchXX STATIC ${SOURCES})
 target_link_libraries(TwitchXX ${LIB_CPPREST})
 
 install(TARGETS TwitchXX DESTINATION lib)
@@ -35,7 +122,7 @@ install(FILES Clip.h Api.h Entitlement.h Game.h Logger.h Request.h RequestOnce.h
               UserFollows.h UserType.h Utility.h Video.h VideoOptions.h PeriodType.h VideoSortType.h
               VideoType.h ClipOptions.h BitsLeaderboardEntry.h BitsLeaderboardOptions.h Direction.h
         DESTINATION include/TwitchXX)
-install(FILES v5/Action.h v5/Channel.h v5/User.h v5/UserFollows.h v5/Subscription.h v5/Team.h v5/Video.h
+install(FILES v5/Action.h v5/Channel.h v5/User.h v5/UserFollows.h v5/Subscription.h v5/Team.h v5/Video.h v5/Commercial.h
         DESTINATION include/TwitchXX/v5)
 
 install(FILES Auth/AuthToken.h Auth/AppAccessToken.h Auth/UserAccessToken.h DESTINATION include/TwitchXX/Auth)
