@@ -14,6 +14,7 @@
 #include "Team.h"
 #include "Subscription.h"
 #include "Commercial.h"
+#include <v5/Community.h>
 
 namespace TwitchXX
 {
@@ -93,6 +94,10 @@ namespace TwitchXX
 
         Channel resetStreamKey(const Api& api,
                                const std::string& channelId);
+
+        std::vector<Community> getChannelCommunities(const Api& api,
+                                                     const std::string& channelId);
+
     }
 }
 

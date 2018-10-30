@@ -111,7 +111,9 @@ set(SOURCES
         Auth/AppAccessToken.h
         Auth/AuthToken.h
         Auth/UserAccessToken.cpp
-        Auth/UserAccessToken.h)
+        Auth/UserAccessToken.h
+        v5/Community.cpp
+        v5/Community.h)
 
 add_library(TwitchXX STATIC ${SOURCES})
 target_link_libraries(TwitchXX ${LIB_CPPREST})
@@ -129,6 +131,7 @@ install(FILES Clip.h Api.h Entitlement.h Game.h Logger.h Request.h RequestOnce.h
               VideoType.h ClipOptions.h BitsLeaderboardEntry.h BitsLeaderboardOptions.h Direction.h
         DESTINATION include/TwitchXX)
 install(FILES v5/Action.h v5/Channel.h v5/User.h v5/UserFollows.h v5/Subscription.h v5/Team.h v5/Video.h v5/Commercial.h
+        v5/Community.h
         DESTINATION include/TwitchXX/v5)
 
 install(FILES Auth/AuthToken.h Auth/AppAccessToken.h Auth/UserAccessToken.h DESTINATION include/TwitchXX/Auth)

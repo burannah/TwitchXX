@@ -305,6 +305,27 @@ namespace TwitchXX
                 return c;
             }
 
+            Community createCommunity(const web::json::value& rawCommunity)
+            {
+                Community c;
+                JsonWrapper w(rawCommunity);
+
+                c.Id = w["_id"].as_string();
+                c.OwnerId = w["owner_id"].as_string();
+                c.Name = w["name"].as_string();
+                c.DisplayName = w["display_name"].as_string();
+                c.AvatarUrl = w["avatar_image_url"].as_string();
+                c.CoverUrl = w["cover_image_url"].as_string();
+                c.Description = w["description"].as_string();
+                c.DescriptionHtml = w["description_html"].as_string();
+                c.Rules = w["rules"].as_string();
+                c.RulesHtml = w["rules_html"].as_string();
+                c.Language = w["language"].as_string();
+                c.Summary = w["summary"].as_string();
+
+                return c;
+            }
+
         }
 
         Channel getSelfChannel(const Api &api)
@@ -504,6 +525,27 @@ namespace TwitchXX
             auto response = api.reqOnce().del(builder.to_uri(), AuthScope::CHANNEL_STREAM);
 
             return createChannel(response);
+        }
+
+        std::vector<Community> getChannelCommunities(const Api& api,
+                                                     const std::string& channelId)
+        {
+            web::uri_builder builder("kraken/channels/" + channelId + "/communities");
+
+            auto response = api.reqOnce().get(builder.to_uri());
+
+            std::vector<Community> result;
+            if(response.has_array_field("communities"))
+            {
+                const auto& communities = response.at("communities").as_array();
+                result.reserve(communities.size());
+                for(const auto& rawCommunity: communities)
+                {
+                    result.push_back(createCommunity(rawCommunity));
+                }
+            }
+
+            return result;
         }
     }
 }

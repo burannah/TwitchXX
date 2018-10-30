@@ -116,5 +116,11 @@ TEST_F(ChannelTest, deleteStreamKey)
     {
         EXPECT_EQ(e.code(), 401);
     }
+}
 
+TEST_F(ChannelTest, getChannelCommunities)
+{
+    auto communities = TwitchXX::v5::getChannelCommunities(_api, std::to_string(welovegames_id));
+
+    EXPECT_EQ(communities.size(), 2);
 }
